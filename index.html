@@ -6,103 +6,147 @@
   <script src="https://unpkg.com/vue"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/url-parse/dist/url-parse.js"></script>
+  <link rel="stylesheet" href="iiif_annotation.css">
+
 </head>
 
 <body>
-  <div id="app-4">
-    <textarea v-model="annoString" rows="8" cols="60"></textarea>
-    <img v-if="showImage" :src="image" alt="">
-    <p>
-      {{label}}
-    </p>
-    <p>
-      {{description}}
-    </p>
-  </div>
+  <div id="components-demo">
+    <iiif-annotation annotationurl="https://raw.githubusercontent.com/tomcrane/iiif-collector/master/objects/paragraph.json"></iiif-annotation>
+    <iiif-annotation annotationurl="annotation1.json"></iiif-annotation>
+  <iiif-annotation annotationurl="annotation2.json"></iiif-annotation>
+  <iiif-annotation annotationurl="annotation3.json"></iiif-annotation>
+  <iiif-annotation annotationurl="https://raw.githubusercontent.com/tomcrane/iiif-collector/master/objects/paragraph.json"></iiif-annotation>
+<iiif-annotation annotationurl="https://raw.githubusercontent.com/tomcrane/iiif-collector/master/objects/word.json"></iiif-annotation>
+<iiif-annotation annotationurl="https://raw.githubusercontent.com/tomcrane/iiif-collector/master/objects/table.json"></iiif-annotation>
+
+<iiif-annotation annotationurl="https://raw.githubusercontent.com/tomcrane/iiif-collector/master/objects/plate.json"></iiif-annotation>
+</div>
 
   <script>
-    var anno = {
-      "type": "Annotation",
-      "@context": "http://www.w3.org/ns/anno.jsonld",
-      "label": "The Bees",
-      "body": {
-        "value": "So many bees.",
-        "type": "TextualBody",
-        "purpose": "tagging",
-        "format": "text/plain"
-      },
-      "target": {
-        "id": "https://d.lib.ncsu.edu/collections/canvas/segIns_023#xywh=318,499,2891,3339",
-        "type": "Canvas",
-        "dcterms:isPartOf": {
-          "id": "https://d.lib.ncsu.edu/collections/catalog/segIns_023/manifest",
-          "type": "Manifest",
-          "label": "Insectes. [patterns]"
-        }
-      },
-      "motivation": {
-        "id": "http://www.w3.org/ns/oa#tagging",
-        "label": "tagging"
-      },
-      "generator": "/capture-models/generic/describing.json"
-    };
 
-    var manifestUrl = anno.target['dcterms:isPartOf'].id;
-    console.log(manifestUrl)
-
-    var vm = new Vue({
-      el: '#app-4',
-      data: {
-        anno,
-        annoString: '',
+Vue.component('iiif-annotation', {
+  props: ['annotationurl'],
+  data: function () {
+    return {
+       anno: '',
         manifest: '',
-        showImage: false
-      },
-      computed: {
+        showImage: false,
+        image: '',
+        canvas: '',
+        manifestUrl: ''
+    }
+  },
+created() {
+axios.get(this.annotationurl).then(response => {
+            this.anno = response.data
+            var refCanvas = this.anno['target'] ? this.anno['target'] : this.anno['on']
+            var manifest = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within']
+            this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id']
+          }).then(response => {
+axios.get(this.manifestlink).then(response => {
+            this.manifest = response.data
+            for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
+            var existing = this.manifest.sequences[0].canvases[idx];
+            if(existing['@id'] == this.canvasRegion['canvasId']){
+                this.canvas = existing;
+                }
+              } 
+                var baseImageUrl = this.canvas.images[0].resource.service['@id']  ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
+                this.image = baseImageUrl + '/' +  this.canvasRegion['canvasRegion'] + "/full/0/default.jpg"
+              })
+})
+},
+  methods: {
+    toggle: function(image_uri, event){
+      console.log(image_uri)
+
+  var fullImage = document.querySelector("img[data-assoc-canvas='"+ image_uri+"']");
+  console.log(fullImage)
+  var change_html = event.srcElement != undefined ?  event.srcElement : event.target;
+  if (fullImage.style.display == 'none'){
+    fullImage.style.display='inline-block';
+    change_html.innerHTML = "Hide Full Image"
+  } else {
+    fullImage.style.display= 'none';
+    change_html.innerHTML = "View Full Image"
+  }
+  
+  
+}
+  },
+  computed: {
         label: function() {
-          return this.anno.label
+          var label = this.anno.label ? this.anno.label : this.anno.resource.label
+          return label
         },
-        description: function() {
-          return this.anno.body.value
+        chars: function() {
+          var res = this.anno.body ? this.anno.body : this.anno.resource
+          var textual_body = ''
+          if (Array.isArray(res) == false){
+          res = [res]
+           }
+           for (var i=0; i < res.length; i++){
+            var res_data = res[i]
+            if (res_data['type'] == 'TextualBody'){
+            var purpose = res_data['purpose'] ? res_data['purpose'] : 'text';
+            textual_body += `<div class="${res_data['purpose']}">${res_data['value']}</div></div>`;
+            } 
+
+           }
+           return textual_body
         },
-        canvas: function(){
-          return this.manifest.sequences[0].canvases[0]
+        ocr: function(){
+          var res = this.anno.body ? this.anno.body : this.anno.resource
+          var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
+          return chars
+
+        },
+        fullImage: function(){
+          var src_link = this.canvas.images[0].resource.service['@id']  ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
+          var fullImage =  this.canvasRegion['canvasRegion'] != "full" ? src_link + '/full/full/0/default.jpg' : '';
+          return fullImage
+
+        },
+        canvasRegion: function(){
+          var canvasId = this.anno.target != undefined ? this.anno.target : this.anno.on;
+            canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id']
+            var canvasRegion = canvasId.split("#")[1].split("=")[1]
+            canvasId = canvasId.split("#")[0]
+            return {'canvasId':canvasId, 'canvasRegion':canvasRegion}
+        }, 
+        dataset: function(){
+           var res = this.anno.body ? this.anno.body : this.anno.resource
+           var dataset_format = res['format'] && res['@type'] == 'dctypes:Dataset' ? res['format'] : '';
+           var dataset_url = res['@id'] && res['@type'] == 'dctypes:Dataset' ? res['@id'] : '';
+          return {'dataset_format':dataset_format, 'dataset_url':dataset_url}
         },
         canvasHash: function() {
-          // console.log(URL.parse(this.anno.target.id))
           var id = this.anno.target.id
           var url = new URL(id)
           return url.hash
-        },
-        canvasRegion: function(){
-          var r = /xywh=((\d*),(\d*),(\d*),(\d*))/
-          var matches = r.exec(this.canvasHash)
-          return matches[1]
-        },
-        baseImageUrl: function(){
-          return this.canvas.images[0].resource.service['@id'];
-        },
-        image: function() {
-          return this.baseImageUrl + '/' +  this.canvasRegion + "/300,/0/default.jpg"
-        }
+        }        
       },
-      created: function(){
-        this.annoString = JSON.stringify(this.anno, null, '  ')
-        axios.get(manifestUrl)
-          .then(function(response) {
-            vm.manifest = response.data
-            vm.showImage = true
-          })
-          .catch(function(error) {
-            console.log(response)
-          })
-      },
-      watch: {
-        annoString: function(newValue) {
-          this.anno = JSON.parse(newValue)
-        }
-      }
-    })
+       template: `<div class="iiifannotation">
+       <img v-bind:src="image">
+       <img v-bind:src="fullImage" style="display:none;" v-bind:data-assoc-canvas="image">
+       
+       <figcaption v-show="label != undefined" v-html="label"></figcaption>
+       <div v-bind:id="ocr" class="text" v-show="ocr != ''">{{ocr}}</div>
+       <p v-show="dataset['dataset_format'] != ''"><b><a href={{dataset.dataset_url}}>Download dataset ({{dataset.dataset_format}})</a></b></p>
+       <div v-html="chars"></div>
+       <button v-on:click="toggle(image, $event)" class="togglebutton" v-show="fullImage != ''">View Full Image</button>
+       <div id="link_to_object">
+          Full object: <a v-bind:href="manifest.related['@id']" target="_blank">{{manifest["label"]}}</a>
+
+       </div>
+       </div>`
+ 
+})
+    
+
+new Vue({ el: '#components-demo' });
+   
   </script>
 </body>
 
