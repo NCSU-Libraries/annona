@@ -1,20 +1,17 @@
 <template>
   <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
-    <Annotation/>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
+    <img alt="Vue logo" src="./assets/logo.png">
+    <iiifannotation annotationurl="https://raw.githubusercontent.com/tomcrane/iiif-collector/master/objects/paragraph.json"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Annotation from './components/Annotation.vue'
+import iiifannotation from './components/iiifannotation.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
-    Annotation
+    iiifannotation
   }
 }
 </script>
