@@ -3,12 +3,12 @@
        <img v-bind:src="image">
        <img v-bind:src="fullImage" style="display:none;" v-bind:data-assoc-canvas="image">
 
-       <figcaption v-show="label != undefined" v-html="label"></figcaption>
-       <div v-bind:id="ocr" class="text" v-show="ocr != ''">{{ocr}}</div>
+       <figcaption v-show="label != undefined && settings.view_larger != false" v-html="label"></figcaption>
+       <div v-bind:id="ocr" class="text" v-show="ocr != '' && settings.view_ocr != false">{{ocr}}</div>
        <p v-show="dataset['dataset_format'] != ''"><b><a v-bind:href="dataset.dataset_url">Download dataset ({{dataset.dataset_format}})</a></b></p>
        <div v-html="chars"></div>
-       <button v-on:click="toggle(image, $event)" class="togglebutton" v-show="fullImage != ''">View Full Image</button>
-       <div id="link_to_object">
+       <button v-on:click="toggle(image, $event)" class="togglebutton" v-show="fullImage != '' && settings.view_larger != false">View Full Image</button>
+       <div id="link_to_object" v-show="settings.view_full_object != false">
           Full object: <a v-bind:href="manifest.related['@id']" target="_blank">{{manifest["label"]}}</a>
 
        </div>
@@ -27,10 +27,13 @@ export default {
     image: '',
     canvas: '',
     manifestUrl: '',
-    test: ''
+    settings: {}
     }
   },
   created() {
+  if (document.getElementById("config") != null){
+  this.settings = JSON.parse(document.getElementById("config").innerHTML)
+  }
 axios.get(this.annotationurl)
 .then(response => {
             this.anno = response.data
