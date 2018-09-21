@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "document-register-element": "^1.11.1",
     "vue": "^2.5.17",
     "vue-custom-element": "^3.2.5"
   },
