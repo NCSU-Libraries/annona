@@ -15,8 +15,10 @@
 
 <script>
 import axios from 'axios';
+import 'document-register-element/build/document-register-element';
+
 export default {
-  name: 'iiif-annotation',
+  name: 'iiifAnnotation',
   props: ['annotationurl'],
   data: function() {
     return {

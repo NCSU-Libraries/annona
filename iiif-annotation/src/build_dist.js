@@ -1,4 +1,6 @@
 import Vue from 'vue';
 import vueCustomElement from 'vue-custom-element'
-import iiifannotation from './components/iiifannotation.vue';
-Vue.customElement('iiif-annotation', iiifannotation);
+Vue.use(vueCustomElement);
+
+import iiifAnnotation from './components/iiifannotation.vue';
+Vue.customElement('iiif-annotation', iiifAnnotation);
