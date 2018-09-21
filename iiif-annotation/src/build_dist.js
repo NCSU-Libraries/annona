@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import wrap from '@vue/web-component-wrapper';
+import vueCustomElement from 'vue-custom-element'
 import iiifannotation from './components/iiifannotation.vue';
-const CustomElement = wrap(Vue, iiifannotation);
-window.customElements.define('iiif-annotation', CustomElement);
+Vue.customElement('iiif-annotation', iiifannotation);

@@ -126,23 +126,22 @@ export default {
 }
 
 .togglebutton{
-   margin: 0 auto;
-   display: flex;
-   justify-content: center;
-   background-color: red;
-   margin-top: .5em;
-   margin-bottom: .5em;
-    border: none;
-    color: white;
-    padding: 6px 7px;
-    text-decoration: none;
-    font-size: 12px;
-    border-radius: 12px;
-    cursor: pointer;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  background-color: red;
+  margin-top: .5em;
+  margin-bottom: .5em;
+  border: none;
+  color: white;
+  padding: 6px 7px;
+  text-decoration: none;
+  font-size: 12px;
+  border-radius: 12px;
+  cursor: pointer;
 }
 
 .iiifannotation {
-
   text-indent: 0;
   margin: 0.5em;
   padding: 0.5em;
@@ -155,8 +154,8 @@ export default {
 
 .text {
   border: 3px solid green;
-padding: 10px;
-margin: 10px;
+  padding: 10px;
+  margin: 10px;
 }
 
 #link_to_object {
