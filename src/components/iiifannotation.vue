@@ -1,14 +1,14 @@
 <template>
   <div class="iiifannotation">
-    <img v-bind:src="image">
-    <img v-bind:src="fullImage" style="display:none;" v-bind:data-assoc-canvas="image">
+    <img v-bind:src="image" id="annoimage">
+    <img v-bind:src="fullImage" style="display:none;" v-bind:data-assoc-canvas="image" id="fullimage">
     <figcaption v-show="label != undefined && settings.view_larger != false" v-html="label"></figcaption>
     <div v-bind:id="ocr" class="text" v-show="ocr != '' && settings.view_ocr != false">{{ocr}}</div>
     <p v-show="dataset['dataset_format'] != ''"><b><a v-bind:href="dataset.dataset_url">Download dataset ({{dataset.dataset_format}})</a></b></p>
     <div v-html="chars"></div>
     <button v-on:click="toggle(image, $event)" class="togglebutton" v-show="fullImage != '' && settings.view_larger != false">View Full Image</button>
     <div id="link_to_object" v-show="settings.view_full_object != false">
-      Full object: <a v-bind:href="manifest.related['@id']" target="_blank">{{manifest["label"]}}</a>
+      Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ import 'document-register-element/build/document-register-element';
 
 export default {
   name: 'iiifAnnotation',
-  props: ['annotationurl'],
+  props: ['annotationurl','annotationlist', 'manifesturl'],
   data: function() {
     return {
       anno: '',
@@ -35,12 +35,27 @@ export default {
     if (document.getElementById("config") != null){
       this.settings = JSON.parse(document.getElementById("config").innerHTML)
     }
-    axios.get(this.annotationurl)
+    var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl
+    axios.get(annotation_json)
     .then(response => {
-      this.anno = response.data
-      var refCanvas = this.anno['target'] ? this.anno['target'] : this.anno['on']
-      var manifest = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within']
-      this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id']
+      if (this.annotationlist == undefined){
+        this.anno = response.data
+        var refCanvas = this.anno['target'] ? this.anno['target'] : this.anno['on']
+        var manifest = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within']
+        this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id']
+      } else {
+        for (var i =0; i < response.data.resources.length; i++){
+          if (response.data.resources[i]['on'] == this.annotationurl){
+            this.anno = response.data.resources[i]
+            if (this.manifesturl == undefined){
+              var manifest = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data['within']['within']
+              this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id']
+            } else {
+              this.manifestlink = this.manifesturl
+            }
+          }
+        }
+      }
     }).then(response => {
         axios.get(this.manifestlink).then(response => {
           this.manifest = response.data
@@ -51,7 +66,7 @@ export default {
             }
           }
           var baseImageUrl = this.canvas.images[0].resource.service['@id']  ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
-          this.image = baseImageUrl + '/' +  this.canvasRegion['canvasRegion'] + "/full/0/default.jpg"
+          this.image = baseImageUrl + '/' +  this.canvasRegion['canvasRegion'] + "/1200,/0/default.jpg"
       })
     })
   },
@@ -95,15 +110,26 @@ export default {
     },
     fullImage: function(){
       var src_link = this.canvas.images[0].resource.service['@id']  ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
-      var fullImage =  this.canvasRegion['canvasRegion'] != "full" ? src_link + '/full/full/0/default.jpg' : '';
+      var fullImage =  this.canvasRegion['canvasRegion'] != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
       return fullImage
 
     },
+    full_object: function(){
+      var keys = Object.keys(this.manifest)
+      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : this.manifest.seeAlso['@id']
+      return link
+    },
     canvasRegion: function(){
       var canvasId = this.anno.target != undefined ? this.anno.target : this.anno.on;
-      canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id']
-      var canvasRegion = canvasId.split("#")[1].split("=")[1]
-      canvasId = canvasId.split("#")[0]
+      if (typeof canvasId != 'string'){
+        canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id']
+      }
+      if (canvasId.indexOf("#xywh") > -1){
+        var canvasRegion = canvasId.split("#")[1].split("=")[1]
+        canvasId = canvasId.split("#")[0]
+      } else {
+          canvasRegion = "full"
+      }
       return {'canvasId':canvasId, 'canvasRegion':canvasRegion}
     },
     dataset: function(){
@@ -123,7 +149,11 @@ export default {
 
 <style>
 
-.iiifannotation img {
+#fullimage {
+  width: 49%
+}
+
+#annoimage {
   width: 49%
 }
 
