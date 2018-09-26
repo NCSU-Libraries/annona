@@ -1,15 +1,19 @@
 <template>
   <div class="iiifannotation">
-    <img v-bind:src="image" id="annoimage">
-    <img v-bind:src="fullImage" style="display:none;" v-bind:data-assoc-canvas="image" id="fullimage">
-    <figcaption v-show="label != undefined && settings.view_larger != false" v-html="label"></figcaption>
-    <div v-bind:id="ocr" class="text" v-show="ocr != '' && settings.view_ocr != false">{{ocr}}</div>
-    <p v-show="dataset['dataset_format'] != ''"><b><a v-bind:href="dataset.dataset_url">Download dataset ({{dataset.dataset_format}})</a></b></p>
-    <div v-html="chars"></div>
-    <button v-on:click="toggle(image, $event)" class="togglebutton" v-show="fullImage != '' && settings.view_larger != false">View Full Image</button>
-    <div id="link_to_object" v-show="settings.view_full_object != false">
+    <div v-for="item in annotation_items">
+    <img v-bind:src="item.image" id="annoimage">
+    <img v-bind:src="item.fullImage" style="display:none;" v-bind:data-assoc-canvas="item.image" id="fullimage">
+    <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
+    <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
+    <p v-show="item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
+    <div v-html="item.chars"></div>
+    <button v-on:click="toggle(item.image, $event)" class="togglebutton" v-show="item.fullImage != '' && settings.view_larger != false">View Full Image</button>
+    <div id="link_to_object" v-show="settings.view_full_object != false && full_object != ''">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
     </div>
+    <div>
+  </div>
+  </div>
   </div>
 </template>
 
@@ -18,17 +22,15 @@ import axios from 'axios';
 import 'document-register-element/build/document-register-element';
 
 export default {
-  name: 'iiifAnnotation',
+  name: 'iiifannotation',
   props: ['annotationurl','annotationlist', 'manifesturl'],
   data: function() {
     return {
       anno: '',
       manifest: '',
-      showImage: false,
-      image: '',
-      canvas: '',
-      manifestUrl: '',
-      settings: {}
+      settings: {},
+      manifestlink: '',
+      annotation_items: []
       }
   },
   created() {
@@ -39,34 +41,41 @@ export default {
     axios.get(annotation_json)
     .then(response => {
       if (this.annotationlist == undefined){
-        this.anno = response.data
-        var refCanvas = this.anno['target'] ? this.anno['target'] : this.anno['on']
-        var manifest = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within']
-        this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id']
+        this.anno = [response.data]
+        var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.anno[0]['on']
+        var manifest_dict = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within']
+        this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id']
       } else {
-        for (var i =0; i < response.data.resources.length; i++){
-          if (response.data.resources[i]['on'] == this.annotationurl){
-            this.anno = response.data.resources[i]
+            this.anno = response.data.resources
             if (this.manifesturl == undefined){
-              var manifest = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data['within']['within']
-              this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id']
+              var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data['within']['within']
+              this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id']
             } else {
               this.manifestlink = this.manifesturl
             }
-          }
-        }
       }
+
     }).then(response => {
         axios.get(this.manifestlink).then(response => {
           this.manifest = response.data
-          for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
-            var existing = this.manifest.sequences[0].canvases[idx];
-            if(existing['@id'] == this.canvasRegion['canvasId']){
-                this.canvas = existing;
+          for (var i =0; i < this.anno.length; i++){
+            var dictionary = {}
+            dictionary['label'] = this.label(this.anno[i])
+            dictionary['ocr'] = this.ocr(this.anno[i])
+            for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
+              var existing = this.manifest.sequences[0].canvases[idx];
+              if(existing['@id'] == this.canvasRegion(this.anno[i])['canvasId']){
+                  dictionary['canvas'] = existing;
+              }
             }
+            var baseImageUrl = dictionary['canvas'].images[0].resource.service['@id']  ? dictionary['canvas'].images[0].resource.service['@id'] : dictionary['canvas'].images[0].resource['@id'];
+            dictionary['image'] = baseImageUrl + '/' +  this.canvasRegion(this.anno[i])['canvasRegion'] + "/1200,/0/default.jpg"
+            dictionary['fullImage'] = this.fullImage(dictionary['canvas'], ['canvasRegion']['canvasRegion'])
+            console.log(this.anno[i].resource)
+            dictionary['chars'] = this.chars(this.anno[i])
+            dictionary['dataset'] = this.dataset(this.anno[i])
+            this.annotation_items.push(dictionary)
           }
-          var baseImageUrl = this.canvas.images[0].resource.service['@id']  ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
-          this.image = baseImageUrl + '/' +  this.canvasRegion['canvasRegion'] + "/1200,/0/default.jpg"
       })
     })
   },
@@ -81,15 +90,37 @@ export default {
         fullImage.style.display= 'none';
         change_html.innerHTML = "View Full Image"
       }
-    }
-  },
-  computed: {
-    label: function() {
-      var label = this.anno.label ? this.anno.label : this.anno.resource.label
+    },
+    label: function(anno) {
+      var label = anno.label ? anno.label : anno.resource.label
       return label
     },
-    chars: function() {
-      var res = this.anno.body ? this.anno.body : this.anno.resource
+    ocr: function(anno){
+      var res = anno.body ? anno.body : anno.resource
+      var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
+      return unescape(encodeURIComponent(chars))
+    },
+    canvasRegion: function(anno){
+      var canvasId = anno.target != undefined ? anno.target : anno.on;
+      if (typeof canvasId != 'string'){
+        canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id']
+      }
+      if (canvasId.indexOf("#xywh") > -1){
+        var canvasRegion = canvasId.split("#")[1].split("=")[1]
+        canvasId = canvasId.split("#")[0]
+      } else {
+          canvasRegion = "full"
+      }
+      return {'canvasId':canvasId, 'canvasRegion':canvasRegion}
+    },
+    fullImage: function(canvas, canvasRegion){
+      var src_link = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+      var fullImage =  canvasRegion != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
+      return fullImage
+
+    },
+    chars: function(anno) {
+      var res = anno.body ? anno.body : anno.resource
       var textual_body = ''
       if (Array.isArray(res) == false){
         res = [res]
@@ -103,46 +134,20 @@ export default {
       }
       return textual_body
     },
-    ocr: function(){
-      var res = this.anno.body ? this.anno.body : this.anno.resource
-      var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
-      return chars
-    },
-    fullImage: function(){
-      var src_link = this.canvas.images[0].resource.service['@id']  ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
-      var fullImage =  this.canvasRegion['canvasRegion'] != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
-      return fullImage
-
-    },
-    full_object: function(){
-      var keys = Object.keys(this.manifest)
-      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : this.manifest.seeAlso['@id']
-      return link
-    },
-    canvasRegion: function(){
-      var canvasId = this.anno.target != undefined ? this.anno.target : this.anno.on;
-      if (typeof canvasId != 'string'){
-        canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id']
-      }
-      if (canvasId.indexOf("#xywh") > -1){
-        var canvasRegion = canvasId.split("#")[1].split("=")[1]
-        canvasId = canvasId.split("#")[0]
-      } else {
-          canvasRegion = "full"
-      }
-      return {'canvasId':canvasId, 'canvasRegion':canvasRegion}
-    },
-    dataset: function(){
-      var res = this.anno.body ? this.anno.body : this.anno.resource
+    dataset: function(anno){
+      var res = anno.body ? anno.body : anno.resource
       var dataset_format = res['format'] && res['@type'] == 'dctypes:Dataset' ? res['format'] : '';
       var dataset_url = res['@id'] && res['@type'] == 'dctypes:Dataset' ? res['@id'] : '';
       return {'dataset_format':dataset_format, 'dataset_url':dataset_url}
-    },
-    canvasHash: function() {
-      var id = this.anno.target.id
-      var url = new URL(id)
-      return url.hash
-      }
+    }
+  },
+  computed: {
+    full_object: function(){
+      var keys = Object.keys(this.manifest)
+      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : ''
+      console.log(link == undefined)
+      return link
+    }
     }
 }
 </script>

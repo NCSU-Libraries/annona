@@ -2364,18 +2364,18 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 /* harmony default export */ var vue_custom_element_esm = (install);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3a86e180-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=383896b6&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"iiifannotation"},[_c('img',{attrs:{"src":_vm.image,"id":"annoimage"}}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":_vm.fullImage,"data-assoc-canvas":_vm.image,"id":"fullimage"}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(_vm.label != undefined && _vm.settings.view_larger != false),expression:"label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(_vm.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.ocr != '' && _vm.settings.view_ocr != false),expression:"ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr}},[_vm._v(_vm._s(_vm.ocr))]),_c('p',{directives:[{name:"show",rawName:"v-show",value:(_vm.dataset['dataset_format'] != ''),expression:"dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":_vm.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(_vm.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(_vm.chars)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(_vm.fullImage != '' && _vm.settings.view_larger != false),expression:"fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle(_vm.image, $event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false),expression:"settings.view_full_object != false"}],attrs:{"id":"link_to_object"}},[_vm._v("\n    Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])])])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3a86e180-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=042439d5&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"iiifannotation"},_vm._l((_vm.annotation_items),function(item){return _c('div',[_c('img',{attrs:{"src":item.image,"id":"annoimage"}}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":item.fullImage,"data-assoc-canvas":item.image,"id":"fullimage"}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(item.label != undefined && _vm.settings.view_larger != false),expression:"item.label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(item.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(item.ocr != '' && _vm.settings.view_ocr != false),expression:"item.ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr}},[_vm._v(_vm._s(item.ocr))]),_c('p',{directives:[{name:"show",rawName:"v-show",value:(item.dataset['dataset_format'] != ''),expression:"item.dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":item.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(item.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(item.chars)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(item.fullImage != '' && _vm.settings.view_larger != false),expression:"item.fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle(item.image, $event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false),expression:"settings.view_full_object != false"}],attrs:{"id":"link_to_object"}},[_vm._v("\n    Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])]),_c('div')])}))}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/iiifannotation.vue?vue&type=template&id=383896b6&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
-var es6_regexp_split = __webpack_require__("28a5");
+// CONCATENATED MODULE: ./src/components/iiifannotation.vue?vue&type=template&id=042439d5&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
+var es6_regexp_split = __webpack_require__("28a5");
 
 // EXTERNAL MODULE: ./node_modules/axios/index.js
 var axios = __webpack_require__("bc3a");
@@ -2402,20 +2402,22 @@ var document_register_element = __webpack_require__("289e");
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ var iiifannotationvue_type_script_lang_js_ = ({
-  name: 'iiifAnnotation',
+  name: 'iiifannotation',
   props: ['annotationurl', 'annotationlist', 'manifesturl'],
   data: function data() {
     return {
       anno: '',
       manifest: '',
-      showImage: false,
-      image: '',
-      canvas: '',
-      manifestUrl: '',
-      settings: {}
+      settings: {},
+      manifestlink: '',
+      annotation_items: []
     };
   },
 
@@ -2427,38 +2429,44 @@ var document_register_element = __webpack_require__("289e");
     var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios_default.a.get(annotation_json).then(response => {
       if (this.annotationlist == undefined) {
-        this.anno = response.data;
-        var refCanvas = this.anno['target'] ? this.anno['target'] : this.anno['on'];
-        var manifest = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within'];
-        this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id'];
+        this.anno = [response.data];
+        var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.anno[0]['on'];
+        var manifest_dict = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within'];
+        this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
-        for (var i = 0; i < response.data.resources.length; i++) {
-          if (response.data.resources[i]['on'] == this.annotationurl) {
-            this.anno = response.data.resources[i];
+        this.anno = response.data.resources;
 
-            if (this.manifesturl == undefined) {
-              var manifest = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data['within']['within'];
-              this.manifestlink = manifest['id'] ? manifest['id'] : manifest['@id'];
-            } else {
-              this.manifestlink = this.manifesturl;
-            }
-          }
+        if (this.manifesturl == undefined) {
+          var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data['within']['within'];
+          this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
+        } else {
+          this.manifestlink = this.manifesturl;
         }
       }
     }).then(response => {
       axios_default.a.get(this.manifestlink).then(response => {
         this.manifest = response.data;
 
-        for (var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++) {
-          var existing = this.manifest.sequences[0].canvases[idx];
+        for (var i = 0; i < this.anno.length; i++) {
+          var dictionary = {};
+          dictionary['label'] = this.label(this.anno[i]);
+          dictionary['ocr'] = this.ocr(this.anno[i]);
 
-          if (existing['@id'] == this.canvasRegion['canvasId']) {
-            this.canvas = existing;
+          for (var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++) {
+            var existing = this.manifest.sequences[0].canvases[idx];
+
+            if (existing['@id'] == this.canvasRegion(this.anno[i])['canvasId']) {
+              dictionary['canvas'] = existing;
+            }
           }
-        }
 
-        var baseImageUrl = this.canvas.images[0].resource.service['@id'] ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
-        this.image = baseImageUrl + '/' + this.canvasRegion['canvasRegion'] + "/1200,/0/default.jpg";
+          var baseImageUrl = dictionary['canvas'].images[0].resource.service['@id'] ? dictionary['canvas'].images[0].resource.service['@id'] : dictionary['canvas'].images[0].resource['@id'];
+          dictionary['image'] = baseImageUrl + '/' + this.canvasRegion(this.anno[i])['canvasRegion'] + "/1200,/0/default.jpg";
+          dictionary['fullImage'] = this.fullImage(dictionary['canvas'], ['canvasRegion']['canvasRegion']);
+          dictionary['chars'] = this.chars(this.anno[i]);
+          dictionary['dataset'] = this.dataset(this.anno[i]);
+          this.annotation_items.push(dictionary);
+        }
       });
     });
   },
@@ -2475,49 +2483,18 @@ var document_register_element = __webpack_require__("289e");
         fullImage.style.display = 'none';
         change_html.innerHTML = "View Full Image";
       }
-    }
-  },
-  computed: {
-    label: function label() {
-      var label = this.anno.label ? this.anno.label : this.anno.resource.label;
+    },
+    label: function label(anno) {
+      var label = anno.label ? anno.label : anno.resource.label;
       return label;
     },
-    chars: function chars() {
-      var res = this.anno.body ? this.anno.body : this.anno.resource;
-      var textual_body = '';
-
-      if (Array.isArray(res) == false) {
-        res = [res];
-      }
-
-      for (var i = 0; i < res.length; i++) {
-        var res_data = res[i];
-
-        if (res_data['type'] == 'TextualBody') {
-          var purpose = res_data['purpose'] ? res_data['purpose'] : 'text';
-          textual_body += '<div class="' + purpose + '">' + res_data['value'] + '</div></div>';
-        }
-      }
-
-      return textual_body;
-    },
-    ocr: function ocr() {
-      var res = this.anno.body ? this.anno.body : this.anno.resource;
+    ocr: function ocr(anno) {
+      var res = anno.body ? anno.body : anno.resource;
       var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
       return chars;
     },
-    fullImage: function fullImage() {
-      var src_link = this.canvas.images[0].resource.service['@id'] ? this.canvas.images[0].resource.service['@id'] : this.canvas.images[0].resource['@id'];
-      var fullImage = this.canvasRegion['canvasRegion'] != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
-      return fullImage;
-    },
-    full_object: function full_object() {
-      var keys = Object.keys(this.manifest);
-      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : this.manifest.seeAlso['@id'];
-      return link;
-    },
-    canvasRegion: function canvasRegion() {
-      var canvasId = this.anno.target != undefined ? this.anno.target : this.anno.on;
+    canvasRegion: function canvasRegion(anno) {
+      var canvasId = anno.target != undefined ? anno.target : anno.on;
 
       if (typeof canvasId != 'string') {
         canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
@@ -2535,19 +2512,45 @@ var document_register_element = __webpack_require__("289e");
         'canvasRegion': canvasRegion
       };
     },
-    dataset: function dataset() {
-      var res = this.anno.body ? this.anno.body : this.anno.resource;
+    fullImage: function fullImage(canvas, canvasRegion) {
+      var src_link = canvas.images[0].resource.service['@id'] ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+      var fullImage = canvasRegion != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
+      return fullImage;
+    },
+    chars: function chars(anno) {
+      var res = anno.body ? anno.body : anno.resource;
+      var textual_body = '';
+
+      if (Array.isArray(res) == false) {
+        res = [res];
+      }
+
+      for (var i = 0; i < res.length; i++) {
+        var res_data = res[i];
+
+        if (res_data['type'] == 'TextualBody') {
+          var purpose = res_data['purpose'] ? res_data['purpose'] : 'text';
+          textual_body += '<div class="' + purpose + '">' + res_data['value'] + '</div></div>';
+        }
+      }
+
+      return textual_body;
+    },
+    dataset: function dataset(anno) {
+      var res = anno.body ? anno.body : anno.resource;
       var dataset_format = res['format'] && res['@type'] == 'dctypes:Dataset' ? res['format'] : '';
       var dataset_url = res['@id'] && res['@type'] == 'dctypes:Dataset' ? res['@id'] : '';
       return {
         'dataset_format': dataset_format,
         'dataset_url': dataset_url
       };
-    },
-    canvasHash: function canvasHash() {
-      var id = this.anno.target.id;
-      var url = new URL(id);
-      return url.hash;
+    }
+  },
+  computed: {
+    full_object: function full_object() {
+      var keys = Object.keys(this.manifest);
+      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : this.manifest.seeAlso['@id'];
+      return link;
     }
   }
 });
