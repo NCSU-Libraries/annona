@@ -1,12 +1,15 @@
 <template>
   <div class="iiifannotation">
     <div v-for="item in annotation_items">
-    <img v-bind:src="item.image" id="annoimage">
+    <span v-for="image in item.image">
+    <img v-bind:src="image" id="annoimage">
+    </span>
     <img v-bind:src="item.fullImage" style="display:none;" v-bind:data-assoc-canvas="item.image" id="fullimage">
     <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
-    <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
+    <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" >{{item.ocr}}</div>
     <p v-show="item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
     <div v-html="item.chars"></div>
+    {{item.fullImage}}
     <button v-on:click="toggle(item.image, $event)" class="togglebutton" v-show="item.fullImage != '' && settings.view_larger != false">View Full Image</button>
     <div id="link_to_object" v-show="settings.view_full_object != false && full_object != ''">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
@@ -59,19 +62,26 @@ export default {
         axios.get(this.manifestlink).then(response => {
           this.manifest = response.data
           for (var i =0; i < this.anno.length; i++){
-            var dictionary = {}
+            var dictionary = {'image':[]}
             dictionary['label'] = this.label(this.anno[i])
             dictionary['ocr'] = this.ocr(this.anno[i])
+            var canvasId = this.anno[i].target != undefined ? this.anno[i].target : this.anno[i].on;
+            if (Array.isArray(canvasId) == false){
+              canvasId = [canvasId]
+            }
+            for (var cn = 0; cn < canvasId.length; cn++){
+            var canvasItem = canvasId[cn]
             for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
               var existing = this.manifest.sequences[0].canvases[idx];
-              if(existing['@id'] == this.canvasRegion(this.anno[i])['canvasId']){
-                  dictionary['canvas'] = existing;
+              if(existing['@id'] == this.canvasRegion(canvasItem)['canvasId']){
+                  var canvas = existing
               }
             }
-            var baseImageUrl = dictionary['canvas'].images[0].resource.service['@id']  ? dictionary['canvas'].images[0].resource.service['@id'] : dictionary['canvas'].images[0].resource['@id'];
-            dictionary['image'] = baseImageUrl + '/' +  this.canvasRegion(this.anno[i])['canvasRegion'] + "/1200,/0/default.jpg"
-            dictionary['fullImage'] = this.fullImage(dictionary['canvas'], ['canvasRegion']['canvasRegion'])
-            console.log(this.anno[i].resource)
+            var regionCanvas = this.canvasRegion(canvasItem)['canvasRegion']
+            var baseImageUrl = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+            dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/1200,/0/default.jpg")
+            dictionary['fullImage'] = this.fullImage(canvas, regionCanvas)
+            }
             dictionary['chars'] = this.chars(this.anno[i])
             dictionary['dataset'] = this.dataset(this.anno[i])
             this.annotation_items.push(dictionary)
@@ -100,8 +110,7 @@ export default {
       var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
       return unescape(encodeURIComponent(chars))
     },
-    canvasRegion: function(anno){
-      var canvasId = anno.target != undefined ? anno.target : anno.on;
+    canvasRegion: function(canvasId){
       if (typeof canvasId != 'string'){
         canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id']
       }
@@ -115,6 +124,7 @@ export default {
     },
     fullImage: function(canvas, canvasRegion){
       var src_link = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+      console.log(canvasRegion)
       var fullImage =  canvasRegion != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
       return fullImage
 
@@ -145,7 +155,6 @@ export default {
     full_object: function(){
       var keys = Object.keys(this.manifest)
       var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : ''
-      console.log(link == undefined)
       return link
     }
     }
