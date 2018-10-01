@@ -2364,18 +2364,18 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 /* harmony default export */ var vue_custom_element_esm = (install);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3a86e180-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=042439d5&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"iiifannotation"},_vm._l((_vm.annotation_items),function(item){return _c('div',[_c('img',{attrs:{"src":item.image,"id":"annoimage"}}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":item.fullImage,"data-assoc-canvas":item.image,"id":"fullimage"}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(item.label != undefined && _vm.settings.view_larger != false),expression:"item.label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(item.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(item.ocr != '' && _vm.settings.view_ocr != false),expression:"item.ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr}},[_vm._v(_vm._s(item.ocr))]),_c('p',{directives:[{name:"show",rawName:"v-show",value:(item.dataset['dataset_format'] != ''),expression:"item.dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":item.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(item.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(item.chars)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(item.fullImage != '' && _vm.settings.view_larger != false),expression:"item.fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle(item.image, $event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false),expression:"settings.view_full_object != false"}],attrs:{"id":"link_to_object"}},[_vm._v("\n    Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])]),_c('div')])}))}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3a86e180-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=286d7032&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"iiifannotation"},_vm._l((_vm.annotation_items),function(item){return _c('div',[_vm._l((item.image),function(image){return _c('span',[_c('img',{attrs:{"src":image,"id":"annoimage"}})])}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":item.fullImage,"data-assoc-canvas":item.image,"id":"fullimage"}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(item.label != undefined && _vm.settings.view_larger != false),expression:"item.label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(item.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(item.ocr != '' && _vm.settings.view_ocr != false),expression:"item.ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr},domProps:{"innerHTML":_vm._s(item.ocr)}}),_c('p',{directives:[{name:"show",rawName:"v-show",value:(item.dataset['dataset_format'] != ''),expression:"item.dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":item.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(item.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(item.chars)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(item.fullImage != '' && _vm.settings.view_larger != false),expression:"item.fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle(item.image, $event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false && _vm.full_object != ''),expression:"settings.view_full_object != false && full_object != ''"}],attrs:{"id":"link_to_object"}},[_vm._v("\n    Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])]),_c('div')],2)}))}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/iiifannotation.vue?vue&type=template&id=042439d5&
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
-var web_dom_iterable = __webpack_require__("ac6a");
+// CONCATENATED MODULE: ./src/components/iiifannotation.vue?vue&type=template&id=286d7032&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
 var es6_regexp_split = __webpack_require__("28a5");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
+var web_dom_iterable = __webpack_require__("ac6a");
 
 // EXTERNAL MODULE: ./node_modules/axios/index.js
 var axios = __webpack_require__("bc3a");
@@ -2406,11 +2406,13 @@ var document_register_element = __webpack_require__("289e");
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ var iiifannotationvue_type_script_lang_js_ = ({
   name: 'iiifannotation',
-  props: ['annotationurl', 'annotationlist', 'manifesturl'],
+  props: ['annotationurl', 'annotationlist', 'manifesturl', 'imagesize'],
   data: function data() {
     return {
       anno: '',
@@ -2429,15 +2431,15 @@ var document_register_element = __webpack_require__("289e");
     var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios_default.a.get(annotation_json).then(response => {
       if (this.annotationlist == undefined) {
-        this.anno = [response.data];
+        this.anno = [].concat(response.data);
         var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.anno[0]['on'];
-        var manifest_dict = refCanvas['dcterms:isPartOf'] ? refCanvas['dcterms:isPartOf'] : refCanvas['within'];
+        var manifest_dict = Object.keys(refCanvas).indexOf("dcterms:isPartOf") > -1 ? refCanvas['dcterms:isPartOf'] : refCanvas['within'];
         this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
         this.anno = response.data.resources;
 
         if (this.manifesturl == undefined) {
-          var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data['within']['within'];
+          var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data.resources[0].on.within ? response.data.resources[0].on.within : response.data['within']['within'];
           this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
         } else {
           this.manifestlink = this.manifesturl;
@@ -2448,21 +2450,41 @@ var document_register_element = __webpack_require__("289e");
         this.manifest = response.data;
 
         for (var i = 0; i < this.anno.length; i++) {
-          var dictionary = {};
+          var dictionary = {
+            'image': []
+          };
           dictionary['label'] = this.label(this.anno[i]);
-          dictionary['ocr'] = this.ocr(this.anno[i]);
+          dictionary['ocr'] = decodeURIComponent(escape(this.ocr(this.anno[i])));
+          var canvasId = this.anno[i].target != undefined ? this.anno[i].target : this.anno[i].on.full ? this.anno[i].on.full : this.anno[i].on;
+          canvasId = [].concat(canvasId);
 
-          for (var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++) {
-            var existing = this.manifest.sequences[0].canvases[idx];
+          for (var cn = 0; cn < canvasId.length; cn++) {
+            var canvasItem = canvasId[cn];
 
-            if (existing['@id'] == this.canvasRegion(this.anno[i])['canvasId']) {
-              dictionary['canvas'] = existing;
+            for (var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++) {
+              var existing = this.manifest.sequences[0].canvases[idx];
+
+              if (existing['@id'] == this.canvasRegion(canvasItem)['canvasId']) {
+                var canvas = existing;
+              }
             }
+
+            var mirador = typeof this.anno[i].on.selector != 'undefined' ? this.anno[i].on.selector.value.split("=")[1] : undefined;
+            var regionCanvas = mirador != undefined ? mirador : this.canvasRegion(canvasItem)['canvasRegion'];
+            var baseImageUrl = canvas.images[0].resource.service['@id'] ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+
+            if (this.imagesize) {
+              var size = this.imagesize;
+            } else if (mirador) {
+              var size = "full";
+            } else {
+              var size = "1200,";
+            }
+
+            dictionary['image'].push(baseImageUrl + '/' + regionCanvas + "/" + size + "/0/default.jpg");
+            dictionary['fullImage'] = this.fullImage(canvas, regionCanvas);
           }
 
-          var baseImageUrl = dictionary['canvas'].images[0].resource.service['@id'] ? dictionary['canvas'].images[0].resource.service['@id'] : dictionary['canvas'].images[0].resource['@id'];
-          dictionary['image'] = baseImageUrl + '/' + this.canvasRegion(this.anno[i])['canvasRegion'] + "/1200,/0/default.jpg";
-          dictionary['fullImage'] = this.fullImage(dictionary['canvas'], ['canvasRegion']['canvasRegion']);
           dictionary['chars'] = this.chars(this.anno[i]);
           dictionary['dataset'] = this.dataset(this.anno[i]);
           this.annotation_items.push(dictionary);
@@ -2491,11 +2513,9 @@ var document_register_element = __webpack_require__("289e");
     ocr: function ocr(anno) {
       var res = anno.body ? anno.body : anno.resource;
       var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
-      return chars;
+      return unescape(encodeURIComponent(chars));
     },
-    canvasRegion: function canvasRegion(anno) {
-      var canvasId = anno.target != undefined ? anno.target : anno.on;
-
+    canvasRegion: function canvasRegion(canvasId) {
       if (typeof canvasId != 'string') {
         canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
       }
@@ -2520,17 +2540,15 @@ var document_register_element = __webpack_require__("289e");
     chars: function chars(anno) {
       var res = anno.body ? anno.body : anno.resource;
       var textual_body = '';
-
-      if (Array.isArray(res) == false) {
-        res = [res];
-      }
+      res = [].concat(res);
 
       for (var i = 0; i < res.length; i++) {
         var res_data = res[i];
 
-        if (res_data['type'] == 'TextualBody') {
-          var purpose = res_data['purpose'] ? res_data['purpose'] : 'text';
-          textual_body += '<div class="' + purpose + '">' + res_data['value'] + '</div></div>';
+        if (res_data['type'] == 'TextualBody' || res_data['@type'] == "dctypes:Text") {
+          var purpose = res_data['purpose'] ? res_data['purpose'] : 'dctypes:text';
+          var value = res_data['value'] ? res_data['value'] : res_data['chars'];
+          textual_body += '<div class="' + purpose + '">' + value + '</div></div>';
         }
       }
 
@@ -2549,7 +2567,7 @@ var document_register_element = __webpack_require__("289e");
   computed: {
     full_object: function full_object() {
       var keys = Object.keys(this.manifest);
-      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : this.manifest.seeAlso['@id'];
+      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : '';
       return link;
     }
   }
