@@ -41,8 +41,7 @@ export default {
       this.settings = JSON.parse(document.getElementById("config").innerHTML);
     }
     var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
-    axios.get(annotation_json)
-    .then(response => {
+    axios.get(annotation_json).then(response => {
       if (this.annotationlist == undefined){
         this.anno = [].concat(response.data);
         var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.on_structure(this.anno[0]);
