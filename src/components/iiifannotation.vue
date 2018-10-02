@@ -9,6 +9,7 @@
     <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
     <p v-show="item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
     <div v-html="item.chars"></div>
+    <div v-html="item.tags"></div>
     <button v-on:click="toggle(item.image, $event)" class="togglebutton" v-show="item.fullImage != '' && settings.view_larger != false">View Full Image</button>
     <div id="link_to_object" v-show="settings.view_full_object != false && full_object != ''">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
@@ -44,13 +45,14 @@ export default {
     .then(response => {
       if (this.annotationlist == undefined){
         this.anno = [].concat(response.data);
-        var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.anno[0]['on'];
+        var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.on_structure(this.anno[0]);
         var manifest_dict = Object.keys(refCanvas).indexOf("dcterms:isPartOf") > -1 ? refCanvas['dcterms:isPartOf'] : refCanvas['within'];
         this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
-          this.anno = response.data.resources;
+          this.anno = response.data.resources ? response.data.resources : response.data;
           if (this.manifesturl == undefined){
-            var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data.resources[0].on.within ? response.data.resources[0].on.within : response.data['within']['within'];
+            var on_dict = this.on_structure(this.anno[0]);
+            var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within ? on_dict.within : response.data['within']['within'];
             this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
           } else {
             this.manifestlink = this.manifesturl;
@@ -63,17 +65,22 @@ export default {
             var dictionary = {'image':[]};
             dictionary['label'] = this.label(this.anno[i]);
             dictionary['ocr'] = decodeURIComponent(escape(this.ocr(this.anno[i])));
-            var canvasId = this.anno[i].target != undefined ? this.anno[i].target : this.anno[i].on.full ? this.anno[i].on.full : this.anno[i].on;
+            var ondict = this.on_structure(this.anno[i])
+            var canvasId = this.anno[i].target != undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
             canvasId = [].concat(canvasId)
             for (var cn = 0; cn < canvasId.length; cn++){
               var canvasItem = canvasId[cn]
               for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
                 var existing = this.manifest.sequences[0].canvases[idx];
-                if(existing['@id'] == this.canvasRegion(canvasItem)['canvasId']){
+                if(existing['@id'].replace("https", "http") == this.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
                   var canvas = existing
                 }
               }
-              var mirador = typeof(this.anno[i].on.selector) != 'undefined' ? this.anno[i].on.selector.value.split("=")[1] : undefined;
+              if (typeof this.on_structure(this.anno[i]).selector != 'undefined') {
+                var ondict = this.on_structure(this.anno[i])
+                var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
+                mirador = mirador.split("=")[1]
+              }
               var regionCanvas =  mirador != undefined ? mirador : this.canvasRegion(canvasItem)['canvasRegion'];
               var baseImageUrl = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
               if (this.imagesize){
@@ -86,7 +93,8 @@ export default {
               dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/" + size +"/0/default.jpg");
               dictionary['fullImage'] = this.fullImage(canvas, regionCanvas);
             }
-            dictionary['chars'] = this.chars(this.anno[i]);
+            dictionary['chars'] = this.chars(this.anno[i])['textual_body'];
+            dictionary['tags'] = this.chars(this.anno[i])['tags']
             dictionary['dataset'] = this.dataset(this.anno[i]);
             this.annotation_items.push(dictionary);
           }
@@ -103,6 +111,16 @@ export default {
       } else {
         fullImage.style.display= 'none';
         change_html.innerHTML = "View Full Image";
+      }
+    },
+    on_structure: function(anno){
+      if (typeof anno['on'] == 'undefined'){
+        return 'undefined'
+      }
+      else if (typeof anno['on'][0] != 'undefined' && typeof anno['on'][0] != 'string'){
+        return anno['on'][0]
+      } else {
+        return anno['on']
       }
     },
     label: function(anno) {
@@ -135,16 +153,24 @@ export default {
     chars: function(anno) {
       var res = anno.body ? anno.body : anno.resource;
       var textual_body = '';
+      var tags = '';
       res = [].concat(res);
       for (var i=0; i < res.length; i++){
         var res_data = res[i];
         if (res_data['type'] == 'TextualBody' || res_data['@type'] ==  "dctypes:Text"){
           var purpose = res_data['purpose'] ? res_data['purpose'] : 'dctypes:text';
           var value = res_data['value'] ? res_data['value'] : res_data['chars'];
-          textual_body += '<div class="' + purpose + '">' + value + '</div></div>';
+          if (purpose == 'tagging'){
+            tags += '<div class="' + purpose + '">' + value + '</div></div>';
+          } else {
+            textual_body += '<div class="' + purpose + '">' + value + '</div></div>';
+          }
+        } else if (res_data['@type'] == 'oa:Tag'){
+          var value = res_data['value'] ? res_data['value'] : res_data['chars'];
+          tags += '<div class="tagging">' + value + '</div></div>';
         }
       }
-      return textual_body
+      return {'textual_body':textual_body,'tags':tags}
     },
     dataset: function(anno){
       var res = anno.body ? anno.body : anno.resource;
@@ -155,8 +181,17 @@ export default {
   },
   computed: {
     full_object: function(){
+      var link;
       var keys = Object.keys(this.manifest);
-      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : '';
+      if (keys.indexOf("related") > -1){
+        if (typeof this.manifest.related == 'string'){
+          link = this.manifest.related;
+        } else {
+          link = this.manifest.related['@id'];
+        }
+      } else {
+          link = keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : '';
+      }
       return link;
     }
   }

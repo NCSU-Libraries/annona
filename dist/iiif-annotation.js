@@ -2364,15 +2364,18 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 /* harmony default export */ var vue_custom_element_esm = (install);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3a86e180-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=286d7032&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"iiifannotation"},_vm._l((_vm.annotation_items),function(item){return _c('div',[_vm._l((item.image),function(image){return _c('span',[_c('img',{attrs:{"src":image,"id":"annoimage"}})])}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":item.fullImage,"data-assoc-canvas":item.image,"id":"fullimage"}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(item.label != undefined && _vm.settings.view_larger != false),expression:"item.label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(item.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(item.ocr != '' && _vm.settings.view_ocr != false),expression:"item.ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr},domProps:{"innerHTML":_vm._s(item.ocr)}}),_c('p',{directives:[{name:"show",rawName:"v-show",value:(item.dataset['dataset_format'] != ''),expression:"item.dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":item.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(item.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(item.chars)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(item.fullImage != '' && _vm.settings.view_larger != false),expression:"item.fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle(item.image, $event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false && _vm.full_object != ''),expression:"settings.view_full_object != false && full_object != ''"}],attrs:{"id":"link_to_object"}},[_vm._v("\n    Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])]),_c('div')],2)}))}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"3a86e180-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=4a2f8397&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"iiifannotation"},_vm._l((_vm.annotation_items),function(item){return _c('div',[_vm._l((item.image),function(image){return _c('span',[_c('img',{attrs:{"src":image,"id":"annoimage"}})])}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":item.fullImage,"data-assoc-canvas":item.image,"id":"fullimage"}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(item.label != undefined && _vm.settings.view_larger != false),expression:"item.label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(item.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(item.ocr != '' && _vm.settings.view_ocr != false),expression:"item.ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr},domProps:{"innerHTML":_vm._s(item.ocr)}}),_c('p',{directives:[{name:"show",rawName:"v-show",value:(item.dataset['dataset_format'] != ''),expression:"item.dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":item.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(item.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(item.chars)}}),_c('div',{domProps:{"innerHTML":_vm._s(item.tags)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(item.fullImage != '' && _vm.settings.view_larger != false),expression:"item.fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle(item.image, $event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false && _vm.full_object != ''),expression:"settings.view_full_object != false && full_object != ''"}],attrs:{"id":"link_to_object"}},[_vm._v("\n    Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])]),_c('div')],2)}))}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/iiifannotation.vue?vue&type=template&id=286d7032&
+// CONCATENATED MODULE: ./src/components/iiifannotation.vue?vue&type=template&id=4a2f8397&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.split.js
 var es6_regexp_split = __webpack_require__("28a5");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.regexp.replace.js
+var es6_regexp_replace = __webpack_require__("a481");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
 var web_dom_iterable = __webpack_require__("ac6a");
@@ -2387,6 +2390,8 @@ var document_register_element = __webpack_require__("289e");
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=script&lang=js&
 
 
+
+//
 //
 //
 //
@@ -2432,14 +2437,15 @@ var document_register_element = __webpack_require__("289e");
     axios_default.a.get(annotation_json).then(response => {
       if (this.annotationlist == undefined) {
         this.anno = [].concat(response.data);
-        var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.anno[0]['on'];
+        var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.on_structure(this.anno[0]);
         var manifest_dict = Object.keys(refCanvas).indexOf("dcterms:isPartOf") > -1 ? refCanvas['dcterms:isPartOf'] : refCanvas['within'];
         this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
-        this.anno = response.data.resources;
+        this.anno = response.data.resources ? response.data.resources : response.data;
 
         if (this.manifesturl == undefined) {
-          var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : response.data.resources[0].on.within ? response.data.resources[0].on.within : response.data['within']['within'];
+          var on_dict = this.on_structure(this.anno[0]);
+          var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within ? on_dict.within : response.data['within']['within'];
           this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
         } else {
           this.manifestlink = this.manifesturl;
@@ -2455,7 +2461,8 @@ var document_register_element = __webpack_require__("289e");
           };
           dictionary['label'] = this.label(this.anno[i]);
           dictionary['ocr'] = decodeURIComponent(escape(this.ocr(this.anno[i])));
-          var canvasId = this.anno[i].target != undefined ? this.anno[i].target : this.anno[i].on.full ? this.anno[i].on.full : this.anno[i].on;
+          var ondict = this.on_structure(this.anno[i]);
+          var canvasId = this.anno[i].target != undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
           canvasId = [].concat(canvasId);
 
           for (var cn = 0; cn < canvasId.length; cn++) {
@@ -2464,12 +2471,17 @@ var document_register_element = __webpack_require__("289e");
             for (var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++) {
               var existing = this.manifest.sequences[0].canvases[idx];
 
-              if (existing['@id'] == this.canvasRegion(canvasItem)['canvasId']) {
+              if (existing['@id'].replace("https", "http") == this.canvasRegion(canvasItem)['canvasId'].replace("https", "http")) {
                 var canvas = existing;
               }
             }
 
-            var mirador = typeof this.anno[i].on.selector != 'undefined' ? this.anno[i].on.selector.value.split("=")[1] : undefined;
+            if (typeof this.on_structure(this.anno[i]).selector != 'undefined') {
+              var ondict = this.on_structure(this.anno[i]);
+              var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
+              mirador = mirador.split("=")[1];
+            }
+
             var regionCanvas = mirador != undefined ? mirador : this.canvasRegion(canvasItem)['canvasRegion'];
             var baseImageUrl = canvas.images[0].resource.service['@id'] ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
 
@@ -2485,7 +2497,8 @@ var document_register_element = __webpack_require__("289e");
             dictionary['fullImage'] = this.fullImage(canvas, regionCanvas);
           }
 
-          dictionary['chars'] = this.chars(this.anno[i]);
+          dictionary['chars'] = this.chars(this.anno[i])['textual_body'];
+          dictionary['tags'] = this.chars(this.anno[i])['tags'];
           dictionary['dataset'] = this.dataset(this.anno[i]);
           this.annotation_items.push(dictionary);
         }
@@ -2504,6 +2517,15 @@ var document_register_element = __webpack_require__("289e");
       } else {
         fullImage.style.display = 'none';
         change_html.innerHTML = "View Full Image";
+      }
+    },
+    on_structure: function on_structure(anno) {
+      if (typeof anno['on'] == 'undefined') {
+        return 'undefined';
+      } else if (typeof anno['on'][0] != 'undefined' && typeof anno['on'][0] != 'string') {
+        return anno['on'][0];
+      } else {
+        return anno['on'];
       }
     },
     label: function label(anno) {
@@ -2540,6 +2562,7 @@ var document_register_element = __webpack_require__("289e");
     chars: function chars(anno) {
       var res = anno.body ? anno.body : anno.resource;
       var textual_body = '';
+      var tags = '';
       res = [].concat(res);
 
       for (var i = 0; i < res.length; i++) {
@@ -2548,11 +2571,22 @@ var document_register_element = __webpack_require__("289e");
         if (res_data['type'] == 'TextualBody' || res_data['@type'] == "dctypes:Text") {
           var purpose = res_data['purpose'] ? res_data['purpose'] : 'dctypes:text';
           var value = res_data['value'] ? res_data['value'] : res_data['chars'];
-          textual_body += '<div class="' + purpose + '">' + value + '</div></div>';
+
+          if (purpose == 'tagging') {
+            tags += '<div class="' + purpose + '">' + value + '</div></div>';
+          } else {
+            textual_body += '<div class="' + purpose + '">' + value + '</div></div>';
+          }
+        } else if (res_data['@type'] == 'oa:Tag') {
+          var value = res_data['value'] ? res_data['value'] : res_data['chars'];
+          tags += '<div class="tagging">' + value + '</div></div>';
         }
       }
 
-      return textual_body;
+      return {
+        'textual_body': textual_body,
+        'tags': tags
+      };
     },
     dataset: function dataset(anno) {
       var res = anno.body ? anno.body : anno.resource;
@@ -2566,8 +2600,19 @@ var document_register_element = __webpack_require__("289e");
   },
   computed: {
     full_object: function full_object() {
+      var link;
       var keys = Object.keys(this.manifest);
-      var link = keys.indexOf("related") > -1 ? this.manifest.related['@id'] : keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : '';
+
+      if (keys.indexOf("related") > -1) {
+        if (typeof this.manifest.related == 'string') {
+          link = this.manifest.related;
+        } else {
+          link = this.manifest.related['@id'];
+        }
+      } else {
+        link = keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : '';
+      }
+
       return link;
     }
   }
@@ -3128,6 +3173,25 @@ function btoa(input) {
 }
 
 module.exports = btoa;
+
+
+/***/ }),
+
+/***/ "a481":
+/***/ (function(module, exports, __webpack_require__) {
+
+// @@replace logic
+__webpack_require__("214f")('replace', 2, function (defined, REPLACE, $replace) {
+  // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
+  return [function replace(searchValue, replaceValue) {
+    'use strict';
+    var O = defined(this);
+    var fn = searchValue == undefined ? undefined : searchValue[REPLACE];
+    return fn !== undefined
+      ? fn.call(searchValue, O, replaceValue)
+      : $replace.call(String(O), searchValue, replaceValue);
+  }, $replace];
+});
 
 
 /***/ }),
