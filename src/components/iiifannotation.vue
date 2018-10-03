@@ -4,13 +4,13 @@
     <span v-for="image in item.image">
     <img v-bind:src="image" id="annoimage">
     </span>
-    <img v-bind:src="item.fullImage" style="display:none;" v-bind:data-assoc-canvas="item.image" id="fullimage">
+    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage">
     <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
     <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
     <p v-show="item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
     <div v-html="item.chars"></div>
     <div v-html="item.tags"></div>
-    <button v-on:click="toggle(item.image, $event)" class="togglebutton" v-show="item.fullImage != '' && settings.view_larger != false">View Full Image</button>
+    <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage != '' && settings.view_larger != false">View Full Image</button>
     <div id="link_to_object" v-show="settings.view_full_object != false && full_object != ''">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
     </div>
@@ -101,8 +101,9 @@ export default {
     })
   },
   methods: {
-    toggle: function(image_uri, event){
-      var fullImage = this.$el.querySelector("img[data-assoc-canvas='"+ image_uri+"']");
+    toggle: function(event){
+      var parent = event.target.parentElement
+      var fullImage = parent.querySelector("#fullimage");
       var change_html = event.srcElement != undefined ?  event.srcElement : event.target;
       if (fullImage.style.display == 'none'){
         fullImage.style.display='inline-block';
