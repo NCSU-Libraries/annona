@@ -93,9 +93,9 @@ export default {
               dictionary['fullImage'] = this.fullImage(canvas, regionCanvas);
             }
             dictionary['chars'] = this.chars(this.anno[i])['textual_body'];
-            dictionary['tags'] = this.chars(this.anno[i])['tags']
+            dictionary['tags'] = this.chars(this.anno[i])['tags'];
             dictionary['dataset'] = this.dataset(this.anno[i]);
-            dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != '' ? dictionary['label'] : `annotation of ${manifest['label']}`
+            dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
             this.annotation_items.push(dictionary);
           }
       })
