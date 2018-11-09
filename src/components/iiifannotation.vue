@@ -2,9 +2,9 @@
   <div class="iiifannotation">
     <div v-for="item in annotation_items">
     <span v-for="image in item.image">
-    <img v-bind:src="image" id="annoimage">
+    <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage">
     </span>
-    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage">
+    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']">
     <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
     <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
     <p v-show="item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
@@ -95,6 +95,7 @@ export default {
             dictionary['chars'] = this.chars(this.anno[i])['textual_body'];
             dictionary['tags'] = this.chars(this.anno[i])['tags']
             dictionary['dataset'] = this.dataset(this.anno[i]);
+            dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != '' ? dictionary['label'] : `annotation of ${manifest['label']}`
             this.annotation_items.push(dictionary);
           }
       })
