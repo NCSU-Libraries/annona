@@ -10,14 +10,15 @@
   margin: 0 auto;
   display: flex;
   justify-content: center;
-  background-color: red;
+  background-color: #811957;
   margin-top: .5em;
   margin-bottom: .5em;
   border: none;
   color: white;
   padding: 6px 7px;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: bold;
   border-radius: 12px;
   cursor: pointer;
 }
@@ -40,11 +41,52 @@
 }
 
 #link_to_object {
-  font-weight: bold
+  font-weight: bold;
+}
+
+#link_to_object a {
+  color: #0000FF;
 }
 
 figcaption {
   font-size: smaller;
   font-style: italic;
   font-weight: bold;
+}
+
+
+.tagging {
+  background: #92D1E8;
+  border-radius: 3px 0 0 3px;
+  color: black;
+  display: inline-block;
+  height: 26px;
+  line-height: 26px;
+  padding: 0 20px 0 23px;
+  position: relative;
+  margin: 0 10px 10px 0;
+  text-decoration: none;
+  -webkit-transition: color 0.2s;
+}
+.tagging::before {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+  content: '';
+  height: 6px;
+  left: 10px;
+  position: absolute;
+  width: 6px;
+  top: 10px;
+}
+
+.tagging::after {
+  background: #fff;
+  border-bottom: 13px solid transparent;
+  border-left: 10px solid #92D1E8;
+  border-top: 13px solid transparent;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
 }
