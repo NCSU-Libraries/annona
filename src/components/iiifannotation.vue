@@ -1,5 +1,5 @@
 <template>
-  <div class="iiifannotation">
+  <div class="iiifannotation"  v-if="rendered != false">
     <div v-for="item in annotation_items">
     <span v-for="image in item.image">
     <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage">
@@ -18,6 +18,11 @@
   </div>
   </div>
   </div>
+  <div v-else>
+  "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
+  Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
+  Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
+  </div>
 </template>
 
 <script>
@@ -33,7 +38,8 @@ export default {
       manifest: '',
       settings: {},
       manifestlink: '',
-      annotation_items: []
+      annotation_items: [],
+      rendered: false
       }
   },
   created() {
@@ -57,7 +63,7 @@ export default {
             this.manifestlink = this.manifesturl;
           }
       }
-    }).then(response => {
+    }).catch((error) => {console.log(error)}).then(response => {
         axios.get(this.manifestlink).then(response => {
           this.manifest = response.data;
           for (var i =0; i < this.anno.length; i++){
@@ -98,7 +104,10 @@ export default {
             dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
             this.annotation_items.push(dictionary);
           }
-      })
+          if(this.manifestlink != ''){
+            this.rendered = true;
+          }
+      }).catch((error) => {console.log(error)})
     })
   },
   methods: {
@@ -162,13 +171,13 @@ export default {
           var purpose = res_data['purpose'] ? res_data['purpose'] : 'dctypes:text';
           var value = res_data['value'] ? res_data['value'] : res_data['chars'];
           if (purpose == 'tagging'){
-            tags += '<div class="' + purpose + '">' + value + '</div></div>';
+            tags += '<div class="' + purpose + '">' + value + '</div>';
           } else {
-            textual_body += '<div class="' + purpose + '">' + value + '</div></div>';
+            textual_body += '<div class="' + purpose + '">' + value + '</div>';
           }
         } else if (res_data['@type'] == 'oa:Tag'){
           var value = res_data['value'] ? res_data['value'] : res_data['chars'];
-          tags += '<div class="tagging">' + value + '</div></div>';
+          tags += '<div class="tagging">' + value + '</div>';
         }
       }
       return {'textual_body':textual_body,'tags':tags}
