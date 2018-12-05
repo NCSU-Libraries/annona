@@ -17,6 +17,7 @@
     "babel-preset-env": "^1.7.0",
     "document-register-element": "^1.13.1",
     "flush-promises": "^1.0.2",
+    "openseadragon": "^2.4.0",
     "vue": "^2.5.17",
     "vue-custom-element": "^3.2.6",
     "webpack": "^4.26.1"
