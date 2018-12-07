@@ -1,3 +1,5 @@
+@import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
+
 #fullimage {
   width: 49%
 }
@@ -169,6 +171,7 @@ figcaption {
 display: block;
 padding-left: 20px;
 width: 87%;
+background-color: white;
 }
 .window {
 display: none;
