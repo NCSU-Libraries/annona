@@ -27,7 +27,6 @@
 
 <script>
 import axios from 'axios';
-import 'document-register-element/build/document-register-element';
 
 export default {
   name: 'iiifannotation',

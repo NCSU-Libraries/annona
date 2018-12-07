@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import vueCustomElement from 'vue-custom-element'
-Vue.use(vueCustomElement);
+import 'document-register-element/build/document-register-element';
 import iiifAnnotation from './components/iiifannotation.vue';
-Vue.customElement('iiif-annotation', iiifAnnotation);
 import storyboard from './components/storyboard.vue'
+
+Vue.use(vueCustomElement);
+Vue.customElement('iiif-annotation', iiifAnnotation);
 Vue.customElement('iiif-storyboard', storyboard)
