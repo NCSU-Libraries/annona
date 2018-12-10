@@ -1,6 +1,6 @@
 <template>
 <div id="storyboard_viewer" style="position:relative">
-<div style="position:relative">
+<div style="position:relative; display:flex">
 <div v-bind:id="seadragonid" class="seadragonbox" style="position:relative">
 <span id="header_toolbar">
 <span style="float:right; margin:10px 0 0 20px">
@@ -43,8 +43,7 @@ export default {
       next_inactive: false,
       toolbar_id: '',
       first: true,
-      isfullscreen: false,
-      anno_elem: ''
+      isfullscreen: false
     }
   },
   created() {
@@ -118,10 +117,6 @@ export default {
           this.isfullscreen = false;
         }
       })
-      var left_value = document.getElementById(`${this.seadragonid}`).getBoundingClientRect().left;
-      var calc_string = "calc(" + `${left_value}`+ "px + 20px)"
-      this.anno_elem = document.getElementById(`${this.seadragonid}`).offsetParent.getElementsByClassName('annotation')[0]
-      this.anno_elem.style.left = calc_string;
       this.toolbar_id = `${this.seadragonid}toolbarDiv`
     },
     full_screen: function(){
@@ -231,8 +226,9 @@ export default {
       this.prev_inactive = false;
     }
     if (this.position != this.zoomsections.length && this.position != -1){
-      this.anno_elem.classList.remove('inactive')
-      this.anno_elem.classList.add('active')
+      var anno_elem = document.getElementById(`${this.seadragonid}`).offsetParent.getElementsByClassName('annotation')[0]
+      anno_elem.classList.remove('inactive')
+      anno_elem.classList.add('active')
     }
     }
   }
@@ -240,6 +236,8 @@ export default {
 
 </script>
 <style>
+@import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
+
 .tag {
   background: #92D1E8;
   border-radius: 3px 0 0 3px;
@@ -298,10 +296,16 @@ export default {
   background: white;
   position: absolute;
   top: 60px;
-  display: inline-block;
+  z-index: 2;
   height: 250px;
   overflow: scroll;
   padding: 2px;
+  margin-left: 20px;
+  word-wrap: break-word;
+}
+
+#annotation_text {
+  display: inline-block;
 }
 
 #annotation_text img {
