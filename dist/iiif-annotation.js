@@ -1913,8 +1913,8 @@ if (typeof window !== 'undefined' && window.Vue) {
 // EXTERNAL MODULE: ./node_modules/document-register-element/build/document-register-element.js
 var document_register_element = __webpack_require__("289e");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"55e92908-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=753e386c&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.rendered != false)?_c('div',{staticClass:"iiifannotation"},_vm._l((_vm.annotation_items),function(item){return _c('div',[_vm._l((item.image),function(image){return _c('span',[_c('img',{attrs:{"src":image,"alt":item.altText,"id":"annoimage"}})])}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":item.fullImage,"id":"fullimage","alt":_vm.manifest['label']}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(item.label != undefined && _vm.settings.view_larger != false),expression:"item.label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(item.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(item.ocr != '' && _vm.settings.view_ocr != false),expression:"item.ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr},domProps:{"innerHTML":_vm._s(item.ocr)}}),_c('p',{directives:[{name:"show",rawName:"v-show",value:(item.dataset['dataset_format'] != ''),expression:"item.dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":item.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(item.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(item.chars)}}),_c('div',{domProps:{"innerHTML":_vm._s(item.tags)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(item.fullImage != '' && _vm.settings.view_larger != false),expression:"item.fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle($event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false && _vm.full_object != ''),expression:"settings.view_full_object != false && full_object != ''"}],attrs:{"id":"link_to_object"}},[_vm._v("\n      Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])]),_c('div')],2)})):_c('div',[_vm._v("\n  \""+_vm._s(_vm.annotationlist)+_vm._s(_vm.annotationurl)+"\" did not render. Please ensure your annotation link is correct."),_c('br'),_vm._v("\n  Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the \"manifesturl\" property."),_c('br'),_vm._v("\n  Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)\n  ")])}
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"13d423fc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/iiifannotation.vue?vue&type=template&id=753e386c&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.rendered != false)?_c('div',{staticClass:"iiifannotation"},_vm._l((_vm.annotation_items),function(item){return _c('div',[_vm._l((item.image),function(image){return _c('span',[_c('img',{attrs:{"src":image,"alt":item.altText,"id":"annoimage"}})])}),_c('img',{staticStyle:{"display":"none"},attrs:{"src":item.fullImage,"id":"fullimage","alt":_vm.manifest['label']}}),_c('figcaption',{directives:[{name:"show",rawName:"v-show",value:(item.label != undefined && _vm.settings.view_larger != false),expression:"item.label != undefined && settings.view_larger != false"}],domProps:{"innerHTML":_vm._s(item.label)}}),_c('div',{directives:[{name:"show",rawName:"v-show",value:(item.ocr != '' && _vm.settings.view_ocr != false),expression:"item.ocr != '' && settings.view_ocr != false"}],staticClass:"text",attrs:{"id":_vm.ocr},domProps:{"innerHTML":_vm._s(item.ocr)}}),_c('p',{directives:[{name:"show",rawName:"v-show",value:(item.dataset['dataset_format'] != ''),expression:"item.dataset['dataset_format'] != ''"}]},[_c('b',[_c('a',{attrs:{"href":item.dataset.dataset_url}},[_vm._v("Download dataset ("+_vm._s(item.dataset.dataset_format)+")")])])]),_c('div',{domProps:{"innerHTML":_vm._s(item.chars)}}),_c('div',{domProps:{"innerHTML":_vm._s(item.tags)}}),_c('button',{directives:[{name:"show",rawName:"v-show",value:(item.fullImage != '' && _vm.settings.view_larger != false),expression:"item.fullImage != '' && settings.view_larger != false"}],staticClass:"togglebutton",on:{"click":function($event){_vm.toggle($event)}}},[_vm._v("View Full Image")]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.settings.view_full_object != false && _vm.full_object != ''),expression:"settings.view_full_object != false && full_object != ''"}],attrs:{"id":"link_to_object"}},[_vm._v("\n    Full object: "),_c('a',{attrs:{"href":_vm.full_object,"target":"_blank"}},[_vm._v(_vm._s(_vm.manifest["label"]))])]),_c('div')],2)})):_c('div',[_vm._v("\n\""+_vm._s(_vm.annotationlist)+_vm._s(_vm.annotationurl)+"\" did not render. Please ensure your annotation link is correct."),_c('br'),_vm._v("\nMake sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the \"manifesturl\" property."),_c('br'),_vm._v("\nAlso ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)\n")])}
 var staticRenderFns = []
 
 
@@ -2199,23 +2199,18 @@ var component = normalizeComponent(
 
 component.options.__file = "iiifannotation.vue"
 /* harmony default export */ var iiifannotation = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"55e92908-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/storyboard.vue?vue&type=template&id=80aab214&
-var storyboardvue_type_template_id_80aab214_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticStyle:{"position":"relative"},attrs:{"id":"storyboard_viewer"}},[_c('div',{staticStyle:{"position":"relative","display":"flex"}},[_c('div',{staticClass:"seadragonbox",staticStyle:{"position":"relative"},attrs:{"id":_vm.seadragonid}},[_c('span',{attrs:{"id":"header_toolbar"}},[_c('span',{staticStyle:{"float":"right","margin":"10px 0 0 20px"}},[_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.createOverlay()}}},[_c('i',{staticClass:"fas fa-toggle-on"})]),_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.full_screen()}}},[_c('i',{staticClass:"fas fa-expand-arrows-alt"})]),_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.zoom('in')}}},[_c('i',{staticClass:"fas fa-search-plus"})]),_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.zoom('out')}}},[_c('i',{staticClass:"fas fa-search-minus"})]),_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.zoom('home')}}},[_c('i',{staticClass:"fas fa-home"})]),_c('button',{staticClass:"nextButton",class:{ 'inactive' : _vm.prev_inactive },on:{"click":function($event){_vm.next('prev')}}},[_c('i',{staticClass:"fa fa-arrow-left"})]),_c('button',{staticClass:"nextButton",class:{ 'inactive' : _vm.next_inactive },on:{"click":function($event){_vm.next('next')}}},[_c('i',{staticClass:"fa fa-arrow-right"})])]),_c('div',{staticClass:"window",attrs:{"id":"fullscreen_annotation"},domProps:{"innerHTML":_vm._s(_vm.currentanno)}})])]),_c('div',{staticClass:"annotation",class:[ _vm.currentanno ? 'active' : 'inactive' ],attrs:{"id":"annotation"}},[_c('i',{staticClass:"fas fa-times close_button",on:{"click":function($event){_vm.close($event)}}}),_c('div',{attrs:{"id":"annotation_text"},domProps:{"innerHTML":_vm._s(_vm.currentanno)}})])])])}
-var storyboardvue_type_template_id_80aab214_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"13d423fc-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/storyboard.vue?vue&type=template&id=661445d2&
+var storyboardvue_type_template_id_661445d2_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticStyle:{"position":"relative"},attrs:{"id":"storyboard_viewer"}},[_c('div',{staticStyle:{"position":"relative","display":"flex"}},[_c('div',{staticClass:"seadragonbox",staticStyle:{"position":"relative"},attrs:{"id":_vm.seadragonid}},[_c('span',{attrs:{"id":"header_toolbar"}},[_c('span',{staticStyle:{"float":"right","margin":"10px 0 0 20px"}},[_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.createOverlay()}}},[_c('i',{staticClass:"fas fa-toggle-on"})]),_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.zoom('in')}}},[_c('i',{staticClass:"fas fa-search-plus"})]),_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.zoom('out')}}},[_c('i',{staticClass:"fas fa-search-minus"})]),_c('button',{staticClass:"nextButton",on:{"click":function($event){_vm.zoom('home')}}},[_c('i',{staticClass:"fas fa-home"})]),_c('button',{staticClass:"nextButton",class:{ 'inactive' : _vm.prev_inactive },on:{"click":function($event){_vm.next('prev')}}},[_c('i',{staticClass:"fa fa-arrow-left"})]),_c('button',{staticClass:"nextButton",class:{ 'inactive' : _vm.next_inactive },on:{"click":function($event){_vm.next('next')}}},[_c('i',{staticClass:"fa fa-arrow-right"})])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.prev_inactive != true && _vm.next_inactive != true && _vm.isclosed != true),expression:"prev_inactive != true && next_inactive != true && isclosed != true"}],staticClass:"annotation",attrs:{"id":"annotation"}},[_c('i',{staticClass:"fas fa-times close_button",on:{"click":function($event){_vm.close()}}}),_c('div',{attrs:{"id":"annotation_text"},domProps:{"innerHTML":_vm._s(_vm.currentanno)}})])])])}
+var storyboardvue_type_template_id_661445d2_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/storyboard.vue?vue&type=template&id=80aab214&
+// CONCATENATED MODULE: ./src/components/storyboard.vue?vue&type=template&id=661445d2&
 
 // EXTERNAL MODULE: ./node_modules/openseadragon/build/openseadragon/openseadragon.js
 var openseadragon = __webpack_require__("aa78");
 var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/storyboard.vue?vue&type=script&lang=js&
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2255,7 +2250,8 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
       next_inactive: false,
       toolbar_id: '',
       first: true,
-      isfullscreen: false
+      title: '',
+      isclosed: false
     };
   },
   created: function created() {
@@ -2263,33 +2259,41 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
 
     this.seadragonid = this.annotationlist.split("/").pop().replace("-list", "").replace(".json", "");
     axios_default.a.get(this.annotationlist).then(function (response) {
-      var anno = response.data.resources ? response.data.resources : response.data;
+      var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
 
       var on_dict = _this.on_structure(anno[0]);
 
       if (_this.manifesturl == undefined) {
-        var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within ? on_dict.within : response.data['within']['within'];
+        var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within;
+        manifest_dict = manifest_dict ? manifest_dict : response.data['partOf'];
+        manifest_dict = manifest_dict ? manifest_dict : response.data['within']['within'];
         var manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
         var manifestlink = _this.manifesturl;
       }
 
-      var target = anno[0].target != undefined ? anno[0].target : on_dict.full ? on_dict.full : on_dict;
+      var target = anno[0].target != undefined ? anno[0].target : on_dict.full;
+      target = target ? target : on_dict;
+      target = Object.keys(target).indexOf('id') != -1 ? target.id : target;
       var canvas = target.split("#x")[0];
       axios_default.a.get(manifestlink).then(function (canvas_data) {
+        _this.title = canvas_data.data.label;
         var canvases = canvas_data.data.sequences[0].canvases;
 
         for (var i = 0; i < canvases.length; i++) {
           if (canvases[i]['@id'] == canvas) {
             var imgResource = canvases[i].images[0].resource;
-            _this.seadragontile = imgResource.service['@id'].split("full")[0] + "/info.json";
+            var canvas_tile = imgResource.service['@id'].split("full")[0];
+            canvas_tile += canvas_tile.slice(-1) != '/' ? "/" : '';
+            _this.seadragontile = canvas_tile + "info.json";
           }
         }
 
-        var resources = response.data.resources;
+        var resources = response.data.resources ? response.data.resources : response.data.items;
 
         for (var i = 0; i < resources.length; i++) {
           var chars = resources[i].resource != Array ? resources[i].resource : resources[i].resource[0];
+          chars = chars ? chars : resources[i].body;
 
           if (typeof _this.on_structure(resources[i]).selector != 'undefined') {
             var ondict = _this.on_structure(resources[i]);
@@ -2297,7 +2301,7 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
             var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
           }
 
-          var section = mirador ? mirador : resources[i].on;
+          var section = mirador ? mirador : resources[i].on ? resources[i].on : resources[i].target.id;
           var content = '';
 
           if (chars[0] != undefined && chars[0].length == undefined) {
@@ -2305,7 +2309,7 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
               content += "<div class=" + chars[e]['@type'].replace("oa:", "").toLowerCase() + ">\n            " + chars[e].chars + "</div>";
             }
           } else {
-            content = chars.chars;
+            content = chars.chars ? chars.chars : chars.value;
           }
 
           _this.annotations.push(content);
@@ -2316,6 +2320,11 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
         _this.createViewer();
       });
     });
+  },
+  watch: {
+    alertMessage: function alertMessage(val) {
+      this.currentanno = value;
+    }
   },
   methods: {
     createViewer: function createViewer() {
@@ -2329,33 +2338,10 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
         showNavigator: false,
         showNavigationControl: false
       });
-      var seadragonid = this.seadragonid;
-      this.viewer.addHandler('full-screen', function (fulldata) {
-        if (fulldata.fullScreen) {
-          var elements = document.getElementById(seadragonid).getElementsByClassName("window");
-          elements[0].classList.add("fullscreen");
-          elements[0].classList.remove("window");
-        } else {
-          var elements = document.getElementsByClassName("fullscreen");
-          elements[0].classList.add("window");
-          elements[0].classList.remove("fullscreen");
-          this.isfullscreen = false;
-        }
-      });
-      this.toolbar_id = this.seadragonid + "toolbarDiv";
     },
-    full_screen: function full_screen() {
-      if (this.viewer.isFullPage() == false) {
-        this.viewer.setFullScreen(true);
-        this.isfullscreen = true;
-      } else {
-        this.viewer.setFullScreen(false);
-        this.isfullscreen = false;
-      }
-    },
-    close: function close(event) {
-      event.target.parentElement.classList.add('inactive');
-      event.target.parentElement.classList.remove('active');
+    close: function close() {
+      console.log("test close");
+      this.isclosed = true;
     },
     on_structure: function on_structure(anno) {
       if (typeof anno['on'] == 'undefined') {
@@ -2427,6 +2413,8 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
       this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
     },
     next: function next(nextorprev) {
+      this.isclosed = false;
+
       if (nextorprev == 'prev') {
         this.position -= 1;
       } else if (nextorprev == 'next') {
@@ -2447,7 +2435,6 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
 
       if (this.position == this.zoomsections.length) {
         this.next_inactive = true;
-        this.position -= 1;
       } else {
         this.next_inactive = false;
       }
@@ -2456,12 +2443,6 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
         this.prev_inactive = true;
       } else {
         this.prev_inactive = false;
-      }
-
-      if (this.position != this.zoomsections.length && this.position != -1) {
-        var anno_elem = document.getElementById("" + this.seadragonid).offsetParent.getElementsByClassName('annotation')[0];
-        anno_elem.classList.remove('inactive');
-        anno_elem.classList.add('active');
       }
     }
   }
@@ -2483,8 +2464,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var storyboard_component = normalizeComponent(
   components_storyboardvue_type_script_lang_js_,
-  storyboardvue_type_template_id_80aab214_render,
-  storyboardvue_type_template_id_80aab214_staticRenderFns,
+  storyboardvue_type_template_id_661445d2_render,
+  storyboardvue_type_template_id_661445d2_staticRenderFns,
   false,
   storyboard_injectStyles,
   null,
@@ -25946,7 +25927,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 exports.push([module.i, "@import url(https://use.fontawesome.com/releases/v5.5.0/css/all.css);", ""]);
 
 // module
-exports.push([module.i, "\n.tag{background:#92d1e8;border-radius:3px 0 0 3px;color:#000;display:inline-block;height:26px;line-height:26px;padding:0 20px 0 23px;position:relative;margin:0 10px 10px 0;text-decoration:none;-webkit-transition:color .2s\n}\n.tag:before{border-radius:10px;-webkit-box-shadow:inset 0 1px rgba(0,0,0,.25);box-shadow:inset 0 1px rgba(0,0,0,.25);height:6px;left:10px;width:6px;top:10px\n}\n.tag:after,.tag:before{background:#fff;content:\"\";position:absolute\n}\n.tag:after{border-bottom:13px solid transparent;border-left:10px solid #92d1e8;border-top:13px solid transparent;right:0;top:0\n}\n.inactive{color:red;pointer-events:none\n}\n.nextButton{font-size:22px\n}\n#storyboard_viewer{padding-top:50px\n}\n.seadragonbox{width:60%;display:inline-block;height:600px\n}\n#annotation.active{width:10%;border:2px solid #000;background:#fff;position:absolute;top:60px;z-index:2;height:250px;overflow:scroll;padding:2px;margin-left:20px;word-wrap:break-word\n}\n#annotation_text{display:inline-block\n}\n#annotation_text img{width:100%;height:100%;-o-object-fit:scale-down;object-fit:scale-down\n}\n#annotation.inactive{display:none\n}\n.fullscreen{display:block;padding-left:20px;width:87%\n}\n.window{display:none\n}\n.box{border:2px solid #add8e6\n}\n.box:hover{background:grey;opacity:.4\n}\n.close{display:none\n}\n.close_button{float:left;padding-top:5px;padding-left:5px\n}", ""]);
+exports.push([module.i, "\n.tag{background:#92d1e8;border-radius:3px 0 0 3px;color:#000;display:inline-block;height:26px;line-height:26px;padding:0 20px 0 23px;position:relative;margin:0 10px 10px 0;text-decoration:none;-webkit-transition:color .2s\n}\n.tag:before{background:#fff;border-radius:10px;-webkit-box-shadow:inset 0 1px rgba(0,0,0,.25);box-shadow:inset 0 1px rgba(0,0,0,.25);content:\"\";height:6px;left:10px;position:absolute;width:6px;top:10px\n}\n.tag:after{background:#fff;border-bottom:13px solid transparent;border-left:10px solid #92d1e8;border-top:13px solid transparent;content:\"\";position:absolute;right:0;top:0\n}\n.inactive{color:red;pointer-events:none\n}\n.nextButton{font-size:22px\n}\n#storyboard_viewer{padding-top:50px\n}\n.seadragonbox{width:60%;display:inline-block;height:600px\n}\n#annotation{width:10%;border:2px solid #000;background:#fff;position:absolute;top:60px;z-index:2;height:250px;overflow:scroll;padding:2px;margin-left:20px\n}\n#annotation,#annotation_text{word-wrap:break-word\n}\n#annotation_text img{width:100%;height:100%;-o-object-fit:scale-down;object-fit:scale-down\n}\n.fullscreen{display:block;padding-left:20px;width:87%\n}\n.window{display:none\n}\n.box{border:2px solid #add8e6\n}\n.box:hover{background:grey;opacity:.4\n}\n.close{display:none\n}\n.close_button{float:left;padding-top:5px;padding-left:5px\n}", ""]);
 
 // exports
 

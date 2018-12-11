@@ -5,24 +5,19 @@
 <span id="header_toolbar">
 <span style="float:right; margin:10px 0 0 20px">
 <button v-on:click="createOverlay()" class="nextButton"><i class="fas fa-toggle-on"></i></button>
-<button v-on:click="full_screen()" class="nextButton"><i class="fas fa-expand-arrows-alt"></i></button>
 <button v-on:click="zoom('in')" class="nextButton"><i class="fas fa-search-plus"></i></button>
 <button v-on:click="zoom('out')" class="nextButton"><i class="fas fa-search-minus"></i></button>
 <button v-on:click="zoom('home')" class="nextButton"><i class="fas fa-home"></i></button>
 <button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="nextButton"><i class="fa fa-arrow-left"></i></button>
 <button v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="nextButton"><i class="fa fa-arrow-right"></i></button>
 </span>
-<div id="fullscreen_annotation" class="window" v-html="currentanno">
-</div>
 </span>
-
 </div>
-<div id="annotation" v-bind:class="[ currentanno ? 'active' : 'inactive' ]" class="annotation">
-<i class="fas fa-times close_button" v-on:click="close($event)"></i>
+<div id="annotation" class="annotation" v-show="prev_inactive != true && next_inactive != true && isclosed != true">
+<i class="fas fa-times close_button" v-on:click="close()"></i>
 <div id="annotation_text"  v-html="currentanno"></div>
 </div>
 </div>
-
 </div>
 </template>
 <script>
@@ -43,38 +38,47 @@ export default {
       next_inactive: false,
       toolbar_id: '',
       first: true,
-      isfullscreen: false
+      title: '',
+      isclosed: false
     }
   },
   created() {
   this.seadragonid = this.annotationlist.split("/").pop().replace("-list", "").replace(".json","");
   axios.get(this.annotationlist).then(response => {
-    var anno = response.data.resources ? response.data.resources : response.data;
+    var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
     var on_dict = this.on_structure(anno[0]);
     if (this.manifesturl == undefined){
-      var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within ? on_dict.within : response.data['within']['within'];
+      var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within
+      manifest_dict = manifest_dict ? manifest_dict : response.data['partOf'];
+      manifest_dict = manifest_dict ? manifest_dict : response.data['within']['within'];
       var manifestlink =  manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
     } else {
       var manifestlink = this.manifesturl;
     }
-    var target = anno[0].target != undefined ? anno[0].target : on_dict.full ? on_dict.full : on_dict;
+    var target = anno[0].target != undefined ? anno[0].target : on_dict.full
+    target = target ? target : on_dict;
+    target = Object.keys(target).indexOf('id') != -1 ? target.id : target;
     var canvas = target.split("#x")[0]
     axios.get(manifestlink).then(canvas_data => {
+    this.title = canvas_data.data.label;
     var canvases = canvas_data.data.sequences[0].canvases;
     for (var i = 0; i< canvases.length; i++){
       if (canvases[i]['@id'] == canvas) {
       var imgResource = canvases[i].images[0].resource
-      this.seadragontile = imgResource.service['@id'].split("full")[0]+ "/info.json"
+      var canvas_tile = imgResource.service['@id'].split("full")[0]
+      canvas_tile += canvas_tile.slice(-1) != '/' ? "/" : '';
+      this.seadragontile = canvas_tile + "info.json"
       }
     }
-    var resources = response.data.resources;
+    var resources = response.data.resources ? response.data.resources : response.data.items;
       for (var i = 0; i < resources.length; i++){
         var chars = resources[i].resource != Array ? resources[i].resource : resources[i].resource[0];
+        chars = chars ? chars : resources[i].body;
         if (typeof this.on_structure(resources[i]).selector != 'undefined') {
           var ondict = this.on_structure(resources[i])
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
         }
-        var section = mirador ? mirador : resources[i].on;
+        var section = mirador ? mirador : resources[i].on ? resources[i].on : resources[i].target.id;
         var content = ''
         if (chars[0] != undefined && chars[0].length == undefined){
           for (var e=0; e<chars.length; e++){
@@ -82,7 +86,7 @@ export default {
             ${chars[e].chars}</div>`
           }
         } else {
-          content = chars.chars
+          content = chars.chars ? chars.chars : chars.value;
         }
         this.annotations.push(content)
         this.zoomsections.push(section.split("=").pop())
@@ -91,6 +95,11 @@ export default {
     });
   });
 
+  },
+  watch: {
+    alertMessage: function (val) {
+      this.currentanno = value;
+    }
   },
   methods: {
     createViewer: function(){
@@ -104,34 +113,9 @@ export default {
             showNavigator:  false,
             showNavigationControl: false
       });
-      var seadragonid = this.seadragonid
-      this.viewer.addHandler('full-screen',function(fulldata){
-        if(fulldata.fullScreen){
-          var elements = document.getElementById(seadragonid).getElementsByClassName("window")
-          elements[0].classList.add("fullscreen")
-          elements[0].classList.remove("window")
-        } else {
-          var elements = document.getElementsByClassName("fullscreen")
-          elements[0].classList.add("window")
-          elements[0].classList.remove("fullscreen")
-          this.isfullscreen = false;
-        }
-      })
-      this.toolbar_id = `${this.seadragonid}toolbarDiv`
     },
-    full_screen: function(){
-    if(this.viewer.isFullPage() == false){
-      this.viewer.setFullScreen(true);
-      this.isfullscreen = true;
-    } else {
-      this.viewer.setFullScreen(false)
-      this.isfullscreen = false;
-    }
-
-    },
-    close: function(event){
-        event.target.parentElement.classList.add('inactive')
-        event.target.parentElement.classList.remove('active')
+    close: function(){
+        this.isclosed = true;
     },
     on_structure: function(anno){
       if (typeof anno['on'] == 'undefined'){
@@ -159,7 +143,7 @@ export default {
       }
       this.viewer.viewport.zoomTo(zoomfactor)
     },
-    createOverlay(){
+    createOverlay: function(){
     if(this.first == true){
     for (var i=0; i<this.zoomsections.length; i++){
       var xywh = this.zoomsections[i].split(",")
@@ -186,7 +170,7 @@ export default {
       }
     }
     },
-    addTracking(node, rect, position, functions){
+    addTracking: function(node, rect, position, functions){
       new openseadragon.MouseTracker({
         element: node,
         clickHandler: function(e) {
@@ -198,7 +182,8 @@ export default {
     goToPoint: function(rect){
       this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
     },
-    next(nextorprev){
+    next: function(nextorprev){
+    this.isclosed = false;
     if (nextorprev == 'prev'){
       this.position -= 1
     } else if (nextorprev == 'next') {
@@ -217,18 +202,12 @@ export default {
     }
     if (this.position == this.zoomsections.length){
       this.next_inactive = true;
-      this.position -= 1
     } else {
       this.next_inactive = false;
     } if (this.position == -1){
       this.prev_inactive = true;
     } else {
       this.prev_inactive = false;
-    }
-    if (this.position != this.zoomsections.length && this.position != -1){
-      var anno_elem = document.getElementById(`${this.seadragonid}`).offsetParent.getElementsByClassName('annotation')[0]
-      anno_elem.classList.remove('inactive')
-      anno_elem.classList.add('active')
     }
     }
   }
@@ -290,7 +269,7 @@ export default {
   display: inline-block;
   height:600px;
 }
-#annotation.active {
+#annotation {
   width: 10%;
   border: 2px solid black;
   background: white;
@@ -305,17 +284,13 @@ export default {
 }
 
 #annotation_text {
-  display: inline-block;
+  word-wrap: break-word;
 }
 
 #annotation_text img {
     width: 100%;
     height: 100%;
     object-fit: scale-down;
-}
-
-#annotation.inactive {
-  display: none;
 }
 
 .fullscreen {
