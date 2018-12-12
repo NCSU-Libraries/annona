@@ -4,25 +4,31 @@
     <div v-bind:id="seadragonid" class="seadragonbox" style="position:relative">
       <span id="header_toolbar">
         <span style="float:right; margin:10px 0 0 20px">
-        <button v-on:click="createOverlay()" class="nextButton"><i class="fas fa-toggle-on"></i></button>
-        <button v-on:click="zoom('in')" class="nextButton"><i class="fas fa-search-plus"></i></button>
-        <button v-on:click="zoom('out')" class="nextButton"><i class="fas fa-search-minus"></i></button>
-        <button v-on:click="zoom('home')" class="nextButton"><i class="fas fa-home"></i></button>
-        <button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="nextButton"><i class="fa fa-arrow-left"></i></button>
-        <button v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="nextButton"><i class="fa fa-arrow-right"></i></button>
+        <button v-on:click="autoRun()" class="toolbarButton"><i class="fas fa-magic"></i></button>
+        <button v-on:click="createOverlay()" class="toolbarButton"><i class="fas fa-toggle-on"></i></button>
+        <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i></button>
+        <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i></button>
+        <button v-on:click="zoom('home')" class="toolbarButton"><i class="fas fa-home"></i></button>
+        <button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i></button>
+        <button v-on:click="next('next')" id="next" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i></button>
         </span>
-        <span id="title" style="display:inline-block; width: 60%; margin-top: 15px;">{{title}}</span>
       </span>
     </div>
     <div id="annotation" class="annotation" v-show="prev_inactive != true && next_inactive != true && isclosed != true">
+      <span style="display:flex;">
       <i class="fas fa-times close_button" v-on:click="close()"></i>
-      <div id="annotation_text"  v-html="currentanno"></div>
+      <i class="fas fa-caret-square-up close_button" v-on:click="hide()" v-if="ishidden == false"></i>
+      <i class="fas fa-caret-square-down close_button" v-on:click="hide()" v-if="ishidden"></i>
+      </span>
+      <div id="annotation_excerpt" style="height: auto;" v-if="ishidden" v-html="$options.filters.truncate(currentanno, 2)"></div>
+      <div id="annotation_text" v-html="currentanno" v-if="ishidden == false"></div>
     </div>
   </div>
 </div>
 </template>
 <script>
 import axios from 'axios';
+import truncate from 'truncate-html';
 import openseadragon from 'openseadragon';
 export default {
   name: 'storyboard',
@@ -43,7 +49,10 @@ export default {
       toolbar_id: '',
       first: true,
       title: '',
-      isclosed: false
+      isclosed: false,
+      ishidden: false,
+      anno_elem: '',
+      isautorunning: false
     }
   },
   created() {
@@ -72,6 +81,13 @@ export default {
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
         }
         var section = mirador ? mirador : resources[i].on ? resources[i].on : resources[i].target.id;
+        if (mirador){
+          var svg_elem = document.createElement( 'html' )
+          svg_elem.innerHTML = ondict.selector.item.value;
+          var type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0]
+        } else {
+          var type = 'rect'
+        }
         var content = ''
         if (chars[0] != undefined && chars[0].length == undefined){
           for (var e=0; e<chars.length; e++){
@@ -82,12 +98,12 @@ export default {
           content = chars.chars ? chars.chars : chars.value;
         }
         this.annotations.push(content)
-        this.zoomsections.push(section.split("=").pop())
+        this.zoomsections.push({'section':section.split("=").pop(), 'type':type})
       }
       axios.get(manifestlink).then(canvas_data => {
         var label = canvas_data.data.label;
         label = label.en ? label.en[0] : label;
-        this.title = label.split(" ").length > 5 ? label.split(" ").slice(0,5).join(" ") + ' ...' : label;
+        this.title = label.split(" ").length > 6 ? label.split(" ").slice(0,6).join(" ") + ' ...' : label;
         var canvases = canvas_data.data.sequences[0].canvases;
         for (var i = 0; i< canvases.length; i++){
           if (canvases[i]['@id'] == canvas) {
@@ -98,6 +114,7 @@ export default {
           }
         }
       this.createViewer()
+      this.anno_elem = document.getElementById(`${this.seadragonid}`);
     });
   });
   },
@@ -116,6 +133,15 @@ export default {
     },
     close: function(){
       this.isclosed = true;
+    },
+    hide: function(show){
+      this.anno_elem.parentElement.getElementsByClassName('annotation')[0].removeAttribute('style')
+      if(this.ishidden == true){
+        this.ishidden = false;
+
+      } else {
+        this.ishidden = true;
+      }
     },
     on_structure: function(anno){
       if (typeof anno['on'] == 'undefined'){
@@ -146,11 +172,16 @@ export default {
     createOverlay: function(){
       if(this.first == true){
         for (var i=0; i<this.zoomsections.length; i++){
-          var xywh = this.zoomsections[i].split(",")
+          var xywh = this.zoomsections[i]['section'].split(",")
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
           var elem = document.createElement('div');
+          if (this.zoomsections[i]['type'] != 'pin'){
           elem.id = 'box';
-          elem.className = 'box';
+          elem.className = 'box overlay';
+          } else {
+          elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>'
+          elem.className = 'overlay';
+          }
           this.viewer.addOverlay({
             element: elem,
             location: rect
@@ -159,7 +190,7 @@ export default {
         }
         this.first = false;
       } else {
-        var box_elements = document.getElementsByClassName("box")
+        var box_elements = document.getElementsByClassName("overlay")
         if (box_elements[0].style.display != 'none'){
           var display_setting = 'none'
         } else {
@@ -192,7 +223,7 @@ export default {
         this.viewer.viewport.fitVertically()
         this.currentanno = ''
       } else {
-        var xywh = this.zoomsections[this.position].split(",")
+        var xywh = this.zoomsections[this.position]['section'].split(",")
         this.currentanno = this.annotations[this.position];
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
@@ -206,12 +237,46 @@ export default {
       } else {
         this.prev_inactive = false;
       }
+    },
+    autoRun: function(){
+      if (this.isautorunning == false){
+      this.isautorunning = true;
+      } else {
+      this.isautorunning = false;
+      }
+      this.position = 0;
+      var length = this.zoomsections.length;
+      var i = 0;
+      var this_functions = this;
+      while (i < 10000 && this.isautorunning) {
+        (function(i) {
+        setTimeout(function() {
+        this_functions.next('next')
+        if(this_functions.position == length){
+          this_functions.position = 0
+        }
+        console.log(i+i)
+        }, (i+i)*3000);
+        })(i++)
+        }
     }
   },
+
+  filters: {
+    truncate: function(string, words_length) {
+      return truncate(string, words_length, { byWords: true })
+    }
+  }
 }
 </script>
-<style>
+<style lang="scss">
 @import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
+$pin_size: 25;
+$overlay_color: lightblue;
+$seadragon_width: 100%;
+$seadrgon_height: 100vh;
+$mid_pin: $pin_size/2 + px;
+$pin_font: $pin_size + px;
 
 .tag {
   background: #92D1E8;
@@ -252,7 +317,7 @@ export default {
   color: red;
   pointer-events: none;
 }
-.nextButton {
+.toolbarButton {
   font-size: 22px;
 }
 
@@ -261,9 +326,9 @@ export default {
 }
 
 .seadragonbox {
-  width: 60%;
+  width: $seadragon_width;
   display: inline-block;
-  height:600px;
+  height:$seadrgon_height;
 }
 #annotation {
   width: 10%;
@@ -271,9 +336,11 @@ export default {
   border: 2px solid black;
   background: white;
   position: absolute;
-  top: 60px;
+  top: 75px;
   z-index: 2;
-  height: 250px;
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
   overflow: scroll;
   padding: 2px;
   margin-left: 20px;
@@ -282,6 +349,8 @@ export default {
 
 #annotation_text {
   word-wrap: break-word;
+  height: auto;
+  max-height: 450px;
 }
 
 #annotation_text img {
@@ -299,19 +368,41 @@ width: 87%;
 display: none;
 }
 .box {
-  border: 2px solid lightblue;
+  border: 2px solid $overlay_color;
 }
 
 .box:hover {
   background:grey;
    opacity: .4;
 }
+
+.overlay {
+color: $overlay_color;
+font-size: $pin_font;
+}
 .close {
   display: none;
 }
 .close_button {
-  float: left;
   padding-top: 5px;
   padding-left: 5px;
+}
+
+.map-marker {
+position:absolute;
+bottom:0;
+left: calc(50% - #{$mid_pin});
+}
+
+.fullscreen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border: 1px solid #000;
 }
 </style>
