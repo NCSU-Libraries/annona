@@ -1,23 +1,24 @@
 <template>
 <div id="storyboard_viewer" style="position:relative">
-<div style="position:relative; display:flex">
-<div v-bind:id="seadragonid" class="seadragonbox" style="position:relative">
-<span id="header_toolbar">
-<span style="float:right; margin:10px 0 0 20px">
-<button v-on:click="createOverlay()" class="nextButton"><i class="fas fa-toggle-on"></i></button>
-<button v-on:click="zoom('in')" class="nextButton"><i class="fas fa-search-plus"></i></button>
-<button v-on:click="zoom('out')" class="nextButton"><i class="fas fa-search-minus"></i></button>
-<button v-on:click="zoom('home')" class="nextButton"><i class="fas fa-home"></i></button>
-<button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="nextButton"><i class="fa fa-arrow-left"></i></button>
-<button v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="nextButton"><i class="fa fa-arrow-right"></i></button>
-</span>
-</span>
-</div>
-<div id="annotation" class="annotation" v-show="prev_inactive != true && next_inactive != true && isclosed != true">
-<i class="fas fa-times close_button" v-on:click="close()"></i>
-<div id="annotation_text"  v-html="currentanno"></div>
-</div>
-</div>
+  <div style="position:relative; display:flex">
+    <div v-bind:id="seadragonid" class="seadragonbox" style="position:relative">
+      <span id="header_toolbar">
+        <span style="float:right; margin:10px 0 0 20px">
+        <button v-on:click="createOverlay()" class="nextButton"><i class="fas fa-toggle-on"></i></button>
+        <button v-on:click="zoom('in')" class="nextButton"><i class="fas fa-search-plus"></i></button>
+        <button v-on:click="zoom('out')" class="nextButton"><i class="fas fa-search-minus"></i></button>
+        <button v-on:click="zoom('home')" class="nextButton"><i class="fas fa-home"></i></button>
+        <button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="nextButton"><i class="fa fa-arrow-left"></i></button>
+        <button v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="nextButton"><i class="fa fa-arrow-right"></i></button>
+        </span>
+        <span id="title" style="display:inline-block; width: 60%; margin-top: 15px;">{{title}}</span>
+      </span>
+    </div>
+    <div id="annotation" class="annotation" v-show="prev_inactive != true && next_inactive != true && isclosed != true">
+      <i class="fas fa-times close_button" v-on:click="close()"></i>
+      <div id="annotation_text"  v-html="currentanno"></div>
+    </div>
+  </div>
 </div>
 </template>
 <script>
@@ -25,7 +26,10 @@ import axios from 'axios';
 import openseadragon from 'openseadragon';
 export default {
   name: 'storyboard',
-  props: ['annotationlist', 'manifesturl'],
+  props: {
+    'annotationlist':String,
+    'manifesturl':String
+  },
   data: function() {
     return {
       zoomsections: [],
@@ -43,34 +47,23 @@ export default {
     }
   },
   created() {
-  this.seadragonid = this.annotationlist.split("/").pop().replace("-list", "").replace(".json","");
-  axios.get(this.annotationlist).then(response => {
-    var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
-    var on_dict = this.on_structure(anno[0]);
-    if (this.manifesturl == undefined){
-      var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within
-      manifest_dict = manifest_dict ? manifest_dict : response.data['partOf'];
-      manifest_dict = manifest_dict ? manifest_dict : response.data['within']['within'];
-      var manifestlink =  manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
-    } else {
-      var manifestlink = this.manifesturl;
-    }
-    var target = anno[0].target != undefined ? anno[0].target : on_dict.full
-    target = target ? target : on_dict;
-    target = Object.keys(target).indexOf('id') != -1 ? target.id : target;
-    var canvas = target.split("#x")[0]
-    axios.get(manifestlink).then(canvas_data => {
-    this.title = canvas_data.data.label;
-    var canvases = canvas_data.data.sequences[0].canvases;
-    for (var i = 0; i< canvases.length; i++){
-      if (canvases[i]['@id'] == canvas) {
-      var imgResource = canvases[i].images[0].resource
-      var canvas_tile = imgResource.service['@id'].split("full")[0]
-      canvas_tile += canvas_tile.slice(-1) != '/' ? "/" : '';
-      this.seadragontile = canvas_tile + "info.json"
+    this.seadragonid = this.annotationlist.split("/").pop().replace("-list", "").replace(".json","");
+    axios.get(this.annotationlist).then(response => {
+      var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
+      var on_dict = this.on_structure(anno[0]);
+      if (this.manifesturl == undefined){
+        var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within
+        manifest_dict = manifest_dict ? manifest_dict : response.data['partOf'];
+        manifest_dict = manifest_dict ? manifest_dict : response.data['within']['within'];
+        var manifestlink =  manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
+      } else {
+        var manifestlink = this.manifesturl;
       }
-    }
-    var resources = response.data.resources ? response.data.resources : response.data.items;
+      var target = anno[0].target != undefined ? anno[0].target : on_dict.full
+      target = target ? target : on_dict;
+      target = Object.keys(target).indexOf('id') != -1 ? target.id : target;
+      var canvas = target.split("#x")[0]
+      var resources = response.data.resources ? response.data.resources : response.data.items;
       for (var i = 0; i < resources.length; i++){
         var chars = resources[i].resource != Array ? resources[i].resource : resources[i].resource[0];
         chars = chars ? chars : resources[i].body;
@@ -91,15 +84,22 @@ export default {
         this.annotations.push(content)
         this.zoomsections.push(section.split("=").pop())
       }
+      axios.get(manifestlink).then(canvas_data => {
+        var label = canvas_data.data.label;
+        label = label.en ? label.en[0] : label;
+        this.title = label.split(" ").length > 5 ? title + ' ...' : title;
+        var canvases = canvas_data.data.sequences[0].canvases;
+        for (var i = 0; i< canvases.length; i++){
+          if (canvases[i]['@id'] == canvas) {
+            var imgResource = canvases[i].images[0].resource
+            var canvas_tile = imgResource.service['@id'].split("full")[0]
+            canvas_tile += canvas_tile.slice(-1) != '/' ? "/" : '';
+            this.seadragontile = canvas_tile + "info.json"
+          }
+        }
       this.createViewer()
     });
   });
-
-  },
-  watch: {
-    alertMessage: function (val) {
-      this.currentanno = value;
-    }
   },
   methods: {
     createViewer: function(){
@@ -115,7 +115,7 @@ export default {
       });
     },
     close: function(){
-        this.isclosed = true;
+      this.isclosed = true;
     },
     on_structure: function(anno){
       if (typeof anno['on'] == 'undefined'){
@@ -144,31 +144,31 @@ export default {
       this.viewer.viewport.zoomTo(zoomfactor)
     },
     createOverlay: function(){
-    if(this.first == true){
-    for (var i=0; i<this.zoomsections.length; i++){
-      var xywh = this.zoomsections[i].split(",")
-      var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
-    var elem = document.createElement('div');
-    elem.id = 'box';
-    elem.className = 'box';
-    this.viewer.addOverlay({
-      element: elem,
-      location: rect
-    })
-    this.addTracking(elem, rect, i, this)
-    }
-    this.first = false;
-    } else {
-      var box_elements = document.getElementsByClassName("box")
-      if (box_elements[0].style.display != 'none'){
-        var display_setting = 'none'
+      if(this.first == true){
+        for (var i=0; i<this.zoomsections.length; i++){
+          var xywh = this.zoomsections[i].split(",")
+          var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
+          var elem = document.createElement('div');
+          elem.id = 'box';
+          elem.className = 'box';
+          this.viewer.addOverlay({
+            element: elem,
+            location: rect
+          })
+          this.addTracking(elem, rect, i, this)
+        }
+        this.first = false;
       } else {
-        var display_setting = 'block'
+        var box_elements = document.getElementsByClassName("box")
+        if (box_elements[0].style.display != 'none'){
+          var display_setting = 'none'
+        } else {
+          var display_setting = 'block'
+        }
+        for (var a=0; a<box_elements.length; a++){
+          box_elements[a].style.display = display_setting;
+        }
       }
-      for (var a=0; a<box_elements.length; a++){
-        box_elements[a].style.display = display_setting;
-      }
-    }
     },
     addTracking: function(node, rect, position, functions){
       new openseadragon.MouseTracker({
@@ -179,40 +179,36 @@ export default {
         }
       }).setTracking(true)
     },
-    goToPoint: function(rect){
-      this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
-    },
     next: function(nextorprev){
-    this.isclosed = false;
-    if (nextorprev == 'prev'){
-      this.position -= 1
-    } else if (nextorprev == 'next') {
-      this.position += 1
-    } else {
-      this.position = this.position
+      this.isclosed = false;
+      if (nextorprev == 'prev'){
+        this.position -= 1
+      } else if (nextorprev == 'next') {
+        this.position += 1
+      } else {
+        this.position = this.position
+      }
+      if (this.zoomsections[this.position] == undefined){
+        this.viewer.viewport.fitVertically()
+        this.currentanno = ''
+      } else {
+        var xywh = this.zoomsections[this.position].split(",")
+        this.currentanno = this.annotations[this.position];
+        var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
+        this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
+      }
+      if (this.position == this.zoomsections.length){
+        this.next_inactive = true;
+      } else {
+        this.next_inactive = false;
+      } if (this.position == -1){
+        this.prev_inactive = true;
+      } else {
+        this.prev_inactive = false;
+      }
     }
-    if (this.zoomsections[this.position] == undefined){
-      this.viewer.viewport.fitVertically()
-      this.currentanno = ''
-    }else {
-    var xywh = this.zoomsections[this.position].split(",")
-    this.currentanno = this.annotations[this.position];
-    var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
-    this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
-    }
-    if (this.position == this.zoomsections.length){
-      this.next_inactive = true;
-    } else {
-      this.next_inactive = false;
-    } if (this.position == -1){
-      this.prev_inactive = true;
-    } else {
-      this.prev_inactive = false;
-    }
-    }
-  }
+  },
 }
-
 </script>
 <style>
 @import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
@@ -271,6 +267,7 @@ export default {
 }
 #annotation {
   width: 10%;
+  resize: both;
   border: 2px solid black;
   background: white;
   position: absolute;

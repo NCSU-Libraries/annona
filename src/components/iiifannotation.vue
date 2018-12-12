@@ -30,7 +30,12 @@ import axios from 'axios';
 
 export default {
   name: 'iiifannotation',
-  props: ['annotationurl','annotationlist', 'manifesturl', 'imagesize'],
+  props: {
+    'annotationurl':String,
+    'annotationlist':String,
+    'manifesturl':String,
+    'imagesize':String
+  },
   data: function() {
     return {
       anno: '',
