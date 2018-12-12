@@ -87,7 +87,7 @@ export default {
       axios.get(manifestlink).then(canvas_data => {
         var label = canvas_data.data.label;
         label = label.en ? label.en[0] : label;
-        this.title = label.split(" ").length > 5 ? title + ' ...' : title;
+        this.title = label.split(" ").length > 5 ? label.split(" ").slice(0,5) + ' ...' : label;
         var canvases = canvas_data.data.sequences[0].canvases;
         for (var i = 0; i< canvases.length; i++){
           if (canvases[i]['@id'] == canvas) {
