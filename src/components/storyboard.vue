@@ -62,13 +62,14 @@ export default {
     axios.get(this.annotationlist).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       var on_dict = this.on_structure(anno[0]);
+      var manifestlink;
       if (this.manifesturl == undefined){
         var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within
         manifest_dict = manifest_dict ? manifest_dict : response.data['partOf'];
         manifest_dict = manifest_dict ? manifest_dict : response.data['within']['within'];
-        var manifestlink =  manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
+        manifestlink =  manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
-        var manifestlink = this.manifesturl;
+        manifestlink = this.manifesturl;
       }
       var target = anno[0].target != undefined ? anno[0].target : on_dict.full
       target = target ? target : on_dict;
@@ -83,12 +84,13 @@ export default {
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
         }
         var section = mirador ? mirador : resources[i].on ? resources[i].on : resources[i].target.id;
+        var type;
         if (mirador){
           var svg_elem = document.createElement( 'html' )
           svg_elem.innerHTML = ondict.selector.item.value;
-          var type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0]
+          type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0]
         } else {
-          var type = 'rect'
+          type = 'rect'
         }
         var content = ''
         var tags = []
@@ -141,7 +143,7 @@ export default {
     close: function(){
       this.isclosed = true;
     },
-    hide: function(show){
+    hide: function(){
       this.anno_elem.parentElement.getElementsByClassName('annotation')[0].removeAttribute('style')
       if(this.ishidden == true){
         this.ishidden = false;
@@ -166,11 +168,11 @@ export default {
       var maxzoom = parseInt(this.viewer.viewport.getMaxZoom())
       var zoomfactor = .8
       if (inorout == 'in' && maxzoom != parseInt(oldzoom)){
-        var zoomfactor = oldzoom + zoomfactor
+        zoomfactor = oldzoom + zoomfactor
       } else if (inorout == 'out' && minzoom != parseInt(oldzoom)) {
-        var zoomfactor = oldzoom - zoomfactor
+        zoomfactor = oldzoom - zoomfactor
       } else if (inorout == 'home') {
-        var zoomfactor = this.viewer.viewport.getHomeZoom()
+        zoomfactor = this.viewer.viewport.getHomeZoom()
       } else {
         return 0
       }
@@ -199,11 +201,12 @@ export default {
         this.overlaybutton = '<i class="fas fa-toggle-off"></i>'
       } else {
         var box_elements = document.getElementsByClassName("overlay")
+        var display_setting;
         if (box_elements[0].style.display != 'none'){
-          var display_setting = 'none'
+          display_setting = 'none'
           this.overlaybutton = '<i class="fas fa-toggle-on"></i>'
         } else {
-          var display_setting = 'block'
+          display_setting = 'block'
           this.overlaybutton = '<i class="fas fa-toggle-off"></i>'
         }
         for (var a=0; a<box_elements.length; a++){
@@ -214,7 +217,7 @@ export default {
     addTracking: function(node, rect, position, functions){
       new openseadragon.MouseTracker({
         element: node,
-        clickHandler: function(e) {
+        clickHandler: function() {
           functions.position = position
           functions.next()
         }
@@ -252,6 +255,9 @@ export default {
     autoRun: function(interval){
       var length = this.zoomsections.length;
       if (this.isautorunning == ''){
+        if (this.position == length){
+          this.position = 0;
+        }
         var this_functions = this;
         this.isautorunning = setInterval(function() {
           this_functions.next('next')
