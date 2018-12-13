@@ -4,8 +4,8 @@
     <div v-bind:id="seadragonid" class="seadragonbox" style="position:relative">
       <span id="header_toolbar">
         <span style="float:right; margin:10px 0 0 20px">
-        <button v-on:click="autoRun()" class="toolbarButton"><i class="fas fa-magic"></i></button>
-        <button v-on:click="createOverlay()" class="toolbarButton"><i class="fas fa-toggle-on"></i></button>
+        <button v-on:click="autoRun(5000)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
+        <button v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
         <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i></button>
         <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i></button>
         <button v-on:click="zoom('home')" class="toolbarButton"><i class="fas fa-home"></i></button>
@@ -52,7 +52,9 @@ export default {
       isclosed: false,
       ishidden: false,
       anno_elem: '',
-      isautorunning: false
+      isautorunning: '',
+      autorunbutton: '<i class="fas fa-magic"></i>',
+      overlaybutton: '<i class="fas fa-toggle-on"></i>'
     }
   },
   created() {
@@ -89,15 +91,20 @@ export default {
           var type = 'rect'
         }
         var content = ''
+        var tags = []
         if (chars[0] != undefined && chars[0].length == undefined){
           for (var e=0; e<chars.length; e++){
-            content += `<div class=${chars[e]['@type'].replace("oa:", "").toLowerCase()}>
-            ${chars[e].chars}</div>`
+            if (chars[e]['@type'].toLowerCase().indexOf('tag') > -1) {
+              tags.push(chars[e].chars)
+            }else {
+              content += `<div class=${chars[e]['@type'].replace("oa:", "").toLowerCase()}>
+              ${chars[e].chars}</div>`
+            }
           }
         } else {
           content = chars.chars ? chars.chars : chars.value;
         }
-        this.annotations.push(content)
+        this.annotations.push({'content':content, 'tags':tags})
         this.zoomsections.push({'section':section.split("=").pop(), 'type':type})
       }
       axios.get(manifestlink).then(canvas_data => {
@@ -176,11 +183,11 @@ export default {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
           var elem = document.createElement('div');
           if (this.zoomsections[i]['type'] != 'pin'){
-          elem.id = 'box';
-          elem.className = 'box overlay';
+            elem.id = 'box';
+            elem.className = 'box overlay';
           } else {
-          elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>'
-          elem.className = 'overlay';
+            elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>'
+            elem.className = 'overlay';
           }
           this.viewer.addOverlay({
             element: elem,
@@ -189,12 +196,15 @@ export default {
           this.addTracking(elem, rect, i, this)
         }
         this.first = false;
+        this.overlaybutton = '<i class="fas fa-toggle-off"></i>'
       } else {
         var box_elements = document.getElementsByClassName("overlay")
         if (box_elements[0].style.display != 'none'){
           var display_setting = 'none'
+          this.overlaybutton = '<i class="fas fa-toggle-on"></i>'
         } else {
           var display_setting = 'block'
+          this.overlaybutton = '<i class="fas fa-toggle-off"></i>'
         }
         for (var a=0; a<box_elements.length; a++){
           box_elements[a].style.display = display_setting;
@@ -224,7 +234,8 @@ export default {
         this.currentanno = ''
       } else {
         var xywh = this.zoomsections[this.position]['section'].split(",")
-        this.currentanno = this.annotations[this.position];
+        var anno_section = this.annotations[this.position];
+        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
       }
@@ -238,30 +249,24 @@ export default {
         this.prev_inactive = false;
       }
     },
-    autoRun: function(){
-      if (this.isautorunning == false){
-      this.isautorunning = true;
-      } else {
-      this.isautorunning = false;
-      }
-      this.position = 0;
+    autoRun: function(interval){
       var length = this.zoomsections.length;
-      var i = 0;
-      var this_functions = this;
-      while (i < 10000 && this.isautorunning) {
-        (function(i) {
-        setTimeout(function() {
-        this_functions.next('next')
-        if(this_functions.position == length){
-          this_functions.position = 0
-        }
-        console.log(i+i)
-        }, (i+i)*3000);
-        })(i++)
-        }
+      if (this.isautorunning == ''){
+        var this_functions = this;
+        this.isautorunning = setInterval(function() {
+          this_functions.next('next')
+          if(this_functions.position == length){
+            this_functions.position = 0
+          }
+        }, interval)
+        this.autorunbutton = '<i class="fas fa-stop-circle"></i>'
+      } else {
+        clearInterval(this.isautorunning);
+        this.isautorunning = '';
+        this.autorunbutton = '<i class="fas fa-magic"></i>'
+      }
     }
   },
-
   filters: {
     truncate: function(string, words_length) {
       return truncate(string, words_length, { byWords: true })
@@ -278,41 +283,6 @@ $seadrgon_height: 100vh;
 $mid_pin: $pin_size/2 + px;
 $pin_font: $pin_size + px;
 
-.tag {
-  background: #92D1E8;
-  border-radius: 3px 0 0 3px;
-  color: black;
-  display: inline-block;
-  height: 26px;
-  line-height: 26px;
-  padding: 0 20px 0 23px;
-  position: relative;
-  margin: 0 10px 10px 0;
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
-}
-.tag::before {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-  content: '';
-  height: 6px;
-  left: 10px;
-  position: absolute;
-  width: 6px;
-  top: 10px;
-}
-
-.tag::after {
-  background: #fff;
-  border-bottom: 13px solid transparent;
-  border-left: 10px solid #92D1E8;
-  border-top: 13px solid transparent;
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-}
 .inactive {
   color: red;
   pointer-events: none;
@@ -404,5 +374,10 @@ left: calc(50% - #{$mid_pin});
   height: 100%;
   background: #000;
   border: 1px solid #000;
+}
+
+.tags {
+  font-size: smaller;
+  font-style: italic;
 }
 </style>

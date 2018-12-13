@@ -13141,12 +13141,12 @@ var component = normalizeComponent(
 
 component.options.__file = "iiifannotation.vue"
 /* harmony default export */ var iiifannotation = (component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"f560fc76-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/storyboard.vue?vue&type=template&id=73bd8ab7&
-var storyboardvue_type_template_id_73bd8ab7_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticStyle:{"position":"relative"},attrs:{"id":"storyboard_viewer"}},[_c('div',{staticStyle:{"position":"relative","display":"flex"}},[_c('div',{staticClass:"seadragonbox",staticStyle:{"position":"relative"},attrs:{"id":_vm.seadragonid}},[_c('span',{attrs:{"id":"header_toolbar"}},[_c('span',{staticStyle:{"float":"right","margin":"10px 0 0 20px"}},[_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.autoRun()}}},[_c('i',{staticClass:"fas fa-magic"})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.createOverlay()}}},[_c('i',{staticClass:"fas fa-toggle-on"})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.zoom('in')}}},[_c('i',{staticClass:"fas fa-search-plus"})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.zoom('out')}}},[_c('i',{staticClass:"fas fa-search-minus"})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.zoom('home')}}},[_c('i',{staticClass:"fas fa-home"})]),_c('button',{staticClass:"toolbarButton",class:{ 'inactive' : _vm.prev_inactive },on:{"click":function($event){_vm.next('prev')}}},[_c('i',{staticClass:"fa fa-arrow-left"})]),_c('button',{staticClass:"toolbarButton",class:{ 'inactive' : _vm.next_inactive },attrs:{"id":"next"},on:{"click":function($event){_vm.next('next')}}},[_c('i',{staticClass:"fa fa-arrow-right"})])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.prev_inactive != true && _vm.next_inactive != true && _vm.isclosed != true),expression:"prev_inactive != true && next_inactive != true && isclosed != true"}],staticClass:"annotation",attrs:{"id":"annotation"}},[_c('span',{staticStyle:{"display":"flex"}},[_c('i',{staticClass:"fas fa-times close_button",on:{"click":function($event){_vm.close()}}}),(_vm.ishidden == false)?_c('i',{staticClass:"fas fa-caret-square-up close_button",on:{"click":function($event){_vm.hide()}}}):_vm._e(),(_vm.ishidden)?_c('i',{staticClass:"fas fa-caret-square-down close_button",on:{"click":function($event){_vm.hide()}}}):_vm._e()]),(_vm.ishidden)?_c('div',{staticStyle:{"height":"auto"},attrs:{"id":"annotation_excerpt"},domProps:{"innerHTML":_vm._s(_vm.$options.filters.truncate(_vm.currentanno, 2))}}):_vm._e(),(_vm.ishidden == false)?_c('div',{attrs:{"id":"annotation_text"},domProps:{"innerHTML":_vm._s(_vm.currentanno)}}):_vm._e()])])])}
-var storyboardvue_type_template_id_73bd8ab7_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"f560fc76-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/storyboard.vue?vue&type=template&id=7c7228dc&
+var storyboardvue_type_template_id_7c7228dc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticStyle:{"position":"relative"},attrs:{"id":"storyboard_viewer"}},[_c('div',{staticStyle:{"position":"relative","display":"flex"}},[_c('div',{staticClass:"seadragonbox",staticStyle:{"position":"relative"},attrs:{"id":_vm.seadragonid}},[_c('span',{attrs:{"id":"header_toolbar"}},[_c('span',{staticStyle:{"float":"right","margin":"10px 0 0 20px"}},[_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.autoRun(5000)}}},[_c('span',{domProps:{"innerHTML":_vm._s(_vm.autorunbutton)}})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.createOverlay()}}},[_c('span',{domProps:{"innerHTML":_vm._s(_vm.overlaybutton)}})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.zoom('in')}}},[_c('i',{staticClass:"fas fa-search-plus"})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.zoom('out')}}},[_c('i',{staticClass:"fas fa-search-minus"})]),_c('button',{staticClass:"toolbarButton",on:{"click":function($event){_vm.zoom('home')}}},[_c('i',{staticClass:"fas fa-home"})]),_c('button',{staticClass:"toolbarButton",class:{ 'inactive' : _vm.prev_inactive },on:{"click":function($event){_vm.next('prev')}}},[_c('i',{staticClass:"fa fa-arrow-left"})]),_c('button',{staticClass:"toolbarButton",class:{ 'inactive' : _vm.next_inactive },attrs:{"id":"next"},on:{"click":function($event){_vm.next('next')}}},[_c('i',{staticClass:"fa fa-arrow-right"})])])])]),_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.prev_inactive != true && _vm.next_inactive != true && _vm.isclosed != true),expression:"prev_inactive != true && next_inactive != true && isclosed != true"}],staticClass:"annotation",attrs:{"id":"annotation"}},[_c('span',{staticStyle:{"display":"flex"}},[_c('i',{staticClass:"fas fa-times close_button",on:{"click":function($event){_vm.close()}}}),(_vm.ishidden == false)?_c('i',{staticClass:"fas fa-caret-square-up close_button",on:{"click":function($event){_vm.hide()}}}):_vm._e(),(_vm.ishidden)?_c('i',{staticClass:"fas fa-caret-square-down close_button",on:{"click":function($event){_vm.hide()}}}):_vm._e()]),(_vm.ishidden)?_c('div',{staticStyle:{"height":"auto"},attrs:{"id":"annotation_excerpt"},domProps:{"innerHTML":_vm._s(_vm.$options.filters.truncate(_vm.currentanno, 2))}}):_vm._e(),(_vm.ishidden == false)?_c('div',{attrs:{"id":"annotation_text"},domProps:{"innerHTML":_vm._s(_vm.currentanno)}}):_vm._e()])])])}
+var storyboardvue_type_template_id_7c7228dc_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/storyboard.vue?vue&type=template&id=73bd8ab7&
+// CONCATENATED MODULE: ./src/components/storyboard.vue?vue&type=template&id=7c7228dc&
 
 // EXTERNAL MODULE: ./node_modules/cheerio/index.js
 var cheerio = __webpack_require__("02cc");
@@ -13463,7 +13463,9 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
       isclosed: false,
       ishidden: false,
       anno_elem: '',
-      isautorunning: false
+      isautorunning: '',
+      autorunbutton: '<i class="fas fa-magic"></i>',
+      overlaybutton: '<i class="fas fa-toggle-on"></i>'
     };
   },
   created: function created() {
@@ -13511,16 +13513,24 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
         }
 
         var content = '';
+        var tags = [];
 
         if (chars[0] != undefined && chars[0].length == undefined) {
           for (var e = 0; e < chars.length; e++) {
-            content += "<div class=" + chars[e]['@type'].replace("oa:", "").toLowerCase() + ">\n            " + chars[e].chars + "</div>";
+            if (chars[e]['@type'].toLowerCase().indexOf('tag') > -1) {
+              tags.push(chars[e].chars);
+            } else {
+              content += "<div class=" + chars[e]['@type'].replace("oa:", "").toLowerCase() + ">\n              " + chars[e].chars + "</div>";
+            }
           }
         } else {
           content = chars.chars ? chars.chars : chars.value;
         }
 
-        _this.annotations.push(content);
+        _this.annotations.push({
+          'content': content,
+          'tags': tags
+        });
 
         _this.zoomsections.push({
           'section': section.split("=").pop(),
@@ -13624,13 +13634,16 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
         }
 
         this.first = false;
+        this.overlaybutton = '<i class="fas fa-toggle-off"></i>';
       } else {
         var box_elements = document.getElementsByClassName("overlay");
 
         if (box_elements[0].style.display != 'none') {
           var display_setting = 'none';
+          this.overlaybutton = '<i class="fas fa-toggle-on"></i>';
         } else {
           var display_setting = 'block';
+          this.overlaybutton = '<i class="fas fa-toggle-off"></i>';
         }
 
         for (var a = 0; a < box_elements.length; a++) {
@@ -13663,7 +13676,8 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
         this.currentanno = '';
       } else {
         var xywh = this.zoomsections[this.position]['section'].split(",");
-        this.currentanno = this.annotations[this.position];
+        var anno_section = this.annotations[this.position];
+        this.currentanno = "" + anno_section['content'] + (anno_section['tags'].length > 0 ? "<span class=\"tags\">Tags: " + anno_section['tags'].join(", ") + "</div>" : '');
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
@@ -13680,30 +13694,23 @@ var openseadragon_default = /*#__PURE__*/__webpack_require__.n(openseadragon);
         this.prev_inactive = false;
       }
     },
-    autoRun: function autoRun() {
-      if (this.isautorunning == false) {
-        this.isautorunning = true;
-      } else {
-        this.isautorunning = false;
-      }
-
-      this.position = 0;
+    autoRun: function autoRun(interval) {
       var length = this.zoomsections.length;
-      var i = 0;
-      var this_functions = this;
 
-      while (i < 10000 && this.isautorunning) {
-        (function (i) {
-          setTimeout(function () {
-            this_functions.next('next');
+      if (this.isautorunning == '') {
+        var this_functions = this;
+        this.isautorunning = setInterval(function () {
+          this_functions.next('next');
 
-            if (this_functions.position == length) {
-              this_functions.position = 0;
-            }
-
-            console.log(i + i);
-          }, (i + i) * 3000);
-        })(i++);
+          if (this_functions.position == length) {
+            this_functions.position = 0;
+          }
+        }, interval);
+        this.autorunbutton = '<i class="fas fa-stop-circle"></i>';
+      } else {
+        clearInterval(this.isautorunning);
+        this.isautorunning = '';
+        this.autorunbutton = '<i class="fas fa-magic"></i>';
       }
     }
   },
@@ -13732,8 +13739,8 @@ if (style0.__inject__) style0.__inject__(context)
 
 var storyboard_component = normalizeComponent(
   components_storyboardvue_type_script_lang_js_,
-  storyboardvue_type_template_id_73bd8ab7_render,
-  storyboardvue_type_template_id_73bd8ab7_staticRenderFns,
+  storyboardvue_type_template_id_7c7228dc_render,
+  storyboardvue_type_template_id_7c7228dc_staticRenderFns,
   false,
   storyboard_injectStyles,
   null,
@@ -16052,7 +16059,7 @@ exports = module.exports = __webpack_require__("2350")(false);
 exports.push([module.i, "@import url(https://use.fontawesome.com/releases/v5.5.0/css/all.css);", ""]);
 
 // module
-exports.push([module.i, "\n.tag{background:#92d1e8;border-radius:3px 0 0 3px;color:#000;display:inline-block;height:26px;line-height:26px;padding:0 20px 0 23px;position:relative;margin:0 10px 10px 0;text-decoration:none;-webkit-transition:color .2s\n}\n.tag:before{border-radius:10px;-webkit-box-shadow:inset 0 1px rgba(0,0,0,.25);box-shadow:inset 0 1px rgba(0,0,0,.25);height:6px;left:10px;width:6px;top:10px\n}\n.tag:after,.tag:before{background:#fff;content:\"\";position:absolute\n}\n.tag:after{border-bottom:13px solid transparent;border-left:10px solid #92d1e8;border-top:13px solid transparent;right:0;top:0\n}\n.inactive{color:red;pointer-events:none\n}\n.toolbarButton{font-size:22px\n}\n#storyboard_viewer{padding-top:50px\n}\n.seadragonbox{width:100%;display:inline-block;height:100vh\n}\n#annotation{width:10%;resize:both;border:2px solid #000;background:#fff;position:absolute;top:75px;z-index:2;max-width:100%;max-height:100%;overflow:scroll;padding:2px;margin-left:20px\n}\n#annotation,#annotation_text{height:auto;word-wrap:break-word\n}\n#annotation_text{max-height:450px\n}\n#annotation_text img{width:100%;height:100%;-o-object-fit:scale-down;object-fit:scale-down\n}\n.fullscreen{display:block;padding-left:20px;width:87%\n}\n.window{display:none\n}\n.box{border:2px solid #add8e6\n}\n.box:hover{background:grey;opacity:.4\n}\n.overlay{color:#add8e6;font-size:25px\n}\n.close{display:none\n}\n.close_button{padding-top:5px;padding-left:5px\n}\n.map-marker{left:calc(50% - 12.5px)\n}\n.fullscreen,.map-marker{position:absolute;bottom:0\n}\n.fullscreen{top:0;left:0;right:0;width:100%;height:100%;background:#000;border:1px solid #000\n}", ""]);
+exports.push([module.i, "\n.inactive{color:red;pointer-events:none\n}\n.toolbarButton{font-size:22px\n}\n#storyboard_viewer{padding-top:50px\n}\n.seadragonbox{width:100%;display:inline-block;height:100vh\n}\n#annotation{width:10%;resize:both;border:2px solid #000;background:#fff;position:absolute;top:75px;z-index:2;max-width:100%;max-height:100%;overflow:scroll;padding:2px;margin-left:20px\n}\n#annotation,#annotation_text{height:auto;word-wrap:break-word\n}\n#annotation_text{max-height:450px\n}\n#annotation_text img{width:100%;height:100%;-o-object-fit:scale-down;object-fit:scale-down\n}\n.fullscreen{display:block;padding-left:20px;width:87%\n}\n.window{display:none\n}\n.box{border:2px solid #add8e6\n}\n.box:hover{background:grey;opacity:.4\n}\n.overlay{color:#add8e6;font-size:25px\n}\n.close{display:none\n}\n.close_button{padding-top:5px;padding-left:5px\n}\n.map-marker{left:calc(50% - 12.5px)\n}\n.fullscreen,.map-marker{position:absolute;bottom:0\n}\n.fullscreen{top:0;left:0;right:0;width:100%;height:100%;background:#000;border:1px solid #000\n}\n.tags{font-size:smaller;font-style:italic\n}", ""]);
 
 // exports
 
