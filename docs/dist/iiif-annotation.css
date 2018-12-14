@@ -7,7 +7,7 @@
   font-size: 22px; }
 
 .storyboard_viewer {
-  padding-top: 50px;
+  padding-bottom: 50px;
   position: relative; }
 
 .seadragonbox {
@@ -70,7 +70,7 @@
   left: calc(50% - 12.5px); }
 
 .fullscreen {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;

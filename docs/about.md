@@ -1,29 +1,18 @@
-<meta charset="utf-8">
-<title>iiif-annotation demo</title>
+---
+layout: page
+title: Image Viewer
+permalink: /imageviewer/
+---
 <script src="https://unpkg.com/vue"></script>
-<script src="./dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="./dist/iiif-annotation.css">
+<script src="{{site.baseurl}}/dist/iiif-annotation.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/dist/iiif-annotation.css">
 <!--<script id="config" type="application/json">{
   "view_larger":false,
   "view_caption":false,
   "view_full_object":false,
   "view_ocr":false
 }</script>-->
-
-<iiif-storyboard annotationlist="http://marii.info/annotate/annotations/haemisphaerium/0001/list.json"></iiif-storyboard>
-
-<iiif-storyboard annotationurl="http://marii.info/annotate/annotations/bnf640/f13/f13.json"></iiif-storyboard>
-
-<iiif-storyboard annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-storyboard>
-
-<iiif-storyboard annotationlist="https://iiif.harvardartmuseums.org/manifests/object/198021/list/48466698"></iiif-storyboard>
-
-
 <iiif-annotation annotationurl="webannotations/annotation1.json"></iiif-annotation>
-
-<iiif-annotation annotationurl="webannotations/annotation2.json"></iiif-annotation>
-
-<iiif-annotation annotationurl="webannotations/annotation3.json"></iiif-annotation>
 
 <iiif-annotation annotationlist="http://marii.info/annotate/annotations/haemisphaerium/0001/list.json"></iiif-annotation>
 

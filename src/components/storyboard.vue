@@ -4,13 +4,14 @@
     <div v-bind:id="seadragonid" v-bind:class="[!settings.full_screen || settings.full_screen == false ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar != true">
         <span style="float:right; margin:10px 0 0 20px">
-        <button v-on:click="autoRun(5000)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
+        <button v-on:click="autoRun(5)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
         <button v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
         <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i></button>
         <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i></button>
         <button v-on:click="zoom('home')" class="toolbarButton"><i class="fas fa-home"></i></button>
         <button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i></button>
         <button v-on:click="next('next')" id="next" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i></button>
+        <button v-on:click="fullscreen()" class="toolbarButton"><span v-html="expandbutton"></span></button>
         </span>
       </span>
     </div>
@@ -55,7 +56,8 @@ export default {
       isautorunning: '',
       autorunbutton: '<i class="fas fa-magic"></i>',
       overlaybutton: '<i class="fas fa-toggle-on"></i>',
-      settings: {}
+      settings: {},
+      expandbutton: '<i class="fas fa-expand"></i>'
     }
   },
   created() {
@@ -130,6 +132,9 @@ export default {
       }
       if(this.settings.autorun_interval && Number.isInteger(this.settings.autorun_interval)){
         this.anno_elem.addEventListener("load", this.autoRun(this.settings.autorun_interval));
+      }
+      if(this.settings.full_screen == true){
+        this.expandbutton = '<i class="fas fa-compress"></i>'
       }
     });
   });
@@ -230,6 +235,27 @@ export default {
         }
       }).setTracking(true)
     },
+    fullscreen: function(){
+      var viewers = document.querySelectorAll(".storyboard_viewer")
+      if(!this.settings.full_screen || this.settings.full_screen == false){
+        this.settings.full_screen = true;
+        this.expandbutton = '<i class="fas fa-compress"></i>'
+        for (var i = 0; i < viewers.length; i++){
+          if (viewers[i].children[0].children[0].getAttribute('id').indexOf(this.seadragonid) == -1){
+            viewers[i].children[0].style.display = 'none';
+          }
+        }
+      } else {
+        document.querySelectorAll(".storyboard_viewer").forEach((el,i) => {
+            el.children[0].style.display = 'flex';
+        });
+        this.settings.full_screen = false;
+        this.expandbutton = '<i class="fas fa-expand"></i>'
+        for (var i = 0; i < viewers.length; i++){
+          viewers[i].children[0].style.display = 'flex';
+        }
+      }
+    },
     next: function(nextorprev){
       this.isclosed = false;
       if (nextorprev == 'prev'){
@@ -260,6 +286,7 @@ export default {
       }
     },
     autoRun: function(interval){
+      interval = interval * 1000;
       var length = this.zoomsections.length;
       if (this.isautorunning == ''){
         if (this.position == length){
