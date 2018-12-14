@@ -1,8 +1,8 @@
 <template>
-<div id="storyboard_viewer" style="position:relative">
+<div id="storyboard_viewer" v-bind:class="[!settings.full_screen || settings.full_screen == false ? 'storyboard_viewer' : 'fullscreen']">
   <div style="position:relative; display:flex">
-    <div v-bind:id="seadragonid" class="seadragonbox" style="position:relative">
-      <span id="header_toolbar">
+    <div v-bind:id="seadragonid" v-bind:class="[!settings.full_screen || settings.full_screen == false ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
+      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar != true">
         <span style="float:right; margin:10px 0 0 20px">
         <button v-on:click="autoRun(5000)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
         <button v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
@@ -54,7 +54,8 @@ export default {
       anno_elem: '',
       isautorunning: '',
       autorunbutton: '<i class="fas fa-magic"></i>',
-      overlaybutton: '<i class="fas fa-toggle-on"></i>'
+      overlaybutton: '<i class="fas fa-toggle-on"></i>',
+      settings: {}
     }
   },
   created() {
@@ -124,6 +125,12 @@ export default {
         }
       this.createViewer()
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
+      if (document.getElementById("config") != null){
+        this.settings = JSON.parse(document.getElementById("config").innerHTML);
+      }
+      if(this.settings.autorun_interval && Number.isInteger(this.settings.autorun_interval)){
+        this.anno_elem.addEventListener("load", this.autoRun(this.settings.autorun_interval));
+      }
     });
   });
   },

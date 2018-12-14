@@ -6,13 +6,19 @@
 .toolbarButton {
   font-size: 22px; }
 
-#storyboard_viewer {
-  padding-top: 50px; }
+.storyboard_viewer {
+  padding-top: 50px;
+  position: relative; }
 
 .seadragonbox {
   width: 100%;
   display: inline-block;
   height: 600px; }
+
+.seadragonboxfull {
+  width: 100%;
+  display: inline-block;
+  height: 100vh; }
 
 #annotation {
   width: 10%;
@@ -158,3 +164,5 @@ figcaption {
   position: absolute;
   right: 0;
   top: 0; }
+
+/*# sourceMappingURL=iiif-annotation.css.map */
