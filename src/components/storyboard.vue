@@ -240,19 +240,16 @@ export default {
       if(!this.settings.full_screen || this.settings.full_screen == false){
         this.settings.full_screen = true;
         this.expandbutton = '<i class="fas fa-compress"></i>'
-        for (var i = 0; i < viewers.length; i++){
-          if (viewers[i].children[0].children[0].getAttribute('id').indexOf(this.seadragonid) == -1){
-            viewers[i].children[0].style.display = 'none';
+        for (var j = 0; j < viewers.length; j++){
+          if (viewers[j].children[0].children[0].getAttribute('id').indexOf(this.seadragonid) == -1){
+            viewers[j].children[0].style.display = 'none';
           }
         }
       } else {
-        document.querySelectorAll(".storyboard_viewer").forEach((el,i) => {
-            el.children[0].style.display = 'flex';
-        });
         this.settings.full_screen = false;
         this.expandbutton = '<i class="fas fa-expand"></i>'
-        for (var i = 0; i < viewers.length; i++){
-          viewers[i].children[0].style.display = 'flex';
+        for (var j = 0; j < viewers.length; j++){
+          viewers[j].children[0].style.display = 'flex';
         }
       }
     },

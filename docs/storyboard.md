@@ -16,6 +16,7 @@ In order to create the viewer above the following four lines of code need to be 
 
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-storyboard>
 ```
+Note: the vue, iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the <iiif-storyboard> tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard).
 
 This code is also customizable. Adding a configuration section to the code will provide a full screen experience. The fullscreen experience only works for one storyboard, unlike the regular experience which allows multiple storyboards to be inserted into a page. An example can be seen here: [fullscreen example]({{site.baseurl}}/fullscreen). The example has all three options as true. They are interchangeable, any combination will work.
 
