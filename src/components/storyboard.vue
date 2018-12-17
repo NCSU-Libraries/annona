@@ -1,22 +1,22 @@
 <template>
-<div id="storyboard_viewer" v-bind:class="[!settings.full_screen || settings.full_screen == false ? 'storyboard_viewer' : 'fullscreen']">
+<div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative; display:flex">
-    <div v-bind:id="seadragonid" v-bind:class="[!settings.full_screen || settings.full_screen == false ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
-      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar != true">
+    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
+      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar != true || settings.hide_toolbar == true && fullscreen == false ">
         <span style="float:right; margin:10px 0 0 20px">
-        <button v-on:click="autoRun(5)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
+        <button v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
         <button v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
         <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i></button>
         <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i></button>
         <button v-on:click="zoom('home')" class="toolbarButton"><i class="fas fa-home"></i></button>
         <button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i></button>
         <button v-on:click="next('next')" id="next" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i></button>
-        <button v-on:click="fullscreen()" class="toolbarButton"><span v-html="expandbutton"></span></button>
+        <button v-on:click="toggle_fullscreen()" class="toolbarButton"><span v-html="expandbutton"></span></button>
         </span>
       </span>
     </div>
     <div id="annotation" class="annotation" v-show="prev_inactive != true && next_inactive != true && isclosed != true">
-      <span style="display:flex;">
+      <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols != true" id="annotation_controls" style="display:flex;">
       <i class="fas fa-times close_button" v-on:click="close()"></i>
       <i class="fas fa-caret-square-up close_button" v-on:click="hide()" v-if="ishidden == false"></i>
       <i class="fas fa-caret-square-down close_button" v-on:click="hide()" v-if="ishidden"></i>
@@ -31,6 +31,10 @@
 import axios from 'axios';
 import truncate from 'truncate-html';
 import openseadragon from 'openseadragon';
+import fullscreen from 'vue-fullscreen'
+import Vue from 'vue'
+Vue.use(fullscreen)
+
 export default {
   name: 'storyboard',
   props: {
@@ -57,7 +61,8 @@ export default {
       autorunbutton: '<i class="fas fa-magic"></i>',
       overlaybutton: '<i class="fas fa-toggle-on"></i>',
       settings: {},
-      expandbutton: '<i class="fas fa-expand"></i>'
+      expandbutton: '<i class="fas fa-expand"></i>',
+      fullscreen: false
     }
   },
   created() {
@@ -126,15 +131,15 @@ export default {
           }
         }
       this.createViewer()
+
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
       if (document.getElementById("config") != null){
         this.settings = JSON.parse(document.getElementById("config").innerHTML);
       }
-      if(this.settings.autorun_interval && Number.isInteger(this.settings.autorun_interval)){
+      this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
+
+      if(this.settings.autorun_onload){
         this.anno_elem.addEventListener("load", this.autoRun(this.settings.autorun_interval));
-      }
-      if(this.settings.full_screen == true){
-        this.expandbutton = '<i class="fas fa-compress"></i>'
       }
     });
   });
@@ -235,14 +240,20 @@ export default {
         }
       }).setTracking(true)
     },
-    fullscreen: function(){
-      if(!this.settings.full_screen || this.settings.full_screen == false){
-        this.settings.full_screen = true;
+    toggle_fullscreen: function(){
+      this.$fullscreen.toggle(this.$el, {
+        wrap: false,
+        callback: this.fullscreenChange
+      })
+
+    },
+    fullscreenChange (fullscreen) {
+      if(fullscreen){
         this.expandbutton = '<i class="fas fa-compress"></i>';
       } else {
-        this.settings.full_screen = false;
         this.expandbutton = '<i class="fas fa-expand"></i>';
       }
+      this.fullscreen = fullscreen
     },
     next: function(nextorprev){
       this.isclosed = false;

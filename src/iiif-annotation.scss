@@ -1,24 +1,35 @@
-@import url("https://use.fontawesome.com/releases/v5.5.0/css/all.css");
+@import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
+$pin_size: 25;
+$overlay_color: lightblue;
+$seadragon_width: 100%;
+$seadrgon_height: 600px;
+$mid_pin: $pin_size/2 + px;
+$pin_font: $pin_size + px;
+
 .inactive {
   color: red;
-  pointer-events: none; }
-
+  pointer-events: none;
+}
 .toolbarButton {
-  font-size: 22px; }
+  font-size: 22px;
+}
 
 .storyboard_viewer {
   padding-bottom: 50px;
-  position: relative; }
+  position: relative;
+}
 
 .seadragonbox {
-  width: 100%;
+  width: $seadragon_width;
   display: inline-block;
-  height: 600px; }
+  height:$seadrgon_height;
+}
 
 .seadragonboxfull {
   width: 100%;
   display: inline-block;
-  height: 100vh; }
+  height: 100vh;
+}
 
 #annotation {
   width: 10%;
@@ -34,40 +45,49 @@
   overflow: scroll;
   padding: 2px;
   margin-left: 20px;
-  word-wrap: break-word; }
+  word-wrap: break-word;
+}
 
 #annotation_text {
   word-wrap: break-word;
   height: auto;
-  max-height: 450px; }
+  max-height: 450px;
+}
 
 #annotation_text img {
-  width: 100%;
-  height: 100%;
-  object-fit: scale-down; }
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
+}
 
 .box {
-  border: 2px solid lightblue; }
+  border: 2px solid $overlay_color;
+}
 
 .box:hover {
-  background: grey;
-  opacity: .4; }
+  background:grey;
+  opacity: .4;
+}
 
 .overlay {
-  color: lightblue;
-  font-size: 25px; }
+  color: $overlay_color;
+  font-size: $pin_font;
+}
 
 .close {
-  display: none; }
+  display: none;
+}
 
 .close_button {
   padding-top: 5px;
-  padding-left: 5px; }
+  padding-left: 5px;
+}
 
 .map-marker {
-  position: absolute;
-  bottom: 0;
-  left: calc(50% - 12.5px); }
+  position:absolute;
+  bottom:0;
+  left: calc(50% - #{$mid_pin});
+}
 
 .fullpage {
   position: fixed;
@@ -79,19 +99,23 @@
   height: 100%;
   background: #000;
   border: 1px solid #000;
-  z-index: 102; }
+  z-index: 102;
+}
 
 .tags {
   font-size: smaller;
-  font-style: italic; }
+  font-style: italic;
+}
 
 #fullimage {
-  width: 49%; }
+  width: 49%
+}
 
 #annoimage {
-  width: 49%; }
+  width: 49%
+}
 
-.togglebutton {
+.togglebutton{
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -105,32 +129,40 @@
   font-size: 14px;
   font-weight: bold;
   border-radius: 12px;
-  cursor: pointer; }
+  cursor: pointer;
+}
 
 .iiifannotation {
   text-indent: 0;
   margin: 0.5em;
   padding: 0.5em;
-  text-align: center; }
+  text-align: center
+}
 
 .toggle {
-  width: 49%; }
+  width: 49%
+}
 
 .text {
   border: 3px solid green;
   padding: 10px;
-  margin: 10px; }
+  margin: 10px;
+}
 
 #link_to_object {
-  font-weight: bold; }
+  font-weight: bold;
+}
 
 #link_to_object a {
-  color: #0000FF; }
+  color: #0000FF;
+}
 
 figcaption {
   font-size: smaller;
   font-style: italic;
-  font-weight: bold; }
+  font-weight: bold;
+}
+
 
 .tagging {
   background: #92D1E8;
@@ -143,8 +175,8 @@ figcaption {
   position: relative;
   margin: 0 10px 10px 0;
   text-decoration: none;
-  -webkit-transition: color 0.2s; }
-
+  -webkit-transition: color 0.2s;
+}
 .tagging::before {
   background: #fff;
   border-radius: 10px;
@@ -154,7 +186,8 @@ figcaption {
   left: 10px;
   position: absolute;
   width: 6px;
-  top: 10px; }
+  top: 10px;
+}
 
 .tagging::after {
   background: #fff;
@@ -164,6 +197,5 @@ figcaption {
   content: '';
   position: absolute;
   right: 0;
-  top: 0; }
-
-/*# sourceMappingURL=iiif-annotation.css.map */
+  top: 0;
+}
