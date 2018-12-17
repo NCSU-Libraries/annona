@@ -236,21 +236,12 @@ export default {
       }).setTracking(true)
     },
     fullscreen: function(){
-      var viewers = document.querySelectorAll(".storyboard_viewer")
       if(!this.settings.full_screen || this.settings.full_screen == false){
         this.settings.full_screen = true;
-        this.expandbutton = '<i class="fas fa-compress"></i>'
-        for (var j = 0; j < viewers.length; j++){
-          if (viewers[j].children[0].children[0].getAttribute('id').indexOf(this.seadragonid) == -1){
-            viewers[j].children[0].style.display = 'none';
-          }
-        }
+        this.expandbutton = '<i class="fas fa-compress"></i>';
       } else {
         this.settings.full_screen = false;
-        this.expandbutton = '<i class="fas fa-expand"></i>'
-        for (var j = 0; j < viewers.length; j++){
-          viewers[j].children[0].style.display = 'flex';
-        }
+        this.expandbutton = '<i class="fas fa-expand"></i>';
       }
     },
     next: function(nextorprev){
@@ -287,13 +278,13 @@ export default {
       var length = this.zoomsections.length;
       if (this.isautorunning == ''){
         if (this.position == length){
-          this.position = 0;
+          this.position = -1;
         }
         var this_functions = this;
         this.isautorunning = setInterval(function() {
           this_functions.next('next')
           if(this_functions.position == length){
-            this_functions.position = 0
+            this_functions.position = -1;
           }
         }, interval)
         this.autorunbutton = '<i class="fas fa-stop-circle"></i>'
