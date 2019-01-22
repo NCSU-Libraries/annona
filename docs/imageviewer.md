@@ -4,8 +4,8 @@ title: Image Viewer
 permalink: /imageviewer/
 ---
 <script src="https://unpkg.com/vue"></script>
-<script src="{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <!--<script id="config" type="application/json">{
   "view_larger":false,
   "view_caption":false,
@@ -17,9 +17,9 @@ Below is an example of annotation url. This is a single annotation. In the JSON 
 
 ```
 <script src="https://unpkg.com/vue"></script>
-<script src="{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/dist/iiif-annotation.css">
-<iiif-annotation annotationurl="{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<iiif-annotation annotationurl="{{site.url}}{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>
 
 ```
 <iiif-annotation annotationurl="{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>

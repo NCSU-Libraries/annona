@@ -4,8 +4,8 @@ title: Storyboard Viewer
 permalink: /storyboard/
 ---
 <script src="https://unpkg.com/vue"></script>
-<script src="{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
 
 In order to create the viewer below the following four lines of code need to be entered into any html page.
@@ -14,8 +14,8 @@ Note: the vue, iiif-annotation.js and iiif-annotation.css need to be loaded only
 
 ```
 <script src="https://unpkg.com/vue"></script>
-<script src="{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-storyboard>
 ```
@@ -37,8 +37,8 @@ This code is also customizable. Adding a configuration section to the code will 
 
 ```
 <script src="https://unpkg.com/vue"></script>
-<script src="{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <script id="config" type="application/json">{
   "autorun_onload":true,
   "autorun_interval": 4,
