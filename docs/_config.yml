@@ -16,9 +16,9 @@
 title: IIIF-Annotation Library
 #email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Documentation for using IIIF-Annotation Library 
+  Documentation for using IIIF-Annotation Library
 baseurl: /doneill/iiif_annotation # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://pages.github.ncsu.edu" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
 #github_username:  jekyll
 
@@ -27,7 +27,6 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
-
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.

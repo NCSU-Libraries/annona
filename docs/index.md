@@ -12,6 +12,8 @@ layout: default
 This library provides a number of options. Examples of these options can be seen in the pages below.
 The options provided by this library are as follows:
 
+Dist files [avaliable here]({{site.baseurl}}/dist)
+
 1. [iiif-annotation image viewer]({{site.baseurl}}/imageviewer)
   - This will take an IIIF annotation or IIIF annotation list and render the image, annotation, full image, and a link to the full object.
   - This functionality is customizable, please see page for details
