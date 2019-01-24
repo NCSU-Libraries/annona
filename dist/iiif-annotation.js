@@ -5484,7 +5484,7 @@ function compile(parsed){
 /***/ "205b":
 /***/ (function(module) {
 
-module.exports = {"_from":"cheerio@0.22.0","_id":"cheerio@0.22.0","_inBundle":false,"_integrity":"sha1-qbqoYKP5tZWmuBsahocxIe06Jp4=","_location":"/cheerio","_phantomChildren":{"boolbase":"1.0.0","css-what":"2.1.2","dom-serializer":"0.1.0","domelementtype":"1.2.1","entities":"1.1.2","inherits":"2.0.3","nth-check":"1.0.2","string_decoder":"1.1.1","util-deprecate":"1.0.2"},"_requested":{"type":"version","registry":true,"raw":"cheerio@0.22.0","name":"cheerio","escapedName":"cheerio","rawSpec":"0.22.0","saveSpec":null,"fetchSpec":"0.22.0"},"_requiredBy":["/truncate-html"],"_resolved":"http://registry.npmjs.org/cheerio/-/cheerio-0.22.0.tgz","_shasum":"a9baa860a3f9b595a6b81b1a86873121ed3a269e","_spec":"cheerio@0.22.0","_where":"/Users/doneill/Desktop/iiif_annotation/node_modules/truncate-html","author":{"name":"Matt Mueller","email":"mattmuelle@gmail.com","url":"mat.io"},"bugs":{"url":"https://github.com/cheeriojs/cheerio/issues"},"bundleDependencies":false,"dependencies":{"css-select":"~1.2.0","dom-serializer":"~0.1.0","entities":"~1.1.1","htmlparser2":"^3.9.1","lodash.assignin":"^4.0.9","lodash.bind":"^4.1.4","lodash.defaults":"^4.0.1","lodash.filter":"^4.4.0","lodash.flatten":"^4.2.0","lodash.foreach":"^4.3.0","lodash.map":"^4.4.0","lodash.merge":"^4.4.0","lodash.pick":"^4.2.1","lodash.reduce":"^4.4.0","lodash.reject":"^4.4.0","lodash.some":"^4.4.0"},"deprecated":false,"description":"Tiny, fast, and elegant implementation of core jQuery designed specifically for the server","devDependencies":{"benchmark":"^2.1.0","coveralls":"^2.11.9","expect.js":"~0.3.1","istanbul":"^0.4.3","jquery":"^3.0.0","jsdom":"^9.2.1","jshint":"^2.9.2","mocha":"^2.5.3","xyz":"~0.5.0"},"engines":{"node":">= 0.6"},"files":["index.js","lib"],"homepage":"https://github.com/cheeriojs/cheerio#readme","keywords":["htmlparser","jquery","selector","scraper","parser","html"],"license":"MIT","main":"./index.js","name":"cheerio","repository":{"type":"git","url":"git://github.com/cheeriojs/cheerio.git"},"scripts":{"test":"make test"},"version":"0.22.0"};
+module.exports = {"_args":[["cheerio@0.22.0","/Users/doneill/Desktop/iiif-annotation"]],"_from":"cheerio@0.22.0","_id":"cheerio@0.22.0","_inBundle":false,"_integrity":"sha1-qbqoYKP5tZWmuBsahocxIe06Jp4=","_location":"/cheerio","_phantomChildren":{"boolbase":"1.0.0","css-what":"2.1.2","dom-serializer":"0.1.0","domelementtype":"1.2.1","entities":"1.1.2","inherits":"2.0.3","nth-check":"1.0.2","string_decoder":"1.1.1","util-deprecate":"1.0.2"},"_requested":{"type":"version","registry":true,"raw":"cheerio@0.22.0","name":"cheerio","escapedName":"cheerio","rawSpec":"0.22.0","saveSpec":null,"fetchSpec":"0.22.0"},"_requiredBy":["/truncate-html"],"_resolved":"http://registry.npmjs.org/cheerio/-/cheerio-0.22.0.tgz","_spec":"0.22.0","_where":"/Users/doneill/Desktop/iiif-annotation","author":{"name":"Matt Mueller","email":"mattmuelle@gmail.com","url":"mat.io"},"bugs":{"url":"https://github.com/cheeriojs/cheerio/issues"},"dependencies":{"css-select":"~1.2.0","dom-serializer":"~0.1.0","entities":"~1.1.1","htmlparser2":"^3.9.1","lodash.assignin":"^4.0.9","lodash.bind":"^4.1.4","lodash.defaults":"^4.0.1","lodash.filter":"^4.4.0","lodash.flatten":"^4.2.0","lodash.foreach":"^4.3.0","lodash.map":"^4.4.0","lodash.merge":"^4.4.0","lodash.pick":"^4.2.1","lodash.reduce":"^4.4.0","lodash.reject":"^4.4.0","lodash.some":"^4.4.0"},"description":"Tiny, fast, and elegant implementation of core jQuery designed specifically for the server","devDependencies":{"benchmark":"^2.1.0","coveralls":"^2.11.9","expect.js":"~0.3.1","istanbul":"^0.4.3","jquery":"^3.0.0","jsdom":"^9.2.1","jshint":"^2.9.2","mocha":"^2.5.3","xyz":"~0.5.0"},"engines":{"node":">= 0.6"},"files":["index.js","lib"],"homepage":"https://github.com/cheeriojs/cheerio#readme","keywords":["htmlparser","jquery","selector","scraper","parser","html"],"license":"MIT","main":"./index.js","name":"cheerio","repository":{"type":"git","url":"git://github.com/cheeriojs/cheerio.git"},"scripts":{"test":"make test"},"version":"0.22.0"};
 
 /***/ }),
 
@@ -12106,21 +12106,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "4d97":
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__("2350")(false);
-// imports
-exports.push([module.i, "@import url(https://use.fontawesome.com/releases/v5.5.0/css/all.css);", ""]);
-
-// module
-exports.push([module.i, ".inactive{color:red;pointer-events:none}.toolbarButton{font-size:22px}.storyboard_viewer{padding-bottom:50px;position:relative}.seadragonbox{width:100%;display:inline-block;height:600px}.seadragonboxfull{width:100%;display:inline-block;height:100vh}#annotation{width:10%;resize:both;border:2px solid #000;background:#fff;position:absolute;top:75px;z-index:2;max-width:100%;max-height:100%;overflow:scroll;padding:2px;margin-left:20px}#annotation,#annotation_text{height:auto;word-wrap:break-word}#annotation_text{max-height:450px}#annotation_text img{width:100%;height:100%;-o-object-fit:scale-down;object-fit:scale-down}.box{border:2px solid #add8e6}.box:hover{background:grey;opacity:.4}.overlay{color:#add8e6;font-size:25px}.close{display:none}.close_button{padding-top:5px;padding-left:5px}.map-marker{position:absolute;bottom:0;left:calc(50% - 12.5px)}.fullpage{position:fixed;top:0;bottom:0;left:0;right:0;width:100%;height:100%;background:#000;border:1px solid #000;z-index:102}.tags{font-size:smaller;font-style:italic}#annoimage,#fullimage{width:49%}.togglebutton{margin:0 auto;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;background-color:#811957;margin-top:.5em;margin-bottom:.5em;border:none;color:#fff;padding:6px 7px;text-decoration:none;font-size:14px;font-weight:700;border-radius:12px;cursor:pointer}.iiifannotation{text-indent:0;margin:.5em;padding:.5em;text-align:center}.toggle{width:49%}.text{border:3px solid green;padding:10px;margin:10px}#link_to_object{font-weight:700}#link_to_object a{color:#00f}figcaption{font-size:smaller;font-style:italic;font-weight:700}.tagging{background:#92d1e8;border-radius:3px 0 0 3px;color:#000;display:inline-block;height:26px;line-height:26px;padding:0 20px 0 23px;position:relative;margin:0 10px 10px 0;text-decoration:none;-webkit-transition:color .2s}.tagging:before{background:#fff;border-radius:10px;-webkit-box-shadow:inset 0 1px rgba(0,0,0,.25);box-shadow:inset 0 1px rgba(0,0,0,.25);content:\"\";height:6px;left:10px;position:absolute;width:6px;top:10px}.tagging:after{background:#fff;border-bottom:13px solid transparent;border-left:10px solid #92d1e8;border-top:13px solid transparent;content:\"\";position:absolute;right:0;top:0}", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ "5270":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -14307,11 +14292,7 @@ var storyboard_component = normalizeComponent(
 
 storyboard_component.options.__file = "storyboard.vue"
 /* harmony default export */ var storyboard = (storyboard_component.exports);
-// EXTERNAL MODULE: ./src/iiif-annotation.scss
-var iiif_annotation = __webpack_require__("c0a3");
-
 // CONCATENATED MODULE: ./src/build_dist.js?shadow
-
 
 
 
@@ -46330,23 +46311,6 @@ WritableStream.prototype._write = function(chunk, encoding, cb){
 	cb();
 };
 
-
-/***/ }),
-
-/***/ "c0a3":
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__("4d97");
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add CSS to Shadow Root
-var add = __webpack_require__("35d6").default
-module.exports.__inject__ = function (shadowRoot) {
-  add("6034a77e", content, shadowRoot)
-};
 
 /***/ }),
 
