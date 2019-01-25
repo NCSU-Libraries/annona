@@ -30,3 +30,9 @@ npm run lint
 ```
 npm run build-bundle
 ```
+
+### Testing
+
+```
+npm run test
+```
