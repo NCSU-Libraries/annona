@@ -6,12 +6,7 @@ permalink: /imageviewer/
 <script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
-<!--<script id="config" type="application/json">{
-  "view_larger":false,
-  "view_caption":false,
-  "view_full_object":false,
-  "view_ocr":false
-}</script>-->
+
 
 Below is an example of annotation url. This is a single annotation. In the JSON they will have a type of annotation or oa:annotation. An annotation list will have a type of AnnotationList. The following four lines of code are required to render. The first three lines only need to be loaded in a page one time (they do not repeat).
 
@@ -38,3 +33,25 @@ The following example is a annotation list. The annotation list does not have a 
 ```
 
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
+
+What areas are shown in the embedded image are customizable either through settings or through basic css. Below are the setting options and their values. An example with all settings enabled can be seen here: [all settings]({{site.baseurl}}/imageviewer_settings)
+
+```
+<script src="https://unpkg.com/vue"></script>
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<script id="config" type="application/json">{
+  "view_larger":false,
+  "view_caption":false,
+  "view_full_object":false,
+  "view_ocr":false
+}</script>
+<iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
+```
+
+| Variable      | Settings |
+| ----------- | ----------- |
+| view_larger   | **true** or **false**. Shows/hides the "View Full Image" button. **Default** is true |
+| view_caption |  **true** or **false**. Shows/hides the caption. **Default** is true |
+| view_full_object |  **true** or **false**. Shows/hides the full object url. **Default** is true |
+| view_ocr |  **true** or **false**. Shows/hides the OCR if it exists. **Default** is true |

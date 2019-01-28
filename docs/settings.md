@@ -1,9 +1,9 @@
 ---
-permalink: /settings/
+permalink: /storyboard_settings/
 ---
 <script src="https://unpkg.com/vue"></script>
-<script src="{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <script id="config" type="application/json">{
   "autorun_onload":true,
   "autorun_interval": 4,
