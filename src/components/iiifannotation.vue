@@ -2,9 +2,9 @@
   <div class="iiifannotation"  v-if="rendered != false">
     <div v-for="item in annotation_items" :key="item.id" :id="item.id">
     <span v-for="image in item.image" :key="image">
-    <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage">
+    <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage" v-bind:style="[settings.imagesettings != undefined ? settings.imagesettings : '']">
     </span>
-    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']">
+    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings != undefined ? settings.imagesettings : '']">
     <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
     <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
     <p v-show="item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
@@ -31,10 +31,10 @@ import axios from 'axios';
 export default {
   name: 'iiifannotation',
   props: {
-    'annotationurl':String,
-    'annotationlist':String,
-    'manifesturl':String,
-    'imagesize':String
+    'annotationurl': {type: String, required: false},
+    'annotationlist':{type: String, required: false},
+    'manifesturl':{type: String, required: false},
+    'styling': {type: String, required: false}
   },
   data: function() {
     return {
@@ -49,6 +49,15 @@ export default {
   created() {
     if (document.getElementById("config") != null){
       this.settings = JSON.parse(document.getElementById("config").innerHTML);
+    }
+    if (this.styling) {
+      this.settings = JSON.parse(this.styling.replace(/'/g, '"'))
+    }
+    if (this.settings.height){
+      var width = this.settings.width ? this.settings.width : 'auto';
+      this.settings.imagesettings = {'height':this.settings.height, 'width':width}
+    } else if (this.settings.width) {
+      this.settings.imagesettings = {'width':this.settings.width}
     }
     var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios.get(annotation_json).then(response => {

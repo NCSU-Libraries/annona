@@ -25,12 +25,6 @@ npm run build
 npm run lint
 ```
 
-### Builds dist iiif-annotation custom field
-
-```
-npm run build-bundle
-```
-
 ### Testing
 
 ```
