@@ -53,18 +53,13 @@ Global setting:
 
 Single annotation:
 ```
-<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json'
- styling='"view_larger":false,
-"view_caption":false,
-"view_full_object":false,
-"view_ocr":false,
-"width": "200px"'></iiif-annotation>
+<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='{"view_larger":false,
+"image_only": true,
+"width": "200px"}'></iiif-annotation>
 ```
 
 <iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='{"view_larger":false,
-"view_caption":false,
-"view_full_object":false,
-"view_ocr":false,
+"image_only": true,
 "width": "200px"}'></iiif-annotation>
 
 
@@ -74,5 +69,7 @@ Single annotation:
 | view_caption |  **true** or **false**. Shows/hides the caption. **Default** is true |
 | view_full_object |  **true** or **false**. Shows/hides the full object url. **Default** is true |
 | view_ocr |  **true** or **false**. Shows/hides the OCR if it exists. **Default** is true |
+| view_tags | **true** or **false**. Shows/hides the tags if they exists. **Default** is true |
 | height | Any css height dimension. Changes annotation and full size image size. **Default** is 'auto' |
 | width | Any css width dimension. Changes annotation and full size image size. **Default** is 49% |
+| image_only | **true** or **false**. Will only show the annotated image. **Default** is false |

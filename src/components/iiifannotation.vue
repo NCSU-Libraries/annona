@@ -7,9 +7,9 @@
     <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings != undefined ? settings.imagesettings : '']">
     <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
     <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
-    <p v-show="item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
+    <p v-if="item.dataset != undefined && item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
     <div v-html="item.chars"></div>
-    <div v-html="item.tags"></div>
+    <div v-show="settings.view_tags != false" v-html="item.tags"></div>
     <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage != '' && settings.view_larger != false">View Full Image</button>
     <div id="link_to_object" v-show="settings.view_full_object != false && full_object != ''">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
@@ -112,11 +112,17 @@ export default {
               dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/" + size +"/0/default.jpg");
               dictionary['fullImage'] = this.fullImage(canvas, regionCanvas);
             }
-            dictionary['chars'] = this.chars(this.anno[i])['textual_body'];
-            dictionary['tags'] = this.chars(this.anno[i])['tags'];
-            dictionary['dataset'] = this.dataset(this.anno[i]);
-            dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
-            dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
+            if (this.settings.image_only != true){
+              dictionary['chars'] = this.chars(this.anno[i])['textual_body'];
+              dictionary['tags'] = this.chars(this.anno[i])['tags'];
+              dictionary['dataset'] = this.dataset(this.anno[i]);
+              dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
+              dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
+            } else {
+              this.settings.view_ocr = false;
+              this.settings.view_larger = false;
+              this.settings.view_full_object = false;
+            }
             this.annotation_items.push(dictionary);
           }
           if(this.manifestlink != ''){

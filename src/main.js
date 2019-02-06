@@ -1,11 +1,11 @@
 import Vue from 'vue'
-import iiiflibrary from './iiiflibrary.vue'
+import app from './iiiflibrary.vue'
 
 Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(iiiflibrary)
-}).$mount('#iiiflibrary')
+  render: h => h(app)
+}).$mount('#app')
 
 import vueCustomElement from 'vue-custom-element'
 import 'document-register-element/build/document-register-element';

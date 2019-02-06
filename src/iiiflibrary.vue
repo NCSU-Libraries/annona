@@ -1,5 +1,5 @@
 <template>
-  <div id="iiiflibrary">
+  <div id="app">
   </div>
 </template>
 
@@ -8,7 +8,7 @@ import iiifannotation from './components/iiifannotation.vue'
 import storyboard from './components/storyboard.vue'
 
 export default {
-  name: 'iiiflibrary',
+  name: 'app',
   components: {
     iiifannotation,
     storyboard
