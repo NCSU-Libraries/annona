@@ -34,8 +34,9 @@ The following example is a annotation list. The annotation list does not have a 
 
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
 
-What areas are shown in the embedded image are customizable either through settings or through basic css. Below are the setting options and their values. An example with all settings enabled can be seen here: [all settings]({{site.baseurl}}/imageviewer_settings)
+What areas are shown in the embedded image are customizable either through settings or through basic css. Below are the setting options and their values. An example with all settings enabled can be seen here: [all settings]({{site.baseurl}}/imageviewer_settings). If done below it is a global setting. It can also be applied to a single annotation.
 
+Global setting:
 ```
 <script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
@@ -44,10 +45,28 @@ What areas are shown in the embedded image are customizable either through setti
   "view_larger":false,
   "view_caption":false,
   "view_full_object":false,
-  "view_ocr":false
+  "view_ocr":false,
+  "height": "200px"
 }</script>
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
 ```
+
+Single annotation:
+```
+<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json'
+ styling='"view_larger":false,
+"view_caption":false,
+"view_full_object":false,
+"view_ocr":false,
+"width": "200px"'></iiif-annotation>
+```
+
+<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='{"view_larger":false,
+"view_caption":false,
+"view_full_object":false,
+"view_ocr":false,
+"width": "200px"}'></iiif-annotation>
+
 
 | Variable      | Settings |
 | ----------- | ----------- |
@@ -55,3 +74,5 @@ What areas are shown in the embedded image are customizable either through setti
 | view_caption |  **true** or **false**. Shows/hides the caption. **Default** is true |
 | view_full_object |  **true** or **false**. Shows/hides the full object url. **Default** is true |
 | view_ocr |  **true** or **false**. Shows/hides the OCR if it exists. **Default** is true |
+| height | Any css height dimension. Changes annotation and full size image size. **Default** is 'auto' |
+| width | Any css width dimension. Changes annotation and full size image size. **Default** is 49% |

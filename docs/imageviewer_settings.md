@@ -9,6 +9,7 @@ permalink: /imageviewer_settings
   "view_larger":false,
   "view_caption":false,
   "view_full_object":false,
-  "view_ocr":false
+  "view_ocr":false,
+  "height": "200px"
 }</script>
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
