@@ -199,3 +199,37 @@ figcaption {
   right: 0;
   top: 0;
 }
+
+.toolbarButton {
+  position: relative;
+  display: inline-block;
+}
+
+.toolbarButton .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  right: 110%;
+}
+
+.toolbarButton .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent black;
+}
+.toolbarButton:hover .tooltiptext {
+  visibility: visible;
+}
