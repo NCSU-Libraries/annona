@@ -205,7 +205,7 @@ figcaption {
   display: inline-block;
 }
 
-.toolbarButton .tooltiptext {
+.toolbarButton .toolbartext {
   visibility: hidden;
   width: 120px;
   background-color: black;
@@ -220,7 +220,7 @@ figcaption {
   right: 110%;
 }
 
-.toolbarButton .tooltiptext::after {
+.toolbarButton .toolbartext::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -230,6 +230,6 @@ figcaption {
   border-style: solid;
   border-color: transparent transparent transparent black;
 }
-.toolbarButton:hover .tooltiptext {
+.toolbarButton:hover .toolbartext {
   visibility: visible;
 }
