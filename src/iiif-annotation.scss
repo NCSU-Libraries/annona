@@ -213,22 +213,23 @@ figcaption {
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 0;
+  padding: 2px 0;
   position: absolute;
   z-index: 1;
-  top: 0px;
-  right: 110%;
+  margin-left: -100px;
+  left: 50%;
+  bottom: 115%;
 }
 
 .toolbarButton .toolbartext::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 100%;
-  margin-top: -5px;
+  top: 100%;
+  left: 88%;
+  margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent black;
+  border-color: black transparent transparent transparent;
 }
 .toolbarButton:hover .toolbartext {
   visibility: visible;
