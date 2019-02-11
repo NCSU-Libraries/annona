@@ -91,9 +91,9 @@ export default {
           var ondict = this.on_structure(resources[i])
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
         }
-        var section = mirador ? mirador : resources[i].on ? resources[i].on : resources[i].target.id;
+        var section = mirador ? mirador : resources[i].on['@id'] ? resources[i].on['@id']:  resources[i].on ? resources[i].on : resources[i].target.id;
         var type;
-        if (mirador){
+        if (mirador && ondict.selector.item != undefined){
           var svg_elem = document.createElement( 'html' )
           svg_elem.innerHTML = ondict.selector.item.value;
           type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0]
@@ -119,8 +119,10 @@ export default {
       }
       axios.get(manifestlink).then(canvas_data => {
         var label = canvas_data.data.label;
-        label = label.en ? label.en[0] : label;
-        this.title = label.split(" ").length > 6 ? label.split(" ").slice(0,6).join(" ") + ' ...' : label;
+        if (label != undefined){
+          label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
+          this.title = label.split(" ").length > 6 ? label.split(" ").slice(0,6).join(" ") + ' ...' : label;
+        }
         var canvases = canvas_data.data.sequences[0].canvases;
         for (var i = 0; i< canvases.length; i++){
           if (canvases[i]['@id'] == canvas) {
