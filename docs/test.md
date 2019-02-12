@@ -9,6 +9,7 @@ permalink: /test/
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <form onsubmit="return loadanno(this)">
   Annotation url: <input type="annourl" name="annourl" id="annourl"><br>
+  Manifest url (optional): <input type="manifesturl" name="manifesturl" id="manifesturl"><br>
   <select id="annotype">
   <option value="url">Single Annotation</option>
   <option value="list">Annotation List</option>
@@ -25,7 +26,9 @@ function loadanno(data){
   var annourl = document.getElementById('annourl').value
   var displaytype = document.getElementById('displaytype').value
   var annotype = document.getElementById('annotype').value
-  var html = `<iiif-${displaytype} annotation${annotype}="${annourl}"><iiif-${displaytype}>`
+  var manifesturl = document.getElementById('manifesturl').value
+
+  var html = `<iiif-${displaytype} annotation${annotype}="${annourl}"${manifesturl ? ` manifesturl=${manifesturl}` : ``}><iiif-${displaytype}>`
   document.getElementById("annotations").innerHTML = html
   console.log(document.getElementById("annotations"))
   return false;
