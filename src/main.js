@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import app from './iiiflibrary.vue'
 
-Vue.config.productionTip = false
+if (process.env.NODE_ENV === 'development') {
+  Vue.config.productionTip = false
 
-new Vue({
-  render: h => h(app)
-}).$mount('#app')
-
+  new Vue({
+    render: h => h(app)
+  }).$mount('#app')
+}
 import vueCustomElement from 'vue-custom-element'
 import 'document-register-element/build/document-register-element';
 import iiifAnnotation from './components/iiifannotation.vue';
