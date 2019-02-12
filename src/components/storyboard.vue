@@ -31,9 +31,9 @@
 import axios from 'axios';
 import truncate from 'truncate-html';
 import openseadragon from 'openseadragon';
-import fullscreen from 'vue-fullscreen'
-import Vue from 'vue'
-import shared from './shared'
+import fullscreen from 'vue-fullscreen';
+import Vue from 'vue';
+import shared from './shared';
 
 Vue.use(fullscreen)
 
@@ -114,6 +114,11 @@ export default {
             canvas_tile += canvas_tile.slice(-1) != '/' ? "/" : '';
             this.seadragontile = canvas_tile + "info.json"
           }
+        }
+        if (this.seadragontile == ""){
+          var tile = canvasId.split("#")[0]
+          tile += tile.slice(-1) != '/' ? "/" : '';
+          this.seadragontile = tile + "info.json"
         }
       this.createViewer()
 

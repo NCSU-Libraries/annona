@@ -27,7 +27,7 @@
 
 <script>
 import axios from 'axios';
-import shared from './shared'
+import shared from './shared';
 
 export default {
   name: 'iiifannotation',
@@ -95,7 +95,12 @@ export default {
                 mirador = mirador.split("=")[1]
               }
               var regionCanvas =  mirador != undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
-              var baseImageUrl = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+              var baseImageUrl;
+              if (canvas == undefined) {
+                baseImageUrl = canvasItem.split("#")[0];
+              } else {
+                baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+              }
               var size;
               if (this.imagesize){
                 size = this.imagesize;
@@ -105,7 +110,7 @@ export default {
                 size = "1200,";
               }
               dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/" + size +"/0/default.jpg");
-              dictionary['fullImage'] = this.fullImage(canvas, regionCanvas);
+              dictionary['fullImage'] = this.fullImage(baseImageUrl, regionCanvas);
             }
             if (this.settings.image_only != true){
               dictionary['chars'] = shared.chars(this.anno[i])['textual_body'];
@@ -144,9 +149,8 @@ export default {
       var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
       return label;
     },
-    fullImage: function(canvas, canvasRegion){
-      var src_link = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
-      var fullImage =  canvasRegion != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
+    fullImage: function(baseImageUrl, canvasRegion){
+      var fullImage =  canvasRegion != "full" ? baseImageUrl + '/full/1200,/0/default.jpg' : '';
       return fullImage;
 
     },
