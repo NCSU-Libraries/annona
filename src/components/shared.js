@@ -31,5 +31,10 @@ export default {
       }
     }
     return {'textual_body':textual_body,'tags':tags}
+  },
+  ocr: function(anno){
+    var res = anno.body ? anno.body : anno.resource;
+    var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
+    return unescape(encodeURIComponent(chars));
   }
 }

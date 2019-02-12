@@ -84,7 +84,7 @@ export default {
           for (var i =0; i < this.anno.length; i++){
             var dictionary = {'image':[]};
             dictionary['label'] = this.label(this.anno[i]);
-            dictionary['ocr'] = decodeURIComponent(escape(this.ocr(this.anno[i])));
+            dictionary['ocr'] = decodeURIComponent(escape(shared.ocr(this.anno[i])));
             var ondict = shared.on_structure(this.anno[i])
             var canvasId = this.anno[i].target != undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
             canvasId = [].concat(canvasId)
@@ -149,11 +149,6 @@ export default {
     label: function(anno) {
       var label = anno.label ? anno.label : anno.resource.label;
       return label;
-    },
-    ocr: function(anno){
-      var res = anno.body ? anno.body : anno.resource;
-      var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
-      return unescape(encodeURIComponent(chars));
     },
     canvasRegion: function(canvasId){
       if (typeof canvasId != 'string'){

@@ -101,7 +101,8 @@ export default {
           type = 'rect'
         }
         var content_data = shared.chars(resources[i])
-        this.annotations.push({'content':content_data['textual_body'], 'tags':content_data['tags']})
+        var ocr = `<div id="ocr">${decodeURIComponent(escape(shared.ocr(resources[i])))}</div>`
+        this.annotations.push({'content':content_data['textual_body'] + ocr, 'tags':content_data['tags']})
         this.zoomsections.push({'section':section.split("=").pop(), 'type':type})
       }
       axios.get(manifestlink).then(canvas_data => {
