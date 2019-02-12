@@ -27,6 +27,7 @@
 
 <script>
 import axios from 'axios';
+import shared from './shared'
 
 export default {
   name: 'iiifannotation',
@@ -64,13 +65,13 @@ export default {
       var manifest_dict;
       if (this.annotationlist == undefined){
         this.anno = [].concat(response.data);
-        var refCanvas = this.anno[0]['target'] ? this.anno[0]['target'] : this.on_structure(this.anno[0]);
-        manifest_dict = Object.keys(refCanvas).indexOf("dcterms:isPartOf") > -1 ? refCanvas['dcterms:isPartOf'] : refCanvas['within'];
+        var target_dict = this.anno[0]['target'] ? this.anno[0]['target'] : shared.on_structure(this.anno[0]);
+        manifest_dict = Object.keys(target_dict).indexOf("dcterms:isPartOf") > -1 ? target_dict['dcterms:isPartOf'] : target_dict['within'];
         this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
           this.anno = response.data.resources ? response.data.resources : response.data;
           if (this.manifesturl == undefined){
-            var on_dict = this.on_structure(this.anno[0]);
+            var on_dict = shared.on_structure(this.anno[0]);
             manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within ? on_dict.within : response.data['within']['within'];
             this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
           } else {
@@ -84,7 +85,7 @@ export default {
             var dictionary = {'image':[]};
             dictionary['label'] = this.label(this.anno[i]);
             dictionary['ocr'] = decodeURIComponent(escape(this.ocr(this.anno[i])));
-            var ondict = this.on_structure(this.anno[i])
+            var ondict = shared.on_structure(this.anno[i])
             var canvasId = this.anno[i].target != undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
             canvasId = [].concat(canvasId)
             for (var cn = 0; cn < canvasId.length; cn++){
@@ -95,7 +96,7 @@ export default {
                   var canvas = existing
                 }
               }
-              if (typeof this.on_structure(this.anno[i]).selector != 'undefined') {
+              if (typeof shared.on_structure(this.anno[i]).selector != 'undefined') {
                 var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
                 mirador = mirador.split("=")[1]
               }
@@ -113,8 +114,9 @@ export default {
               dictionary['fullImage'] = this.fullImage(canvas, regionCanvas);
             }
             if (this.settings.image_only != true){
-              dictionary['chars'] = this.chars(this.anno[i])['textual_body'];
-              dictionary['tags'] = this.chars(this.anno[i])['tags'];
+              dictionary['chars'] = shared.chars(this.anno[i])['textual_body'];
+              var tags = shared.chars(this.anno[i])['tags'];
+              dictionary['tags'] = tags.length > 0 ? '<div class="tagging">' + tags.join('</div><div class="tagging">') + '</div>' : "";
               dictionary['dataset'] = this.dataset(this.anno[i]);
               dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
               dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
@@ -144,16 +146,6 @@ export default {
         change_html.innerHTML = "View Full Image";
       }
     },
-    on_structure: function(anno){
-      if (typeof anno['on'] == 'undefined'){
-        return 'undefined'
-      }
-      else if (typeof anno['on'][0] != 'undefined' && typeof anno['on'][0] != 'string'){
-        return anno['on'][0]
-      } else {
-        return anno['on']
-      }
-    },
     label: function(anno) {
       var label = anno.label ? anno.label : anno.resource.label;
       return label;
@@ -180,29 +172,6 @@ export default {
       var fullImage =  canvasRegion != "full" ? src_link + '/full/1200,/0/default.jpg' : '';
       return fullImage;
 
-    },
-    chars: function(anno) {
-      var res = anno.body ? anno.body : anno.resource;
-      var textual_body = '';
-      var tags = '';
-      res = [].concat(res);
-      for (var i=0; i < res.length; i++){
-        var res_data = res[i];
-        var value;
-        if (res_data['type'] == 'TextualBody' || res_data['@type'] ==  "dctypes:Text"){
-          var purpose = res_data['purpose'] ? res_data['purpose'] : 'dctypes:text';
-          value = res_data['value'] ? res_data['value'] : res_data['chars'];
-          if (purpose == 'tagging'){
-            tags += '<div class="' + purpose + '">' + value + '</div>';
-          } else {
-            textual_body += '<div class="' + purpose + '">' + value + '</div>';
-          }
-        } else if (res_data['@type'] == 'oa:Tag'){
-          value = res_data['value'] ? res_data['value'] : res_data['chars'];
-          tags += '<div class="tagging">' + value + '</div>';
-        }
-      }
-      return {'textual_body':textual_body,'tags':tags}
     },
     dataset: function(anno){
       var res = anno.body ? anno.body : anno.resource;

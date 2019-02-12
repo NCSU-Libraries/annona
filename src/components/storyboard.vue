@@ -33,6 +33,8 @@ import truncate from 'truncate-html';
 import openseadragon from 'openseadragon';
 import fullscreen from 'vue-fullscreen'
 import Vue from 'vue'
+import shared from './shared'
+
 Vue.use(fullscreen)
 
 export default {
@@ -69,7 +71,7 @@ export default {
     this.seadragonid = this.annotationlist.split("/").pop().replace("-list", "").replace(".json","");
     axios.get(this.annotationlist).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
-      var on_dict = this.on_structure(anno[0]);
+      var on_dict = shared.on_structure(anno[0]);
       var manifestlink;
       if (this.manifesturl == undefined){
         var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within
@@ -79,16 +81,14 @@ export default {
       } else {
         manifestlink = this.manifesturl;
       }
-      var target = anno[0].target != undefined ? anno[0].target : on_dict.full
+      var target = anno[0].target != undefined ? anno[0].target : on_dict.full;
       target = target ? target : on_dict;
       target = Object.keys(target).indexOf('id') != -1 ? target.id : target;
       var canvas = target.split("#x")[0]
       var resources = response.data.resources ? response.data.resources : response.data.items;
       for (var i = 0; i < resources.length; i++){
-        var chars = resources[i].resource != Array ? resources[i].resource : resources[i].resource[0];
-        chars = chars ? chars : resources[i].body;
-        if (typeof this.on_structure(resources[i]).selector != 'undefined') {
-          var ondict = this.on_structure(resources[i])
+        if (typeof shared.on_structure(resources[i]).selector != 'undefined') {
+          var ondict = shared.on_structure(resources[i])
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
         }
         var section = mirador ? mirador : resources[i].on['@id'] ? resources[i].on['@id']:  resources[i].on ? resources[i].on : resources[i].target.id;
@@ -100,32 +100,19 @@ export default {
         } else {
           type = 'rect'
         }
-        var content = ''
-        var tags = []
-        if (chars[0] != undefined && chars[0].length == undefined){
-          for (var e=0; e<chars.length; e++){
-            if (chars[e]['@type'].toLowerCase().indexOf('tag') > -1) {
-              tags.push(chars[e].chars)
-            }else {
-              content += `<div class=${chars[e]['@type'].replace("oa:", "").toLowerCase()}>
-              ${chars[e].chars}</div>`
-            }
-          }
-        } else {
-          content = chars.chars ? chars.chars : chars.value;
-        }
-        this.annotations.push({'content':content, 'tags':tags})
+        var content_data = shared.chars(resources[i])
+        this.annotations.push({'content':content_data['textual_body'], 'tags':content_data['tags']})
         this.zoomsections.push({'section':section.split("=").pop(), 'type':type})
       }
       axios.get(manifestlink).then(canvas_data => {
         var label = canvas_data.data.label;
         if (label != undefined){
           label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
-          this.title = label.split(" ").length > 6 ? label.split(" ").slice(0,6).join(" ") + ' ...' : label;
+          this.title = truncate(label, 6, { byWords: true })
         }
         var canvases = canvas_data.data.sequences[0].canvases;
         for (var i = 0; i< canvases.length; i++){
-          if (canvases[i]['@id'] == canvas) {
+          if (canvases[i]['@id'].replace("https", "http") == canvas.replace("https", "http")) {
             var imgResource = canvases[i].images[0].resource
             var canvas_tile = imgResource.service['@id'].split("full")[0]
             canvas_tile += canvas_tile.slice(-1) != '/' ? "/" : '';
@@ -169,16 +156,6 @@ export default {
 
       } else {
         this.ishidden = true;
-      }
-    },
-    on_structure: function(anno){
-      if (typeof anno['on'] == 'undefined'){
-        return 'undefined'
-      }
-      else if (typeof anno['on'][0] != 'undefined' && typeof anno['on'][0] != 'string'){
-        return anno['on'][0]
-      } else {
-        return anno['on']
       }
     },
     zoom: function(inorout){
