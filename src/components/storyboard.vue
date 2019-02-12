@@ -72,26 +72,20 @@ export default {
     axios.get(this.annotationlist).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       var on_dict = shared.on_structure(anno[0]);
-      var manifestlink;
-      if (this.manifesturl == undefined){
-        var manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within
-        manifest_dict = manifest_dict ? manifest_dict : response.data['partOf'];
-        manifest_dict = manifest_dict ? manifest_dict : response.data['within']['within'];
-        manifestlink =  manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
-      } else {
-        manifestlink = this.manifesturl;
-      }
+      var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
+
       var target = anno[0].target != undefined ? anno[0].target : on_dict.full;
       target = target ? target : on_dict;
       target = Object.keys(target).indexOf('id') != -1 ? target.id : target;
       var canvas = target.split("#x")[0]
       var resources = response.data.resources ? response.data.resources : response.data.items;
       for (var i = 0; i < resources.length; i++){
-        if (typeof shared.on_structure(resources[i]).selector != 'undefined') {
-          var ondict = shared.on_structure(resources[i])
+        var ondict = shared.on_structure(resources[i])
+        if (typeof ondict.selector != 'undefined') {
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
         }
-        var section = mirador ? mirador : resources[i].on['@id'] ? resources[i].on['@id']:  resources[i].on ? resources[i].on : resources[i].target.id;
+        var canvasId = resources[i].target != undefined ? resources[i].target : ondict.full ? ondict.full : ondict;
+        var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
         var type;
         if (mirador && ondict.selector.item != undefined){
           var svg_elem = document.createElement( 'html' )
@@ -101,9 +95,9 @@ export default {
           type = 'rect'
         }
         var content_data = shared.chars(resources[i])
-        var ocr = `<div id="ocr">${decodeURIComponent(escape(shared.ocr(resources[i])))}</div>`
-        this.annotations.push({'content':content_data['textual_body'] + ocr, 'tags':content_data['tags']})
-        this.zoomsections.push({'section':section.split("=").pop(), 'type':type})
+        content_data['textual_body'] = content_data['textual_body'] + `<div id="ocr">${decodeURIComponent(escape(shared.ocr(resources[i])))}</div>`
+        this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']})
+        this.zoomsections.push({'section':section, 'type':type})
       }
       axios.get(manifestlink).then(canvas_data => {
         var label = canvas_data.data.label;

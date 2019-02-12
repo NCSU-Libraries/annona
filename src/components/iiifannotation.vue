@@ -62,21 +62,15 @@ export default {
     }
     var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios.get(annotation_json).then(response => {
-      var manifest_dict;
       if (this.annotationlist == undefined){
         this.anno = [].concat(response.data);
         var target_dict = this.anno[0]['target'] ? this.anno[0]['target'] : shared.on_structure(this.anno[0]);
-        manifest_dict = Object.keys(target_dict).indexOf("dcterms:isPartOf") > -1 ? target_dict['dcterms:isPartOf'] : target_dict['within'];
+        var partof = Object.keys(response.data)[Object.keys(response.data).indexOf('partOf')]
+        var manifest_dict = partof ? target_dict[partof] : target_dict['within'];
         this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
-          this.anno = response.data.resources ? response.data.resources : response.data;
-          if (this.manifesturl == undefined){
-            var on_dict = shared.on_structure(this.anno[0]);
-            manifest_dict = response.data['dcterms:isPartOf'] ? response.data['dcterms:isPartOf'] : on_dict.within ? on_dict.within : response.data['within']['within'];
-            this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
-          } else {
-            this.manifestlink = this.manifesturl;
-          }
+          this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
+          this.manifestlink = shared.manifestlink(this.manifesturl, this.anno, response.data)
       }
     }).catch((error) => {console.log(error)}).then(() => {
         axios.get(this.manifestlink).then(response => {
@@ -85,22 +79,22 @@ export default {
             var dictionary = {'image':[]};
             dictionary['label'] = this.label(this.anno[i]);
             dictionary['ocr'] = decodeURIComponent(escape(shared.ocr(this.anno[i])));
-            var ondict = shared.on_structure(this.anno[i])
+            var ondict = shared.on_structure(this.anno[i]);
             var canvasId = this.anno[i].target != undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
             canvasId = [].concat(canvasId)
             for (var cn = 0; cn < canvasId.length; cn++){
               var canvasItem = canvasId[cn]
               for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
                 var existing = this.manifest.sequences[0].canvases[idx];
-                if(existing['@id'].replace("https", "http") == this.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
+                if(existing['@id'].replace("https", "http") == shared.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
                   var canvas = existing
                 }
               }
-              if (typeof shared.on_structure(this.anno[i]).selector != 'undefined') {
+              if (typeof ondict.selector != 'undefined') {
                 var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
                 mirador = mirador.split("=")[1]
               }
-              var regionCanvas =  mirador != undefined ? mirador : this.canvasRegion(canvasItem)['canvasRegion'];
+              var regionCanvas =  mirador != undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
               var baseImageUrl = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
               var size;
               if (this.imagesize){
@@ -147,20 +141,8 @@ export default {
       }
     },
     label: function(anno) {
-      var label = anno.label ? anno.label : anno.resource.label;
+      var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : "";
       return label;
-    },
-    canvasRegion: function(canvasId){
-      if (typeof canvasId != 'string'){
-        canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
-      }
-      if (canvasId.indexOf("#xywh") > -1){
-        var canvasRegion = canvasId.split("#")[1].split("=")[1];
-        canvasId = canvasId.split("#")[0];
-      } else {
-          canvasRegion = "full";
-      }
-      return {'canvasId':canvasId, 'canvasRegion':canvasRegion};
     },
     fullImage: function(canvas, canvasRegion){
       var src_link = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
