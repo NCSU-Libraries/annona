@@ -65,12 +65,12 @@ export default {
       if (this.annotationlist == undefined){
         this.anno = [].concat(response.data);
         var target_dict = this.anno[0]['target'] ? this.anno[0]['target'] : shared.on_structure(this.anno[0]);
-        var partof = Object.keys(response.data)[Object.keys(response.data).indexOf('partOf')]
+        var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))]
         var manifest_dict = partof ? target_dict[partof] : target_dict['within'];
         this.manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
       } else {
           this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
-          this.manifestlink = shared.manifestlink(this.manifesturl, this.anno, response.data)
+          this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], response.data)
       }
     }).catch((error) => {console.log(error)}).then(() => {
         axios.get(this.manifestlink).then(response => {
@@ -141,7 +141,7 @@ export default {
       }
     },
     label: function(anno) {
-      var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : "";
+      var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
       return label;
     },
     fullImage: function(canvas, canvasRegion){

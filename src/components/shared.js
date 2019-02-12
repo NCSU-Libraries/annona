@@ -17,8 +17,9 @@ export default {
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
-      var type = Object.keys(res_data)[Object.keys(res_data).indexOf('type')]
+      var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))]
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
+      purpose = purpose.toLowerCase()
       if (res_data[type] == 'TextualBody'){
         if (purpose == 'tagging'){
           tags.push(value);
@@ -53,7 +54,7 @@ export default {
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
     if (manifesturl == undefined){
-      var partof = Object.keys(responsedata)[Object.keys(responsedata).indexOf('partOf')]
+      var partof = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))]
       var on_dict = this.on_structure(anno);
       var manifest_dict = partof ? responsedata[partof] : on_dict.within ? on_dict.within : responsedata['within']['within'];
       manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];

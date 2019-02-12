@@ -83,6 +83,7 @@ export default {
         var ondict = shared.on_structure(resources[i])
         if (typeof ondict.selector != 'undefined') {
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
+          mirador = mirador.split("=").slice(-1)[0]
         }
         var canvasId = resources[i].target != undefined ? resources[i].target : ondict.full ? ondict.full : ondict;
         var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
