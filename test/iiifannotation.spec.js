@@ -86,6 +86,21 @@ describe('Component', () => {
       expect(annotations.image).toEqual([ 'https://iiif.lib.ncsu.edu/iiif/segIns_023/318,499,2891,3339/1200,/0/default.jpg/6270,3903,2250,2250/1200,/0/default.jpg' ])
       expect(annotations.ocr).toEqual("Annotation 1")
     })
+    test('test settings', async ()  => {
+      const wrapper =  mount(iiifAnnotation,{
+        propsData: {
+          annotationlist: 'oa.json',
+          manifesturl: 'annopagemanifest.json',
+          styling: '{"image_only": true}'
+        }
+      })
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      const annotations = wrapper.vm.$data.annotation_items[0]
+      expect(annotations.image).toEqual([ 'https://iiif.lib.ncsu.edu/iiif/segIns_023/318,499,2891,3339/1200,/0/default.jpg/6270,3903,2250,2250/1200,/0/default.jpg' ])
+      expect(Object.keys(annotations).length).toBe(3)
+      expect(Object.keys(annotations)).toEqual(["image", "altText", "fullImage"])
+    })
     test('test non-existent urls', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {

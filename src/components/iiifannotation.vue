@@ -6,12 +6,12 @@
     </span>
     <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings != undefined ? settings.imagesettings : '']">
     <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
-    <div v-bind:id="ocr" class="text" v-show="item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
-    <p v-if="item.dataset != undefined && item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
-    <div v-html="item.chars"></div>
+    <div v-bind:id="ocr" class="text" v-show="item.ocr && item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
+    <p v-if="item.dataset && item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
+    <div v-show="item.chars && item.chars != ''" v-html="item.chars"></div>
     <div v-show="settings.view_tags != false" v-html="item.tags"></div>
-    <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage != '' && settings.view_larger != false">View Full Image</button>
-    <div id="link_to_object" v-show="settings.view_full_object != false && full_object != ''">
+    <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage && item.fullImage != '' && settings.view_larger != false">View Full Image</button>
+    <div id="link_to_object" v-show="settings.view_full_object != false && full_object && full_object != ''">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
     </div>
     <div>
@@ -77,9 +77,7 @@ export default {
         axios.get(this.manifestlink).then(response => {
           this.manifest = response.data;
           for (var i =0; i < this.anno.length; i++){
-            var dictionary = {'image':[]};
-            dictionary['label'] = this.label(this.anno[i]);
-            dictionary['ocr'] = decodeURIComponent(escape(shared.ocr(this.anno[i])));
+            var dictionary = this.getImageData(this.anno[i], annotation_json, i)
             var ondict = shared.on_structure(this.anno[i]);
             var canvasId = this.anno[i].target != undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
             canvasId = [].concat(canvasId)
@@ -113,18 +111,6 @@ export default {
               dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/" + size +"/0/default.jpg");
               dictionary['fullImage'] = this.fullImage(baseImageUrl, regionCanvas);
             }
-            if (this.settings.image_only != true){
-              dictionary['chars'] = shared.chars(this.anno[i])['textual_body'];
-              var tags = shared.chars(this.anno[i])['tags'];
-              dictionary['tags'] = tags.length > 0 ? '<div class="tagging">' + tags.join('</div><div class="tagging">') + '</div>' : "";
-              dictionary['dataset'] = this.dataset(this.anno[i]);
-              dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
-              dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
-            } else {
-              this.settings.view_ocr = false;
-              this.settings.view_larger = false;
-              this.settings.view_full_object = false;
-            }
             this.annotation_items.push(dictionary);
           }
           if(this.manifestlink != ''){
@@ -154,6 +140,23 @@ export default {
       var fullImage =  canvasRegion != "full" ? baseImageUrl + '/full/1200,/0/default.jpg' : '';
       return fullImage;
 
+    },
+    getImageData: function(anno, annotation_json, i){
+      var dictionary = {'image':[]};
+      if (this.settings.image_only != true){
+        dictionary['label'] = this.label(anno);
+        dictionary['ocr'] = decodeURIComponent(escape(shared.ocr(anno)));
+        dictionary['chars'] = shared.chars(anno)['textual_body'];
+        var tags = shared.chars(anno)['tags'];
+        dictionary['tags'] = tags.length > 0 ? '<div class="tagging">' + tags.join('</div><div class="tagging">') + '</div>' : "";
+        dictionary['dataset'] = this.dataset(anno);
+        dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
+        dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
+      } else {
+        dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
+        this.settings.view_larger = false;
+      }
+      return dictionary
     },
     dataset: function(anno){
       var res = anno.body ? anno.body : anno.resource;
