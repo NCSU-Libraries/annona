@@ -95,8 +95,9 @@ export default {
         } else {
           type = 'rect'
         }
-        var content_data = shared.chars(resources[i])
-        content_data['textual_body'] = content_data['textual_body'] + `<div id="ocr">${decodeURIComponent(escape(shared.ocr(resources[i])))}</div>`
+        var content_data = shared.chars(resources[i]);
+        var ocr = shared.ocr(resources[i]);
+        content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `${'<div id="ocr">${decodeURIComponent(escape(ocr))}</div>'}` : ``}`
         this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']})
         this.zoomsections.push({'section':section, 'type':type})
       }

@@ -58,6 +58,34 @@ describe('Component', () => {
       expect(annotations.dataset.dataset_url).toBe("")
       expect(annotations.altText).toBe("The Bees")
     })
+    test('test w3 annotations list', async ()  => {
+      const wrapper =  mount(iiifAnnotation,{
+        propsData: {
+          annotationlist: 'page.json'
+        }
+      })
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      const annotations = wrapper.vm.$data.annotation_items[0]
+      expect(annotations.image).toEqual(["https://iiif.lib.ncsu.edu/iiif/mc00084-001-te0159-000-001_0001/1800,2000,500,500/1200,/0/default.jpg"])
+      expect(annotations.id).toBe('page0')
+      expect(annotations.label).toBe(undefined)
+      expect(annotations.ocr).toBe("")
+      expect(annotations.chars).toEqual(`<div class="textualbody"><iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/0001-1.json'></iiif-annotation></div>`)
+    })
+    test('test oa list', async ()  => {
+      const wrapper =  mount(iiifAnnotation,{
+        propsData: {
+          annotationlist: 'oa.json',
+          manifesturl: 'annopagemanifest.json'
+        }
+      })
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      const annotations = wrapper.vm.$data.annotation_items[0]
+      expect(annotations.image).toEqual([ 'https://iiif.lib.ncsu.edu/iiif/segIns_023/318,499,2891,3339/1200,/0/default.jpg/6270,3903,2250,2250/1200,/0/default.jpg' ])
+      expect(annotations.ocr).toEqual("Annotation 1")
+    })
     test('test non-existent urls', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
