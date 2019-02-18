@@ -167,14 +167,15 @@ export default {
       var zoomfactor = .8
       if (inorout == 'in' && maxzoom != parseInt(oldzoom)){
         zoomfactor = oldzoom + zoomfactor
+        this.viewer.viewport.zoomTo(zoomfactor)
       } else if (inorout == 'out' && minzoom != parseInt(oldzoom)) {
         zoomfactor = oldzoom - zoomfactor
+        this.viewer.viewport.zoomTo(zoomfactor)
       } else if (inorout == 'home') {
-        zoomfactor = this.viewer.viewport.getHomeZoom()
+        this.viewer.viewport.fitVertically()
       } else {
         return 0
       }
-      this.viewer.viewport.zoomTo(zoomfactor)
     },
     createOverlay: function(){
       if(this.first == true){
