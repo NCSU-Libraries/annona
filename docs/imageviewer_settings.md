@@ -2,7 +2,6 @@
 permalink: /imageviewer_settings
 ---
 
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <script id="config" type="application/json">{

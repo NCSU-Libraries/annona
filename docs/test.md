@@ -4,7 +4,6 @@ title: Test
 permalink: /test/
 ---
 
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <form onsubmit="return loadanno(this)">

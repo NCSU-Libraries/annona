@@ -3,7 +3,6 @@ layout: page
 title: Storyboard Viewer
 permalink: /storyboard/
 ---
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
@@ -12,7 +11,6 @@ In order to create the viewer below the following four lines of code need to be 
 Note: the vue, iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard).
 
 ```
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
@@ -35,7 +33,6 @@ This code is also customizable. Adding a configuration section to the code will 
 |hide_annocontrols| **true** or **false**. This setting hides <i class="fas fa-times close_button"></i> and <i class="fas fa-caret-square-up close_button"></i> in annotation box. **Default** is false |
 
 ```
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 

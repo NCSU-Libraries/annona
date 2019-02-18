@@ -3,7 +3,6 @@ layout: page
 title: Image Viewer
 permalink: /imageviewer/
 ---
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
@@ -11,7 +10,6 @@ permalink: /imageviewer/
 Below is an example of annotation url. This is a single annotation. In the JSON they will have a type of annotation or oa:annotation. An annotation list will have a type of AnnotationList. The following four lines of code are required to render. The first three lines only need to be loaded in a page one time (they do not repeat).
 
 ```
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <iiif-annotation annotationurl="{{site.url}}{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>
@@ -38,7 +36,6 @@ What areas are shown in the embedded image are customizable either through setti
 
 Global setting:
 ```
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <script id="config" type="application/json">{
