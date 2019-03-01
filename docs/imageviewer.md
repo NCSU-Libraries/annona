@@ -6,6 +6,13 @@ permalink: /imageviewer/
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
+| Props      | Values |
+| ----------- | ----------- |
+| annotationurl | Single Annotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-1.json](https://dnoneill.github.io/annotate/annotations/segins-004-1.json)|
+| annotationlist | ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
+| manifesturl | iiif manifest url, only required when annotation does not contain manifest |
+| styling | json structure styling. See [settings table](#settings) for more options |
+
 
 Below is an example of annotation url. This is a single annotation. In the JSON they will have a type of annotation or oa:annotation. An annotation list will have a type of AnnotationList. The following four lines of code are required to render. The first three lines only need to be loaded in a page one time (they do not repeat).
 
@@ -59,7 +66,7 @@ Single annotation:
 "image_only": true,
 "width": "200px"}'></iiif-annotation>
 
-
+{:#settings}
 | Variable      | Settings |
 | ----------- | ----------- |
 | view_larger   | **true** or **false**. Shows/hides the "View Full Image" button. **Default** is true |
