@@ -40,13 +40,19 @@ export default {
     return unescape(encodeURIComponent(chars));
   },
   canvasRegion: function(canvasId){
+    var canvasRegion;
     if (typeof canvasId != 'string'){
-      canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
+      if (canvasId['source']){
+        canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
+        canvasId = canvasId.source;
+      } else {
+        canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
+      }
     }
     if (canvasId.indexOf("#xywh") > -1){
-      var canvasRegion = canvasId.split("#")[1].split("=")[1];
+      canvasRegion = canvasId.split("#")[1].split("=")[1];
       canvasId = canvasId.split("#")[0];
-    } else {
+    } else if (!canvasRegion) {
         canvasRegion = "full";
     }
     return {'canvasId':canvasId, 'canvasRegion':canvasRegion};
@@ -58,7 +64,7 @@ export default {
       var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))]
       var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))]
       var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : this.on_structure(anno)['within'] ? this.on_structure(anno)['within'] : responsedata['within']['within'];
-      manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
+      manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'] ?  manifest_dict['@id'] : manifest_dict;
     } else {
       manifestlink = manifesturl;
     }

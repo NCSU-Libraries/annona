@@ -69,17 +69,11 @@ export default {
   },
   created() {
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
-    this.seadragonid = annotationurl.split("/").pop().replace("-list", "").replace(".json","");
+    this.seadragonid = annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       anno = [].concat(anno)
-      var on_dict = shared.on_structure(anno[0]);
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
-      var target = anno[0].target != undefined ? anno[0].target : on_dict.full;
-      target = target ? target : on_dict;
-      var idfield = Object.keys(target)[Object.keys(target).findIndex(element => element.includes("id"))]
-      target = idfield ? target[idfield] : target;
-      var canvas = target.split("#x")[0]
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i])
         if (typeof ondict.selector != 'undefined') {
@@ -88,6 +82,7 @@ export default {
         }
         var canvasId = anno[i].target != undefined ? anno[i].target : ondict.full ? ondict.full : ondict;
         var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
+        var canvas = shared.canvasRegion(canvasId)['canvasId']
         var type;
         if (mirador && ondict.selector.item != undefined){
           var svg_elem = document.createElement( 'html' )
