@@ -54,9 +54,10 @@ export default {
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
     if (manifesturl == undefined){
-      var partof = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))]
-      var on_dict = this.on_structure(anno);
-      var manifest_dict = partof ? responsedata[partof] : on_dict.within ? on_dict.within : responsedata['within']['within'];
+      var target_dict = anno['target'] ? anno['target'] : this.on_structure(anno);
+      var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))]
+      var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))]
+      var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : this.on_structure(anno)['within'] ? this.on_structure(anno)['within'] : responsedata['within']['within'];
       manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'];
     } else {
       manifestlink = manifesturl;

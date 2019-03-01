@@ -6,6 +6,12 @@ permalink: /storyboard/
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
+
+* A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
+{:toc}
+
+# AnnotationList or AnnotationPage Storyboard
+
 In order to create the viewer below the following four lines of code need to be entered into any html page.
 
 Note: the vue, iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard).
@@ -54,3 +60,16 @@ This code is also customizable. Adding a configuration section to the code will 
 | <i class="fas fa-home"></i>   | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load |
 | <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i>   | These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list |
 | <i class="fas fa-expand"></i> | Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen |
+
+# Single Annotation Storyboard
+
+This application also allows for a single annotation to be loaded in an OpenSeadragon viewer. In order to embed an storyboard viewer for a single annotation the code is below:
+
+```
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-1.json"></iiif-storyboard>
+```
+<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-1.json"></iiif-storyboard>

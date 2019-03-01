@@ -4,13 +4,13 @@
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar != true || settings.hide_toolbar == true && fullscreen == false ">
         <span style="float:right; margin:10px 0 0 20px">
-        <button v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
-        <button v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
+        <button v-show="!annotationurl" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
+        <button v-show="!annotationurl" v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
         <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i><span class="toolbartext">Zoom in</span></button>
         <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i><span class="toolbartext">Zoom out</span></button>
         <button v-on:click="zoom('home')" class="toolbarButton"><i class="fas fa-home"></i><span class="toolbartext">View full image</span></button>
-        <button v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i><span class="toolbartext">Previous Annotation</span></button>
-        <button v-on:click="next('next')" id="next" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i><span class="toolbartext">Next Annotation</span></button>
+        <button v-show="!annotationurl" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i><span class="toolbartext">Previous Annotation</span></button>
+        <button v-show="!annotationurl" v-on:click="next('next')" id="next" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i><span class="toolbartext">Next Annotation</span></button>
         <button v-on:click="toggle_fullscreen()" class="toolbarButton"><span v-html="expandbutton"></span></button>
         </span>
       </span>
@@ -41,7 +41,8 @@ export default {
   name: 'storyboard',
   props: {
     'annotationlist':String,
-    'manifesturl':String
+    'manifesturl':String,
+    'annotationurl': String
   },
   data: function() {
     return {
@@ -54,7 +55,6 @@ export default {
       prev_inactive: true,
       next_inactive: false,
       toolbar_id: '',
-      first: true,
       title: '',
       isclosed: false,
       ishidden: false,
@@ -68,24 +68,25 @@ export default {
     }
   },
   created() {
-    this.seadragonid = this.annotationlist.split("/").pop().replace("-list", "").replace(".json","");
-    axios.get(this.annotationlist).then(response => {
+    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
+    this.seadragonid = annotationurl.split("/").pop().replace("-list", "").replace(".json","");
+    axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
+      anno = [].concat(anno)
       var on_dict = shared.on_structure(anno[0]);
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
-
       var target = anno[0].target != undefined ? anno[0].target : on_dict.full;
       target = target ? target : on_dict;
-      target = Object.keys(target).indexOf('id') != -1 ? target.id : target;
+      var idfield = Object.keys(target)[Object.keys(target).findIndex(element => element.includes("id"))]
+      target = idfield ? target[idfield] : target;
       var canvas = target.split("#x")[0]
-      var resources = response.data.resources ? response.data.resources : response.data.items;
-      for (var i = 0; i < resources.length; i++){
-        var ondict = shared.on_structure(resources[i])
+      for (var i = 0; i < anno.length; i++){
+        var ondict = shared.on_structure(anno[i])
         if (typeof ondict.selector != 'undefined') {
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
           mirador = mirador.split("=").slice(-1)[0]
         }
-        var canvasId = resources[i].target != undefined ? resources[i].target : ondict.full ? ondict.full : ondict;
+        var canvasId = anno[i].target != undefined ? anno[i].target : ondict.full ? ondict.full : ondict;
         var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
         var type;
         if (mirador && ondict.selector.item != undefined){
@@ -95,8 +96,8 @@ export default {
         } else {
           type = 'rect'
         }
-        var content_data = shared.chars(resources[i]);
-        var ocr = shared.ocr(resources[i]);
+        var content_data = shared.chars(anno[i]);
+        var ocr = shared.ocr(anno[i]);
         content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`
         this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']})
         this.zoomsections.push({'section':section, 'type':type})
@@ -121,7 +122,7 @@ export default {
           tile += tile.slice(-1) != '/' ? "/" : '';
           this.seadragontile = tile + "info.json"
         }
-      this.createViewer()
+      this.createViewer(this.annotationurl)
 
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
       if (document.getElementById("config") != null){
@@ -136,7 +137,7 @@ export default {
   });
   },
   methods: {
-    createViewer: function(){
+    createViewer: function(annotationurl){
       this.viewer = openseadragon({
             id: `${this.seadragonid}`,
             type: "image",
@@ -147,6 +148,34 @@ export default {
             showNavigator:  false,
             showNavigationControl: false
       });
+      var viewer = this.viewer;
+      var zoomsections = this.zoomsections;
+      var vue = this;
+      viewer.addHandler('open', function(){
+        for (var i=0; i<zoomsections.length; i++){
+          var xywh = zoomsections[i]['section'].split(",")
+          var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
+          var elem = document.createElement('div');
+          elem.style.display = 'none';
+          if (zoomsections[i]['type'] != 'pin'){
+            elem.id = 'box';
+            elem.className = 'box overlay';
+          } else {
+            elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>'
+            elem.className = 'overlay';
+          }
+          viewer.addOverlay({
+            element: elem,
+            location: rect
+          })
+          vue.addTracking(elem, rect, i, vue)
+          if (annotationurl){
+            elem.style.display = 'block';
+            vue.position = 0
+            vue.next()
+          }
+        }
+    });
     },
     close: function(){
       this.isclosed = true;
@@ -178,39 +207,17 @@ export default {
       }
     },
     createOverlay: function(){
-      if(this.first == true){
-        for (var i=0; i<this.zoomsections.length; i++){
-          var xywh = this.zoomsections[i]['section'].split(",")
-          var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
-          var elem = document.createElement('div');
-          if (this.zoomsections[i]['type'] != 'pin'){
-            elem.id = 'box';
-            elem.className = 'box overlay';
-          } else {
-            elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>'
-            elem.className = 'overlay';
-          }
-          this.viewer.addOverlay({
-            element: elem,
-            location: rect
-          })
-          this.addTracking(elem, rect, i, this)
-        }
-        this.first = false;
-        this.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>'
+      var box_elements = document.getElementsByClassName("overlay")
+      var display_setting;
+      if (box_elements[0].style.display != 'none'){
+        display_setting = 'none'
+        this.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>'
       } else {
-        var box_elements = document.getElementsByClassName("overlay")
-        var display_setting;
-        if (box_elements[0].style.display != 'none'){
-          display_setting = 'none'
-          this.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>'
-        } else {
-          display_setting = 'block'
-          this.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>'
-        }
-        for (var a=0; a<box_elements.length; a++){
-          box_elements[a].style.display = display_setting;
-        }
+        display_setting = 'block'
+        this.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>'
+      }
+      for (var a=0; a<box_elements.length; a++){
+        box_elements[a].style.display = display_setting;
       }
     },
     addTracking: function(node, rect, position, functions){
