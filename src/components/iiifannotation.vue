@@ -1,17 +1,17 @@
 <template>
-  <div class="iiifannotation"  v-if="rendered != false">
+  <div class="iiifannotation"  v-if="rendered !== false">
     <div v-for="item in annotation_items" :key="item.id" :id="item.id">
     <span v-for="image in item.image" :key="image">
-    <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage" v-bind:style="[settings.imagesettings != undefined ? settings.imagesettings : '']">
+    <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
     </span>
-    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings != undefined ? settings.imagesettings : '']">
-    <figcaption v-show="item.label != undefined && settings.view_larger != false" v-html="item.label"></figcaption>
-    <div v-bind:id="ocr" class="text" v-show="item.ocr && item.ocr != '' && settings.view_ocr != false" v-html="item.ocr"></div>
-    <p v-if="item.dataset && item.dataset['dataset_format'] != ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
-    <div v-show="item.chars && item.chars != ''" v-html="item.chars"></div>
-    <div v-show="settings.view_tags != false" v-html="item.tags"></div>
-    <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage && item.fullImage != '' && settings.view_larger != false">View Full Image</button>
-    <div id="link_to_object" v-show="settings.view_full_object != false && full_object && full_object != ''">
+    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+    <figcaption v-show="item.label !== undefined && settings.view_larger !== false" v-html="item.label"></figcaption>
+    <div v-bind:id="ocr" class="text" v-show="item.ocr && item.ocr !== '' && settings.view_ocr !== false" v-html="item.ocr"></div>
+    <p v-if="item.dataset && item.dataset['dataset_format'] !== ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
+    <div v-show="item.chars && item.chars !== ''" v-html="item.chars"></div>
+    <div v-show="settings.view_tags !== false" v-html="item.tags"></div>
+    <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
+    <div id="link_to_object" v-show="settings.view_full_object !== false && full_object && full_object !== ''">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
     </div>
     <div>
@@ -48,7 +48,7 @@ export default {
       }
   },
   created() {
-    if (document.getElementById("config") != null){
+    if (document.getElementById("config") !== null){
       this.settings = JSON.parse(document.getElementById("config").innerHTML);
     }
     if (this.styling) {
@@ -62,7 +62,7 @@ export default {
     }
     var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios.get(annotation_json).then(response => {
-      if (this.annotationlist == undefined){
+      if (this.annotationlist === undefined){
         this.anno = [].concat(response.data);
       } else {
           this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
@@ -74,23 +74,23 @@ export default {
           for (var i =0; i < this.anno.length; i++){
             var dictionary = this.getImageData(this.anno[i], annotation_json, i)
             var ondict = shared.on_structure(this.anno[i]);
-            var canvasId = this.anno[i].target != undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
+            var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
             canvasId = [].concat(canvasId)
             for (var cn = 0; cn < canvasId.length; cn++){
               var canvasItem = canvasId[cn]
               for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
                 var existing = this.manifest.sequences[0].canvases[idx];
-                if(existing['@id'].replace("https", "http") == shared.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
+                if(existing['@id'].replace("https", "http") === shared.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
                   var canvas = existing
                 }
               }
-              if (typeof ondict.selector != 'undefined') {
+              if (typeof ondict.selector !== 'undefined') {
                 var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
                 mirador = mirador.split("=")[1]
               }
-              var regionCanvas =  mirador != undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
+              var regionCanvas =  mirador !== undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
               var baseImageUrl;
-              if (canvas == undefined) {
+              if (canvas === undefined) {
                 baseImageUrl = canvasItem.split("#")[0];
               } else {
                 baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
@@ -108,7 +108,7 @@ export default {
             }
             this.annotation_items.push(dictionary);
           }
-          if(this.manifestlink != ''){
+          if(this.manifestlink !== ''){
             this.rendered = true;
           }
       }).catch((error) => {console.log(error)})
@@ -118,8 +118,8 @@ export default {
     toggle: function(event){
       var parent = event.target.parentElement
       var fullImage = parent.querySelector("#fullimage");
-      var change_html = event.srcElement != undefined ?  event.srcElement : event.target;
-      if (fullImage.style.display == 'none'){
+      var change_html = event.srcElement !== undefined ?  event.srcElement : event.target;
+      if (fullImage.style.display === 'none'){
         fullImage.style.display='inline-block';
         change_html.innerHTML = "Hide Full Image";
       } else {
@@ -132,13 +132,13 @@ export default {
       return label;
     },
     fullImage: function(baseImageUrl, canvasRegion){
-      var fullImage =  canvasRegion != "full" ? baseImageUrl + '/full/1200,/0/default.jpg' : '';
+      var fullImage =  canvasRegion !== "full" ? baseImageUrl + '/full/1200,/0/default.jpg' : '';
       return fullImage;
 
     },
     getImageData: function(anno, annotation_json, i){
       var dictionary = {'image':[]};
-      if (this.settings.image_only != true){
+      if (this.settings.image_only !== true){
         dictionary['label'] = this.label(anno);
         dictionary['ocr'] = decodeURIComponent(escape(shared.ocr(anno)));
         dictionary['chars'] = shared.chars(anno)['textual_body'];
@@ -146,7 +146,7 @@ export default {
         dictionary['tags'] = tags.length > 0 ? '<div class="tagging">' + tags.join('</div><div class="tagging">') + '</div>' : "";
         dictionary['dataset'] = this.dataset(anno);
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
-        dictionary['altText'] = dictionary['ocr'] != '' ? dictionary['ocr'] : dictionary['label'] != undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
+        dictionary['altText'] = dictionary['ocr'] !== '' ? dictionary['ocr'] : dictionary['label'] !== undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         this.settings.view_larger = false;
@@ -155,8 +155,8 @@ export default {
     },
     dataset: function(anno){
       var res = anno.body ? anno.body : anno.resource;
-      var dataset_format = res['format'] && res['@type'] == 'dctypes:Dataset' ? res['format'] : '';
-      var dataset_url = res['@id'] && res['@type'] == 'dctypes:Dataset' ? res['@id'] : '';
+      var dataset_format = res['format'] && res['@type'] === 'dctypes:Dataset' ? res['format'] : '';
+      var dataset_url = res['@id'] && res['@type'] === 'dctypes:Dataset' ? res['@id'] : '';
       return {'dataset_format':dataset_format, 'dataset_url':dataset_url};
     }
   },
@@ -165,7 +165,7 @@ export default {
       var link;
       var keys = Object.keys(this.manifest);
       if (keys.indexOf("related") > -1){
-        if (typeof this.manifest.related == 'string'){
+        if (typeof this.manifest.related === 'string'){
           link = this.manifest.related;
         } else {
           link = this.manifest.related['@id'];

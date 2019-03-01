@@ -1,9 +1,9 @@
 export default {
   on_structure: function(anno){
-    if (typeof anno['on'] == 'undefined'){
+    if (typeof anno['on'] === 'undefined'){
       return 'undefined'
     }
-    else if (typeof anno['on'][0] != 'undefined' && typeof anno['on'][0] != 'string'){
+    else if (typeof anno['on'][0] !== 'undefined' && typeof anno['on'][0] !== 'string'){
       return anno['on'][0]
     } else {
       return anno['on']
@@ -20,15 +20,15 @@ export default {
       var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))]
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
       purpose = purpose.toLowerCase()
-      if (res_data[type] == 'TextualBody'){
-        if (purpose == 'tagging'){
+      if (res_data[type] === 'TextualBody'){
+        if (purpose === 'tagging'){
           tags.push(value);
         } else {
           textual_body += '<div class="' + purpose + '">' + value + '</div>';
         }
-      } else if (res_data[type] == 'oa:Tag'){
+      } else if (res_data[type] === 'oa:Tag'){
         tags.push(value);
-      } else if (res_data[type] != 'cnt:ContentAsText') {
+      } else if (res_data[type] !== 'cnt:ContentAsText') {
         textual_body += '<div class="' + purpose + '">' + value + '</div>';
       }
     }
@@ -36,12 +36,12 @@ export default {
   },
   ocr: function(anno){
     var res = anno.body ? anno.body : anno.resource;
-    var chars = res['chars'] && res['@type'] == 'cnt:ContentAsText' ? res['chars'] : '';
+    var chars = res['chars'] && res['@type'] === 'cnt:ContentAsText' ? res['chars'] : '';
     return unescape(encodeURIComponent(chars));
   },
   canvasRegion: function(canvasId){
     var canvasRegion;
-    if (typeof canvasId != 'string'){
+    if (typeof canvasId !== 'string'){
       if (canvasId['source']){
         canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
         canvasId = canvasId.source;
@@ -59,7 +59,7 @@ export default {
   },
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
-    if (manifesturl == undefined){
+    if (manifesturl === undefined){
       var target_dict = anno['target'] ? anno['target'] : this.on_structure(anno);
       var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))]
       var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))]

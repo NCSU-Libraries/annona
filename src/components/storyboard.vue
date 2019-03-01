@@ -2,7 +2,7 @@
 <div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
-      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar != true || settings.hide_toolbar == true && fullscreen == false ">
+      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar !== true || settings.hide_toolbar === true && fullscreen === false ">
         <span style="float:right; margin:10px 0 0 20px">
         <button v-show="!annotationurl" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
         <button v-show="!annotationurl" v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
@@ -15,14 +15,14 @@
         </span>
       </span>
     </div>
-    <div id="annotation" class="annotation" v-show="prev_inactive != true && next_inactive != true && isclosed != true">
-      <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols != true" id="annotation_controls" style="display:flex;">
+    <div id="annotation" class="annotation" v-show="prev_inactive !== true && next_inactive !== true && isclosed !== true">
+      <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls" style="display:flex;">
       <i class="fas fa-times close_button" v-on:click="close()"></i>
-      <i class="fas fa-caret-square-up close_button" v-on:click="hide()" v-if="ishidden == false"></i>
+      <i class="fas fa-caret-square-up close_button" v-on:click="hide()" v-if="ishidden === false"></i>
       <i class="fas fa-caret-square-down close_button" v-on:click="hide()" v-if="ishidden"></i>
       </span>
       <div id="annotation_excerpt" style="height: auto;" v-if="ishidden" v-html="$options.filters.truncate(currentanno, 2)"></div>
-      <div id="annotation_text" v-html="currentanno" v-if="ishidden == false"></div>
+      <div id="annotation_text" v-html="currentanno" v-if="ishidden === false"></div>
     </div>
   </div>
 </div>
@@ -76,15 +76,15 @@ export default {
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i])
-        if (typeof ondict.selector != 'undefined') {
+        if (typeof ondict.selector !== 'undefined') {
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
           mirador = mirador.split("=").slice(-1)[0]
         }
-        var canvasId = anno[i].target != undefined ? anno[i].target : ondict.full ? ondict.full : ondict;
+        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict.full ? ondict.full : ondict;
         var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
         var canvas = shared.canvasRegion(canvasId)['canvasId']
         var type;
-        if (mirador && ondict.selector.item != undefined){
+        if (mirador && ondict.selector.item !== undefined){
           var svg_elem = document.createElement( 'html' )
           svg_elem.innerHTML = ondict.selector.item.value;
           type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0]
@@ -99,28 +99,28 @@ export default {
       }
       axios.get(manifestlink).then(canvas_data => {
         var label = canvas_data.data.label;
-        if (label != undefined){
+        if (label !== undefined){
           label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
           this.title = truncate(label, 6, { byWords: true })
         }
         var canvases = canvas_data.data.sequences[0].canvases;
         for (var i = 0; i< canvases.length; i++){
-          if (canvases[i]['@id'].replace("https", "http") == canvas.replace("https", "http")) {
+          if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
             var imgResource = canvases[i].images[0].resource
             var canvas_tile = imgResource.service['@id'].split("full")[0]
-            canvas_tile += canvas_tile.slice(-1) != '/' ? "/" : '';
+            canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
             this.seadragontile = canvas_tile + "info.json"
           }
         }
-        if (this.seadragontile == ""){
+        if (this.seadragontile === ""){
           var tile = canvasId.split("#")[0]
-          tile += tile.slice(-1) != '/' ? "/" : '';
+          tile += tile.slice(-1) !== '/' ? "/" : '';
           this.seadragontile = tile + "info.json"
         }
       this.createViewer(this.annotationurl)
 
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
-      if (document.getElementById("config") != null){
+      if (document.getElementById("config") !== null){
         this.settings = JSON.parse(document.getElementById("config").innerHTML);
       }
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
@@ -152,7 +152,7 @@ export default {
           var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
           var elem = document.createElement('div');
           elem.style.display = 'none';
-          if (zoomsections[i]['type'] != 'pin'){
+          if (zoomsections[i]['type'] !== 'pin'){
             elem.id = 'box';
             elem.className = 'box overlay';
           } else {
@@ -177,7 +177,7 @@ export default {
     },
     hide: function(){
       this.anno_elem.parentElement.getElementsByClassName('annotation')[0].removeAttribute('style')
-      if(this.ishidden == true){
+      if(this.ishidden === true){
         this.ishidden = false;
 
       } else {
@@ -189,13 +189,13 @@ export default {
       var minzoom = parseInt(this.viewer.viewport.getMinZoom())
       var maxzoom = parseInt(this.viewer.viewport.getMaxZoom())
       var zoomfactor = .8
-      if (inorout == 'in' && maxzoom != parseInt(oldzoom)){
+      if (inorout === 'in' && maxzoom !== parseInt(oldzoom)){
         zoomfactor = oldzoom + zoomfactor
         this.viewer.viewport.zoomTo(zoomfactor)
-      } else if (inorout == 'out' && minzoom != parseInt(oldzoom)) {
+      } else if (inorout === 'out' && minzoom !== parseInt(oldzoom)) {
         zoomfactor = oldzoom - zoomfactor
         this.viewer.viewport.zoomTo(zoomfactor)
-      } else if (inorout == 'home') {
+      } else if (inorout === 'home') {
         this.viewer.viewport.fitVertically()
       } else {
         return 0
@@ -204,7 +204,7 @@ export default {
     createOverlay: function(){
       var box_elements = document.getElementById(this.seadragonid).getElementsByClassName("overlay")
       var display_setting;
-      if (box_elements[0].style.display != 'none'){
+      if (box_elements[0].style.display !== 'none'){
         display_setting = 'none'
         this.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>'
       } else {
@@ -241,14 +241,14 @@ export default {
     },
     next: function(nextorprev){
       this.isclosed = false;
-      if (nextorprev == 'prev'){
+      if (nextorprev === 'prev'){
         this.position -= 1
-      } else if (nextorprev == 'next') {
+      } else if (nextorprev === 'next') {
         this.position += 1
       } else {
         this.position = this.position
       }
-      if (this.zoomsections[this.position] == undefined){
+      if (this.zoomsections[this.position] === undefined){
         this.viewer.viewport.fitVertically()
         this.currentanno = ''
       } else {
@@ -258,11 +258,11 @@ export default {
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
       }
-      if (this.position == this.zoomsections.length){
+      if (this.position === this.zoomsections.length){
         this.next_inactive = true;
       } else {
         this.next_inactive = false;
-      } if (this.position == -1){
+      } if (this.position === -1){
         this.prev_inactive = true;
       } else {
         this.prev_inactive = false;
@@ -271,14 +271,14 @@ export default {
     autoRun: function(interval){
       interval = interval * 1000;
       var length = this.zoomsections.length;
-      if (this.isautorunning == ''){
-        if (this.position == length){
+      if (this.isautorunning === ''){
+        if (this.position === length){
           this.position = -1;
         }
         var this_functions = this;
         this.isautorunning = setInterval(function() {
           this_functions.next('next')
-          if(this_functions.position == length){
+          if(this_functions.position === length){
             this_functions.position = -1;
           }
         }, interval)
