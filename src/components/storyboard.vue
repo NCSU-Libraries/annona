@@ -207,7 +207,7 @@ export default {
       }
     },
     createOverlay: function(){
-      var box_elements = document.getElementsByClassName("overlay")
+      var box_elements = document.getElementById(this.seadragonid).getElementsByClassName("overlay")
       var display_setting;
       if (box_elements[0].style.display != 'none'){
         display_setting = 'none'
