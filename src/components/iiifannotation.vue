@@ -11,7 +11,7 @@
     <div v-show="item.chars && item.chars !== ''" v-html="item.chars"></div>
     <div v-show="settings.view_tags !== false" v-html="item.tags"></div>
     <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
-    <div id="link_to_object" v-show="settings.view_full_object !== false && full_object && full_object !== ''">
+    <div id="link_to_object" v-show="settings.view_full_object !== false && full_object && full_object !== '' && settings.image_only != true">
       Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
     </div>
     <div>
