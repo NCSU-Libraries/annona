@@ -35,7 +35,7 @@ import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
 
-Vue.use(fullscreen)
+Vue.use(fullscreen);
 
 export default {
   name: 'storyboard',
@@ -72,52 +72,52 @@ export default {
     this.seadragonid = annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
-      anno = [].concat(anno)
+      anno = [].concat(anno);
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
       for (var i = 0; i < anno.length; i++){
-        var ondict = shared.on_structure(anno[i])
+        var ondict = shared.on_structure(anno[i]);
         if (typeof ondict.selector !== 'undefined') {
           var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
-          mirador = mirador.split("=").slice(-1)[0]
+          mirador = mirador.split("=").slice(-1)[0];
         }
         var canvasId = anno[i].target !== undefined ? anno[i].target : ondict.full ? ondict.full : ondict;
         var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
-        var canvas = shared.canvasRegion(canvasId)['canvasId']
+        var canvas = shared.canvasRegion(canvasId)['canvasId'];
         var type;
         if (mirador && ondict.selector.item !== undefined){
-          var svg_elem = document.createElement( 'html' )
+          var svg_elem = document.createElement( 'html' );
           svg_elem.innerHTML = ondict.selector.item.value;
-          type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0]
+          type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0];
         } else {
-          type = 'rect'
+          type = 'rect';
         }
         var content_data = shared.chars(anno[i]);
         var ocr = shared.ocr(anno[i]);
-        content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`
-        this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']})
-        this.zoomsections.push({'section':section, 'type':type})
+        content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
+        this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']});
+        this.zoomsections.push({'section':section, 'type':type});
       }
       axios.get(manifestlink).then(canvas_data => {
         var label = canvas_data.data.label;
         if (label !== undefined){
           label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
-          this.title = truncate(label, 6, { byWords: true })
+          this.title = truncate(label, 6, { byWords: true });
         }
         var canvases = canvas_data.data.sequences[0].canvases;
         for (var i = 0; i< canvases.length; i++){
           if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
-            var imgResource = canvases[i].images[0].resource
-            var canvas_tile = imgResource.service['@id'].split("full")[0]
+            var imgResource = canvases[i].images[0].resource;
+            var canvas_tile = imgResource.service['@id'].split("full")[0];
             canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
-            this.seadragontile = canvas_tile + "info.json"
+            this.seadragontile = canvas_tile + "info.json";
           }
         }
         if (this.seadragontile === ""){
-          var tile = canvasId.split("#")[0]
+          var tile = canvasId.split("#")[0];
           tile += tile.slice(-1) !== '/' ? "/" : '';
-          this.seadragontile = tile + "info.json"
+          this.seadragontile = tile + "info.json";
         }
-      this.createViewer(this.annotationurl)
+      this.createViewer(this.annotationurl);
 
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
       if (document.getElementById("config") !== null){
@@ -148,29 +148,29 @@ export default {
       var vue = this;
       viewer.addHandler('open', function(){
         for (var i=0; i<zoomsections.length; i++){
-          var xywh = zoomsections[i]['section'].split(",")
-          var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
+          var xywh = zoomsections[i]['section'].split(",");
+          var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           var elem = document.createElement('div');
           elem.style.display = 'none';
           if (zoomsections[i]['type'] !== 'pin'){
             elem.id = 'box';
             elem.className = 'box overlay';
           } else {
-            elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>'
+            elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>';
             elem.className = 'overlay';
           }
           viewer.addOverlay({
             element: elem,
             location: rect
-          })
-          vue.addTracking(elem, rect, i, vue)
+          });
+          vue.addTracking(elem, rect, i, vue);
           if (annotationurl){
             elem.style.display = 'block';
-            vue.position = 0
-            vue.next()
+            vue.position = 0;
+            vue.next();
           }
         }
-    });
+      });
     },
     close: function(){
       this.isclosed = true;
@@ -185,31 +185,31 @@ export default {
       }
     },
     zoom: function(inorout){
-      var oldzoom = this.viewer.viewport.getZoom()
-      var minzoom = parseInt(this.viewer.viewport.getMinZoom())
-      var maxzoom = parseInt(this.viewer.viewport.getMaxZoom())
-      var zoomfactor = .8
+      var oldzoom = this.viewer.viewport.getZoom();
+      var minzoom = parseInt(this.viewer.viewport.getMinZoom());
+      var maxzoom = parseInt(this.viewer.viewport.getMaxZoom());
+      var zoomfactor = .8;
       if (inorout === 'in' && maxzoom !== parseInt(oldzoom)){
-        zoomfactor = oldzoom + zoomfactor
-        this.viewer.viewport.zoomTo(zoomfactor)
+        zoomfactor = oldzoom + zoomfactor;
+        this.viewer.viewport.zoomTo(zoomfactor);
       } else if (inorout === 'out' && minzoom !== parseInt(oldzoom)) {
-        zoomfactor = oldzoom - zoomfactor
-        this.viewer.viewport.zoomTo(zoomfactor)
+        zoomfactor = oldzoom - zoomfactor;
+        this.viewer.viewport.zoomTo(zoomfactor);
       } else if (inorout === 'home') {
-        this.viewer.viewport.fitVertically()
+        this.viewer.viewport.fitVertically();
       } else {
-        return 0
+        return 0;
       }
     },
     createOverlay: function(){
-      var box_elements = document.getElementById(this.seadragonid).getElementsByClassName("overlay")
+      var box_elements = document.getElementById(this.seadragonid).getElementsByClassName("overlay");
       var display_setting;
       if (box_elements[0].style.display !== 'none'){
-        display_setting = 'none'
-        this.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>'
+        display_setting = 'none';
+        this.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>';
       } else {
-        display_setting = 'block'
-        this.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>'
+        display_setting = 'block';
+        this.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>';
       }
       for (var a=0; a<box_elements.length; a++){
         box_elements[a].style.display = display_setting;
@@ -222,14 +222,13 @@ export default {
           functions.position = position
           functions.next()
         }
-      }).setTracking(true)
+      }).setTracking(true);
     },
     toggle_fullscreen: function(){
       this.$fullscreen.toggle(this.$el, {
         wrap: false,
         callback: this.fullscreenChange
-      })
-
+      });
     },
     fullscreenChange (fullscreen) {
       if(fullscreen){
@@ -237,26 +236,26 @@ export default {
       } else {
         this.expandbutton = '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>';
       }
-      this.fullscreen = fullscreen
+      this.fullscreen = fullscreen;
     },
     next: function(nextorprev){
       this.isclosed = false;
       if (nextorprev === 'prev'){
-        this.position -= 1
+        this.position -= 1;
       } else if (nextorprev === 'next') {
-        this.position += 1
+        this.position += 1;
       } else {
-        this.position = this.position
+        this.position = this.position;
       }
       if (this.zoomsections[this.position] === undefined){
-        this.viewer.viewport.fitVertically()
-        this.currentanno = ''
+        this.viewer.viewport.fitVertically();
+        this.currentanno = '';
       } else {
-        var xywh = this.zoomsections[this.position]['section'].split(",")
+        var xywh = this.zoomsections[this.position]['section'].split(",");
         var anno_section = this.annotations[this.position];
-        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`
-        var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]))
-        this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible()
+        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`;
+        var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
+        this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
       if (this.position === this.zoomsections.length){
         this.next_inactive = true;
@@ -281,18 +280,18 @@ export default {
           if(this_functions.position === length){
             this_functions.position = -1;
           }
-        }, interval)
-        this.autorunbutton = '<i class="fas fa-stop-circle"></i><span class="toolbartext">Stop auto run</span>'
+        }, interval);
+        this.autorunbutton = '<i class="fas fa-stop-circle"></i><span class="toolbartext">Stop auto run</span>';
       } else {
         clearInterval(this.isautorunning);
         this.isautorunning = '';
-        this.autorunbutton = '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>'
+        this.autorunbutton = '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>';
       }
     }
   },
   filters: {
     truncate: function(string, words_length) {
-      return truncate(string, words_length, { byWords: true })
+      return truncate(string, words_length, { byWords: true });
     }
   }
 }

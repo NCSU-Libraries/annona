@@ -1,12 +1,12 @@
 export default {
   on_structure: function(anno){
     if (typeof anno['on'] === 'undefined'){
-      return 'undefined'
+      return 'undefined';
     }
     else if (typeof anno['on'][0] !== 'undefined' && typeof anno['on'][0] !== 'string'){
-      return anno['on'][0]
+      return anno['on'][0];
     } else {
-      return anno['on']
+      return anno['on'];
     }
   },
   chars: function(anno) {
@@ -17,7 +17,7 @@ export default {
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
-      var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))]
+      var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
       purpose = purpose.toLowerCase()
       if (res_data[type] === 'TextualBody'){
@@ -32,7 +32,7 @@ export default {
         textual_body += '<div class="' + purpose + '">' + value + '</div>';
       }
     }
-    return {'textual_body':textual_body,'tags':tags}
+    return {'textual_body':textual_body,'tags':tags};
   },
   ocr: function(anno){
     var res = anno.body ? anno.body : anno.resource;
@@ -61,8 +61,8 @@ export default {
     var manifestlink;
     if (manifesturl === undefined){
       var target_dict = anno['target'] ? anno['target'] : this.on_structure(anno);
-      var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))]
-      var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))]
+      var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))];
+      var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))];
       var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : this.on_structure(anno)['within'] ? this.on_structure(anno)['within'] : responsedata['within']['within'];
       manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'] ?  manifest_dict['@id'] : manifest_dict;
     } else {

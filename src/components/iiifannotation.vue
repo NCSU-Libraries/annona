@@ -52,13 +52,13 @@ export default {
       this.settings = JSON.parse(document.getElementById("config").innerHTML);
     }
     if (this.styling) {
-      this.settings = JSON.parse(this.styling.replace(/'/g, '"'))
+      this.settings = JSON.parse(this.styling.replace(/'/g, '"'));
     }
     if (this.settings.height){
       var width = this.settings.width ? this.settings.width : 'auto';
-      this.settings.imagesettings = {'height':this.settings.height, 'width':width}
+      this.settings.imagesettings = {'height':this.settings.height, 'width':width};
     } else if (this.settings.width) {
-      this.settings.imagesettings = {'width':this.settings.width}
+      this.settings.imagesettings = {'width':this.settings.width};
     }
     var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios.get(annotation_json).then(response => {
@@ -72,21 +72,21 @@ export default {
         axios.get(this.manifestlink).then(response => {
           this.manifest = response.data;
           for (var i =0; i < this.anno.length; i++){
-            var dictionary = this.getImageData(this.anno[i], annotation_json, i)
+            var dictionary = this.getImageData(this.anno[i], annotation_json, i);
             var ondict = shared.on_structure(this.anno[i]);
             var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
-            canvasId = [].concat(canvasId)
+            canvasId = [].concat(canvasId);
             for (var cn = 0; cn < canvasId.length; cn++){
-              var canvasItem = canvasId[cn]
+              var canvasItem = canvasId[cn];
               for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
                 var existing = this.manifest.sequences[0].canvases[idx];
                 if(existing['@id'].replace("https", "http") === shared.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
-                  var canvas = existing
+                  var canvas = existing;
                 }
               }
               if (typeof ondict.selector !== 'undefined') {
                 var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
-                mirador = mirador.split("=")[1]
+                mirador = mirador.split("=")[1];
               }
               var regionCanvas =  mirador !== undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
               var baseImageUrl;
@@ -116,7 +116,7 @@ export default {
   },
   methods: {
     toggle: function(event){
-      var parent = event.target.parentElement
+      var parent = event.target.parentElement;
       var fullImage = parent.querySelector("#fullimage");
       var change_html = event.srcElement !== undefined ?  event.srcElement : event.target;
       if (fullImage.style.display === 'none'){
@@ -151,7 +151,7 @@ export default {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         this.settings.view_larger = false;
       }
-      return dictionary
+      return dictionary;
     },
     dataset: function(anno){
       var res = anno.body ? anno.body : anno.resource;
