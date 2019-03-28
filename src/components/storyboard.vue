@@ -274,10 +274,9 @@ export default {
         var anno_section = this.annotations[this.position];
         this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`;
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
+        var node = document.getElementById(this.seadragonid).querySelector(`#position${this.position}`)
+        this.makeactive(node);
         if (this.settings.panorzoom == 'pan'){
-          var positionid = `#position${this.position}`
-          var node = document.getElementById(this.seadragonid).querySelector(positionid)
-          this.makeactive(node);
           this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y']))
         } else {
           this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
