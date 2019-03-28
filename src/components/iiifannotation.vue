@@ -90,14 +90,7 @@ export default {
               } else {
                 baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
               }
-              var size;
-              if (this.imagesize){
-                size = this.imagesize;
-              } else if (mirador) {
-                size = "full";
-              } else {
-                size = "1200,";
-              }
+              var size = "1200,";
               dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/" + size +"/0/default.jpg");
               dictionary['fullImage'] = this.fullImage(baseImageUrl, regionCanvas);
             }
