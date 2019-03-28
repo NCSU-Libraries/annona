@@ -8,6 +8,10 @@ permalink: /storyboard_settings/
   "autorun_interval": 4,
   "hide_toolbar": true,
   "fullpage": true,
-  "hide_annocontrols": true
+  "hide_annocontrols": true,
+  "mapmarker": "<svg><circle cx='12' cy='12' r='10' stroke='black' stroke-width='3' fill='red' /></svg> ",
+  "fit": "fill",
+  "panorzoom":"pan",
+  "toggleoverlay": true
 }</script>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json"></iiif-storyboard>

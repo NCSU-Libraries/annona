@@ -42,7 +42,8 @@ export default {
   props: {
     'annotationlist':String,
     'manifesturl':String,
-    'annotationurl': String
+    'annotationurl': String,
+    'styling': String
   },
   data: function() {
     return {
@@ -58,6 +59,7 @@ export default {
       title: '',
       isclosed: false,
       ishidden: false,
+      mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
       isautorunning: '',
       autorunbutton: '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>',
@@ -98,6 +100,7 @@ export default {
         this.zoomsections.push({'section':section, 'type':type});
       }
       axios.get(manifestlink).then(canvas_data => {
+        this.settings = shared.getsettings(this.styling)
         var label = canvas_data.data.label;
         if (label !== undefined){
           label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
@@ -117,14 +120,13 @@ export default {
           tile += tile.slice(-1) !== '/' ? "/" : '';
           this.seadragontile = tile + "info.json";
         }
+
       this.createViewer(this.annotationurl);
 
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
-      if (document.getElementById("config") !== null){
-        this.settings = JSON.parse(document.getElementById("config").innerHTML);
-      }
-      this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
 
+      this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
+      this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
       if(this.settings.autorun_onload){
         this.anno_elem.addEventListener("load", this.autoRun(this.settings.autorun_interval));
       }
@@ -133,6 +135,7 @@ export default {
   },
   methods: {
     createViewer: function(annotationurl){
+      var fit = this.settings.fit == 'fill' ? true : false;
       this.viewer = openseadragon({
             id: `${this.seadragonid}`,
             type: "image",
@@ -141,7 +144,8 @@ export default {
             tileSources: `${this.seadragontile}`,
             toolbar: `${this.toolbar_id}`,
             showNavigator:  false,
-            showNavigationControl: false
+            showNavigationControl: false,
+            homeFillsViewer: fit
       });
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
@@ -152,12 +156,12 @@ export default {
           var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           var elem = document.createElement('div');
           elem.style.display = 'none';
+          elem.id = `position${i}`;
           if (zoomsections[i]['type'] !== 'pin'){
-            elem.id = 'box';
             elem.className = 'box overlay';
           } else {
-            elem.innerHTML = '<i class="fas fa-map-marker-alt map-marker"></i>';
-            elem.className = 'overlay';
+            elem.innerHTML = vue.mapmarker;
+            elem.className = 'mapmarker overlay';
           }
           viewer.addOverlay({
             element: elem,
@@ -169,6 +173,9 @@ export default {
             vue.position = 0;
             vue.next();
           }
+        }
+        if (vue.settings.toggleoverlay){
+          vue.createOverlay();
         }
       });
     },
@@ -185,18 +192,19 @@ export default {
       }
     },
     zoom: function(inorout){
-      var oldzoom = this.viewer.viewport.getZoom();
-      var minzoom = parseInt(this.viewer.viewport.getMinZoom());
-      var maxzoom = parseInt(this.viewer.viewport.getMaxZoom());
-      var zoomfactor = .8;
-      if (inorout === 'in' && maxzoom !== parseInt(oldzoom)){
-        zoomfactor = oldzoom + zoomfactor;
-        this.viewer.viewport.zoomTo(zoomfactor);
-      } else if (inorout === 'out' && minzoom !== parseInt(oldzoom)) {
-        zoomfactor = oldzoom - zoomfactor;
-        this.viewer.viewport.zoomTo(zoomfactor);
+      var oldzoom = parseFloat(this.viewer.viewport.getZoom());
+      var minzoom = parseFloat(this.viewer.viewport.getMinZoom()) -.2;
+      var maxzoom = parseFloat(this.viewer.viewport.getMaxZoom());
+      if (inorout === 'in' && maxzoom >= oldzoom){
+        this.viewer.viewport.zoomBy(1.1);
+      } else if (inorout === 'out' && minzoom <= oldzoom) {
+        this.viewer.viewport.zoomBy(.9);
       } else if (inorout === 'home') {
-        this.viewer.viewport.fitVertically();
+        if (this.settings.fit == 'fill') {
+          this.viewer.viewport.fitBounds(this.viewer.viewport.getHomeBounds())
+        } else {
+          this.viewer.viewport.fitVertically();
+        }
       } else {
         return 0;
       }
@@ -220,6 +228,7 @@ export default {
         element: node,
         clickHandler: function() {
           functions.position = position
+          functions.makeactive(node);
           functions.next()
         }
       }).setTracking(true);
@@ -229,6 +238,15 @@ export default {
         wrap: false,
         callback: this.fullscreenChange
       });
+    },
+    makeactive: function(node){
+      var currentactive = document.getElementsByClassName("active");
+      if (currentactive.length > 0) {
+        currentactive[0].classList.remove("active");
+      }
+      if (node) {
+        node.classList.add('active');
+      }
     },
     fullscreenChange (fullscreen) {
       if(fullscreen){
@@ -248,14 +266,22 @@ export default {
         this.position = this.position;
       }
       if (this.zoomsections[this.position] === undefined){
-        this.viewer.viewport.fitVertically();
+        this.zoom('home')
         this.currentanno = '';
+        this.makeactive(undefined)
       } else {
         var xywh = this.zoomsections[this.position]['section'].split(",");
         var anno_section = this.annotations[this.position];
         this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`;
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
-        this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
+        if (this.settings.panorzoom == 'pan'){
+          var positionid = `position${this.position}`
+          var node = document.getElementById(positionid);
+          this.makeactive(node);
+          this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y']))
+        } else {
+          this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
+        }
       }
       if (this.position === this.zoomsections.length){
         this.next_inactive = true;

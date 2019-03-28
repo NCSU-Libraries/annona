@@ -6,20 +6,24 @@ permalink: /storyboard/
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
+* A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
+{:toc}
+
+# Props
+
 | Props      | Values |
 | ----------- | ----------- |
 | annotationurl | Single Annotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-1.json](https://dnoneill.github.io/annotate/annotations/segins-004-1.json)|
 | annotationlist | ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
+| styling | string structured styling. See [settings table](#settings) for more options |
 
-* A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
-{:toc}
 
 # AnnotationList or AnnotationPage Storyboard
 
 In order to create the viewer below the following four lines of code need to be entered into any html page.
 
-Note: the vue, iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard).
+Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard).
 
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
@@ -32,8 +36,8 @@ Note: the vue, iiif-annotation.js and iiif-annotation.css need to be loaded only
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-storyboard>
 </div>
 
-
-This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all five options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below.
+# Settings
+This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
 
 | Variable      | Settings |
 | ----------- | ----------- |
@@ -42,7 +46,14 @@ This code is also customizable. Adding a configuration section to the code will 
 | hide_toolbar   | **true** or **false**. This will only hide the toolbar when the storyboard is full screen. In order to exit from full screen without the toolbar hit escape key (<kbd>esc</kbd>). **Default** is false. |
 |fullpage|**true** or **false**. This will only fill the browser window. It will only work with a single storyboard. This will not display the storyboard full screen, due to permissions that has to be done by an operator. This will only fill the browser window. **Default** is false |
 |hide_annocontrols| **true** or **false**. This setting hides <i class="fas fa-times close_button"></i> and <i class="fas fa-caret-square-up close_button"></i> in annotation box. **Default** is false |
+| fit | By default the image is fit vertically to the OpenSeadragon viewer. The other option which can be set is to fill the viewer with the image. This can mean the full image is not visible. The value for this is **fill** |
+| panorzoom | **pan**. By default when clicking or tabbing through annotations the viewer will zoom into the annotation area. This can also be set to "pan" which will keep the aspect ration and recenter the image to the clicked annotation |
+| mapmarker | Any HTML object. When creating annotations with Mirador, if a pin is used the default view in the OpenSeadragon viewer is: <i class="fas fa-map-marker-alt"></i>. This can be overridden by entering new HTML for the map marker |
+| toggleoverlay | **true** or **false**. By default this is **false** and the overlay is hidden unless toggled. This setting allows the overlay to be toggled on load |
 
+
+## Global Settings
+Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
@@ -52,10 +63,21 @@ This code is also customizable. Adding a configuration section to the code will 
   "autorun_interval": 4,
   "hide_toolbar": true,
   "fullpage": true,
-  "hide_annocontrols": true
+  "hide_annocontrols": true,
+  "mapmarker": "<svg><circle cx='12' cy='12' r='10' stroke='black' stroke-width='3' fill='red' /></svg> ",
+  "fit": "fill",
+  "panorzoom":"pan",
+  "toggleoverlay": true
 }</script>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json"></iiif-storyboard>
 ```
+## Single annotation setting
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+
+# Toolbar Icons
 
 | Icon      | Purpose |
 | ----------- | ----------- |

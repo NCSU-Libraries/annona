@@ -6,7 +6,7 @@
     </span>
     <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
     <figcaption v-show="item.label !== undefined && settings.view_larger !== false" v-html="item.label"></figcaption>
-    <div v-bind:id="ocr" class="text" v-show="item.ocr && item.ocr !== '' && settings.view_ocr !== false" v-html="item.ocr"></div>
+    <div id="ocr" class="text" v-show="item.ocr && item.ocr !== '' && settings.view_ocr !== false" v-html="item.ocr"></div>
     <p v-if="item.dataset && item.dataset['dataset_format'] !== ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
     <div v-show="item.chars && item.chars !== ''" v-html="item.chars"></div>
     <div v-show="settings.view_tags !== false" v-html="item.tags"></div>
@@ -48,12 +48,7 @@ export default {
       }
   },
   created() {
-    if (document.getElementById("config") !== null){
-      this.settings = JSON.parse(document.getElementById("config").innerHTML);
-    }
-    if (this.styling) {
-      this.settings = JSON.parse(this.styling.replace(/'/g, '"'));
-    }
+    this.settings = shared.getsettings(this.styling);
     if (this.settings.height){
       var width = this.settings.width ? this.settings.width : 'auto';
       this.settings.imagesettings = {'height':this.settings.height, 'width':width};

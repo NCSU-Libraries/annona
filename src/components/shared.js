@@ -9,6 +9,25 @@ export default {
       return anno['on'];
     }
   },
+  getsettings: function(styling) {
+    var settings = {};
+    if (document.getElementById("config") !== null && document.getElementById("config").innerHTML != ''){
+      settings = JSON.parse(document.getElementById("config").innerHTML);
+    }
+    if (styling) {
+      settings = {}
+      var items = styling.split(";");
+      for (var j=0; j<items.length; j++){
+        var keyvalue = items[j].split(":")
+        var value = keyvalue[1].trim();
+        value = value == 'false' ? false : value;
+        value = value == 'true' ? true : value;
+        value = parseInt(value) && parseInt(value).toString().length == value.length ? parseInt(value) : value;
+        settings[keyvalue[0].trim()] = value;
+      }
+    }
+    return settings;
+  },
   chars: function(anno) {
     var res = anno.body ? anno.body : anno.resource;
     var textual_body = '';
