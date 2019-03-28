@@ -16,7 +16,7 @@ export default {
     }
     if (styling) {
       settings = {}
-      var items = styling.split(";");
+      var items = styling.split(";").filter(function(el) { return el != ""; });
       for (var j=0; j<items.length; j++){
         var keyvalue = items[j].split(":")
         var value = keyvalue[1].trim();
