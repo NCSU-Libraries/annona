@@ -90,7 +90,12 @@ export default {
               } else {
                 baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
               }
-              var size = "1200,";
+              var size;
+              if (this.manifesturl.indexOf('iiif/2.0') > -1){
+                size = '1200,';
+              } else {
+                size = 'full';
+              }
               dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/" + size +"/0/default.jpg");
               dictionary['fullImage'] = this.fullImage(baseImageUrl, regionCanvas);
             }
