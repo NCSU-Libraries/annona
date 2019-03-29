@@ -74,7 +74,7 @@ export default {
     } else if (!canvasRegion) {
         canvasRegion = "full";
     }
-    return {'canvasId':canvasId, 'canvasRegion':canvasRegion};
+    return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion};
   },
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;

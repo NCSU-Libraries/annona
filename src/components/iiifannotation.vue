@@ -121,7 +121,7 @@ export default {
           dictionary['fullImage'] = imagedata['fullImage'];
         } else {
           for (var cn = 0; cn < canvasId.length; cn++){
-            var canvasItem = canvasId[cn].replace("/info.json", "");
+            var canvasItem = canvasId[cn]
             var canvasRegion = shared.canvasRegion(canvasItem);
             var image = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
             dictionary['image'].push(image);
