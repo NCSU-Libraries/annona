@@ -98,39 +98,11 @@ export default {
         content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
         this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']});
         this.zoomsections.push({'section':section, 'type':type});
+      } if (manifestlink) {
+        this.getManifestData(manifestlink, canvas, canvasId)
+      } else {
+        this.buildseadragon(canvas)
       }
-      axios.get(manifestlink).then(canvas_data => {
-        this.settings = shared.getsettings(this.styling)
-        var label = canvas_data.data.label;
-        if (label !== undefined){
-          label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
-          this.title = truncate(label, 6, { byWords: true });
-        }
-        var canvases = canvas_data.data.sequences[0].canvases;
-        for (var i = 0; i< canvases.length; i++){
-          if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
-            var imgResource = canvases[i].images[0].resource;
-            var canvas_tile = imgResource.service['@id'].split("full")[0];
-            canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
-            this.seadragontile = canvas_tile + "info.json";
-          }
-        }
-        if (this.seadragontile === ""){
-          var tile = canvasId.split("#")[0];
-          tile += tile.slice(-1) !== '/' ? "/" : '';
-          this.seadragontile = tile + "info.json";
-        }
-
-      this.createViewer(this.annotationurl);
-
-      this.anno_elem = document.getElementById(`${this.seadragonid}`);
-
-      this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
-      this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
-      if(this.settings.autorun_onload){
-        this.anno_elem.addEventListener("load", this.autoRun(this.settings.autorun_interval));
-      }
-    });
   });
   },
   methods: {
@@ -189,6 +161,41 @@ export default {
 
       } else {
         this.ishidden = true;
+      }
+    },
+    getManifestData: function(manifestlink, canvas, canvasId){
+        axios.get(manifestlink).then(canvas_data => {
+          this.settings = shared.getsettings(this.styling)
+          var label = canvas_data.data.label;
+          if (label !== undefined){
+            label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
+            this.title = truncate(label, 6, { byWords: true });
+          }
+          var canvases = canvas_data.data.sequences[0].canvases;
+          for (var i = 0; i< canvases.length; i++){
+            if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
+              var imgResource = canvases[i].images[0].resource;
+              var canvas_tile = imgResource.service['@id'].split("full")[0];
+              canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
+              this.seadragontile = canvas_tile + "info.json";
+            }
+          }
+          this.buildseadragon(canvasId)
+      });
+    },
+    buildseadragon: function(canvasId){
+      this.settings = shared.getsettings(this.styling)
+      if (this.seadragontile === ""){
+        var tile = canvasId.split("#")[0];
+        tile += tile.slice(-1) !== '/' ? "/" : '';
+        this.seadragontile = tile + "info.json";
+      }
+      this.createViewer(this.annotationurl);
+      this.anno_elem = document.getElementById(`${this.seadragonid}`);
+      this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
+      this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
+      if(this.settings.autorun_onload){
+        this.anno_elem.addEventListener("load", this.autoRun(this.settings.autorun_interval));
       }
     },
     zoom: function(inorout){

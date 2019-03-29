@@ -44,7 +44,8 @@ export default {
       settings: {},
       manifestlink: '',
       annotation_items: [],
-      rendered: false
+      rendered: false,
+      annotation_json: ''
       }
   },
   created() {
@@ -55,8 +56,8 @@ export default {
     } else if (this.settings.width) {
       this.settings.imagesettings = {'width':this.settings.width};
     }
-    var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
-    axios.get(annotation_json).then(response => {
+    this.annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
+    axios.get(this.annotation_json).then(response => {
       if (this.annotationlist === undefined){
         this.anno = [].concat(response.data);
       } else {
@@ -64,47 +65,11 @@ export default {
       }
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], response.data)
     }).catch((error) => {console.log(error)}).then(() => {
-        axios.get(this.manifestlink).then(response => {
-          this.manifest = response.data;
-          for (var i =0; i < this.anno.length; i++){
-            var dictionary = this.getImageData(this.anno[i], annotation_json, i);
-            var ondict = shared.on_structure(this.anno[i]);
-            var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
-            canvasId = [].concat(canvasId);
-            for (var cn = 0; cn < canvasId.length; cn++){
-              var canvasItem = canvasId[cn];
-              for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
-                var existing = this.manifest.sequences[0].canvases[idx];
-                if(existing['@id'].replace("https", "http") === shared.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
-                  var canvas = existing;
-                }
-              }
-              if (typeof ondict.selector !== 'undefined') {
-                var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
-                mirador = mirador.split("=")[1];
-              }
-              var regionCanvas =  mirador !== undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
-              var baseImageUrl;
-              if (canvas === undefined) {
-                baseImageUrl = canvasItem.split("#")[0];
-              } else {
-                baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
-              }
-              var size;
-              if (this.manifestlink.indexOf('iiif/2.0') > -1){
-                size = '1200,';
-              } else {
-                size = 'full';
-              }
-              dictionary['image'].push(baseImageUrl + '/' +  regionCanvas + "/" + size +"/0/default.jpg");
-              dictionary['fullImage'] = this.fullImage(baseImageUrl, regionCanvas);
-            }
-            this.annotation_items.push(dictionary);
-          }
-          if(this.manifestlink !== ''){
-            this.rendered = true;
-          }
-      }).catch((error) => {console.log(error)})
+        if (this.manifestlink) {
+          this.getManifestData()
+        } else {
+          this.annoloop(false)
+        }
     })
   },
   methods: {
@@ -128,6 +93,74 @@ export default {
       var fullImage =  canvasRegion !== "full" ? baseImageUrl + '/full/1200,/0/default.jpg' : '';
       return fullImage;
 
+    },
+    getManifestData: function(){
+      axios.get(this.manifestlink).then(response => {
+        this.manifest = response.data;
+        this.annoloop(true);
+        if(this.manifestlink !== ''){
+          this.rendered = true;
+        }
+      }).catch((error) => {console.log(error)})
+    },
+    annoloop: function(hasmanifest) {
+      for (var i =0; i < this.anno.length; i++){
+        var dictionary = this.getImageData(this.anno[i], this.annotation_json, i);
+        var ondict = shared.on_structure(this.anno[i]);
+        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
+        canvasId = [].concat(canvasId);
+        var size;
+        if (this.manifestlink.indexOf('iiif/2.0') > -1){
+          size = '1200,';
+        } else {
+          size = 'full';
+        }
+        if (hasmanifest) {
+          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], size)
+          dictionary['image'] = dictionary['image'].concat(imagedata['image']);
+          dictionary['fullImage'] = imagedata['fullImage'];
+        } else {
+          for (var cn = 0; cn < canvasId.length; cn++){
+            var canvasItem = canvasId[cn].replace("/info.json", "");
+            var canvasRegion = shared.canvasRegion(canvasItem);
+            var image = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
+            dictionary['image'].push(image);
+            dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion']);
+            if (canvasRegion['canvasId']){
+              this.rendered = true;
+            }
+          }
+        }
+        this.annotation_items.push(dictionary);
+      }
+    },
+    getManifestCanvas: function(canvasId, anno, size){
+      var images = [];
+      var fullImage;
+      for (var cn = 0; cn < canvasId.length; cn++){
+        var canvasItem = canvasId[cn];
+        for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
+          var existing = this.manifest.sequences[0].canvases[idx];
+          if(existing['@id'].replace("https", "http") === shared.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
+            var canvas = existing;
+          }
+        }
+        var ondict = shared.on_structure(anno);
+        if (typeof ondict.selector !== 'undefined') {
+          var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
+          mirador = mirador.split("=")[1];
+        }
+        var regionCanvas =  mirador !== undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
+        var baseImageUrl;
+        if (canvas === undefined) {
+          baseImageUrl = canvasItem.split("#")[0];
+        } else {
+          baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+        }
+        images.push(`${baseImageUrl}/${regionCanvas}/${size}/0/default.jpg`);
+        fullImage = this.fullImage(baseImageUrl, regionCanvas);
+      }
+      return {'fullImage': fullImage, 'image': images}
     },
     getImageData: function(anno, annotation_json, i){
       var dictionary = {'image':[]};
