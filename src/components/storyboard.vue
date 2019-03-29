@@ -217,7 +217,7 @@ export default {
       }
     },
     createOverlay: function(){
-      var box_elements = document.getElementById(this.seadragonid).getElementsByClassName("overlay");
+      var box_elements = this.anno_elem.getElementsByClassName("overlay");
       var display_setting;
       if (box_elements[0].style.display !== 'none'){
         display_setting = 'none';
@@ -247,7 +247,7 @@ export default {
       });
     },
     makeactive: function(node){
-      var currentactive = document.getElementsByClassName("active");
+      var currentactive = this.anno_elem.getElementsByClassName("active");
       if (currentactive.length > 0) {
         currentactive[0].classList.remove("active");
       }
@@ -281,7 +281,7 @@ export default {
         var anno_section = this.annotations[this.position];
         this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`;
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
-        var node = document.getElementById(this.seadragonid).querySelector(`#position${this.position}`)
+        var node = this.anno_elem.querySelector(`#position${this.position}`)
         this.makeactive(node);
         if (this.settings.panorzoom == 'pan'){
           this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y']))
