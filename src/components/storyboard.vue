@@ -90,6 +90,8 @@ export default {
           var svg_elem = document.createElement( 'html' );
           svg_elem.innerHTML = ondict.selector.item.value;
           type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0];
+        } else if (anno[i].body && anno[i].body.selector) {
+          type = anno[i].body.selector.value;
         } else {
           type = 'rect';
         }
