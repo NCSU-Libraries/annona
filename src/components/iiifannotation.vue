@@ -1,5 +1,5 @@
 <template>
-  <div class="iiifannotation"  v-if="rendered !== false">
+  <div class="iiifannotation"  v-if="rendered == true">
     <div v-for="item in annotation_items" :key="item.id" :id="item.id">
     <span v-for="image in item.image" :key="image">
     <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
@@ -18,7 +18,7 @@
   </div>
   </div>
   </div>
-  <div v-else>
+  <div v-else-if="rendered == false">
   "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
   Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
   Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
@@ -44,7 +44,7 @@ export default {
       settings: {},
       manifestlink: '',
       annotation_items: [],
-      rendered: false,
+      rendered: '',
       annotation_json: ''
       }
   },
@@ -64,7 +64,7 @@ export default {
           this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       }
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], response.data)
-    }).catch((error) => {console.log(error)}).then(() => {
+    }).catch((error) => {this.rendered = false;console.log(error)}).then(() => {
         if (this.manifestlink) {
           this.getManifestData()
         } else {
@@ -98,10 +98,7 @@ export default {
       axios.get(this.manifestlink).then(response => {
         this.manifest = response.data;
         this.annoloop(true);
-        if(this.manifestlink !== ''){
-          this.rendered = true;
-        }
-      }).catch((error) => {console.log(error)})
+      }).catch((error) => {this.rendered = false; console.log(error);})
     },
     annoloop: function(hasmanifest) {
       for (var i =0; i < this.anno.length; i++){
@@ -126,7 +123,9 @@ export default {
             var image = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
             dictionary['image'].push(image);
             dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion']);
-            if (canvasRegion['canvasId']){
+            if (!canvasRegion['canvasId']){
+              this.rendered = false;
+            } else {
               this.rendered = true;
             }
           }
