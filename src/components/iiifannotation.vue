@@ -123,12 +123,12 @@ export default {
             var image = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
             dictionary['image'].push(image);
             dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion']);
-            if (!canvasRegion['canvasId']){
-              this.rendered = false;
-            } else {
-              this.rendered = true;
-            }
           }
+        }
+        if (!dictionary['image']){
+          this.rendered = false;
+        } else {
+          this.rendered = true;
         }
         this.annotation_items.push(dictionary);
       }
