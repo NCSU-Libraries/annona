@@ -1,5 +1,5 @@
 <template>
-  <div class="iiifannotation"  v-if="rendered !== false">
+  <div class="iiifannotation"  v-if="rendered == true">
     <div v-for="item in annotation_items" :key="item.id" :id="item.id">
     <span v-for="image in item.image" :key="image">
     <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
@@ -44,7 +44,7 @@ export default {
       settings: {},
       manifestlink: '',
       annotation_items: [],
-      rendered: false,
+      rendered: '',
       annotation_json: ''
       }
   },
