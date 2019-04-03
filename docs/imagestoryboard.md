@@ -5,6 +5,11 @@ permalink: /storyboard/
 ---
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<style>
+code {
+  word-wrap: break-word;
+}
+</style>
 
 * A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
 {:toc}
@@ -38,6 +43,8 @@ Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once
 
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
+
+Additionally each of these viewer's CSS can be individually customized. The overlay color is set to lightblue on load and lightgreen when annotation is being viewed. This can easily be customized to each viewer. See [Single annotation settings](#single-annotation-setting) for an example.
 
 | Variable      | Settings |
 | ----------- | ----------- |
@@ -74,8 +81,65 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ## Single annotation setting
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+
+<style>
+#mc00084-001-te0159-000-001-0001 .box {
+  border: 2px solid blue;
+}
+
+#mc00084-001-te0159-000-001-0001 .mapmarker {
+  color: blue;
+  font-size: 39px;
+}
+
+#mc00084-001-te0159-000-001-0001 .map-marker {
+  position:absolute;
+  bottom:0;
+  left: calc(50% - 13px); //for the default map marker this should be the font-size/3;
+}
+
+#mc00084-001-te0159-000-001-0001 .active.box {
+  border: 2px solid red;
+}
+
+#mc00084-001-te0159-000-001-0001 .active.mapmarker {
+  color: red;
+}
+
+#mc00084-001-te0159-000-001-0001 .mapmarker.overlay.active circle, rect {
+  fill: red;
+}
+</style>
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+<style>
+#mc00084-001-te0159-000-001-0001 .box {
+  border: 2px solid blue;
+}
+
+#mc00084-001-te0159-000-001-0001 .mapmarker {
+  color: blue;
+  font-size: 39px;
+}
+
+#mc00084-001-te0159-000-001-0001 .map-marker {
+  position:absolute;
+  bottom:0;
+  left: calc(50% - 13px);
+}
+
+#mc00084-001-te0159-000-001-0001 .active.box {
+  border: 2px solid red;
+}
+
+#mc00084-001-te0159-000-001-0001 .active.mapmarker {
+  color: red;
+}
+
+#mc00084-001-te0159-000-001-0001 .mapmarker.overlay.active circle, rect {
+  fill: red;
+}
+</style>
 
 # Toolbar Icons
 

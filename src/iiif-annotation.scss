@@ -3,7 +3,7 @@ $pin_size: 25;
 $overlay_color: lightblue;
 $seadragon_width: 100%;
 $seadrgon_height: 600px;
-$mid_pin: $pin_size/2 + px;
+$mid_pin: $pin_size/3 + px;
 $pin_font: $pin_size + px;
 $active_color: lightgreen;
 
@@ -61,16 +61,16 @@ $active_color: lightgreen;
     object-fit: scale-down;
 }
 
-.box {
-  border: 2px solid $overlay_color;
-}
-
 .box:hover {
   background:grey;
   opacity: .4;
 }
 
-.overlay {
+.box {
+  border: 2px solid $overlay_color;
+}
+
+.mapmarker {
   color: $overlay_color;
   font-size: $pin_font;
 }

@@ -5,6 +5,11 @@ permalink: /imageviewer/
 ---
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<style>
+code {
+  word-wrap: break-word;
+}
+</style>
 
 * A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
 {:toc}
