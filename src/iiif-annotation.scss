@@ -62,7 +62,7 @@ $active_color: lightgreen;
 }
 
 .box:hover {
-  background:grey;
+  background: grey;
   opacity: .4;
 }
 
@@ -84,7 +84,7 @@ $active_color: lightgreen;
   padding-left: 5px;
 }
 
-.map-marker {
+.mapmarker > * {
   position:absolute;
   bottom:0;
   left: calc(50% - #{$mid_pin});
