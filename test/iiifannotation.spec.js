@@ -105,6 +105,8 @@ describe('Component', () => {
           annotationurl: 'bees2.json'
         }
       })
+      await wrapper.vm.$nextTick()
+      await flushPromises()
       expect(wrapper.html()).toContain('"bees2.json" did not render. Please ensure your annotation link is correct.')
     })
 })
