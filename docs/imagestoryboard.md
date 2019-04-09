@@ -76,67 +76,67 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
   "panorzoom":"pan",
   "toggleoverlay": true
 }</script>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>
 ```
 ## Single annotation setting
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
 
 <style>
-#mc00084-001-te0159-000-001-0001 .box {
+[id="\30 0000001jp2"] .box {
   border: 2px solid blue;
 }
 
-#mc00084-001-te0159-000-001-0001 .mapmarker {
+[id="\30 0000001jp2"] .mapmarker {
   color: blue;
   font-size: 39px;
 }
 
-#mc00084-001-te0159-000-001-0001 .map-marker {
+[id="\30 0000001jp2"] .map-marker {
   position:absolute;
   bottom:0;
   left: calc(50% - 13px); //for the default map marker this should be the font-size/3;
 }
 
-#mc00084-001-te0159-000-001-0001 .active.box {
+[id="\30 0000001jp2"] .active.box {
   border: 2px solid red;
 }
 
-#mc00084-001-te0159-000-001-0001 .active.mapmarker {
+[id="\30 0000001jp2"] .active.mapmarker {
   color: red;
 }
 
-#mc00084-001-te0159-000-001-0001 .mapmarker.overlay.active circle, rect {
+[id="\30 0000001jp2"] .mapmarker.overlay.active circle, rect {
   fill: red;
 }
 </style>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
 <style>
-#mc00084-001-te0159-000-001-0001 .box {
+[id="\30 0000001jp2"] .box {
   border: 2px solid blue;
 }
 
-#mc00084-001-te0159-000-001-0001 .mapmarker {
+[id="\30 0000001jp2"] .mapmarker {
   color: blue;
   font-size: 39px;
 }
 
-#mc00084-001-te0159-000-001-0001 .map-marker {
+[id="\30 0000001jp2"] .map-marker {
   position:absolute;
   bottom:0;
   left: calc(50% - 13px);
 }
 
-#mc00084-001-te0159-000-001-0001 .active.box {
+[id="\30 0000001jp2"] .active.box {
   border: 2px solid red;
 }
 
-#mc00084-001-te0159-000-001-0001 .active.mapmarker {
+[id="\30 0000001jp2"] .active.mapmarker {
   color: red;
 }
 
-#mc00084-001-te0159-000-001-0001 .mapmarker.overlay.active circle, rect {
+[id="\30 0000001jp2"] .mapmarker.overlay.active circle, rect {
   fill: red;
 }
 </style>
