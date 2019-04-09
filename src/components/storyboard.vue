@@ -119,7 +119,9 @@ export default {
             toolbar: `${this.toolbar_id}`,
             showNavigator:  false,
             showNavigationControl: false,
-            homeFillsViewer: fit
+            homeFillsViewer: fit,
+            constrainDuringPan: true,
+            visibilityRatio: 1
       });
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
@@ -286,7 +288,7 @@ export default {
         var node = this.anno_elem.querySelector(`#position${this.position}`)
         this.makeactive(node);
         if (this.settings.panorzoom == 'pan'){
-          this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y']))
+          this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints()
         } else {
           this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
         }
