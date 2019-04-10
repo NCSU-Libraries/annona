@@ -162,10 +162,11 @@ export default {
       this.isclosed = true;
     },
     hide: function(){
-      this.anno_elem.parentElement.getElementsByClassName('annotation')[0].removeAttribute('style')
+      var element = document.getElementById(`${this.seadragonid}_annotation`);
+      element.style.removeProperty("width");
+      element.style.removeProperty("height");
       if(this.ishidden === true){
         this.ishidden = false;
-
       } else {
         this.ishidden = true;
       }

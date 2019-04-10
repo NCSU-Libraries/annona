@@ -82,7 +82,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ```
 ## Single annotation setting
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left"></iiif-storyboard>
 
 <style>
 [id="\30 0000001jp2"] .box {
@@ -113,7 +113,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 }
 </style>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left"></iiif-storyboard>
 <style>
 [id="\30 0000001jp2"] .box {
   border: 2px solid blue;
@@ -140,6 +140,11 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 
 [id="\30 0000001jp2"] .mapmarker.overlay.active circle, rect {
   fill: red;
+}
+
+[id="\30 0000001jp2"] .left {
+  margin-left: -1.5vw;
+  margin-top: -4vh;
 }
 </style>
 
