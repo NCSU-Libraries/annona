@@ -71,7 +71,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
   "hide_toolbar": true,
   "fullpage": true,
   "hide_annocontrols": true,
-  "mapmarker": "<svg><circle cx='12' cy='12' r='10' stroke='black' stroke-width='3' fill='red' /></svg> ",
+  "mapmarker": "<svg height='18' width='18'><circle cx='9' cy='9' r='5' stroke='black' stroke-width='3' fill='lightblue' /></svg>",
   "fit": "fill",
   "panorzoom":"pan",
   "toggleoverlay": true

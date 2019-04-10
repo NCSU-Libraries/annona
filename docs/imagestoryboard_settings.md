@@ -9,9 +9,9 @@ permalink: /storyboard_settings/
   "hide_toolbar": true,
   "fullpage": true,
   "hide_annocontrols": true,
-  "mapmarker": "<svg><circle cx='9' cy='9' r='5' stroke='black' stroke-width='3' fill='lightblue' /></svg>",
+  "mapmarker": "<svg height='18' width='18'><circle cx='9' cy='9' r='5' stroke='black' stroke-width='3' fill='lightblue' /></svg>",
   "fit": "fill",
   "panorzoom":"pan",
   "toggleoverlay": true
 }</script>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4665993-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>
