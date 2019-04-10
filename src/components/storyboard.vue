@@ -15,7 +15,7 @@
         </span>
       </span>
     </div>
-    <div id="annotation" class="annotation" v-show="prev_inactive !== true && next_inactive !== true && isclosed !== true">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="prev_inactive !== true && next_inactive !== true && isclosed !== true">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls" style="display:flex;">
       <i class="fas fa-times close_button" v-on:click="close()"></i>
       <i class="fas fa-caret-square-up close_button" v-on:click="hide()" v-if="ishidden === false"></i>
@@ -127,6 +127,9 @@ export default {
       var zoomsections = this.zoomsections;
       var vue = this;
       viewer.addHandler('open', function(){
+        if (!fit) {
+          vue.viewer.viewport.fitVertically()
+        }
         for (var i=0; i<zoomsections.length; i++){
           var xywh = zoomsections[i]['section'].split(",");
           var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
@@ -292,6 +295,9 @@ export default {
         } else {
           this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
         }
+        if (this.settings.textposition) {
+          this.overlayPosition(xywh);
+        }
       }
       if (this.position === this.zoomsections.length){
         this.next_inactive = true;
@@ -301,6 +307,31 @@ export default {
         this.prev_inactive = true;
       } else {
         this.prev_inactive = false;
+      }
+    },
+    overlayPosition: function(xywh){
+      var elem = document.getElementById(`${this.seadragonid}_annotation`);
+      var positioning = {
+        right: {'x': parseInt(xywh[0])+parseInt(xywh[2]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_LEFT'},
+        left: {'x': parseInt(xywh[0]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_RIGHT'},
+        top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM'},
+        bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP'}
+      }
+      var positions = positioning[this.settings.textposition];
+      var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
+      var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
+      var maxheight = this.viewer.viewport.getContainerSize()['y'] - this.viewer.viewport.viewportToWindowCoordinates(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['y'];
+      elem.classList.add(`${this.settings.textposition}`);
+      elem.style.maxHeight = `${maxheight-35}px`;
+      this.viewer.setMouseNavEnabled(false);
+      if (existingoverlay) {
+        this.viewer.updateOverlay(elem, overlayrect);
+      } else {
+        this.viewer.addOverlay({
+          element: elem,
+          location: overlayrect,
+          placement: positions['placement']
+        });
       }
     },
     autoRun: function(interval){

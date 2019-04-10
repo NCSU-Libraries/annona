@@ -32,7 +32,7 @@ $active_color: lightgreen;
   height: 100vh;
 }
 
-#annotation {
+.annotation {
   width: 10%;
   resize: both;
   border: 2px solid black;
@@ -246,4 +246,22 @@ figcaption {
 
 .mapmarker.overlay.active circle, rect {
   fill: $active_color;
+}
+
+.left {
+  margin-left: calc(-1vw);
+}
+
+.right {
+  margin-left: calc(1vw);
+}
+
+.top {
+  margin-left: 0px;
+  margin-top: calc(-1vw)
+}
+
+.bottom {
+  margin-left: 0px;
+  margin-top: calc(1vw)
 }

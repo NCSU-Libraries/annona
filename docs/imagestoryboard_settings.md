@@ -12,6 +12,7 @@ permalink: /storyboard_settings/
   "mapmarker": "<svg height='18' width='18'><circle cx='9' cy='9' r='5' stroke='black' stroke-width='3' fill='lightblue' /></svg>",
   "fit": "fill",
   "panorzoom":"pan",
-  "toggleoverlay": true
+  "toggleoverlay": true,
+  "textposition": "right"
 }</script>
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>
