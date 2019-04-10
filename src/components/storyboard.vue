@@ -121,7 +121,8 @@ export default {
             showNavigationControl: false,
             homeFillsViewer: fit,
             constrainDuringPan: true,
-            visibilityRatio: 1
+            visibilityRatio: 1,
+            zoomPerScroll: 1
       });
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
@@ -324,7 +325,6 @@ export default {
       var maxheight = this.viewer.viewport.getContainerSize()['y'] - this.viewer.viewport.viewportToWindowCoordinates(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['y'];
       elem.classList.add(`${this.settings.textposition}`);
       elem.style.maxHeight = `${maxheight-35}px`;
-      this.viewer.setMouseNavEnabled(false);
       if (existingoverlay) {
         this.viewer.updateOverlay(elem, overlayrect);
       } else {

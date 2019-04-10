@@ -82,7 +82,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ```
 ## Single annotation setting
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>"></iiif-storyboard>
 
 <style>
 [id="\30 0000001jp2"] .box {
@@ -113,12 +113,12 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 }
 
 [id="\30 0000001jp2"] .left {
-  margin-left: -1.5vw;
-  margin-top: -4vh;
+  margin-left: -.5vw;
+  margin-top: calc(-39px + .5vh)
 }
 </style>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>"></iiif-storyboard>
 <style>
 [id="\30 0000001jp2"] .box {
   border: 2px solid blue;
@@ -148,8 +148,8 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 }
 
 [id="\30 0000001jp2"] .left {
-  margin-left: -1.5vw;
-  margin-top: -4vh;
+  margin-left: -.5vw;
+  margin-top: calc(-39px + .5vh)
 }
 </style>
 
