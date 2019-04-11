@@ -13,6 +13,7 @@ permalink: /storyboard_settings/
   "fit": "fill",
   "panorzoom":"pan",
   "toggleoverlay": true,
-  "textposition": "right"
+  "textposition": "right",
+  "tts": "en"
 }</script>
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>

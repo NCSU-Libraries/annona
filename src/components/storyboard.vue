@@ -27,6 +27,7 @@
   </div>
 </div>
 </template>
+
 <script>
 import axios from 'axios';
 import truncate from 'truncate-html';
@@ -225,6 +226,36 @@ export default {
         return 0;
       }
     },
+    tts: function(text){
+      var synth = window.speechSynthesis;
+      synth.cancel();
+      var div = document.createElement("div");
+      div.innerHTML = text;
+      var speak = div.textContent
+      var speech = new SpeechSynthesisUtterance(speak);
+      speech.lang = this.settings.tts;
+      var this_functions = this;
+      if (!text){
+        this.autoRunTTS()
+      } else {
+        speech.onend = this_functions.autoRunTTS
+      }
+      synth.speak(speech)
+    },
+    autoRunTTS: function(){
+      if (this.isautorunning){
+        if (this.position === this.zoomsections.length){
+          this.position = -1;
+        }
+        var this_functions = this;
+        var interval = this.settings.autorun_interval*1000;
+        this_functions.isautorunning = setTimeout(function(){
+          this_functions.next('next')
+        }, interval);
+      } else {
+        clearTimeout(this.isautorunning)
+      }
+    },
     createOverlay: function(){
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
       var display_setting;
@@ -280,6 +311,10 @@ export default {
         this.position += 1;
       } else {
         this.position = this.position;
+      }
+      if (this.settings.tts){
+        var content = this.annotations[this.position] ? this.annotations[this.position]['content'] : '';
+        this.tts(content)
       }
       if (this.zoomsections[this.position] === undefined){
         this.zoom('home')
@@ -343,12 +378,17 @@ export default {
           this.position = -1;
         }
         var this_functions = this;
-        this.isautorunning = setInterval(function() {
-          this_functions.next('next')
-          if(this_functions.position === length){
-            this_functions.position = -1;
-          }
-        }, interval);
+        if (this.settings.tts) {
+          this.isautorunning = true;
+          this.next('next')
+        } else {
+          this.isautorunning = setInterval(function() {
+            this_functions.next('next')
+            if(this_functions.position === length){
+              this_functions.position = -1;
+            }
+          }, interval);
+        }
         this.autorunbutton = '<i class="fas fa-stop-circle"></i><span class="toolbartext">Stop auto run</span>';
       } else {
         clearInterval(this.isautorunning);
@@ -364,6 +404,7 @@ export default {
   }
 }
 </script>
+
 <style lang="scss">
 @import '../iiif-annotation.scss'
 </style>
