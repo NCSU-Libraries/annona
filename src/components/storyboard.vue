@@ -16,7 +16,7 @@
       </span>
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="prev_inactive !== true && next_inactive !== true && isclosed !== true">
-      <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls" style="display:flex;">
+      <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
       <span><i class="fas fa-times close_button" v-on:click="close()"></i></span>
       <span v-html="buttons.hide_button" v-on:click="hide()"></span>
       <span v-html="buttons.playpause" v-on:click="playpause()" v-if="settings.tts"></span>
@@ -136,6 +136,9 @@ export default {
         if (!fit) {
           vue.viewer.viewport.fitVertically()
         }
+        if(vue.settings.autorun_onload){
+          vue.autoRun(vue.settings.autorun_interval);
+        }
         for (var i=0; i<zoomsections.length; i++){
           var xywh = zoomsections[i]['section'].split(",");
           var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
@@ -224,9 +227,6 @@ export default {
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
-      if(this.settings.autorun_onload){
-        this.anno_elem.addEventListener("load", this.autoRun(this.settings.autorun_interval));
-      }
     },
     zoom: function(inorout){
       var oldzoom = parseFloat(this.viewer.viewport.getZoom());
@@ -410,7 +410,7 @@ export default {
             }
           }, interval);
         }
-        this.buttons.autorunbutton = '<i class="fas fa-stop"></i><span class="toolbartext">Stop auto run</span>';
+        this.buttons.autorunbutton = '<i class="fas fa-stop-circle"></i><span class="toolbartext">Stop auto run</span>';
       } else {
         clearInterval(this.isautorunning);
         this.isautorunning = '';
