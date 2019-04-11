@@ -4,22 +4,22 @@
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar !== true || settings.hide_toolbar === true && fullscreen === false ">
         <span style="float:right; margin:10px 0 0 20px">
-        <button v-show="!annotationurl" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="autorunbutton"></span></button>
-        <button v-show="!annotationurl" v-on:click="createOverlay()" class="toolbarButton"><span v-html="overlaybutton"></span></button>
+        <button v-show="!annotationurl" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="buttons.autorunbutton"></span></button>
+        <button v-show="!annotationurl" v-on:click="createOverlay()" class="toolbarButton"><span v-html="buttons.overlaybutton"></span></button>
         <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i><span class="toolbartext">Zoom in</span></button>
         <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i><span class="toolbartext">Zoom out</span></button>
         <button v-on:click="zoom('home')" class="toolbarButton"><i class="fas fa-home"></i><span class="toolbartext">View full image</span></button>
         <button v-show="!annotationurl" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i><span class="toolbartext">Previous Annotation</span></button>
         <button v-show="!annotationurl" v-on:click="next('next')" id="next" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i><span class="toolbartext">Next Annotation</span></button>
-        <button v-on:click="toggle_fullscreen()" class="toolbarButton"><span v-html="expandbutton"></span></button>
+        <button v-on:click="toggle_fullscreen()" class="toolbarButton"><span v-html="buttons.expandbutton"></span></button>
         </span>
       </span>
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="prev_inactive !== true && next_inactive !== true && isclosed !== true">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls" style="display:flex;">
-      <i class="fas fa-times close_button" v-on:click="close()"></i>
-      <i class="fas fa-caret-square-up close_button" v-on:click="hide()" v-if="ishidden === false"></i>
-      <i class="fas fa-caret-square-down close_button" v-on:click="hide()" v-if="ishidden"></i>
+      <span><i class="fas fa-times close_button" v-on:click="close()"></i></span>
+      <span v-html="buttons.hide_button" v-on:click="hide()"></span>
+      <span v-html="buttons.playpause" v-on:click="playpause()" v-if="settings.tts"></span>
       </span>
       <div id="annotation_excerpt" style="height: auto;" v-if="ishidden" v-html="$options.filters.truncate(currentanno, 2)"></div>
       <div id="annotation_text" v-html="currentanno" v-if="ishidden === false"></div>
@@ -63,10 +63,14 @@ export default {
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
       isautorunning: '',
-      autorunbutton: '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>',
-      overlaybutton: '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>',
+      buttons: {
+        'autorunbutton': '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>',
+        'overlaybutton': '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>',
+        'expandbutton' : '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>',
+        'hide_button' : '<i class="fas fa-caret-up close_button"></i>',
+        'playpause': '<i class="fas fa-pause close_button"></i>'
+      },
       settings: {},
-      expandbutton: '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>',
       fullscreen: false
     }
   },
@@ -123,7 +127,7 @@ export default {
             homeFillsViewer: fit,
             constrainDuringPan: true,
             visibilityRatio: 1,
-            zoomPerScroll: 1
+            zoomPerClick: 1
       });
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
@@ -163,14 +167,30 @@ export default {
     close: function(){
       this.isclosed = true;
     },
+    playpause: function(){
+      var synth = window.speechSynthesis;
+      if (synth.paused){
+        synth.resume();
+        this.buttons.playpause = '<i class="fas fa-pause close_button"></i>'
+      } else if (!synth.speaking) {
+        var content = this.annotations[this.position] ? this.annotations[this.position]['content'] : '';
+        this.tts(content)
+        this.buttons.playpause = '<i class="fas fa-pause close_button"></i>'
+      } else {
+        synth.pause();
+        this.buttons.playpause = '<i class="fas fa-play close_button"></i>'
+      }
+    },
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("width");
       element.style.removeProperty("height");
       if(this.ishidden === true){
         this.ishidden = false;
+        this.buttons.hide_button = '<i class="fas fa-caret-up close_button"></i>'
       } else {
         this.ishidden = true;
+        this.buttons.hide_button = '<i class="fas fa-caret-down close_button"></i>'
       }
     },
     getManifestData: function(manifestlink, canvas, canvasId){
@@ -243,6 +263,7 @@ export default {
       synth.speak(speech)
     },
     autoRunTTS: function(){
+      this.buttons.playpause = '<i class="fas fa-play close_button"></i>'
       if (this.isautorunning){
         if (this.position === this.zoomsections.length){
           this.position = -1;
@@ -261,10 +282,10 @@ export default {
       var display_setting;
       if (box_elements[0].style.display !== 'none'){
         display_setting = 'none';
-        this.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>';
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>';
       } else {
         display_setting = 'block';
-        this.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>';
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>';
       }
       for (var a=0; a<box_elements.length; a++){
         box_elements[a].style.display = display_setting;
@@ -297,9 +318,9 @@ export default {
     },
     fullscreenChange (fullscreen) {
       if(fullscreen){
-        this.expandbutton = '<i class="fas fa-compress"></i><span class="toolbartext">Exit Full Screen</span>';
+        this.buttons.expandbutton = '<i class="fas fa-compress"></i><span class="toolbartext">Exit Full Screen</span>';
       } else {
-        this.expandbutton = '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>';
+        this.buttons.expandbutton = '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>';
       }
       this.fullscreen = fullscreen;
     },
@@ -389,11 +410,11 @@ export default {
             }
           }, interval);
         }
-        this.autorunbutton = '<i class="fas fa-stop-circle"></i><span class="toolbartext">Stop auto run</span>';
+        this.buttons.autorunbutton = '<i class="fas fa-stop"></i><span class="toolbartext">Stop auto run</span>';
       } else {
         clearInterval(this.isautorunning);
         this.isautorunning = '';
-        this.autorunbutton = '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>';
+        this.buttons.autorunbutton = '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>';
       }
     }
   },
