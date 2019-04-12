@@ -13,6 +13,7 @@ $active_color: lightgreen;
 }
 .toolbarButton {
   font-size: 22px;
+  background-color: white;
 }
 
 .storyboard_viewer {
@@ -305,5 +306,8 @@ figcaption {
   .left, .right, .top, .bottom {
     width: auto;
     height: auto;
+  }
+  .toolbarButton {
+    margin-left: 5px;
   }
 }
