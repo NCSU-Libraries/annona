@@ -44,7 +44,6 @@ $active_color: lightgreen;
   max-height: 100%;
   height: auto;
   overflow: scroll;
-  padding: 2px;
   margin-left: 20px;
   word-wrap: break-word;
 }
@@ -52,7 +51,6 @@ $active_color: lightgreen;
 #annotation_text, #annotation_excerpt {
   word-wrap: break-word;
   height: auto;
-  max-height: 450px;
   padding: 2px 5px 5px;
 }
 
@@ -260,31 +258,52 @@ figcaption {
 
 .left {
   margin-left: calc(-1vw);
+  resize: none;
 }
 
 .right {
   margin-left: calc(1vw);
+  resize: none;
 }
 
 .top {
   margin-left: 0px;
+  resize: none;
   margin-top: calc(-1vw)
 }
 
 .bottom {
   margin-left: 0px;
+  resize: none;
   margin-top: calc(1vw)
 }
 
-#annotation_text::before, #annotation_excerpt::before {
-  content: "";
+#annotation_controls {
   display: flex;
-  width: 100%;
-  margin: 4px 0px 4px;
-  border-top: 2px solid black;
+  background: black;
+  position: -web-sticky;
+  position: sticky;
+  top: 0;
 }
 
-#annotation_controls {
-  margin: 3px 3px 0px;
-  display: flex;
+@media only screen and (max-width: 600px) {
+  .annotation {
+    width: 100%;
+    resize: both;
+    border: 2px solid black;
+    background: white;
+    position: absolute;
+    top: 40px;
+    z-index: 2;
+    max-width: 100%;
+    height: auto;
+    overflow: scroll;
+    margin-left: 0px;
+    word-wrap: break-word;
+    max-height: 100px;
+  }
+  .left, .right, .top, .bottom {
+    width: auto;
+    height: auto;
+  }
 }

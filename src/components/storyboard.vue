@@ -115,7 +115,7 @@ export default {
   methods: {
     createViewer: function(annotationurl){
       var fit = this.settings.fit == 'fill' ? true : false;
-      this.viewer = openseadragon({
+      var osdsettings = {
             id: `${this.seadragonid}`,
             type: "image",
             nextButton: 'next',
@@ -126,9 +126,13 @@ export default {
             showNavigationControl: false,
             homeFillsViewer: fit,
             constrainDuringPan: true,
-            visibilityRatio: 1,
-            zoomPerClick: 1
-      });
+            visibilityRatio: 1
+      }
+      if (this.settings.textposition) {
+        osdsettings['zoomPerClick'] = 1;
+        osdsettings['zoomPerScroll'] = 1;
+      }
+      this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
       var vue = this;
@@ -261,6 +265,7 @@ export default {
         speech.onend = this_functions.autoRunTTS
       }
       synth.speak(speech)
+      this.buttons.playpause = '<i class="fas fa-pause close_button"></i>'
     },
     autoRunTTS: function(){
       this.buttons.playpause = '<i class="fas fa-play close_button"></i>'
