@@ -268,7 +268,9 @@ export default {
       this.buttons.playpause = '<i class="fas fa-pause close_button"></i>'
     },
     autoRunTTS: function(){
-      this.buttons.playpause = '<i class="fas fa-play close_button"></i>'
+      if(!window.speechSynthesis.speaking){
+        this.buttons.playpause = '<i class="fas fa-play close_button"></i>'
+      }
       if (this.isautorunning){
         if (this.position === this.zoomsections.length){
           this.position = -1;
