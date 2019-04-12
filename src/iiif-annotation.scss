@@ -112,6 +112,10 @@ $active_color: lightgreen;
   z-index: 102;
 }
 
+.fullpage .toolbarButton {
+  margin-left: 5px;
+}
+
 .tags {
   font-size: smaller;
   font-style: italic;
@@ -301,13 +305,10 @@ figcaption {
     overflow: scroll;
     margin-left: 0px;
     word-wrap: break-word;
-    max-height: 100px;
+    max-height: 33%;
   }
   .left, .right, .top, .bottom {
     width: auto;
     height: auto;
-  }
-  .toolbarButton {
-    margin-left: 5px;
   }
 }
