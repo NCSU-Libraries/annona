@@ -4,6 +4,7 @@
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar !== true || settings.hide_toolbar === true && fullscreen === false ">
         <span style="float:right; margin:10px 0 0 20px">
+        <button v-on:click="showtags()" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton"><span v-html="buttons.tags"></span></button>
         <button v-show="!annotationurl" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="buttons.autorunbutton"></span></button>
         <button v-show="!annotationurl" v-on:click="createOverlay()" class="toolbarButton"><span v-html="buttons.overlaybutton"></span></button>
         <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i><span class="toolbartext">Zoom in</span></button>
@@ -15,14 +16,20 @@
         </span>
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="prev_inactive !== true && next_inactive !== true && isclosed !== true">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="istags || prev_inactive !== true && next_inactive !== true && isclosed !== true">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-      <span><i class="fas fa-times close_button" v-on:click="close()"></i></span>
-      <span v-html="buttons.hide_button" v-on:click="hide()"></span>
-      <span v-html="buttons.playpause" v-on:click="playpause()" v-if="settings.tts"></span>
+      <span class="close_button" ><i class="fas fa-times" v-on:click="close()"></i></span>
+      <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
+      <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
+      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
       </span>
-      <div id="annotation_excerpt" style="height: auto;" v-if="ishidden" v-html="$options.filters.truncate(currentanno, 2)"></div>
-      <div id="annotation_text" v-html="currentanno" v-if="ishidden === false"></div>
+      <div id="tags" v-if="istags">
+        <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
+          <a v-bind:style="'color: ' + value" v-on:click="hideshowalltags(key)">{{key.split("_").join(" ")}}</a>
+        </div>
+      </div>
+      <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, 2)"></div>
+      <div id="annotation_text" v-html="currentanno" v-if="ishidden === false && !istags"></div>
     </div>
   </div>
 </div>
@@ -62,16 +69,19 @@ export default {
       ishidden: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
+      istags: false,
       isautorunning: '',
       buttons: {
         'autorunbutton': '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>',
         'overlaybutton': '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>',
         'expandbutton' : '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>',
-        'hide_button' : '<i class="fas fa-caret-up close_button"></i>',
-        'playpause': '<i class="fas fa-pause close_button"></i>'
+        'hide_button' : '<i class="fas fa-caret-up"></i>',
+        'playpause': '<i class="fas fa-play"></i>',
+        'tags': '<i class="fas fa-tags"></i>'
       },
       settings: {},
-      fullscreen: false
+      fullscreen: false,
+      tagslist: {}
     }
   },
   created() {
@@ -110,10 +120,15 @@ export default {
       } else {
         this.buildseadragon(canvas)
       }
+      var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
+      for (var jar=0; jar<tags.length; jar++){
+        var randomcolor = '#'+Math.random().toString(16).substr(-6);
+        this.tagslist[tags[jar]] = randomcolor;
+      }
   });
   },
   methods: {
-    createViewer: function(annotationurl){
+    createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;
       var osdsettings = {
             id: `${this.seadragonid}`,
@@ -144,27 +159,14 @@ export default {
           vue.autoRun(vue.settings.autorun_interval);
         }
         for (var i=0; i<zoomsections.length; i++){
-          var xywh = zoomsections[i]['section'].split(",");
-          var rect = viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
-          var elem = document.createElement('div');
-          elem.style.display = 'none';
-          elem.id = `position${i}`;
-          if (zoomsections[i]['type'] !== 'pin'){
-            elem.className = 'box overlay';
+          if (vue.annotations[i]['tags'].length > 0){
+            for (var jl=0; jl<vue.annotations[i]['tags'].length; jl++){
+              vue.createOverlayElement(i, vue.annotations[i]['tags'][jl], zoomsections[i])
+            }
           } else {
-            elem.innerHTML = vue.mapmarker;
-            elem.className = 'mapmarker overlay';
+            vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i])
           }
-          viewer.addOverlay({
-            element: elem,
-            location: rect
-          });
-          vue.addTracking(elem, rect, i, vue);
-          if (annotationurl){
-            elem.style.display = 'block';
-            vue.position = 0;
-            vue.next();
-          }
+
         }
         if (vue.settings.toggleoverlay){
           vue.createOverlay();
@@ -174,18 +176,46 @@ export default {
     close: function(){
       this.isclosed = true;
     },
+    createOverlayElement: function(position, tags, zoomsections) {
+      var xywh = zoomsections['section'].split(",");
+      var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
+      var elem = document.createElement('div');
+      elem.style.display = 'none';
+      elem.id = `position${position}`;
+      var classes = `overlay ${tags}`
+      if (zoomsections['type'] !== 'pin'){
+        elem.className = `box ${classes.trim()}`;
+      } else {
+        elem.innerHTML = this.mapmarker;
+        elem.className = `mapmarker ${classes.trim()}`;
+      }
+      if (this.tagslist[tags]){
+        elem.style.borderColor = this.tagslist[tags];
+        elem.style.color = this.tagslist[tags];
+      }
+      this.viewer.addOverlay({
+        element: elem,
+        location: rect
+      });
+      this.addTracking(elem, rect, position, this);
+      if (this.annotationurl){
+        elem.style.display = 'block';
+        this.position = 0;
+        this.next();
+      }
+    },
     playpause: function(){
       var synth = window.speechSynthesis;
       if (synth.paused){
         synth.resume();
-        this.buttons.playpause = '<i class="fas fa-pause close_button"></i>'
+        this.buttons.playpause = '<i class="fas fa-pause"></i>'
       } else if (!synth.speaking) {
         var content = this.annotations[this.position] ? this.annotations[this.position]['content'] : '';
         this.tts(content)
-        this.buttons.playpause = '<i class="fas fa-pause close_button"></i>'
+        this.buttons.playpause = '<i class="fas fa-pause"></i>'
       } else {
         synth.pause();
-        this.buttons.playpause = '<i class="fas fa-play close_button"></i>'
+        this.buttons.playpause = '<i class="fas fa-play"></i>'
       }
     },
     hide: function(){
@@ -194,10 +224,42 @@ export default {
       element.style.removeProperty("height");
       if(this.ishidden === true){
         this.ishidden = false;
-        this.buttons.hide_button = '<i class="fas fa-caret-up close_button"></i>'
+        this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
       } else {
         this.ishidden = true;
-        this.buttons.hide_button = '<i class="fas fa-caret-down close_button"></i>'
+        this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
+      }
+    },
+    showtags: function(){
+      if(this.istags){
+        this.buttons.tags = '<i class="fas fa-tag"></i>'
+        this.istags = false;
+      } else {
+        this.buttons.tags = '<i class="fas fa-file-alt"></i>'
+        this.istags = true;
+      }
+    },
+    hideshowalltags: function(tag){
+      var elem = this.anno_elem.getElementsByClassName(tag)
+      var box_elements = this.anno_elem.getElementsByClassName("overlay");
+      for (var a=0; a<box_elements.length; a++){
+        box_elements[a].style.zIndex = 0;
+      }
+      for (var j=0; j<elem.length; j++){
+        if (elem[j].style.display != 'none') {
+          elem[j].style.display = 'none'
+        } else {
+          elem[j].style.display = 'block'
+          elem[j].style.zIndex = 1000;
+        }
+      }
+      var displaying = Array.from(box_elements).some(function(element) {
+        return element.style.display !== 'none';
+      });
+      if (displaying){
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Show annotations</span>';
+      } else {
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Hide annotations</span>';
       }
     },
     getManifestData: function(manifestlink, canvas, canvasId){
@@ -265,11 +327,11 @@ export default {
         speech.onend = this_functions.autoRunTTS
       }
       synth.speak(speech)
-      this.buttons.playpause = '<i class="fas fa-pause close_button"></i>'
+      this.buttons.playpause = '<i class="fas fa-pause"></i>'
     },
     autoRunTTS: function(){
       if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
-        this.buttons.playpause = '<i class="fas fa-play close_button"></i>'
+        this.buttons.playpause = '<i class="fas fa-play"></i>'
       }
       if (this.isautorunning){
         if (this.position === this.zoomsections.length){
@@ -286,8 +348,11 @@ export default {
     },
     createOverlay: function(){
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
+      var displaying = Array.from(box_elements).some(function(element) {
+        return element.style.display !== 'none';
+      });
       var display_setting;
-      if (box_elements[0].style.display !== 'none'){
+      if (displaying){
         display_setting = 'none';
         this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>';
       } else {
@@ -303,7 +368,7 @@ export default {
         element: node,
         clickHandler: function() {
           functions.position = position
-          functions.makeactive(node);
+          functions.makeactive(position);
           functions.next()
         }
       }).setTracking(true);
@@ -314,13 +379,16 @@ export default {
         callback: this.fullscreenChange
       });
     },
-    makeactive: function(node){
+    makeactive: function(position){
       var currentactive = this.anno_elem.getElementsByClassName("active");
-      if (currentactive.length > 0) {
+      while(currentactive[0]){
         currentactive[0].classList.remove("active");
       }
-      if (node) {
-        node.classList.add('active');
+      if (position) {
+        var node = this.anno_elem.querySelectorAll(`#position${position}`)
+        for (var k=0; k<node.length; k++){
+          node[k].classList.add('active');
+        }
       }
     },
     fullscreenChange (fullscreen) {
@@ -333,6 +401,8 @@ export default {
     },
     next: function(nextorprev){
       this.isclosed = false;
+      this.istags = true;
+      this.showtags();
       if (nextorprev === 'prev'){
         this.position -= 1;
       } else if (nextorprev === 'next') {
@@ -353,8 +423,7 @@ export default {
         var anno_section = this.annotations[this.position];
         this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`;
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
-        var node = this.anno_elem.querySelector(`#position${this.position}`)
-        this.makeactive(node);
+        this.makeactive(this.position);
         if (this.settings.panorzoom == 'pan'){
           this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints()
         } else {

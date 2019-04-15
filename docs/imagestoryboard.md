@@ -28,18 +28,35 @@ code {
 
 In order to create the viewer below the following four lines of code need to be entered into any html page.
 
-Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard).
+Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard). Be aware that the last annotation in a list of annotations will be the color to display on top. The colors for the annotation tag types will be randomly generated. To override these colors look at the CSS styling below.
+
+```
+<style>
+.constellations, #constellations_tags a { #each tag defines class name for the overlay and the tag+'_tags' for the key for toggling overlays
+  border-color: lightskyblue!important;
+  color: lightskyblue;
+}
+
+.zodiac, #zodiac_tags a {
+  border-color: lightcoral!important;
+  color: lightcoral;
+}
+</style>
+```
+
+The code below makes use of default without any overrides or CSS styling.
 
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json"></iiif-storyboard>
 ```
 
 <div id="example">
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json"></iiif-storyboard>
 </div>
+
 
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
@@ -59,7 +76,7 @@ Additionally each of these viewer's CSS can be individually customized. The over
 | toggleoverlay | **true** or **false**. By default this is **false** and the overlay is hidden unless toggled. This setting allows the overlay to be toggled on load |
 | textposition | **top**, **bottom**, **right**, **left**. Will position to the left, right, bottom, or top of annotated area. By default this option is not instantiated and the annotation text appears in the top left hand corner of the viewer. Additional positioning can be done with CSS. Each option has a dedicated class based on the option name (.top, .right, etc.)|
 | tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (click Auto Run button) to work in Chrome but will work fine in Safari and Firefox. |
-
+| showtags | **true** or **false**. By default is **true**; If there are tags in the annotations tags will be available for toggling based on tags.|
 
 ## Global Settings
 Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
@@ -78,7 +95,8 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
   "panorzoom":"pan",
   "toggleoverlay": true,
   "textposition": "right",
-  "tts": "en"
+  "tts": "en",
+  "showtags":false
 }</script>
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>
 ```

@@ -14,6 +14,7 @@ permalink: /storyboard_settings/
   "panorzoom":"pan",
   "toggleoverlay": true,
   "textposition": "right",
-  "tts": "en"
+  "tts": "en",
+  "showtags":false
 }</script>
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>
