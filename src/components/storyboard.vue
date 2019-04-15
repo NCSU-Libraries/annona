@@ -384,7 +384,7 @@ export default {
       while(currentactive[0]){
         currentactive[0].classList.remove("active");
       }
-      if (position) {
+      if (Number.isInteger(position)) {
         var node = this.anno_elem.querySelectorAll(`#position${position}`)
         for (var k=0; k<node.length; k++){
           node[k].classList.add('active');
