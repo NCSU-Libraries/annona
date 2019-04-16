@@ -100,17 +100,15 @@ export default {
         var canvasId = anno[i].target !== undefined ? anno[i].target : ondict.full ? ondict.full : ondict;
         var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
         var canvas = shared.canvasRegion(canvasId)['canvasId'];
-        var type;
+        var content_data = shared.chars(anno[i]);
+        var type = content_data['type'];
         if (mirador && ondict.selector.item !== undefined){
           var svg_elem = document.createElement( 'html' );
           svg_elem.innerHTML = ondict.selector.item.value;
           type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0];
-        } else if (anno[i].body && anno[i].body.selector) {
-          type = anno[i].body.selector.value;
-        } else {
+        } else if (!type) {
           type = 'rect';
         }
-        var content_data = shared.chars(anno[i]);
         var ocr = shared.ocr(anno[i]);
         content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
         this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']});

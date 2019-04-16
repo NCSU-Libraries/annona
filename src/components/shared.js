@@ -32,6 +32,7 @@ export default {
     var res = anno.body ? anno.body : anno.resource;
     var textual_body = '';
     var tags = [];
+    var shapetype;
     res = [].concat(res);
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
@@ -50,8 +51,11 @@ export default {
       } else if (res_data[type] !== 'cnt:ContentAsText') {
         textual_body += '<div class="' + purpose + '">' + value + '</div>';
       }
+      if (res_data.selector){
+        shapetype = res_data.selector.value;
+      }
     }
-    return {'textual_body':textual_body,'tags':tags};
+    return {'textual_body':textual_body,'tags':tags, 'type': shapetype};
   },
   ocr: function(anno){
     var res = anno.body ? anno.body : anno.resource;
