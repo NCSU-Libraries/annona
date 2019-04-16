@@ -462,11 +462,13 @@ export default {
       var positions = positioning[this.settings.textposition];
       var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
+      var maxwidth = this.viewer.viewport.getContainerSize()['x'] - this.viewer.viewport.pixelFromPoint(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['x'];
       var maxheight = this.viewer.viewport.getContainerSize()['y'] - this.viewer.viewport.pixelFromPoint(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['y'];
       elem.classList.add(`${this.settings.textposition}`);
       elem.onmouseover = this.disableOSDmouse(true)
       elem.onmouseout = this.disableOSDmouse(false)
       elem.style.maxHeight = `${maxheight-35}px`;
+      elem.style.maxWidth = `${maxwidth-35}px`;
       if (existingoverlay) {
         this.viewer.updateOverlay(elem, overlayrect);
       } else {
