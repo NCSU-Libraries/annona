@@ -25,7 +25,7 @@
       </span>
       <div id="tags" v-if="istags">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
-          <a v-bind:style="'color: ' + value" v-on:click="hideshowalltags(key)">{{key.split("_").join(" ")}}</a>
+          <input type="checkbox" class="tagscheck" v-on:click="hideshowalltags(key)" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey">{{key.split("_").join(" ")}}</span>
         </div>
       </div>
       <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, 2)"></div>
@@ -123,7 +123,7 @@ export default {
       var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
       for (var jar=0; jar<tags.length; jar++){
         var randomcolor = '#'+Math.random().toString(16).substr(-6);
-        this.tagslist[tags[jar]] = randomcolor;
+        this.tagslist[tags[jar]] = {'color':randomcolor, 'checked': false};
       }
   });
   },
@@ -190,8 +190,8 @@ export default {
         elem.className = `mapmarker ${classes.trim()}`;
       }
       if (this.tagslist[tags]){
-        elem.style.borderColor = this.tagslist[tags];
-        elem.style.color = this.tagslist[tags];
+        elem.style.borderColor = this.tagslist[tags].color;
+        elem.style.color = this.tagslist[tags].color;
       }
       this.viewer.addOverlay({
         element: elem,
@@ -248,9 +248,11 @@ export default {
       for (var j=0; j<elem.length; j++){
         if (elem[j].style.display != 'none') {
           elem[j].style.display = 'none'
+          this.tagslist[tag].checked = false;
         } else {
           elem[j].style.display = 'block'
           elem[j].style.zIndex = 1000;
+          this.tagslist[tag].checked = true;
         }
       }
       var displaying = Array.from(box_elements).some(function(element) {
@@ -352,12 +354,18 @@ export default {
         return element.style.display !== 'none';
       });
       var display_setting;
+      var checked;
       if (displaying){
         display_setting = 'none';
+        checked = false;
         this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>';
       } else {
         display_setting = 'block';
+        checked = true;
         this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>';
+      }
+      for (var key in this.tagslist){
+        this.tagslist[key].checked = checked
       }
       for (var a=0; a<box_elements.length; a++){
         box_elements[a].style.display = display_setting;
