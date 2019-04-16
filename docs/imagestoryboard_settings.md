@@ -17,4 +17,4 @@ permalink: /storyboard_settings/
   "tts": "en",
   "showtags":false
 }</script>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json"></iiif-storyboard>

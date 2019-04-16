@@ -98,11 +98,11 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
   "tts": "en",
   "showtags":false
 }</script>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json"></iiif-storyboard>
 ```
 ## Single annotation setting
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:fr"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT"></iiif-storyboard>
 
 <style>
 [id="\30 0000001jp2"] .box {
@@ -138,7 +138,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 }
 </style>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/00000001jp2-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:fr"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT"></iiif-storyboard>
 <style>
 [id="\30 0000001jp2"] .box {
   border: 2px solid blue;
