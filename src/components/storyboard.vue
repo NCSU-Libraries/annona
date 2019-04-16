@@ -25,7 +25,7 @@
       </span>
       <div id="tags" v-if="istags">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
-          <input type="checkbox" class="tagscheck" v-on:click="hideshowalltags(key)" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey">{{key.split("_").join(" ")}}</span>
+          <input type="checkbox" class="tagscheck" v-on:click="hideshowalltags(key)" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
       <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, 2)"></div>
