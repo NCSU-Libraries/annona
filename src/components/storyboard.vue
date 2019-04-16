@@ -465,8 +465,13 @@ export default {
       var maxwidth = this.viewer.viewport.getContainerSize()['x'] - this.viewer.viewport.pixelFromPoint(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['x'];
       var maxheight = this.viewer.viewport.getContainerSize()['y'] - this.viewer.viewport.pixelFromPoint(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['y'];
       elem.classList.add(`${this.settings.textposition}`);
-      elem.onmouseover = this.disableOSDmouse(true)
-      elem.onmouseout = this.disableOSDmouse(false)
+      var vue = this;
+      elem.addEventListener("mouseover",function(){
+        vue.enableOSDmouse(false)
+      });
+      elem.addEventListener("mouseout",function(){
+        vue.enableOSDmouse(true)
+      });
       elem.style.maxHeight = `${maxheight-35}px`;
       elem.style.maxWidth = `${maxwidth-35}px`;
       if (existingoverlay) {
@@ -479,7 +484,7 @@ export default {
         });
       }
     },
-    disableOSDmouse: function(disable) {
+    enableOSDmouse: function(disable) {
       this.viewer.setControlsEnabled(disable);
       this.viewer.setMouseNavEnabled(disable);
     },
