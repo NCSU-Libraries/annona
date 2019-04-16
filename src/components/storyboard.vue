@@ -141,10 +141,6 @@ export default {
             constrainDuringPan: true,
             visibilityRatio: 1
       }
-      if (this.settings.textposition) {
-        osdsettings['zoomPerClick'] = 1;
-        osdsettings['zoomPerScroll'] = 1;
-      }
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
@@ -468,6 +464,8 @@ export default {
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
       var maxheight = this.viewer.viewport.getContainerSize()['y'] - this.viewer.viewport.viewportToWindowCoordinates(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['y'];
       elem.classList.add(`${this.settings.textposition}`);
+      elem.onmouseover = this.disableOSDmouse(true)
+      elem.onmouseout = this.disableOSDmouse(false)
       elem.style.maxHeight = `${maxheight-35}px`;
       if (existingoverlay) {
         this.viewer.updateOverlay(elem, overlayrect);
@@ -478,6 +476,10 @@ export default {
           placement: positions['placement']
         });
       }
+    },
+    disableOSDmouse: function(disable) {
+      this.viewer.setControlsEnabled(disable);
+      this.viewer.setMouseNavEnabled(disable);
     },
     autoRun: function(interval){
       interval = interval * 1000;

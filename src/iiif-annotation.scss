@@ -266,28 +266,6 @@ figcaption {
   stroke: $active_color!important;
 }
 
-.left {
-  margin-left: calc(-1vw);
-  resize: none;
-}
-
-.right {
-  margin-left: calc(1vw);
-  resize: none;
-}
-
-.top {
-  margin-left: 0px;
-  resize: none;
-  margin-top: calc(-1vw)
-}
-
-.bottom {
-  margin-left: 0px;
-  resize: none;
-  margin-top: calc(1vw)
-}
-
 #annotation_controls {
   display: flex;
   background: black;
