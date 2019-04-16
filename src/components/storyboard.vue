@@ -331,11 +331,11 @@ export default {
       } else {
         speech.onend = this_functions.autoRunTTS
       }
+      console.log("utterance", speech);
       synth.speak(speech)
       this.buttons.playpause = '<i class="fas fa-pause"></i>'
     },
     autoRunTTS: function(){
-      console.log('speech ended')
       if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
         this.buttons.playpause = '<i class="fas fa-play"></i>'
       }
