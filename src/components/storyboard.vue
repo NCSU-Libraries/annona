@@ -16,7 +16,7 @@
         </span>
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="istags || prev_inactive !== true && next_inactive !== true && isclosed !== true">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="isclosed !== true && (istags || prev_inactive !== true && next_inactive !== true)">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
       <span class="close_button" ><i class="fas fa-times" v-on:click="close()"></i></span>
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
