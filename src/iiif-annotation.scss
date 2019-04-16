@@ -40,7 +40,7 @@ $active_color: lightgreen;
   background: white;
   position: absolute;
   top: 75px;
-  z-index: 2;
+  z-index: 2000;
   max-width: calc(100% - 20px);
   max-height: calc(100% - 75px);
   height: auto;
@@ -255,15 +255,15 @@ figcaption {
 }
 
 .active.box {
-  border: 2px solid $active_color!important;
+  outline: 2px solid $active_color!important;
 }
 
 .active.mapmarker {
-  color: $active_color!important;
+  -webkit-text-stroke: 2.5px $active_color;
 }
 
 .mapmarker.overlay.active circle, rect {
-  fill: $active_color!important;
+  stroke: $active_color!important;
 }
 
 .left {
