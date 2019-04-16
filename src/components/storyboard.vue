@@ -4,8 +4,8 @@
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar !== true || settings.hide_toolbar === true && fullscreen === false ">
         <span style="float:right; margin:10px 0 0 20px">
-        <button v-on:click="showtags()" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton"><span v-html="buttons.tags"></span></button>
         <button v-show="!annotationurl" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="buttons.autorunbutton"></span></button>
+        <button v-on:click="showtags()" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton"><span v-html="buttons.tags"></span></button>
         <button v-show="!annotationurl" v-on:click="createOverlay()" class="toolbarButton"><span v-html="buttons.overlaybutton"></span></button>
         <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i><span class="toolbartext">Zoom in</span></button>
         <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i><span class="toolbartext">Zoom out</span></button>
@@ -235,17 +235,22 @@ export default {
         this.buttons.tags = '<i class="fas fa-tag"></i>'
         this.istags = false;
       } else {
-        this.buttons.tags = '<i class="fas fa-file-alt"></i>'
+        if (this.position == -1 || this.position === this.zoomsections.length) {
+          this.buttons.tags = '<i class="fas fa-window-close"></i>'
+        } else {
+          this.buttons.tags = '<i class="fas fa-file-alt"></i>'
+        }
         this.istags = true;
       }
     },
     hideshowalltags: function(tag){
       var elem = this.anno_elem.getElementsByClassName(tag)
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
-      for (var a=0; a<box_elements.length; a++){
-        box_elements[a].style.zIndex = 0;
-      }
       for (var j=0; j<elem.length; j++){
+        var multi = document.querySelectorAll(`#${elem[j].id}`)
+        for (var aj=0; aj<multi.length; aj++){
+          multi[aj].style.zIndex = 0;
+        }
         if (elem[j].style.display != 'none') {
           elem[j].style.display = 'none'
           this.tagslist[tag].checked = false;
