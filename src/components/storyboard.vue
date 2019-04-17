@@ -146,7 +146,8 @@ export default {
       var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
       for (var jar=0; jar<tags.length; jar++){
         var randomcolor = '#'+Math.random().toString(16).substr(-6);
-        this.tagslist[tags[jar]] = {'color':randomcolor, 'checked': false};
+        var checked = this.settings.toggleoverlay ? true : false;
+        this.tagslist[tags[jar]] = {'color':randomcolor, 'checked': checked};
       }
   });
   },
