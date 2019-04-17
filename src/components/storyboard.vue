@@ -214,7 +214,6 @@ export default {
     },
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
-      element.style.removeProperty("width");
       element.style.removeProperty("height");
       if(this.ishidden === true){
         this.ishidden = false;
@@ -412,6 +411,8 @@ export default {
       this.isclosed = false;
       this.istags = true;
       this.showtags();
+      var element = document.getElementById(`${this.seadragonid}_annotation`);
+      element.style.removeProperty("height");
       if (nextorprev === 'prev'){
         this.position -= 1;
       } else if (nextorprev === 'next') {
