@@ -13,11 +13,9 @@ $active_color: lightgreen;
 }
 .toolbarButton {
   font-size: 22px;
-  background-color: white;
+  background-color: #F0F0F0;
+  border: 2px solid #D3D3D3;
   width: 100%;
-  -webkit-box-shadow: 0 0 2px 2px black;
-  -moz-box-shadow: 0 0 2px 2px black;
-  box-shadow: 0 0 2px 2px black;
 }
 
 .storyboard_viewer {
@@ -328,8 +326,12 @@ figcaption {
 }
 
 #header_toolbar {
-  float:right;
-  margin:10px 0 0 20px;
+  float: right;
+  margin: 10px 0px 1px;
   width: 100%;
   display: flex;
+}
+
+#header_toolbar > .toolbarButton:not(:last-child) {
+    margin-right: 2px;
 }

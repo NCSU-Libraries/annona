@@ -3,15 +3,15 @@
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar !== true || settings.hide_toolbar === true && fullscreen === false ">
-        <button v-show="!annotationurl" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="buttons.autorunbutton"></span></button>
-        <button v-on:click="showtags()" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton"><span v-html="buttons.tags"></span></button>
-        <button v-show="!annotationurl" v-on:click="createOverlay()" class="toolbarButton"><span v-html="buttons.overlaybutton"></span></button>
-        <button v-on:click="zoom('in')" class="toolbarButton"><i class="fas fa-search-plus"></i><span class="toolbartext">Zoom in</span></button>
-        <button v-on:click="zoom('out')" class="toolbarButton"><i class="fas fa-search-minus"></i><span class="toolbartext">Zoom out</span></button>
-        <button v-on:click="zoom('home')" class="toolbarButton"><i class="fas fa-home"></i><span class="toolbartext">View full image</span></button>
-        <button v-show="!annotationurl" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i><span class="toolbartext">Previous Annotation</span></button>
-        <button v-show="!annotationurl" v-on:click="next('next')" id="next" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i><span class="toolbartext">Next Annotation</span></button>
-        <button v-on:click="toggle_fullscreen()" class="toolbarButton"><span v-html="buttons.expandbutton"></span></button>
+        <button v-show="!annotationurl" id="autoRunButton" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="buttons.autorunbutton"></span></button>
+        <button v-on:click="showtags()" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton"><span v-html="buttons.tags"></span></button>
+        <button v-show="!annotationurl" id="overlayButton" v-on:click="createOverlay()" class="toolbarButton"><span v-html="buttons.overlaybutton"></span></button>
+        <button v-on:click="zoom('in')" id="zoomInButton" class="toolbarButton"><i class="fas fa-search-plus"></i><span class="toolbartext">Zoom in</span></button>
+        <button v-on:click="zoom('out')" id="zoomOutButton" class="toolbarButton"><i class="fas fa-search-minus"></i><span class="toolbartext">Zoom out</span></button>
+        <button v-on:click="zoom('home')" id="homeZoomButton" class="toolbarButton"><i class="fas fa-home"></i><span class="toolbartext">View full image</span></button>
+        <button v-show="!annotationurl" id="previousButton" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i><span class="toolbartext">Previous Annotation</span></button>
+        <button v-show="!annotationurl" id="nextButton" v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i><span class="toolbartext">Next Annotation</span></button>
+        <button v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton"><span v-html="buttons.expandbutton"></span></button>
       </span>
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="isclosed !== true && (istags || prev_inactive !== true && next_inactive !== true)">
@@ -166,6 +166,8 @@ export default {
       });
     },
     close: function(){
+      this.istags = true;
+      this.showtags();
       this.isclosed = true;
     },
     createOverlayElement: function(position, tags, zoomsections) {
