@@ -61,7 +61,7 @@ The code below makes use of default without any overrides or CSS styling.
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
 
-Additionally each of these viewer's CSS can be individually customized. The overlay color is set to lightblue on load and lightgreen when annotation is being viewed. This can easily be customized to each viewer. See [Single annotation settings](#single-annotation-setting) for an example.
+Additionally each of these viewer's CSS can be individually customized. The overlay color is set to lightblue on load and a lightgreen outline will appear when annotation is being viewed. This can easily be customized to each viewer. See [Single annotation settings](#single-annotation-setting) for an example.
 
 | Variable      | Settings |
 | ----------- | ----------- |
@@ -106,34 +106,35 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT; truncate_length: 5;"></iiif-storyboard>
 
 <style>
-[id="\30 0000001jp2"] .box {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
   border: 2px solid blue;
 }
 
-[id="\30 0000001jp2"] .mapmarker {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker {
   color: blue;
   font-size: 39px;
 }
 
-[id="\30 0000001jp2"] .map-marker {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .map-marker {
   position:absolute;
   bottom:0;
-  left: calc(50% - 13px); //for the default map marker this should be the font-size/3;
+  left: calc(50% - 13px);
 }
 
-[id="\30 0000001jp2"] .active.box {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.box {
   border: 2px solid red;
+  outline: 2px solid red;
 }
 
-[id="\30 0000001jp2"] .active.mapmarker {
-  color: red;
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.mapmarker {
+  -webkit-text-stroke: 2.5px red!important;
 }
 
-[id="\30 0000001jp2"] .mapmarker.overlay.active circle, rect {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker.overlay.active circle, rect {
   fill: red;
 }
 
-[id="\30 0000001jp2"] .left {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .left {
   margin-left: -.5vw;
   margin-top: calc(-39px + .5vh)
 }
@@ -141,34 +142,35 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT; truncate_length: 5"></iiif-storyboard>
 <style>
-[id="\30 0000001jp2"] .box {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
   border: 2px solid blue;
 }
 
-[id="\30 0000001jp2"] .mapmarker {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker {
   color: blue;
   font-size: 39px;
 }
 
-[id="\30 0000001jp2"] .map-marker {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .map-marker {
   position:absolute;
   bottom:0;
   left: calc(50% - 13px);
 }
 
-[id="\30 0000001jp2"] .active.box {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.box {
   border: 2px solid red;
+  outline: 2px solid red;
 }
 
-[id="\30 0000001jp2"] .active.mapmarker {
-  color: red;
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.mapmarker {
+  -webkit-text-stroke: 2.5px red!important;
 }
 
-[id="\30 0000001jp2"] .mapmarker.overlay.active circle, rect {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker.overlay.active circle, rect {
   fill: red;
 }
 
-[id="\30 0000001jp2"] .left {
+[id="\34 058a628-c593-463e-9736-8a821e178fee"] .left {
   margin-left: -.5vw;
   margin-top: calc(-39px + .5vh)
 }
@@ -178,11 +180,12 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 
 | Icon      | Purpose |
 | ----------- | ----------- |
-| <i class="fas fa-magic"></i>      | This button will automatically go through all the annotations and the sections associated with the annotation until stopped. When it is running it will be replaced with <i class="fas fa-stop-circle"></i> icon until it is pressed again       |
-| <i class="fas fa-toggle-on"></i>   | This button will display the sections that are annotated. When toggled on, these sections are clickable. It is replaced with <i class="fas fa-toggle-off"></i> when the toggle is active |
-| <i class="fas fa-search-plus"></i><i class="fas fa-search-minus"></i>   | Zoom in/out buttons |
-| <i class="fas fa-home"></i>   | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load |
-| <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i>   | These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list |
+| <i class="fas fa-magic"></i> | This button will automatically go through all the annotations and the sections associated with the annotation until stopped. When it is running it will be replaced with <i class="fas fa-stop-circle"></i> icon until it is pressed again. |
+| <i class="fas fa-tag"></i> | This button will display all of the tags in the storyboard and allow the users to view overlays based on tags. It works with resources with multiple tags, however they will display on top of each other so only one color is visible at one time. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box |
+| <i class="fas fa-toggle-on"></i> | This button will display the sections that are annotated. When toggled on, these sections are clickable. It is replaced with <i class="fas fa-toggle-off"></i> when the toggle is active |
+| <i class="fas fa-search-plus"></i><i class="fas fa-search-minus"></i> | Zoom in/out buttons |
+| <i class="fas fa-home"></i> | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load |
+| <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i> | These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list |
 | <i class="fas fa-expand"></i> | Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen |
 
 # Single Annotation Storyboard
