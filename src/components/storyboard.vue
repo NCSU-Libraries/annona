@@ -3,15 +3,42 @@
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar !== true || settings.hide_toolbar === true && fullscreen === false ">
-        <button v-show="!annotationurl" id="autoRunButton" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton"><span v-html="buttons.autorunbutton"></span></button>
-        <button v-on:click="showtags()" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton"><span v-html="buttons.tags"></span></button>
-        <button v-show="!annotationurl" id="overlayButton" v-on:click="createOverlay()" class="toolbarButton"><span v-html="buttons.overlaybutton"></span></button>
-        <button v-on:click="zoom('in')" id="zoomInButton" class="toolbarButton"><i class="fas fa-search-plus"></i><span class="toolbartext">Zoom in</span></button>
-        <button v-on:click="zoom('out')" id="zoomOutButton" class="toolbarButton"><i class="fas fa-search-minus"></i><span class="toolbartext">Zoom out</span></button>
-        <button v-on:click="zoom('home')" id="homeZoomButton" class="toolbarButton"><i class="fas fa-home"></i><span class="toolbartext">View full image</span></button>
-        <button v-show="!annotationurl" id="previousButton" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton"><i class="fa fa-arrow-left"></i><span class="toolbartext">Previous Annotation</span></button>
-        <button v-show="!annotationurl" id="nextButton" v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton"><i class="fa fa-arrow-right"></i><span class="toolbartext">Next Annotation</span></button>
-        <button v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton"><span v-html="buttons.expandbutton"></span></button>
+        <button v-show="!annotationurl" id="autoRunButton" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton">
+          <span v-html="buttons.autorunbutton"></span>
+          <span class="toolbartext">Start/Stop Autorun</span>
+        </button>
+        <button v-on:click="showtags()" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
+          <span v-html="buttons.tags"></span>
+          <span class="toolbartext">Toggle Tags</span>
+        </button>
+        <button v-show="!annotationurl" id="overlayButton" v-on:click="createOverlay()" class="toolbarButton">
+          <span v-html="buttons.overlaybutton"></span>
+          <span class="toolbartext">Toggle Overlays</span>
+        </button>
+        <button v-on:click="zoom('in')" id="zoomInButton" class="toolbarButton">
+          <i class="fas fa-search-plus"></i>
+          <span class="toolbartext">Zoom in</span>
+        </button>
+        <button v-on:click="zoom('out')" id="zoomOutButton" class="toolbarButton">
+          <i class="fas fa-search-minus"></i>
+          <span class="toolbartext">Zoom out</span>
+        </button>
+        <button v-on:click="zoom('home')" id="homeZoomButton" class="toolbarButton">
+          <i class="fas fa-home"></i>
+          <span class="toolbartext">View full image</span>
+        </button>
+        <button v-show="!annotationurl" id="previousButton" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+          <i class="fa fa-arrow-left"></i>
+          <span class="toolbartext">Previous Annotation</span>
+        </button>
+        <button v-show="!annotationurl" id="nextButton" v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+          <i class="fa fa-arrow-right"></i>
+          <span class="toolbartext">Next Annotation</span>
+        </button>
+        <button v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
+          <span v-html="buttons.expandbutton"></span>
+          <span class="toolbartext">Toggle fullscreen</span>
+        </button>
       </span>
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="isclosed !== true && (istags || prev_inactive !== true && next_inactive !== true)">
@@ -70,12 +97,12 @@ export default {
       istags: false,
       isautorunning: '',
       buttons: {
-        'autorunbutton': '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>',
-        'overlaybutton': '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>',
-        'expandbutton' : '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>',
+        'autorunbutton': '<i class="fas fa-magic"></i>',
+        'overlaybutton': '<i class="fas fa-toggle-on"></i>',
+        'expandbutton' : '<i class="fas fa-expand"></i>',
         'hide_button' : '<i class="fas fa-caret-up"></i>',
         'playpause': '<i class="fas fa-play"></i>',
-        'tags': '<i class="fas fa-tag"></i><span class="toolbartext">Show Tags</span>'
+        'tags': '<i class="fas fa-tag"></i>'
       },
       settings: {},
       fullscreen: false,
@@ -226,13 +253,13 @@ export default {
     showtags: function(){
       this.isclosed = false;
       if(this.istags){
-        this.buttons.tags = '<i class="fas fa-tag"></i><span class="toolbartext">Show Tags</span>'
+        this.buttons.tags = '<i class="fas fa-tag"></i>'
         this.istags = false;
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length) {
-          this.buttons.tags = '<i class="fas fa-window-close"></i><span class="toolbartext">Close Tags</span>'
+          this.buttons.tags = '<i class="fas fa-window-close"></i>'
         } else {
-          this.buttons.tags = '<i class="fas fa-file-alt"></i><span class="toolbartext">Annotation Text</span>'
+          this.buttons.tags = '<i class="fas fa-file-alt"></i>'
         }
         this.istags = true;
       }
@@ -258,9 +285,9 @@ export default {
         return element.style.display !== 'none';
       });
       if (displaying){
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Show annotations</span>';
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
       } else {
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Hide annotations</span>';
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
       }
     },
     getManifestData: function(manifestlink, canvas, canvasId){
@@ -358,11 +385,11 @@ export default {
       if (displaying){
         display_setting = 'none';
         checked = false;
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i><span class="toolbartext">Show annotations</span>';
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
       } else {
         display_setting = 'block';
         checked = true;
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i><span class="toolbartext">Hide annotations</span>';
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
       }
       for (var key in this.tagslist){
         this.tagslist[key].checked = checked
@@ -401,9 +428,9 @@ export default {
     },
     fullscreenChange (fullscreen) {
       if(fullscreen){
-        this.buttons.expandbutton = '<i class="fas fa-compress"></i><span class="toolbartext">Exit Full Screen</span>';
+        this.buttons.expandbutton = '<i class="fas fa-compress"></i>';
       } else {
-        this.buttons.expandbutton = '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>';
+        this.buttons.expandbutton = '<i class="fas fa-expand"></i>';
       }
       this.fullscreen = fullscreen;
     },
@@ -509,11 +536,11 @@ export default {
             }
           }, interval);
         }
-        this.buttons.autorunbutton = '<i class="fas fa-stop-circle"></i><span class="toolbartext">Stop auto run</span>';
+        this.buttons.autorunbutton = '<i class="fas fa-stop-circle"></i>';
       } else {
         clearInterval(this.isautorunning);
         this.isautorunning = '';
-        this.buttons.autorunbutton = '<i class="fas fa-magic"></i><span class="toolbartext">Auto run</span>';
+        this.buttons.autorunbutton = '<i class="fas fa-magic"></i>';
       }
     }
   },
