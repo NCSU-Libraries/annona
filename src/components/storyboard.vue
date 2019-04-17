@@ -186,7 +186,11 @@ export default {
           } else {
             vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i])
           }
-
+        }
+        if (vue.annotationurl){
+          vue.createOverlay();
+          vue.position = 0;
+          vue.next();
         }
         if (vue.settings.toggleoverlay){
           vue.createOverlay();
@@ -220,11 +224,6 @@ export default {
         location: rect
       });
       this.addTracking(elem, rect, position, this);
-      if (this.annotationurl){
-        elem.style.display = 'block';
-        this.position = 0;
-        this.next();
-      }
     },
     playpause: function(){
       var synth = window.speechSynthesis;
