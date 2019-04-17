@@ -77,6 +77,7 @@ Additionally each of these viewer's CSS can be individually customized. The over
 | textposition | **top**, **bottom**, **right**, **left**. Will position to the left, right, bottom, or top of annotated area. By default this option is not instantiated and the annotation text appears in the top left hand corner of the viewer. Additional positioning can be done with CSS. Each option has a dedicated class based on the option name (.top, .right, etc.)|
 | tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (click Auto Run button) to work in Chrome but will work fine in Safari and Firefox. |
 | showtags | **true** or **false**. By default is **true**; If there are tags in the annotations tags will be available for toggling based on tags.|
+| truncate_length | **Any Integer.** By default it is set to **2**; This determines how many words appear when the hide button (<i class="fas fa-caret-up"></i>) is clicked. The hide button will only show words in the annotation and will truncate the annotation and hide the tags. If you are looking for a way to hide the tags listed in the annotation (not the tags button) add to css to `.tags {display: none;}` |
 
 ## Global Settings
 Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
@@ -102,7 +103,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ```
 ## Single annotation setting
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT; truncate_length: 5;"></iiif-storyboard>
 
 <style>
 [id="\30 0000001jp2"] .box {
@@ -138,7 +139,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 }
 </style>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT; truncate_length: 5"></iiif-storyboard>
 <style>
 [id="\30 0000001jp2"] .box {
   border: 2px solid blue;

@@ -58,6 +58,10 @@ $active_color: lightgreen;
   padding: 2px 5px 5px;
 }
 
+#annotation_excerpt p {
+  margin: 0px;
+}
+
 #annotation_text p {
   margin-block-start: .5em;
   margin-block-end: .5em;
@@ -349,6 +353,7 @@ figcaption {
 .tagskey {
   -webkit-text-stroke: .2px black;
   word-break: break-all;
+  font-weight: 900;
 }
 
 #annotation_controls .toolbartext{

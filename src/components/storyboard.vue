@@ -2,7 +2,7 @@
 <div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
-      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar !== true || settings.hide_toolbar === true && fullscreen === false ">
+      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen ">
         <button v-show="!annotationurl" id="autoRunButton" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
@@ -48,13 +48,13 @@
       <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
       <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
       </span>
-      <div id="tags" v-if="istags">
+      <div id="tags" v-if="istags && !ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
           <input type="checkbox" class="tagscheck" v-on:click="hideshowalltags(key)" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
-      <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, 2)"></div>
-      <div id="annotation_text" v-html="currentanno" v-if="ishidden === false && !istags"></div>
+      <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
+      <div id="annotation_text" v-html="currentanno" v-if="!ishidden && !istags"></div>
     </div>
   </div>
 </div>
@@ -292,7 +292,6 @@ export default {
     },
     getManifestData: function(manifestlink, canvas, canvasId){
         axios.get(manifestlink).then(canvas_data => {
-          this.settings = shared.getsettings(this.styling)
           var label = canvas_data.data.label;
           if (label !== undefined){
             label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
@@ -312,6 +311,7 @@ export default {
     },
     buildseadragon: function(canvasId){
       this.settings = shared.getsettings(this.styling)
+      this.settings.truncate_length = this.settings.truncate_length ? this.settings.truncate_length : 2;
       if (this.seadragontile === ""){
         var tile = canvasId.split("#")[0];
         tile += tile.slice(-1) !== '/' ? "/" : '';
@@ -458,7 +458,7 @@ export default {
       } else {
         var xywh = this.zoomsections[this.position]['section'].split(",");
         var anno_section = this.annotations[this.position];
-        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</div>` : ''}`;
+        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</span>` : ''}`;
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         this.makeactive(this.position);
         if (this.settings.panorzoom == 'pan'){
@@ -546,7 +546,7 @@ export default {
   },
   filters: {
     truncate: function(string, words_length) {
-      return truncate(string, words_length, { byWords: true });
+      return truncate(string.split('<span class="tags">')[0], words_length, { byWords: true });
     }
   }
 }
