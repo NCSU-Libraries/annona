@@ -16,6 +16,7 @@ $active_color: lightgreen;
   background-color: #F0F0F0;
   border: 2px solid #D3D3D3;
   width: 100%;
+  position: relative;
 }
 
 .storyboard_viewer {
@@ -123,6 +124,38 @@ $active_color: lightgreen;
   margin-left: 5px;
 }
 
+.fullpage .toolbarButton .toolbartext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
+  bottom: auto;
+}
+
+.fullpage .toolbarButton .toolbartext::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  top: auto;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
+}
+
+.fullpage #header_toolbar {
+  margin: 0px;
+}
+
 .tags {
   font-size: smaller;
   font-style: italic;
@@ -221,11 +254,6 @@ figcaption {
   top: 0;
 }
 
-.toolbarButton {
-  position: relative;
-  display: inline-block;
-}
-
 .toolbarButton .toolbartext {
   visibility: hidden;
   width: 120px;
@@ -254,6 +282,7 @@ figcaption {
 }
 .toolbarButton:hover .toolbartext {
   visibility: visible;
+  transition-delay:1s;
 }
 
 .active.box {
