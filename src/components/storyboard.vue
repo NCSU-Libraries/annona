@@ -225,6 +225,7 @@ export default {
       }
     },
     showtags: function(){
+      this.isclosed = false;
       if(this.istags){
         this.buttons.tags = '<i class="fas fa-tag"></i>'
         this.istags = false;
