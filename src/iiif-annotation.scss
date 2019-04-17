@@ -299,7 +299,7 @@ figcaption {
     border: 2px solid black;
     background: white;
     position: absolute;
-    top: 40px;
+    top: 44px;
     z-index: 2;
     max-width: 100%;
     height: auto;
@@ -317,4 +317,8 @@ figcaption {
 .tagskey {
   -webkit-text-stroke: .2px black;
   word-break: break-all;
+}
+
+#annotation_controls .toolbartext{
+  display: none;
 }

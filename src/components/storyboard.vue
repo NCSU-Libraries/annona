@@ -77,7 +77,7 @@ export default {
         'expandbutton' : '<i class="fas fa-expand"></i><span class="toolbartext">View Full Screen</span>',
         'hide_button' : '<i class="fas fa-caret-up"></i>',
         'playpause': '<i class="fas fa-play"></i>',
-        'tags': '<i class="fas fa-tags"></i>'
+        'tags': '<i class="fas fa-tag"></i><span class="toolbartext">Show Tags</span>'
       },
       settings: {},
       fullscreen: false,
@@ -226,13 +226,13 @@ export default {
     showtags: function(){
       this.isclosed = false;
       if(this.istags){
-        this.buttons.tags = '<i class="fas fa-tag"></i>'
+        this.buttons.tags = '<i class="fas fa-tag"></i><span class="toolbartext">Show Tags</span>'
         this.istags = false;
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length) {
-          this.buttons.tags = '<i class="fas fa-window-close"></i>'
+          this.buttons.tags = '<i class="fas fa-window-close"></i><span class="toolbartext">Close Tags</span>'
         } else {
-          this.buttons.tags = '<i class="fas fa-file-alt"></i>'
+          this.buttons.tags = '<i class="fas fa-file-alt"></i><span class="toolbartext">Annotation Text</span>'
         }
         this.istags = true;
       }
