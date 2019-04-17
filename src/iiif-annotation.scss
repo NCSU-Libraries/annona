@@ -280,7 +280,8 @@ figcaption {
   border-style: solid;
   border-color: black transparent transparent transparent;
 }
-.toolbarButton:hover .toolbartext {
+
+.toolbarButton:hover:not(.toolbarButton:active) .toolbartext {
   visibility: visible;
   transition-delay:1s;
 }
