@@ -99,5 +99,14 @@ export default {
       manifestlink = manifesturl;
     }
     return manifestlink;
+  },
+  getAuthor: function(annotation) {
+    var author;
+    if (Array.isArray(annotation.creator)) {
+      author = annotation.creator.join(", ");
+    } else {
+      author = annotation.creator;
+    }
+    return author;
   }
 }

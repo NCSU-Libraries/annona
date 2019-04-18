@@ -160,9 +160,10 @@ $active_color: lightgreen;
   margin: 0px;
 }
 
-.tags {
+.tags, .authorship{
   font-size: smaller;
   font-style: italic;
+  padding: 2.5px 0px;
 }
 
 #fullimage {

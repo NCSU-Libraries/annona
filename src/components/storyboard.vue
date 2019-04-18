@@ -137,7 +137,9 @@ export default {
           }
         }
         var ocr = shared.ocr(anno[i]);
-        content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
+        var authors = shared.getAuthor(anno[i]);
+        content_data['textual_body'] += `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
+        content_data['textual_body'] += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
         this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']});
         this.zoomsections.push({'section':sections, 'type':type});
       } if (manifestlink) {
@@ -483,7 +485,7 @@ export default {
         this.makeactive(undefined)
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
-        var xywh = this.zoomsections[this.position]['section'].slice(-1)[0].split(",");
+        var xywh = this.zoomsections[this.position]['section'][0].split(",");
         if (this.settings.textposition) {
           this.overlayPosition(xywh);
         }

@@ -9,6 +9,7 @@
     <div id="ocr" class="text" v-show="item.ocr && item.ocr !== '' && settings.view_ocr !== false" v-html="item.ocr"></div>
     <p v-if="item.dataset && item.dataset['dataset_format'] !== ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
     <div v-show="item.chars && item.chars !== ''" v-html="item.chars"></div>
+    <div v-show="item.author && item.author !== ''" class="authorship">Written by: {{item.author}}</div>
     <div v-show="settings.view_tags !== false" v-html="item.tags"></div>
     <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
     <div id="link_to_object" v-show="settings.view_full_object !== false && full_object && full_object !== '' && settings.image_only != true">
@@ -61,7 +62,7 @@ export default {
       if (this.annotationlist === undefined){
         this.anno = [].concat(response.data);
       } else {
-          this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
+        this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       }
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], response.data)
     }).catch((error) => {this.rendered = false;console.log(error);}).then(() => {
@@ -169,6 +170,7 @@ export default {
         dictionary['dataset'] = this.dataset(anno);
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
         dictionary['altText'] = dictionary['ocr'] !== '' ? dictionary['ocr'] : dictionary['label'] !== undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
+        dictionary['author'] = shared.getAuthor(anno);
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         this.settings.view_larger = false;
