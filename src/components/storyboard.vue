@@ -118,36 +118,38 @@ export default {
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
-        if (typeof ondict.selector !== 'undefined') {
-          var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
-          mirador = mirador.split("=").slice(-1)[0];
-        }
-        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict.full ? ondict.full : ondict;
-        var section = mirador ? mirador : shared.canvasRegion(canvasId)['canvasRegion'];
-        var canvas = shared.canvasRegion(canvasId)['canvasId'];
+        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
+        canvasId = [].concat(canvasId)
+        var sections = []
         var content_data = shared.chars(anno[i]);
         var type = content_data['type'];
-        if (mirador && ondict.selector.item !== undefined){
-          var svg_elem = document.createElement( 'html' );
-          svg_elem.innerHTML = ondict.selector.item.value;
-          type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0];
-        } else if (!type) {
-          type = 'rect';
+        for (var jar=0; jar<canvasId.length; jar++){
+          var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
+          var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict)
+          sections.push(canvasRegion['canvasRegion'])
+          var canvas = canvasRegion['canvasId'];
+          if (jarondict && jarondict.selector && ondict[jar].selector.item !== undefined){
+            var svg_elem = document.createElement( 'html' );
+            svg_elem.innerHTML = ondict[jar].selector.item.value;
+            type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0];
+          } else if (!type) {
+            type = 'rect';
+          }
         }
         var ocr = shared.ocr(anno[i]);
         content_data['textual_body'] = content_data['textual_body'] + `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
         this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']});
-        this.zoomsections.push({'section':section, 'type':type});
+        this.zoomsections.push({'section':sections, 'type':type});
       } if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId)
       } else {
         this.buildseadragon(canvas)
       }
       var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
-      for (var jar=0; jar<tags.length; jar++){
+      for (var tc=0; tc<tags.length; tc++){
         var randomcolor = '#'+Math.random().toString(16).substr(-6);
         var checked = this.settings.toggleoverlay ? true : false;
-        this.tagslist[tags[jar]] = {'color':randomcolor, 'checked': checked};
+        this.tagslist[tags[tc]] = {'color':randomcolor, 'checked': checked};
       }
   });
   },
@@ -203,27 +205,34 @@ export default {
       this.isclosed = true;
     },
     createOverlayElement: function(position, tags, zoomsections) {
-      var xywh = zoomsections['section'].split(",");
-      var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
-      var elem = document.createElement('div');
-      elem.style.display = 'none';
-      elem.id = `position${position}`;
-      var classes = `overlay ${tags}`
-      if (zoomsections['type'] !== 'pin'){
-        elem.className = `box ${classes.trim()}`;
-      } else {
-        elem.innerHTML = this.mapmarker;
-        elem.className = `mapmarker ${classes.trim()}`;
+      for (var jt=0; jt<zoomsections['section'].length; jt++){
+        var xywh = zoomsections['section'][jt].split(",");
+        var imagesize = this.viewer.world.getItemAt(0).getBounds();
+        var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
+        rect = xywh[0] == 'full' ? imagesize : rect;
+        var zindex = xywh[0] == 'full' ? 1 : 20;
+        var elem = document.createElement('div');
+        elem.style.display = 'none';
+        elem.id = `position${position}`;
+        var multi = zoomsections['section'].length > 1 ? 'multi' : '';
+        var classes = `overlay ${tags} ${multi}`
+        if (zoomsections['type'] !== 'pin'){
+          elem.className = `box ${classes.trim()}`;
+        } else {
+          elem.innerHTML = this.mapmarker;
+          elem.className = `mapmarker ${classes.trim()}`;
+        }
+        if (this.tagslist[tags]){
+          elem.style.borderColor = this.tagslist[tags].color;
+          elem.style.color = this.tagslist[tags].color;
+        }
+        elem.style.zIndex = zindex;
+        this.viewer.addOverlay({
+          element: elem,
+          location: rect
+        });
+        this.addTracking(elem, rect, position, this);
       }
-      if (this.tagslist[tags]){
-        elem.style.borderColor = this.tagslist[tags].color;
-        elem.style.color = this.tagslist[tags].color;
-      }
-      this.viewer.addOverlay({
-        element: elem,
-        location: rect
-      });
-      this.addTracking(elem, rect, position, this);
     },
     playpause: function(){
       var synth = window.speechSynthesis;
@@ -317,7 +326,7 @@ export default {
         tile += tile.slice(-1) !== '/' ? "/" : '';
         this.seadragontile = tile + "info.json";
       }
-      this.createViewer(this.annotationurl);
+      this.createViewer();
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
@@ -378,7 +387,7 @@ export default {
     createOverlay: function(){
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
       var displaying = Array.from(box_elements).some(function(element) {
-        return element.style.display !== 'none';
+        return element.style.display !== 'none' && element.className.indexOf('multi') === -1;
       });
       var display_setting;
       var checked;
@@ -404,9 +413,20 @@ export default {
         clickHandler: function() {
           functions.position = position
           functions.makeactive(position);
-          functions.next()
+          functions.next();
+          functions.goToArea(rect);
         }
       }).setTracking(true);
+    },
+    goToArea: function(rect){
+      var xywh = this.zoomsections[this.position]['section'][0].split(",");
+      if (xywh.join("") == 'full'){
+        this.zoom('home')
+      } else if (this.settings.panorzoom == 'pan'){
+        this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints()
+      } else {
+        this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
+      }
     },
     toggle_fullscreen: function(){
       this.$fullscreen.toggle(this.$el, {
@@ -451,23 +471,35 @@ export default {
         var content = this.annotations[this.position] ? this.annotations[this.position]['content'] : '';
         this.tts(content)
       }
+      if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
+        var multielements = document.getElementsByClassName("multi")
+        for (var we=0; we<multielements.length; we++){
+          multielements[we].style.display = "none";
+        }
+      }
       if (this.zoomsections[this.position] === undefined){
         this.zoom('home')
         this.currentanno = '';
         this.makeactive(undefined)
       } else {
-        var xywh = this.zoomsections[this.position]['section'].split(",");
-        var anno_section = this.annotations[this.position];
-        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</span>` : ''}`;
-        var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
-        this.makeactive(this.position);
-        if (this.settings.panorzoom == 'pan'){
-          this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints()
-        } else {
-          this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
-        }
+        var numbsections = this.zoomsections[this.position]['section'].length;
+        var xywh = this.zoomsections[this.position]['section'].slice(-1)[0].split(",");
         if (this.settings.textposition) {
           this.overlayPosition(xywh);
+        }
+        var anno_section = this.annotations[this.position];
+        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</span>` : ''}`;
+        this.makeactive(this.position);
+
+        if (numbsections <= 1) {
+          var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
+          this.goToArea(rect);
+        } else {
+          this.zoom('home')
+          var elements = this.anno_elem.querySelectorAll(`#position${this.position}`)
+          for (var tk=0; tk<elements.length; tk++){
+            elements[tk].style.display = 'block';
+          }
         }
       }
       if (this.position === this.zoomsections.length){

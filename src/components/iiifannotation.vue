@@ -104,7 +104,7 @@ export default {
       for (var i =0; i < this.anno.length; i++){
         var dictionary = this.getImageData(this.anno[i], this.annotation_json, i);
         var ondict = shared.on_structure(this.anno[i]);
-        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict.full ? ondict.full : ondict;
+        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict;
         canvasId = [].concat(canvasId);
         var size;
         if (this.manifestlink.indexOf('iiif/2.0') > -1){
@@ -119,7 +119,7 @@ export default {
         } else {
           for (var cn = 0; cn < canvasId.length; cn++){
             var canvasItem = canvasId[cn]
-            var canvasRegion = shared.canvasRegion(canvasItem);
+            var canvasRegion = shared.canvasRegion(canvasItem, undefined);
             var image = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
             dictionary['image'].push(image);
             dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion']);
@@ -138,18 +138,15 @@ export default {
       var fullImage;
       for (var cn = 0; cn < canvasId.length; cn++){
         var canvasItem = canvasId[cn];
+        var ondict = shared.on_structure(anno);
+        var canvasRegion = shared.canvasRegion(canvasItem, ondict[cn]);
         for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
           var existing = this.manifest.sequences[0].canvases[idx];
-          if(existing['@id'].replace("https", "http") === shared.canvasRegion(canvasItem)['canvasId'].replace("https", "http")){
+          if(existing['@id'].replace("https", "http") === canvasRegion['canvasId'].replace("https", "http")){
             var canvas = existing;
           }
         }
-        var ondict = shared.on_structure(anno);
-        if (typeof ondict.selector !== 'undefined') {
-          var mirador = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
-          mirador = mirador.split("=")[1];
-        }
-        var regionCanvas =  mirador !== undefined ? mirador : shared.canvasRegion(canvasItem)['canvasRegion'];
+        var regionCanvas = canvasRegion['canvasRegion'];
         var baseImageUrl;
         if (canvas === undefined) {
           baseImageUrl = canvasItem.split("#")[0];

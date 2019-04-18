@@ -2,11 +2,10 @@ export default {
   on_structure: function(anno){
     if (typeof anno['on'] === 'undefined'){
       return 'undefined';
-    }
-    else if (typeof anno['on'][0] !== 'undefined' && typeof anno['on'][0] !== 'string'){
-      return anno['on'][0];
-    } else {
+    } else if (typeof anno['on'][0] !== 'undefined' && typeof anno['on'][0] !== 'string'){
       return anno['on'];
+    } else {
+      return [anno['on']];
     }
   },
   getsettings: function(styling) {
@@ -44,12 +43,16 @@ export default {
         if (purpose === 'tagging'){
           tags.push(value);
         } else {
-          textual_body += '<div class="' + purpose + '">' + value + '</div>';
+          textual_body += `<div class="${purpose}">${value}</div>`;
         }
       } else if (res_data[type] === 'oa:Tag'){
         tags.push(value);
+      } else if (res_data[type] === 'dctypes:Image') {
+          textual_body += `<img src="${res_data['@id']}">
+          <span class="caption">${res_data['description']}</span>
+          <span class="attribution">${res_data['attribution']}</span>`
       } else if (res_data[type] !== 'cnt:ContentAsText') {
-        textual_body += '<div class="' + purpose + '">' + value + '</div>';
+        textual_body += `<div class="${purpose}">${value}</div>`;
       }
       if (res_data.selector){
         shapetype = res_data.selector.value;
@@ -62,9 +65,12 @@ export default {
     var chars = res['chars'] && res['@type'] === 'cnt:ContentAsText' ? res['chars'] : '';
     return unescape(encodeURIComponent(chars));
   },
-  canvasRegion: function(canvasId){
+  canvasRegion: function(canvasId, ondict){
     var canvasRegion;
-    if (typeof canvasId !== 'string'){
+    if (ondict && typeof ondict.selector !== 'undefined') {
+      canvasRegion = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
+      canvasRegion = canvasRegion.split("=").slice(-1)[0]
+    } else if (typeof canvasId !== 'string'){
       if (canvasId['source']){
         canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
         canvasId = canvasId.source;
@@ -83,10 +89,10 @@ export default {
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
     if (manifesturl === undefined){
-      var target_dict = anno['target'] ? anno['target'] : this.on_structure(anno);
+      var target_dict = anno['target'] ? anno['target'] : this.on_structure(anno)[0];
       var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))];
       var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))];
-      var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : this.on_structure(anno)['within'];
+      var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : this.on_structure(anno)[0]['within'];
       manifest_dict = manifest_dict ? manifest_dict : responsedata['within'] ? responsedata['within']['within'] : '';
       manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'] ?  manifest_dict['@id'] : manifest_dict;
     } else {
