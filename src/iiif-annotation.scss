@@ -73,16 +73,41 @@ $active_color: lightgreen;
     object-fit: scale-down;
 }
 
-.box:hover {
+.rect:hover {
   background: grey;
   opacity: .4;
 }
 
-.box {
+.overlay:hover:not(.overlay) > svg {
+  background: grey;
+  opacity: .4;
+}
+
+.overlay > svg path:hover {
+  fill: grey;
+  fill-opacity: .4;
+}
+
+.overlay > svg path {
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+}
+
+.active > svg path {
+  stroke-width: 4!important;
+  fill: $active_color!important;
+  fill-opacity: .1;
+}
+.overlay > svg path {
+  stroke-width: 2px;
+  vector-effect: non-scaling-stroke;
+}
+
+.rect {
   border: 2px solid $overlay_color;
 }
 
-.mapmarker {
+.pin {
   color: $overlay_color;
   font-size: $pin_font;
 }
@@ -105,7 +130,7 @@ $active_color: lightgreen;
   line-height: 10px;
 }
 
-.mapmarker > * {
+.pin > *:not(svg) {
   position:absolute;
   bottom:0;
   left: calc(50% - #{$mid_pin});
@@ -291,15 +316,15 @@ figcaption {
   transition-delay:1s;
 }
 
-.active.box {
+.active.rect {
   outline: 2px solid $active_color!important;
 }
 
-.active.mapmarker {
+.active.pin {
   -webkit-text-stroke: 2.5px $active_color;
 }
 
-.mapmarker.overlay.active circle, rect {
+.pin.overlay.active circle, rect {
   stroke: $active_color!important;
 }
 

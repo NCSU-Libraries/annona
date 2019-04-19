@@ -123,6 +123,7 @@ export default {
         var sections = []
         var content_data = shared.chars(anno[i]);
         var type = content_data['type'];
+        var svg_path = [];
         for (var jar=0; jar<canvasId.length; jar++){
           var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict)
@@ -131,7 +132,9 @@ export default {
           if (jarondict && jarondict.selector && ondict[jar].selector.item !== undefined){
             var svg_elem = document.createElement( 'html' );
             svg_elem.innerHTML = ondict[jar].selector.item.value;
-            type = svg_elem.getElementsByTagName('path')[0].getAttribute('id').split("_")[0];
+            var path = svg_elem.getElementsByTagName('path')[0];
+            svg_path.push(path);
+            type = path.getAttribute('id').split("_")[0];
           } else if (!type) {
             type = 'rect';
           }
@@ -141,7 +144,7 @@ export default {
         content_data['textual_body'] += `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
         content_data['textual_body'] += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
         this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']});
-        this.zoomsections.push({'section':sections, 'type':type});
+        this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId)
       } else {
@@ -217,12 +220,18 @@ export default {
         elem.style.display = 'none';
         elem.id = `position${position}`;
         var multi = zoomsections['section'].length > 1 ? 'multi' : '';
-        var classes = `overlay ${tags} ${multi}`
-        if (zoomsections['type'] !== 'pin'){
-          elem.className = `box ${classes.trim()}`;
-        } else {
+        var classes = `overlay ${tags} ${multi}`.trim()
+        elem.className = `${zoomsections['type']} ${classes}`;
+        if (zoomsections['svg_path'][jt]){
+          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
+          svg.setAttribute('viewBox', xywh.join(" "))
+          var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
+          var path = zoomsections['svg_path'][jt];
+          path.style.stroke = color;
+          svg.innerHTML  = path.outerHTML;
+          elem.appendChild(svg)
+        } else if (zoomsections['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
-          elem.className = `mapmarker ${classes.trim()}`;
         }
         if (this.tagslist[tags]){
           elem.style.borderColor = this.tagslist[tags].color;
