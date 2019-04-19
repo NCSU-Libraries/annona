@@ -230,7 +230,10 @@ export default {
           var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
           var path = zoomsections['svg_path'][jt];
           path.style.stroke = color;
-          svg.innerHTML  = path.outerHTML;
+          var path2 = document.createElement("path")
+          path2.setAttribute('d', path.getAttribute('d'))
+          path2.classList.add('svgactive')
+          svg.innerHTML  = path.outerHTML + path2.outerHTML;
           elem.appendChild(svg)
         }
         if (this.tagslist[tags]){
