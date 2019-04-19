@@ -222,7 +222,9 @@ export default {
         var multi = zoomsections['section'].length > 1 ? 'multi' : '';
         var classes = `overlay ${tags} ${multi}`.trim()
         elem.className = `${zoomsections['type']} ${classes}`;
-        if (zoomsections['svg_path'][jt]){
+        if (zoomsections['type'] === 'pin'){
+          elem.innerHTML = this.mapmarker;
+        } else if (zoomsections['svg_path'][jt]){
           var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
           svg.setAttribute('viewBox', xywh.join(" "))
           var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
@@ -230,8 +232,6 @@ export default {
           path.style.stroke = color;
           svg.innerHTML  = path.outerHTML;
           elem.appendChild(svg)
-        } else if (zoomsections['type'] === 'pin'){
-          elem.innerHTML = this.mapmarker;
         }
         if (this.tagslist[tags]){
           elem.style.borderColor = this.tagslist[tags].color;
