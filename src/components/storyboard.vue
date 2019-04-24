@@ -336,7 +336,8 @@ export default {
       this.settings = shared.getsettings(this.styling)
       this.settings.truncate_length = this.settings.truncate_length ? this.settings.truncate_length : 2;
       if (this.seadragontile === ""){
-        var tile = canvasId.split("#")[0];
+        var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
+        tile = tile.split("#")[0];
         tile += tile.slice(-1) !== '/' ? "/" : '';
         this.seadragontile = tile + "info.json";
       }
@@ -509,7 +510,21 @@ export default {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           this.goToArea(rect);
         } else {
-          this.zoom('home')
+          var sections = this.zoomsections[this.position]['section']
+          var xs = sections.map(element => element.split(",")[0])
+          var lowx = Math.min(...xs)
+          var highx = Math.max(...xs)
+          var ys = sections.map(element => element.split(",")[1])
+          var lowy = Math.min(...ys) - 100;
+          var highy = Math.max(...ys)
+          var ws = sections.map(element => element.split(",")[2])
+          var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+          var width = (highx - lowx) + sumw;
+          var hs = sections.map(element => element.split(",")[2])
+          var highinfo = sections.filter(element => parseInt(element.split(",")[1]) === highy)[0]
+          var height = highy - lowy + (Math.max(...hs) - parseInt(highinfo.split(",")[3]));
+          var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, width, height);
+          this.goToArea(zoomarea);
           var elements = this.anno_elem.querySelectorAll(`#position${this.position}`)
           for (var tk=0; tk<elements.length; tk++){
             elements[tk].style.display = 'block';
