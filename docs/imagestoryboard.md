@@ -61,7 +61,7 @@ The code below makes use of default without any overrides or CSS styling.
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
 
-Additionally each of these viewer's CSS can be individually customized. The overlay color is set to lightblue on load and a lightgreen outline will appear when annotation is being viewed. This can easily be customized to each viewer. See [Single annotation settings](#single-annotation-setting) for an example.
+Additionally each of these viewer's CSS can be individually customized. The overlay color is set to lightblue on load and a lightgreen outline will appear inside the overlay when annotation is being viewed. This can easily be customized to each viewer. See [Single annotation settings](#single-annotation-setting) for an example.
 
 | Variable      | Settings |
 | ----------- | ----------- |

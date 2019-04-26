@@ -233,7 +233,7 @@ export default {
           var path2 = document.createElement("path")
           path2.setAttribute('d', path.getAttribute('d'))
           path2.classList.add('svgactive')
-          svg.innerHTML  = path.outerHTML + path2.outerHTML;
+          svg.innerHTML  = path2.outerHTML + path.outerHTML;
           elem.appendChild(svg)
         }
         if (this.tagslist[tags]){

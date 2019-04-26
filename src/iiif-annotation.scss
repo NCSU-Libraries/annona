@@ -89,24 +89,27 @@ $active_color: lightgreen;
 }
 
 .overlay > svg path {
-  stroke-width: 2px;
+  stroke-width: 3px;
   vector-effect: non-scaling-stroke;
 }
 
 .active > svg path {
-  stroke-width: 4!important;
+  stroke-width: 3px!important;
 }
 .svgactive {
   fill: none;
 }
 .active > svg .svgactive {
-  stroke-width: 4!important;
+  stroke-width: 5px!important;
   stroke: $active_color;
-  stroke-dasharray: 50;
+  -webkit-transform: scale(.99);
+  -webkit-transform-origin: 50% 50%;
+  transform: scale(.99);
+  transform-origin:  50% 50%;
+  transform-box: fill-box;
 }
 .overlay > svg path {
-  stroke-width: 2px;
-  vector-effect: non-scaling-stroke;
+  stroke-width: 3px;
 }
 
 .rect {
@@ -324,6 +327,7 @@ figcaption {
 
 .active.rect {
   outline: 2px solid $active_color!important;
+  outline-offset: -4px;
 }
 
 .active.pin {
