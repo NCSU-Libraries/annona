@@ -103,7 +103,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ```
 ## Single annotation setting
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT; truncate_length: 5;"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5;"></iiif-storyboard>
 
 <style>
 [id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
@@ -140,7 +140,8 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 }
 </style>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <i class='fas fa-map-pin'></i>; tts:it-IT; truncate_length: 5"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5;"></iiif-storyboard>
+
 <style>
 [id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
   border: 2px solid blue;

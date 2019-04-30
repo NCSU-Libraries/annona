@@ -222,12 +222,13 @@ export default {
         var multi = zoomsections['section'].length > 1 ? 'multi' : '';
         var classes = `overlay ${tags} ${multi}`.trim()
         elem.className = `${zoomsections['type']} ${classes}`;
+        var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
         if (zoomsections['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
+          elem.style.fill = color;
         } else if (zoomsections['svg_path'][jt]){
           var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
           svg.setAttribute('viewBox', xywh.join(" "))
-          var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
           var path = zoomsections['svg_path'][jt];
           path.style.stroke = color;
           var path2 = document.createElement("path")
@@ -236,9 +237,9 @@ export default {
           svg.innerHTML  = path2.outerHTML + path.outerHTML;
           elem.appendChild(svg)
         }
-        if (this.tagslist[tags]){
-          elem.style.borderColor = this.tagslist[tags].color;
-          elem.style.color = this.tagslist[tags].color;
+        if (color){
+          elem.style.borderColor = color;
+          elem.style.color = color;
         }
         elem.style.zIndex = zindex;
         this.viewer.addOverlay({

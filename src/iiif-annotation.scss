@@ -145,6 +145,12 @@ $active_color: lightgreen;
   left: calc(50% - #{$mid_pin});
 }
 
+.pin > svg {
+  position:absolute;
+  bottom:0;
+  left: calc(50% - #{$mid_pin});
+}
+
 .fullpage {
   position: fixed;
   top: 0;
