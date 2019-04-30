@@ -105,7 +105,7 @@ export default {
       for (var i =0; i < this.anno.length; i++){
         var dictionary = this.getImageData(this.anno[i], this.annotation_json, i);
         var ondict = shared.on_structure(this.anno[i]);
-        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict;
+        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
         canvasId = [].concat(canvasId);
         var size;
         if (this.manifestlink.indexOf('iiif/2.0') > -1){
