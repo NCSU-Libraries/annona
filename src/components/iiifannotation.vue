@@ -2,7 +2,7 @@
   <div class="iiifannotation"  v-if="rendered === true">
     <div v-for="item in annotation_items" :key="item.id" :id="item.id">
     <span v-for="image in item.image" :key="image">
-    <img v-bind:src="image" v-bind:alt="item.altText" id="annoimage" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+    <span v-html="image" id="annoimage"></span>
     </span>
     <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
     <figcaption v-show="item.label !== undefined && settings.view_larger !== false" v-html="item.label"></figcaption>
@@ -114,15 +114,27 @@ export default {
           size = 'full';
         }
         if (hasmanifest) {
-          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], size)
+          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], size, dictionary)
           dictionary['image'] = dictionary['image'].concat(imagedata['image']);
           dictionary['fullImage'] = imagedata['fullImage'];
         } else {
           for (var cn = 0; cn < canvasId.length; cn++){
             var canvasItem = canvasId[cn]
+            var imagehtml;
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
-            var image = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
-            dictionary['image'].push(image);
+            var imageurl = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`
+            var path = shared.getSVGoverlay(ondict[cn]);
+            if (path) {
+              imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
+            } else {
+              var imagehtml = document.createElement("img");
+              imagehtml.setAttribute('src', imageurl);
+              imagehtml.setAttribute('alt', dictionary['altText']);
+            }
+            for (var key in this.settings.imagesettings){
+              imagehtml.style[key] = this.settings.imagesettings[key];
+            }
+            dictionary['image'].push(imagehtml.outerHTML);
             dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion']);
           }
         }
@@ -134,7 +146,24 @@ export default {
         this.annotation_items.push(dictionary);
       }
     },
-    getManifestCanvas: function(canvasId, anno, size){
+    createSVG: function(imageurl, regionCanvas, dictionary, path, position) {
+      var id = dictionary['id'] + '-' + position;
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute('viewBox', regionCanvas.split(",").join(" "));
+      svg.setAttribute('aria-label', dictionary['altText']);
+      for (var key in this.settings.imagesettings){
+        svg.style[key] = this.settings.imagesettings[key];
+      }
+      var inner = `<defs><pattern patternUnits="objectBoundingBox" id="${id}"  width="100%" height="100%">
+      <image xlink:href="${imageurl}" width="100%" height="100%" x="0" y="0" />
+      </pattern></defs>`
+      path.setAttribute("fill", `url(#${id})`);
+      path.setAttribute("fill-opacity", "1");
+      path.setAttribute("stroke", "none")
+      svg.innerHTML = inner + path.outerHTML;
+      return svg;
+    },
+    getManifestCanvas: function(canvasId, anno, size, dictionary){
       var images = [];
       var fullImage;
       for (var cn = 0; cn < canvasId.length; cn++){
@@ -154,7 +183,20 @@ export default {
         } else {
           baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
         }
-        images.push(`${baseImageUrl}/${regionCanvas}/${size}/0/default.jpg`);
+        var path = shared.getSVGoverlay(ondict[cn])
+        var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/default.jpg`;
+        var imagehtml;
+        if (path) {
+          imagehtml = this.createSVG(imageurl, regionCanvas, dictionary, path, cn)
+        } else {
+          var imagehtml = document.createElement("img");
+          imagehtml.setAttribute('src', imageurl);
+          imagehtml.setAttribute('alt', dictionary['altText']);
+        }
+        for (var key in this.settings.imagesettings){
+          imagehtml.style[key] = this.settings.imagesettings[key];
+        }
+        images.push(imagehtml.outerHTML)
         fullImage = this.fullImage(baseImageUrl, regionCanvas);
       }
       return {'fullImage': fullImage, 'image': images}
@@ -170,6 +212,7 @@ export default {
         dictionary['dataset'] = this.dataset(anno);
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
         dictionary['altText'] = dictionary['ocr'] !== '' ? dictionary['ocr'] : dictionary['label'] !== undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
+        dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
         dictionary['author'] = shared.getAuthor(anno);
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;

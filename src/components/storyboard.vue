@@ -129,12 +129,10 @@ export default {
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict)
           sections.push(canvasRegion['canvasRegion'])
           var canvas = canvasRegion['canvasId'];
-          if (jarondict && jarondict.selector && ondict[jar].selector.item !== undefined){
-            var svg_elem = document.createElement( 'html' );
-            svg_elem.innerHTML = ondict[jar].selector.item.value;
-            var path = svg_elem.getElementsByTagName('path')[0];
-            svg_path.push(path);
-            type = path.getAttribute('id').split("_")[0];
+          var svg_overlay = shared.getSVGoverlay(jarondict)
+          if (svg_overlay) {
+            type = svg_overlay.getAttribute('id').split("_")[0];
+            svg_path.push(svg_overlay);
           } else if (!type) {
             type = 'rect';
           }

@@ -38,10 +38,10 @@ Below is an example of annotation url. This is a single annotation. In the JSON 
 # Annotation Lists
 These are normally denoted in the annotation json as AnnotationList, they will consist of multiple annotations on one image.
 ```
-<iiif-annotation annotationlist="https://iiif.harvardartmuseums.org/manifests/object/198021/list/48466698"></iiif-annotation>
+<iiif-annotation annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-annotation>
 ```
 
-<iiif-annotation annotationlist="https://iiif.harvardartmuseums.org/manifests/object/198021/list/48466698"></iiif-annotation>
+<iiif-annotation annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-annotation>
 
 # Annotations without Manifests listed in annotation
 The following example is a annotation list. The annotation list does not have a manifest in the annotation. The manifest is added manually into to the tag.

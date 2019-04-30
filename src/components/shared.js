@@ -100,6 +100,16 @@ export default {
     }
     return manifestlink;
   },
+  getSVGoverlay: function(ondict){
+    var svg_path;
+    if (ondict && ondict.selector && ondict.selector.item !== undefined){
+      var svg_elem = document.createElement( 'html' );
+      svg_elem.innerHTML = ondict.selector.item.value;
+      var path = svg_elem.getElementsByTagName('path')[0];
+      svg_path = path;
+    }
+    return svg_path;
+  },
   getAuthor: function(annotation) {
     var author;
     if (Array.isArray(annotation.creator)) {

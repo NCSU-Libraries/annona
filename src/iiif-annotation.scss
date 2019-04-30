@@ -210,8 +210,10 @@ $active_color: lightgreen;
   width: 49%
 }
 
-#annoimage {
-  width: 49%
+#annoimage > * {
+  width: 49%;
+  height: auto;
+  vertical-align: middle;
 }
 
 .togglebutton{
