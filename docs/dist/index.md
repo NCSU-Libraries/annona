@@ -6,10 +6,9 @@ permalink: /dist/
 
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
-To import and use library copy and paste code. Change url if you use locally downloaded files.
+To import and use library copy and paste code. Change url if you use locally downloaded files. These files are the most recent updates, they are not necessarily stable releases. Stable releases can be found on the [GitHub releases page](https://github.com/NCSU-Libraries/iiif-annotation/releases).
 
 ```
-<script src="https://unpkg.com/vue"></script>
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 ```

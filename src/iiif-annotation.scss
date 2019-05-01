@@ -103,11 +103,9 @@ $active_color: lightgreen;
   stroke-width: 5px!important;
   stroke: $active_color;
   -webkit-transform: scale(.99);
-  -webkit-transform-origin: 50% 50%;
   transform: scale(.99);
-  transform-origin:  50% 50%;
-  transform-box: fill-box;
 }
+
 .overlay > svg path {
   stroke-width: 3px;
 }

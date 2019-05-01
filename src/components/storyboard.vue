@@ -232,6 +232,9 @@ export default {
           var path2 = document.createElement("path")
           path2.setAttribute('d', path.getAttribute('d'))
           path2.classList.add('svgactive')
+          var origin = `${parseInt(xywh[0])+(parseInt(xywh[2])/2)}px ${parseInt(xywh[1])+(parseInt(xywh[3])/2)}px`;
+          path2.style.transformOrigin = origin;
+          path2.style.webkitTransformOrigin = origin;
           svg.innerHTML  = path2.outerHTML + path.outerHTML;
           elem.appendChild(svg)
         }
