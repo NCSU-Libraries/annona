@@ -47,7 +47,7 @@
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
       <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
-      <select v-if="languages" class="lang_drop" v-on:change="changeLang($event)" v-html="languages"></select>
+      <span class="lang-icon"><select v-if="languages" class="lang_drop close_button" v-on:change="changeLang($event)" v-html="languages"></select></span>
       </span>
       <div id="tags" v-if="istags && !ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
@@ -410,9 +410,6 @@ export default {
       this.buttons.playpause = '<i class="fas fa-pause"></i>'
     },
     autoRunTTS: function(){
-      if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
-        this.buttons.playpause = '<i class="fas fa-play"></i>'
-      }
       if (this.isautorunning){
         if (this.position === this.zoomsections.length){
           this.position = -1;
@@ -424,6 +421,9 @@ export default {
         }, interval);
       } else {
         clearTimeout(this.isautorunning)
+      }
+      if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
+        this.buttons.playpause = '<i class="fas fa-play"></i>'
       }
     },
     createOverlay: function(){
