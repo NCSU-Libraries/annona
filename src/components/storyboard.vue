@@ -47,6 +47,7 @@
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
       <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
+      <select v-if="languages" class="lang_drop" v-on:change="changeLang($event)" v-html="languages"></select>
       </span>
       <div id="tags" v-if="istags && !ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
@@ -105,6 +106,8 @@ export default {
         'tags': '<i class="fas fa-tag"></i>'
       },
       settings: {},
+      currentlang: '',
+      languages: '',
       fullscreen: false,
       tagslist: {}
     }
@@ -137,11 +140,12 @@ export default {
             type = 'rect';
           }
         }
-        var ocr = shared.ocr(anno[i]);
-        var authors = shared.getAuthor(anno[i]);
-        content_data['textual_body'] += `${ocr ? `<div id="ocr">${decodeURIComponent(escape(ocr))}</div>` : ``}`;
-        content_data['textual_body'] += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
-        this.annotations.push({'content': content_data['textual_body'], 'tags':content_data['tags']});
+        if(content_data.languages){
+          this.currentlang = content_data['textual_body'][0]['language'];
+          this.languages = content_data.languages.join("");
+        }
+        content_data['authors'] = shared.getAuthor(anno[i]);
+        this.annotations.push(content_data);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId)
@@ -200,7 +204,19 @@ export default {
         if (vue.settings.toggleoverlay){
           vue.createOverlay();
         }
+        if (vue.currentlang) {
+          vue.changeLang(vue.currentlang)
+        }
       });
+    },
+    changeLang: function(event){
+      var lang = event.target ? event.target.value : event;
+      this.currentlang = lang;
+      this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang);
+      if (this.settings.tts){
+        this.settings.tts = lang;
+        this.tts(this.currentanno)
+      }
     },
     close: function(){
       this.istags = true;
@@ -256,7 +272,7 @@ export default {
         synth.resume();
         this.buttons.playpause = '<i class="fas fa-pause"></i>'
       } else if (!synth.speaking) {
-        var content = this.annotations[this.position] ? this.annotations[this.position]['content'] : '';
+        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         this.tts(content)
         this.buttons.playpause = '<i class="fas fa-pause"></i>'
       } else {
@@ -373,8 +389,17 @@ export default {
       div.innerHTML = text;
       var speak = div.textContent
       var speech = new SpeechSynthesisUtterance(speak);
-      speech.lang = this.settings.tts;
+      var lang = this.annotations[this.position] ? this.annotations[this.position]['language'] : '';
+      speech.lang = lang ? lang : this.settings.tts;
+      var voice = synth.getVoices().filter(function(voice) {
+        var currentlang = speech.lang;
+        return currentlang.length == 2 ? voice.lang.split("-")[0] == currentlang : voice.lang == currentlang;
+      })
+      speech.voice = voice ? voice[0] : synth.getVoices()[0];
       var this_functions = this;
+      speech.onstart = function() {
+        this.buttons.playpause = '<i class="fas fa-pause"></i>';
+      }
       if (!text){
         this.autoRunTTS()
       } else {
@@ -485,7 +510,7 @@ export default {
         this.position = this.position;
       }
       if (this.settings.tts){
-        var content = this.annotations[this.position] ? this.annotations[this.position]['content'] : '';
+        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         this.tts(content)
       }
       if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
@@ -504,8 +529,7 @@ export default {
         if (this.settings.textposition) {
           this.overlayPosition(xywh);
         }
-        var anno_section = this.annotations[this.position];
-        this.currentanno = `${anno_section['content']}${anno_section['tags'].length > 0 ? `<span class="tags">Tags: ${anno_section['tags'].join(", ")}</span>` : ''}`;
+        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang)
         this.makeactive(this.position);
 
         if (numbsections <= 1) {

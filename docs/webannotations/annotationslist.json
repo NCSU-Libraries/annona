@@ -1,110 +1,113 @@
 {
   "@context": "http://www.w3.org/ns/anno.jsonld",
-  "id": "http://example.org/page1",
-  "type": "AnnotationPage",
-  "partOf": {
-    "id": "http://example.org/collection1",
-    "label": "Steampunk Annotations",
-    "total": 42023
-  },
-  "next": "http://example.org/page2",
-  "startIndex": 0,
-  "items": [
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "Evaluation ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 1\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
+  "id": "https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json",
+  "@type": "AnnotationPage",
+  "resources": [
+    {
+      "@context": "http://www.w3.org/ns/anno.jsonld",
+      "body": [
+        {
+          "type": "Choice",
+          "items": [{
+            "selector": {
+              "value": "rect",
+              "type": "FragmentSelector"
+            },
+            "value": "Church of San Maurizio. Is now a Museum on music of Baroque Venice.",
+            "type": "TextualBody",
+            "language": "en",
+            "format": "text/html"
+          },{
+            "selector": {
+              "value": "rect",
+              "type": "FragmentSelector"
+            },
+            "value": "Eglise de San Maurizio. Est maintenant un musée sur la musique de Venise baroque.",
+            "type": "TextualBody",
+            "language": "fr",
+            "format": "text/html"
+          },{
+            "selector": {
+              "value": "rect",
+              "type": "FragmentSelector"
+            },
+            "value": "Iglesia de san maurizio. Ahora es un museo de música de la Venecia barroca.",
+            "type": "TextualBody",
+            "language": "es",
+            "format": "text/html"
+          }]
+        },
+        {
+          "format": "text/plain",
+          "value": "church",
+          "purpose": "tagging",
+          "type": "TextualBody"
+        },
+        {
+          "format": "text/plain",
+          "value": "deconsecrated",
+          "purpose": "tagging",
+          "type": "TextualBody"
+        }
+      ],
+      "target": {
+        "id": "https://repository.duke.edu/iipsrv/iipsrv.fcgi?IIIF=/srv/perkins/repo_deriv/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee#xywh=7068,8160,382,245",
+        "type": "Image"
+      },
+      "type": "Annotation"
     },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=984,1085,420,76"
-  },
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "Curriculum ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 2\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
-    },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=977,1162,420,76"
-  },
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "Level- A ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 3\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
-    },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=1023,1246,299,88"
-  },
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "Eastern Navajo ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 4\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
-    },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=853,1343,602,83"
-  },
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "School ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 5\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
-    },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=1026,1434,259,83"
-  },
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "Crownpoint. n: M: ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 6\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
-    },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=855,1517,635,102"
-  },
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "1933- 34: ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 7\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
-    },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=1032,1598,324,79"
-  },
-  {
-    "type": "Annotation",
-    "@context": "http://www.w3.org/ns/anno.jsonld",
-    "label": "G: Fox: ",
-    "body": {
-      "value": "{\"@context\":{\"Title\":\"http://dublincore.org/documents/dcmi-terms/#terms-title\"},\"Title\":\"Line 8\"}",
-      "type": "Dataset",
-      "purpose": "http://www.w3.org/ns/oa#transcribing",
-      "format": "text/plain"
-    },
-    "target": "http://dams.llgc.org.uk/iiif/2.0/4693064/canvas/4693069.json#xywh=1014,1784,251,82"
-  }
-]
+    {
+      "@context": "http://www.w3.org/ns/anno.jsonld",
+      "body": [
+        {
+          "type": "Choice",
+          "items": [{
+            "selector": {
+              "value": "rect",
+              "type": "FragmentSelector"
+            },
+            "value": "Santa Maria Gloriosa dei Frari also know as Frari.",
+            "type": "TextualBody",
+            "language": "en",
+            "format": "text/html"
+          },{
+            "selector": {
+              "value": "rect",
+              "type": "FragmentSelector"
+            },
+            "value": "Santa Maria Gloriosa dei Frari également connue sous le nom de Frari.",
+            "type": "TextualBody",
+            "language": "fr",
+            "format": "text/html"
+          },{
+            "selector": {
+              "value": "rect",
+              "type": "FragmentSelector"
+            },
+            "value": "Santa Maria Gloriosa dei Frari también conocido como Frari.",
+            "type": "TextualBody",
+            "language": "es",
+            "format": "text/html"
+          }]
+        },
+        {
+          "format": "text/plain",
+          "value": "church",
+          "purpose": "tagging",
+          "type": "TextualBody"
+        },
+        {
+          "format": "text/plain",
+          "value": "standing",
+          "purpose": "tagging",
+          "type": "TextualBody"
+        }
+      ],
+      "target": {
+        "id": "https://repository.duke.edu/iipsrv/iipsrv.fcgi?IIIF=/srv/perkins/repo_deriv/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee#xywh=6609,5718,766,721",
+        "type": "Image"
+      },
+      "type": "Annotation"
+    }
+  ]
 }

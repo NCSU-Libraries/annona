@@ -1,3 +1,4 @@
+import ISO6391 from 'iso-639-1'
 export default {
   on_structure: function(anno){
     if (typeof anno['on'] === 'undefined'){
@@ -29,9 +30,12 @@ export default {
   },
   chars: function(anno) {
     var res = anno.body ? anno.body : anno.resource;
-    var textual_body = '';
+    var textual_body = [];
     var tags = [];
+    var ocr = [];
     var shapetype;
+    var langs;
+    var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
@@ -43,27 +47,30 @@ export default {
         if (purpose === 'tagging'){
           tags.push(value);
         } else {
-          textual_body += `<div class="${purpose}">${value}</div>`;
+          textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
       } else if (res_data[type] === 'oa:Tag'){
         tags.push(value);
+      } else if (res_data[type] === 'Choice') {
+        langs = res_data['items'].map(element => `<option value="${element['language']}">${ISO6391.getNativeName(element['language'])}</option>`);
+        var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${element['value']}"}`));
+        textual_body = textual_body.concat(values)
       } else if (res_data[type] === 'dctypes:Image') {
-          textual_body += `<img src="${res_data['@id']}">
+          textual_body.push(`<img src="${res_data['@id']}">
           <span class="caption">${res_data['description']}</span>
-          <span class="attribution">${res_data['attribution']}</span>`
-      } else if (res_data[type] !== 'cnt:ContentAsText') {
-        textual_body += `<div class="${purpose}">${value}</div>`;
+          <span class="attribution">${res_data['attribution']}</span>`);
+      } else if (res_data[type] === 'dctypes:Dataset') {
+        textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`);
+      } else if (res_data[type] === 'cnt:ContentAsText') {
+        ocr.push(`${unescape(encodeURIComponent(value))}`);
+      } else {
+        textual_body.push(`<div class="${purpose}">${value}</div>`);
       }
       if (res_data.selector){
         shapetype = res_data.selector.value;
       }
     }
-    return {'textual_body':textual_body,'tags':tags, 'type': shapetype};
-  },
-  ocr: function(anno){
-    var res = anno.body ? anno.body : anno.resource;
-    var chars = res['chars'] && res['@type'] === 'cnt:ContentAsText' ? res['chars'] : '';
-    return unescape(encodeURIComponent(chars));
+    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language']};
   },
   canvasRegion: function(canvasId, ondict){
     var canvasRegion;
@@ -118,5 +125,23 @@ export default {
       author = annotation.creator;
     }
     return author;
+  },
+  createContent: function(annotation, currentlang) {
+    var text = ''
+    if (annotation){
+      var text = annotation['label'] ? `<figcaption class="label">${annotation['label']}</figcaption>` : ``;
+      var oldtext = annotation['textual_body'];
+      var ocr = annotation['ocr'];
+      var authors = annotation['authors'];
+      if (currentlang && oldtext[0]['language']) {
+        var correctdata = oldtext.filter(element => element['language'] === currentlang);
+        text += `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
+      } else {
+        text += `${oldtext.join("")}`;
+      }
+      text += `${ocr.length > 0 ? `<div id="ocr">${ocr.map(element => decodeURIComponent(escape(element)))}</div>` : ``}`;
+      text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
+    }
+    return text;
   }
 }

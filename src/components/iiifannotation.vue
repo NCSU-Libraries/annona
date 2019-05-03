@@ -1,15 +1,12 @@
 <template>
   <div class="iiifannotation"  v-if="rendered === true">
+    <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <div v-for="item in annotation_items" :key="item.id" :id="item.id">
     <span v-for="image in item.image" :key="image">
     <span v-html="image" id="annoimage"></span>
     </span>
     <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
-    <figcaption v-show="item.label !== undefined && settings.view_larger !== false" v-html="item.label"></figcaption>
-    <div id="ocr" class="text" v-show="item.ocr && item.ocr !== '' && settings.view_ocr !== false" v-html="item.ocr"></div>
-    <p v-if="item.dataset && item.dataset['dataset_format'] !== ''"><b><a v-bind:href="item.dataset.dataset_url">Download dataset ({{item.dataset.dataset_format}})</a></b></p>
-    <div v-show="item.chars && item.chars !== ''" v-html="item.chars"></div>
-    <div v-show="item.author && item.author !== ''" class="authorship">Written by: {{item.author}}</div>
+    <div id="content" v-show="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
     <div v-show="settings.view_tags !== false" v-html="item.tags"></div>
     <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
     <div id="link_to_object" v-show="settings.view_full_object !== false && full_object && full_object !== '' && settings.image_only != true">
@@ -46,7 +43,8 @@ export default {
       manifestlink: '',
       annotation_items: [],
       rendered: '',
-      annotation_json: ''
+      annotation_json: '',
+      languages: []
       }
   },
   created() {
@@ -59,11 +57,8 @@ export default {
     }
     this.annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios.get(this.annotation_json).then(response => {
-      if (this.annotationlist === undefined){
-        this.anno = [].concat(response.data);
-      } else {
-        this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
-      }
+      this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
+      this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], response.data)
     }).catch((error) => {this.rendered = false;console.log(error);}).then(() => {
         if (this.manifestlink) {
@@ -86,10 +81,6 @@ export default {
         change_html.innerHTML = "View Full Image";
       }
     },
-    label: function(anno) {
-      var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
-      return label;
-    },
     fullImage: function(baseImageUrl, canvasRegion){
       var fullImage =  canvasRegion !== "full" ? baseImageUrl + '/full/1200,/0/default.jpg' : '';
       return fullImage;
@@ -100,6 +91,12 @@ export default {
         this.manifest = response.data;
         this.annoloop(true);
       }).catch((error) => {this.rendered = false; console.log(error);})
+    },
+    changeLang: function(event){
+      var lang = event.target ? event.target.value : event;
+      for(var ai=0; ai<this.annotation_items.length; ai++){
+        this.annotation_items[ai]['rendered_content'] = shared.createContent(this.annotation_items[ai]['content'], lang);
+      }
     },
     annoloop: function(hasmanifest) {
       for (var i =0; i < this.anno.length; i++){
@@ -204,27 +201,21 @@ export default {
     getImageData: function(anno, annotation_json, i){
       var dictionary = {'image':[]};
       if (this.settings.image_only !== true){
-        dictionary['label'] = this.label(anno);
-        dictionary['ocr'] = decodeURIComponent(escape(shared.ocr(anno)));
-        dictionary['chars'] = shared.chars(anno)['textual_body'];
-        var tags = shared.chars(anno)['tags'];
-        dictionary['tags'] = tags.length > 0 ? '<div class="tagging">' + tags.join('</div><div class="tagging">') + '</div>' : "";
-        dictionary['dataset'] = this.dataset(anno);
+        var dict = shared.chars(anno);
+        dict['authors'] = shared.getAuthor(anno);
+        this.languages = dict['languages'] ? [...new Set(this.languages.concat(dict['languages']))] : this.languages;
+        this.currentlang = this.currentlang ? this.currentlang : dict['textual_body'][0] && dict['textual_body'][0]['language'];
+        dictionary['rendered_content'] = shared.createContent(dict, this.currentlang);
+        dictionary['content'] = dict;
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
-        dictionary['altText'] = dictionary['ocr'] !== '' ? dictionary['ocr'] : dictionary['label'] !== undefined ? dictionary['label'] : `Image section of "${this.manifest['label']}"`;
+        dictionary['altText'] = dict['ocr'].length > 0 ? dict['ocr'][0] : dict['label'] !== undefined ? dict['label'] : `Image section of "${this.manifest['label']}"`;
         dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
-        dictionary['author'] = shared.getAuthor(anno);
+        dictionary['tags'] = dict['tags'].length > 0 ? `<div class="tagging">${dict['tags'].join('</div><div class="tagging">')}</div>` : "";
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         this.settings.view_larger = false;
       }
       return dictionary;
-    },
-    dataset: function(anno){
-      var res = anno.body ? anno.body : anno.resource;
-      var dataset_format = res['format'] && res['@type'] === 'dctypes:Dataset' ? res['format'] : '';
-      var dataset_url = res['@id'] && res['@type'] === 'dctypes:Dataset' ? res['@id'] : '';
-      return {'dataset_format':dataset_format, 'dataset_url':dataset_url};
     }
   },
   computed: {

@@ -51,6 +51,11 @@ The following example is a annotation list. The annotation list does not have a 
 
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
 
+# Annotations with Multiple languages
+W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only body is used at a time. This library supports this model. The assumption this library uses is that the changes are between different languages which are defined in ISO standard in the annotation. An example of this can be seen in the annotation below.
+
+<iiif-annotation annotationurl="{{site.baseurl}}/webannotations/annotationslist.json"></iiif-annotation>
+
 # Settings
 
 What areas are shown in the embedded image are customizable either through settings or through basic css. Below are the setting options and their values. An example with all settings enabled can be seen here: [all settings]({{site.baseurl}}/imageviewer_settings). This can also be applied to a single annotation.
@@ -58,9 +63,7 @@ What areas are shown in the embedded image are customizable either through setti
 | Variable      | Settings |
 | ----------- | ----------- |
 | view_larger   | **true** or **false**. Shows/hides the "View Full Image" button. **Default** is true |
-| view_caption |  **true** or **false**. Shows/hides the caption. **Default** is true |
 | view_full_object |  **true** or **false**. Shows/hides the full object url. **Default** is true |
-| view_ocr |  **true** or **false**. Shows/hides the OCR if it exists. **Default** is true |
 | view_tags | **true** or **false**. Shows/hides the tags if they exists. **Default** is true |
 | height | Any css height dimension. Changes annotation and full size image size. **Default** is 'auto' |
 | width | Any css width dimension. Changes annotation and full size image size. **Default** is 49% |
@@ -74,9 +77,8 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <script id="config" type="application/json">{
   "view_larger":false,
-  "view_caption":false,
   "view_full_object":false,
-  "view_ocr":false,
+  "view_tags": false,
   "height": "200px"
 }</script>
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
