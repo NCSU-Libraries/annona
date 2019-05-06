@@ -127,7 +127,7 @@ $active_color: lightgreen;
   color: white;
   background: black;
   padding: 3.5px;
-  margin-right: 2.5px;
+  margin-right: 1.5px;
   font-size: 10px;
   text-align: center;
   width: 10px;
@@ -372,16 +372,18 @@ figcaption {
   flex-wrap: wrap;
 }
 
-.lang_drop {
-  -webkit-appearance: attachment;
-  -moz-appearance: attachment;
-  -o-appearance: attachment;
+.close_button.lang_drop {
+  -webkit-appearance: button-bevel;
+  -moz-appearance: button-bevel;
+  -o-appearance: button-bevel;
+  appearance: button-bevel;
   width: 22px;
 }
 
 .lang-icon {position:relative}
 .lang-icon:before {
     content:"\f0ac";
+    font-weight: 900;
     font-family: "Font Awesome\ 5 Free";
     color:white;
     position:absolute;
