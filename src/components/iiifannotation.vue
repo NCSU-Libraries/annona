@@ -213,6 +213,7 @@ export default {
         dictionary['tags'] = dict['tags'].length > 0 ? `<div class="tagging">${dict['tags'].join('</div><div class="tagging">')}</div>` : "";
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
+        dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
         this.settings.view_larger = false;
       }
       return dictionary;
