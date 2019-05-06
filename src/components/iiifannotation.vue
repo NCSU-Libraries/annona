@@ -124,7 +124,7 @@ export default {
             if (path) {
               imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
             } else {
-              var imagehtml = document.createElement("img");
+              imagehtml = document.createElement("img");
               imagehtml.setAttribute('src', imageurl);
               imagehtml.setAttribute('alt', dictionary['altText']);
             }
@@ -186,7 +186,7 @@ export default {
         if (path) {
           imagehtml = this.createSVG(imageurl, regionCanvas, dictionary, path, cn)
         } else {
-          var imagehtml = document.createElement("img");
+          imagehtml = document.createElement("img");
           imagehtml.setAttribute('src', imageurl);
           imagehtml.setAttribute('alt', dictionary['altText']);
         }

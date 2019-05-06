@@ -1,4 +1,5 @@
-import ISO6391 from 'iso-639-1'
+import ISO6391 from 'iso-639-1';
+
 export default {
   on_structure: function(anno){
     if (typeof anno['on'] === 'undefined'){
@@ -129,7 +130,7 @@ export default {
   createContent: function(annotation, currentlang) {
     var text = ''
     if (annotation){
-      var text = annotation['label'] ? `<figcaption class="label">${annotation['label']}</figcaption>` : ``;
+      text = annotation['label'] ? `<figcaption class="label">${annotation['label']}</figcaption>` : ``;
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
       var authors = annotation['authors'];
