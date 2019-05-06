@@ -63,7 +63,7 @@ export default {
         textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`);
       } else if (res_data[type] === 'cnt:ContentAsText') {
         ocr.push(`${unescape(encodeURIComponent(value))}`);
-      } else {
+      } else if (value) {
         textual_body.push(`<div class="${purpose}">${value}</div>`);
       }
       if (res_data.selector){
