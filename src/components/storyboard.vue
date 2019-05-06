@@ -398,7 +398,7 @@ export default {
       speech.voice = voice ? voice[0] : synth.getVoices()[0];
       var this_functions = this;
       speech.onstart = function() {
-        this.buttons.playpause = '<i class="fas fa-pause"></i>';
+        this_functions.buttons.playpause = '<i class="fas fa-pause"></i>';
       }
       if (!text){
         this.autoRunTTS()

@@ -59,7 +59,7 @@ The code below makes use of default without any overrides or CSS styling.
 </div>
 
 # AnnotationList or AnnotationPage Storyboard with Multiple languages
-W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only body is used at a time. This library supports this model. The assumption this library uses is that the changes are between different languages which are defined in ISO standard in the annotation. If tts is enabled, the dropdown will automatically switch the tts language. An example of this can be seen in the storyboard below.
+W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only one body is used at a time. This library supports this model. The assumption this library makes is that the changes are between different languages which are defined in ISO standard in the annotation. If TTS is enabled, the dropdown will automatically switch the TTS language. An example of this can be seen in the storyboard below.
 
 <iiif-storyboard annotationlist="/iiif-annotation/webannotations/annotationslist.json" styling="tts:true"></iiif-storyboard>
 
@@ -80,9 +80,18 @@ Additionally each of these viewer's CSS can be individually customized. The over
 | mapmarker | Any HTML object. When creating annotations with Mirador, if a pin is used the default view in the OpenSeadragon viewer is: <i class="fas fa-map-marker-alt"></i>. This can be overridden by entering new HTML for the map marker |
 | toggleoverlay | **true** or **false**. By default this is **false** and the overlay is hidden unless toggled. This setting allows the overlay to be toggled on load |
 | textposition | **top**, **bottom**, **right**, **left**. Will position to the left, right, bottom, or top of annotated area. By default this option is not instantiated and the annotation text appears in the top left hand corner of the viewer. Additional positioning can be done with CSS. Each option has a dedicated class based on the option name (.top, .right, etc.)|
-| tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. If language is set in the individual annotations it will set the language automatically and this can be set to **true**. A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (click Auto Run button) to work in Chrome but will work fine in Safari and Firefox. |
+| tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. If language is set in the individual annotations it will set the language automatically and this can be set to **true** (see [Auto Language TTS example](#auto-language-tts-example)). A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (click Auto Run button) to work in Chrome but will work fine in Safari and Firefox. |
 | showtags | **true** or **false**. By default is **true**; If there are tags in the annotations tags will be available for toggling based on tags.|
 | truncate_length | **Any Integer.** By default it is set to **2**; This determines how many words appear when the hide button (<i class="fas fa-caret-up"></i>) is clicked. The hide button will only show words in the annotation and will truncate the annotation and hide the tags. If you are looking for a way to hide the tags listed in the annotation (not the tags button) add to css to `.tags {display: none;}` |
+
+## Auto Language TTS example
+This annotation has the language set for each of the annotations in the annotation. This allows for the language to be set using the annotation instead of manually.
+
+```
+<iiif-storyboard annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json" styling="tts:true"></iiif-storyboard>
+```
+
+<iiif-storyboard annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json" styling="tts:true"></iiif-storyboard>
 
 ## Global Settings
 Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
