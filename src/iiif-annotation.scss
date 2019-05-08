@@ -373,13 +373,22 @@ figcaption {
 }
 
 .close_button.lang_drop {
-  -webkit-appearance: button-bevel;
+  -webkit-appearance: attachment;
   -moz-appearance: meterbar;
   -o-appearance: button-bevel;
   appearance: button-bevel;
   height: 20px;
   width: 20px;
   margin-top: -10px;
+  outline: none;
+  border: none;
+  color: black;
+}
+
+@supports (-moz-appearance:none) {
+    .lang_drop {
+      color: white!important;
+    }
 }
 
 .lang-icon {position:relative}
