@@ -215,7 +215,7 @@ export default {
       this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
       if (this.settings.tts){
         this.settings.tts = lang;
-        this.tts(this.currentanno)
+        this.tts(this.currentanno.split('<div class="tags">')[0])
       }
     },
     close: function(){
@@ -510,7 +510,7 @@ export default {
         this.position = this.position;
       }
       if (this.settings.tts){
-        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
+        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         this.tts(content)
       }
       if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
