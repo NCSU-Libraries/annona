@@ -127,7 +127,7 @@ export default {
     }
     return author;
   },
-  createContent: function(annotation, currentlang) {
+  createContent: function(annotation, currentlang, storyboard) {
     var text = ''
     if (annotation){
       text = annotation['label'] ? `<figcaption class="label">${annotation['label']}</figcaption>` : ``;
@@ -142,6 +142,9 @@ export default {
       }
       text += `${ocr.length > 0 ? `<div id="ocr">${ocr.map(element => decodeURIComponent(escape(element)))}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
+      if (storyboard){
+        text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`
+      }
     }
     return text;
   }

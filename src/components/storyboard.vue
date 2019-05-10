@@ -212,7 +212,7 @@ export default {
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
-      this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang);
+      this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
       if (this.settings.tts){
         this.settings.tts = lang;
         this.tts(this.currentanno)
@@ -272,7 +272,7 @@ export default {
         synth.resume();
         this.buttons.playpause = '<i class="fas fa-pause"></i>'
       } else if (!synth.speaking) {
-        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
+        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
         this.tts(content)
         this.buttons.playpause = '<i class="fas fa-pause"></i>'
       } else {
@@ -510,7 +510,7 @@ export default {
         this.position = this.position;
       }
       if (this.settings.tts){
-        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
+        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
         this.tts(content)
       }
       if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
@@ -529,7 +529,7 @@ export default {
         if (this.settings.textposition) {
           this.overlayPosition(xywh);
         }
-        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang)
+        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true)
         this.makeactive(this.position);
 
         if (numbsections <= 1) {
