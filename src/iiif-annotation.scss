@@ -386,7 +386,7 @@ figcaption {
 }
 
 @supports (-moz-appearance:none) {
-    .lang_drop {
+    .close_button.lang_drop {
       color: white!important;
     }
 }
