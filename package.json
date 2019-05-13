@@ -21,6 +21,7 @@
     "jest-canvas-mock": "^1.1.0",
     "node-sass": "^4.11.0",
     "openseadragon": "^2.4.0",
+    "rtl-detect": "^1.0.2",
     "sass-loader": "^7.1.0",
     "truncate-html": "^1.0.1",
     "vue": "^2.5.21",

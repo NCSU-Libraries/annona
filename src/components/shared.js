@@ -1,4 +1,5 @@
 import ISO6391 from 'iso-639-1';
+import rtlDetect from 'rtl-detect';
 
 export default {
   on_structure: function(anno){
@@ -130,7 +131,10 @@ export default {
   createContent: function(annotation, currentlang, storyboard) {
     var text = ''
     if (annotation){
-      text = annotation['label'] ? `<figcaption class="label">${annotation['label']}</figcaption>` : ``;
+      var language = currentlang ? currentlang : annotation['language']
+      var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr'
+      text = `<span style="direction: ${direction};">`
+      text += annotation['label'] ? `<figcaption class="label">${annotation['label']}</figcaption>` : ``;
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
       var authors = annotation['authors'];
@@ -150,6 +154,7 @@ export default {
       if (storyboard){
         text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`
       }
+      text += '</span>' 
     }
     return text;
   }

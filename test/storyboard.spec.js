@@ -4,6 +4,7 @@ import { mount } from '@vue/test-utils';
 import { shallowMount } from '@vue/test-utils';
 
 import storyboard from '../src/components/storyboard.vue';
+import shared from '../src/components/shared.js'
 
 import flushPromises from 'flush-promises';
 let consoleSpy;
@@ -139,6 +140,8 @@ describe('Component', () => {
       expect(data.annotations[0]['ocr'][0]).toContain('Jim Watson and I have probably made a')
       expect(data.currentanno).toEqual('')
       expect(data.anno_elem).toEqual(null)
+      expect(shared.createContent(data.annotations[0], null, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.</div></span>")
+      expect(shared.createContent(data.annotations[1], null, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
     })
     test('test storyboard with no manifest', async ()  => {
       const wrapper =  shallowMount(storyboard,{
@@ -162,5 +165,7 @@ describe('Component', () => {
       expect(data.annotations[0]['textual_body']).toEqual(['<div class=\"textualbody\">Campo San Maurizio</div>'])
       expect(data.currentanno).toEqual('')
       expect(data.anno_elem).toEqual(null)
+      expect(shared.createContent(data.annotations[0], null, true)).toEqual('<span style="direction: ltr;"><div class="textualbody">Campo San Maurizio</div><div class="tags">Tags: campo</div></span>')
+      expect(shared.createContent(data.annotations[1], null, true)).toEqual('<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>')
     })
 })

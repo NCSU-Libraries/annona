@@ -31,7 +31,7 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items
-      expect(annotations[1]['rendered_content']).toBe('<div class="dctypes:text"><p>DETAILS OF BALCONY RAILING</p></div>')
+      expect(annotations[1]['rendered_content']).toBe("<span style=\"direction: ltr;\"><div class=\"dctypes:text\"><p>DETAILS OF BALCONY RAILING</p></div></span>")
       expect(annotations[0].label).toBe(undefined)
       expect(annotations[0].tags).toBe('')
       expect(annotations[0].image[0].replace(/(\r\n|\n|\r)/gm, "")).toEqual("<svg viewBox=\"740 567 3998 4586\" aria-label=\"Image section of &quot;Cross section, interior details&quot;\"><defs><pattern patternUnits=\"objectBoundingBox\" id=\"mc002400-0\" width=\"100%\" height=\"100%\">      <image xlink:href=\"https://iiif.lib.ncsu.edu/iiif/mc00240-001-ff0093-001-001_0010/740,567,3998,4586/full/0/default.jpg\" width=\"100%\" height=\"100%\" x=\"0\" y=\"0\"></image>      </pattern></defs><path xmlns=\"http://www.w3.org/2000/svg\" d=\"M740.00502,566.97616l1998.77039,0l0,0l1998.77039,0l0,2293.02384l0,2293.02384l-1998.77039,0l-1998.77039,0l0,-2293.02384z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:5,&quot;rotation&quot;:0,&quot;annotation&quot;:null,&quot;editable&quot;:true}\" id=\"rectangle_dcc88375-b2ff-4b41-b061-6d9b5f6b81fc\" fill-opacity=\"1\" fill=\"url(#mc002400-0)\" fill-rule=\"nonzero\" stroke=\"none\" stroke-width=\"17.94228\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"></path></svg>")
@@ -53,7 +53,7 @@ describe('Component', () => {
       expect(annotations['content']['label']).toBe("The Bees")
       expect(annotations['content']['ocr']).toEqual([])
       expect(annotations.fullImage).toBe("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/1200,/0/default.jpg")
-      expect(annotations['rendered_content']).toBe('<figcaption class=\"label\">The Bees</figcaption>')
+      expect(annotations['rendered_content']).toBe('<span style=\"direction: ltr;\"><figcaption class=\"label\">The Bees</figcaption></span>')
       expect(annotations.tags).toBe('<div class="tagging">So many bees.</div>')
       expect(annotations.altText).toBe("The Bees")
     })
@@ -70,7 +70,7 @@ describe('Component', () => {
       expect(annotations.id).toBe('page0')
       expect(annotations.label).toBe(undefined)
       expect(annotations['content']['ocr']).toEqual([])
-      expect(annotations['rendered_content']).toEqual(`<div class="textualbody"><iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/0001-1.json'></iiif-annotation></div>`)
+      expect(annotations['rendered_content']).toEqual(`<span style="direction: ltr;"><div class="textualbody"><iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/0001-1.json'></iiif-annotation></div></span>`)
     })
     test('test oa list', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
