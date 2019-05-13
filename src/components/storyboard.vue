@@ -47,7 +47,7 @@
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
       <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
-      <span class="lang-icon" v-if="languages"><select class="lang_drop close_button" v-on:change="changeLang($event)" v-html="languages"></select></span>
+      <span class="lang-icon" v-if="languages.length > 0"><select class="lang_drop close_button" v-on:change="changeLang($event)" v-html="languages.join('')"></select></span>
       </span>
       <div id="tags" v-if="istags && !ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
@@ -107,7 +107,7 @@ export default {
       },
       settings: {},
       currentlang: '',
-      languages: '',
+      languages: [],
       fullscreen: false,
       tagslist: {}
     }
@@ -142,7 +142,7 @@ export default {
         }
         if(content_data.languages){
           this.currentlang = content_data['textual_body'][0]['language'];
-          this.languages = content_data.languages.join("");
+          this.languages = Array.from(new Set(this.languages.concat(content_data.languages)));
         }
         content_data['authors'] = shared.getAuthor(anno[i]);
         this.annotations.push(content_data);

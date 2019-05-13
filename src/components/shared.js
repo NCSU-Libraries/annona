@@ -53,7 +53,7 @@ export default {
       } else if (res_data[type] === 'oa:Tag'){
         tags.push(value);
       } else if (res_data[type] === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}">${ISO6391.getNativeName(element['language'])}</option>`);
+        langs = res_data['items'].map(element => `<option value="${element['language']}">${ISO6391.getNativeName(element['language']) ? ISO6391.getNativeName(element['language']) : element['language']}</option>`);
         var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${element['value']}"}`));
         textual_body = textual_body.concat(values)
       } else if (res_data[type] === 'dctypes:Image') {
@@ -136,7 +136,12 @@ export default {
       var authors = annotation['authors'];
       if (currentlang && oldtext[0]['language']) {
         var correctdata = oldtext.filter(element => element['language'] === currentlang);
-        text += `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
+        if(correctdata.length > 0){
+          text += `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
+        } else {
+          var langtranslation = ISO6391.getNativeName(currentlang)
+          text += `Translation not avaliable in "${langtranslation ? langtranslation : currentlang}"`;
+        }
       } else {
         text += `${oldtext.join("")}`;
       }
