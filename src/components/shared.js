@@ -59,8 +59,8 @@ export default {
         textual_body = textual_body.concat(values)
       } else if (res_data[type] === 'dctypes:Image') {
           textual_body.push(`<img src="${res_data['@id']}">
-          <span class="caption">${res_data['description']}</span>
-          <span class="attribution">${res_data['attribution']}</span>`);
+          <div class="attribution">${res_data['attribution']}</div>
+          <div class="caption">${res_data['description']}</div>`);
       } else if (res_data[type] === 'dctypes:Dataset') {
         textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`);
       } else if (res_data[type] === 'cnt:ContentAsText') {
@@ -154,7 +154,7 @@ export default {
       if (storyboard){
         text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`
       }
-      text += '</span>' 
+      text += '</span>'
     }
     return text;
   }
