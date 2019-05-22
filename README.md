@@ -15,7 +15,7 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Runs tests then compiles and minifies for production
 ```
 npm run build
 ```

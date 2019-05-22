@@ -542,11 +542,12 @@ export default {
           var highx = Math.max(...xs)
           var ys = sections.map(element => element.split(",")[1])
           var lowy = Math.min(...ys);
+          var highy = Math.max(...ys);
           var ws = sections.map(element => element.split(",")[2])
           var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0)
           var width = (highx - lowx) + sumw;
-          var hs = sections.map(element => element.split(",")[3])
-          var height = hs.reduce((a, b) => parseInt(a) + parseInt(b), 0);
+          var highinfo = sections.filter(element => parseInt(element.split(",")[1]) === highy)[0]
+          var height = highy - lowy + parseInt(highinfo.split(',')[3]);
           var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, width, height);
           this.goToArea(zoomarea);
           var elements = this.anno_elem.querySelectorAll(`#position${this.position}`)
