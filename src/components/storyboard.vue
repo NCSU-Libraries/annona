@@ -3,39 +3,39 @@
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen ">
-        <button v-show="!annotationurl" id="autoRunButton" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton">
+        <button v-show="!annotationurl" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-on:click="showtags()" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'showtags', 'args': ''});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
-        <button v-show="!annotationurl" id="overlayButton" v-on:click="createOverlay()" class="toolbarButton">
+        <button v-show="!annotationurl" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
         </button>
-        <button v-on:click="zoom('in')" id="zoomInButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
           <i class="fas fa-search-plus"></i>
           <span class="toolbartext">Zoom in</span>
         </button>
-        <button v-on:click="zoom('out')" id="zoomOutButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
           <i class="fas fa-search-minus"></i>
           <span class="toolbartext">Zoom out</span>
         </button>
-        <button v-on:click="zoom('home')" id="homeZoomButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
           <i class="fas fa-home"></i>
           <span class="toolbartext">View full image</span>
         </button>
-        <button v-show="!annotationurl" id="previousButton" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+        <button v-show="!annotationurl" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-left"></i>
           <span class="toolbartext">Previous Annotation</span>
         </button>
-        <button v-show="!annotationurl" id="nextButton" v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+        <button v-show="!annotationurl" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
-        <button v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
+        <button v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
@@ -43,15 +43,15 @@
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="isclosed !== true && (istags || prev_inactive !== true && next_inactive !== true)">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-      <span class="close_button" ><i class="fas fa-times" v-on:click="close()"></i></span>
-      <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
-      <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
+      <span class="close_button" ><i class="fas fa-times" v-on:click="sendMessage({'function': 'close', 'args': ''});"></i></span>
+      <span v-html="buttons.hide_button" class="close_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
+      <span v-html="buttons.playpause" class="close_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
       <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
       <span class="lang-icon" v-if="languages.length > 0"><select class="lang_drop close_button" v-on:change="changeLang($event)" v-html="languages.join('')"></select></span>
       </span>
       <div id="tags" v-if="istags && !ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
-          <input type="checkbox" class="tagscheck" v-on:click="hideshowalltags(key)" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
+          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'params': key});" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
       <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
@@ -68,7 +68,6 @@ import openseadragon from 'openseadragon';
 import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
-
 Vue.use(fullscreen);
 
 export default {
@@ -157,6 +156,9 @@ export default {
         var randomcolor = '#'+Math.random().toString(16).substr(-6);
         var checked = this.settings.toggleoverlay ? true : false;
         this.tagslist[tags[tc]] = {'color':randomcolor, 'checked': checked};
+      }
+      if(this.settings.ws){
+        this.connect(this.settings.ws);
       }
   });
   },
@@ -279,6 +281,25 @@ export default {
         synth.pause();
         this.buttons.playpause = '<i class="fas fa-play"></i>'
       }
+    },
+    connect(ws) {
+      this.socket = new WebSocket(ws);
+      this.socket.onopen = () => {
+        this.status = "connected";
+        console.log({ event: "Connected to", data: 'wss://echo.websocket.org'})
+
+        this.socket.onmessage = ({data}) => {
+          data = JSON.parse(data)
+          this[data['function']](data['args'])
+          console.log({ event: "Recieved message", data });
+        };
+      };
+    },
+    sendMessage(e) {
+      this.socket.send(JSON.stringify(e));
+      this[e['function']](e['args'])
+      console.log({ event: "Sent message", data: e});
+      this.message = "";
     },
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
@@ -509,6 +530,7 @@ export default {
       } else {
         this.position = this.position;
       }
+
       if (this.settings.tts){
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         this.tts(content)
@@ -556,7 +578,7 @@ export default {
           }
         }
       }
-      if (this.position === this.zoomsections.length){
+      if (this.position >= this.zoomsections.length){
         this.next_inactive = true;
       } else {
         this.next_inactive = false;

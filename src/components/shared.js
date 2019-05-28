@@ -21,7 +21,7 @@ export default {
       var items = styling.split(";").filter(function(el) { return el != ""; });
       for (var j=0; j<items.length; j++){
         var keyvalue = items[j].split(":")
-        var value = keyvalue[1].trim();
+        var value = items[j].substring(items[j].indexOf(':')+1).trim();
         value = value == 'false' ? false : value;
         value = value == 'true' ? true : value;
         value = parseInt(value) && parseInt(value).toString().length == value.length ? parseInt(value) : value;
