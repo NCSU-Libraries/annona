@@ -503,6 +503,7 @@ export default {
           functions.makeactive(position);
           functions.sendMessage({'function':'next', 'args': '', 'position': functions.position})
           functions.goToArea(rect);
+          functions.reposition();
         }
       }).setTracking(true);
     },
