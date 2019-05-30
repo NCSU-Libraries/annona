@@ -51,7 +51,7 @@
       </span>
       <div id="tags" v-if="istags && !ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
-          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'params': key});" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
+          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
       <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
@@ -186,13 +186,13 @@ export default {
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
       var vue = this;
-      viewer.addHandler('canvas-click', function(viewer){
+      viewer.addHandler('canvas-click', function(){
         vue.reposition()
       });
-      viewer.addHandler('canvas-scroll', function(viewer){
+      viewer.addHandler('canvas-scroll', function(){
         vue.reposition()
       });
-      viewer.addHandler('canvas-drag', function(viewer){
+      viewer.addHandler('canvas-drag', function(){
         vue.reposition()
       });
       viewer.addHandler('open', function(){
@@ -323,6 +323,7 @@ export default {
         e['position'] = this.position;
         socket.emit('message', e)
       }
+
       this[e['function']](e['args'])
     },
     hide: function(){
@@ -500,9 +501,8 @@ export default {
         clickHandler: function() {
           functions.position = position
           functions.makeactive(position);
-          functions.next();
+          functions.sendMessage({'function':'next', 'args': '', 'position': functions.position})
           functions.goToArea(rect);
-          functions.reposition();
         }
       }).setTracking(true);
     },
