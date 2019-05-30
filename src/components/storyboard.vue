@@ -502,6 +502,7 @@ export default {
           functions.makeactive(position);
           functions.next();
           functions.goToArea(rect);
+          functions.reposition();
         }
       }).setTracking(true);
     },
