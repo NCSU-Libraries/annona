@@ -186,6 +186,15 @@ export default {
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
       var vue = this;
+      viewer.addHandler('canvas-click', function(viewer){
+        vue.reposition()
+      });
+      viewer.addHandler('canvas-scroll', function(viewer){
+        vue.reposition()
+      });
+      viewer.addHandler('canvas-drag', function(viewer){
+        vue.reposition()
+      });
       viewer.addHandler('open', function(){
         if (!fit) {
           vue.viewer.viewport.fitVertically()
@@ -215,14 +224,25 @@ export default {
         }
       });
     },
+    reposition: function() {
+      if (this.settings.serverside){
+        var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(this.viewer.viewport.getBounds());
+        socket.emit('message', {'bounds': bounds})
+      }
+    },
     newSocket () {
       if (this.$props.ws){
         let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' })
         this.socket = socket;
         this.socket.on('message', (data) => {
+
           if (data['function']){
             this.position = data['position']
             this[data['function']](data['args'])
+          }
+          if (data['bounds']) {
+            var conversion = this.viewer.world.getItemAt(0).imageToViewportRectangle(data['bounds'].x, data['bounds'].y, data['bounds'].width, data['bounds'].height);
+            this.viewer.viewport.fitBoundsWithConstraints(conversion)
           }
         })
       }
