@@ -68,6 +68,8 @@ import openseadragon from 'openseadragon';
 import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
+import SocketIO from 'socket.io-client'
+
 Vue.use(fullscreen);
 
 export default {
@@ -76,7 +78,8 @@ export default {
     'annotationlist':String,
     'manifesturl':String,
     'annotationurl': String,
-    'styling': String
+    'styling': String,
+    'ws': String
   },
   data: function() {
     return {
@@ -157,10 +160,11 @@ export default {
         var checked = this.settings.toggleoverlay ? true : false;
         this.tagslist[tags[tc]] = {'color':randomcolor, 'checked': checked};
       }
-      if(this.settings.ws){
-        this.connect(this.settings.ws);
-      }
+
   });
+  },
+  mounted () {
+    this.newSocket();
   },
   methods: {
     createViewer: function(){
@@ -210,6 +214,18 @@ export default {
           vue.changeLang(vue.currentlang)
         }
       });
+    },
+    newSocket () {
+      if (this.$props.ws){
+        let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' })
+        this.socket = socket;
+        this.socket.on('message', (data) => {
+          if (data['function']){
+            this.position = data['position']
+            this[data['function']](data['args'])
+          }
+        })
+      }
     },
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
@@ -282,24 +298,12 @@ export default {
         this.buttons.playpause = '<i class="fas fa-play"></i>'
       }
     },
-    connect(ws) {
-      this.socket = new WebSocket(ws);
-      this.socket.onopen = () => {
-        this.status = "connected";
-        console.log({ event: "Connected to", data: 'wss://echo.websocket.org'})
-
-        this.socket.onmessage = ({data}) => {
-          data = JSON.parse(data)
-          this[data['function']](data['args'])
-          console.log({ event: "Recieved message", data });
-        };
-      };
-    },
     sendMessage(e) {
-      this.socket.send(JSON.stringify(e));
+      if (this.settings.serverside){
+        e['position'] = this.position;
+        socket.emit('message', e)
+      }
       this[e['function']](e['args'])
-      console.log({ event: "Sent message", data: e});
-      this.message = "";
     },
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);

@@ -23,6 +23,7 @@
     "openseadragon": "^2.4.0",
     "rtl-detect": "^1.0.2",
     "sass-loader": "^7.1.0",
+    "socket.io-client": "^2.2.0",
     "truncate-html": "^1.0.2",
     "vue": "^2.6.10",
     "vue-custom-element": "^3.2.7",
