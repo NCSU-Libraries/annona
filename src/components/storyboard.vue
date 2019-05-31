@@ -41,21 +41,21 @@
         </button>
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="isclosed !== true && (istags || prev_inactive !== true && next_inactive !== true)">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="booleanitems.isclosed !== true && (booleanitems.istags || prev_inactive !== true && next_inactive !== true)">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
       <span class="close_button" ><i class="fas fa-times" v-on:click="sendMessage({'function': 'close', 'args': ''});"></i></span>
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
-      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
+      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="sendMessage({'function': 'showtags', 'args': ''});"></span>
       <span class="lang-icon" v-if="languages.length > 0"><select class="lang_drop close_button" v-on:change="changeLang($event)" v-html="languages.join('')"></select></span>
       </span>
-      <div id="tags" v-if="istags && !ishidden">
+      <div id="tags" v-if="booleanitems.istags && !booleanitems.ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
-      <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
-      <div id="annotation_text" v-html="currentanno" v-if="!ishidden && !istags"></div>
+      <div id="annotation_excerpt" style="height: auto;" v-if="booleanitems.ishidden && !booleanitems.istags" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
+      <div id="annotation_text" v-html="currentanno" v-if="!booleanitems.ishidden && !booleanitems.istags"></div>
     </div>
   </div>
 </div>
@@ -93,11 +93,14 @@ export default {
       next_inactive: false,
       toolbar_id: '',
       title: '',
-      isclosed: false,
-      ishidden: false,
+      booleanitems: {
+        isclosed: false,
+        ishidden: false,
+        istags: false,
+        isoverlaytoggled: false,
+      },
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
-      istags: false,
       isautorunning: '',
       buttons: {
         'autorunbutton': '<i class="fas fa-magic"></i>',
@@ -236,12 +239,13 @@ export default {
         this.socket = socket;
         this.socket.on('message', (data) => {
           if (data['function']){
-            this.position = data['position']
-            this[data['function']](data['args'])
+            this.position = data['position'];
+            this.booleanitems = data['booleanitems'];
+            this[data['function']](data['args']);
           }
           if (data['bounds']) {
             var conversion = this.viewer.world.getItemAt(0).imageToViewportRectangle(data['bounds'].x, data['bounds'].y, data['bounds'].width, data['bounds'].height);
-            this.viewer.viewport.fitBoundsWithConstraints(conversion)
+            this.viewer.viewport.fitBoundsWithConstraints(conversion);
           }
         })
       }
@@ -256,9 +260,9 @@ export default {
       }
     },
     close: function(){
-      this.istags = true;
+      this.booleanitems.istags = true;
       this.showtags();
-      this.isclosed = true;
+      this.booleanitems.isclosed = true;
     },
     createOverlayElement: function(position, tags, zoomsections) {
       for (var jt=0; jt<zoomsections['section'].length; jt++){
@@ -320,6 +324,7 @@ export default {
     sendMessage(e) {
       if (this.settings.controller){
         e['position'] = this.position;
+        e['booleanitems'] = this.booleanitems;
         this.socket.emit('broadcast', e)
       }
       this[e['function']](e['args'])
@@ -327,37 +332,38 @@ export default {
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
-      if(this.ishidden === true){
-        this.ishidden = false;
+      if(this.booleanitems.ishidden === true){
+        this.booleanitems.ishidden = false;
         this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
       } else {
-        this.ishidden = true;
+        this.booleanitems.ishidden = true;
         this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
       }
     },
     showtags: function(){
-      this.isclosed = false;
-      if(this.istags){
+      this.booleanitems.isclosed = false;
+      if(this.booleanitems.istags){
         this.buttons.tags = '<i class="fas fa-tag"></i>'
-        this.istags = false;
+        this.booleanitems.istags = false;
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length) {
           this.buttons.tags = '<i class="fas fa-window-close"></i>'
         } else {
           this.buttons.tags = '<i class="fas fa-file-alt"></i>'
         }
-        this.istags = true;
+        this.booleanitems.istags = true;
       }
     },
     hideshowalltags: function(tag){
       var elem = this.anno_elem.getElementsByClassName(tag)
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
+      var checked = this.tagslist[tag].checked;
       for (var j=0; j<elem.length; j++){
         var multi = document.querySelectorAll(`#${elem[j].id}`)
         for (var aj=0; aj<multi.length; aj++){
           multi[aj].style.zIndex = 0;
         }
-        if (elem[j].style.display != 'none') {
+        if (checked === true) {
           elem[j].style.display = 'none'
           this.tagslist[tag].checked = false;
         } else {
@@ -366,13 +372,13 @@ export default {
           this.tagslist[tag].checked = true;
         }
       }
-      var displaying = Array.from(box_elements).some(function(element) {
-        return element.style.display !== 'none';
-      });
-      if (displaying){
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
-      } else {
+      var areviewable = Object.values(this.tagslist).map(element => element['checked'])
+      if (areviewable.indexOf(true) === -1){
         this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
+        this.booleanitems.isoverlaytoggled = false;
+      } else {
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
+        this.booleanitems.isoverlaytoggled = true;
       }
     },
     getManifestData: function(manifestlink, canvas, canvasId){
@@ -472,18 +478,17 @@ export default {
     },
     createOverlay: function(){
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
-      var displaying = Array.from(box_elements).some(function(element) {
-        return element.style.display !== 'none' && element.className.indexOf('multi') === -1;
-      });
       var display_setting;
       var checked;
-      if (displaying){
+      if (this.booleanitems.isoverlaytoggled){
         display_setting = 'none';
         checked = false;
+        this.booleanitems.isoverlaytoggled = false;
         this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
       } else {
         display_setting = 'block';
         checked = true;
+        this.booleanitems.isoverlaytoggled = true;
         this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
       }
       for (var key in this.tagslist){
@@ -542,8 +547,8 @@ export default {
       this.fullscreen = fullscreen;
     },
     next: function(nextorprev){
-      this.isclosed = false;
-      this.istags = true;
+      this.booleanitems.isclosed = false;
+      this.booleanitems.istags = true;
       this.showtags();
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
