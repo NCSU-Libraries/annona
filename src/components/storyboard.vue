@@ -51,7 +51,7 @@
       </span>
       <div id="tags" v-if="istags && !ishidden">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
-          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
+          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
       <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
@@ -68,7 +68,7 @@ import openseadragon from 'openseadragon';
 import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
-import SocketIO from 'socket.io-client'
+import SocketIO from 'socket.io-client';
 
 Vue.use(fullscreen);
 
@@ -225,9 +225,9 @@ export default {
       });
     },
     reposition: function() {
-      if (this.settings.serverside){
+      if (this.settings.controller){
         var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(this.viewer.viewport.getBounds());
-        socket.emit('message', {'bounds': bounds})
+        this.socket.emit('broadcast', {'bounds': bounds});
       }
     },
     newSocket () {
@@ -235,7 +235,6 @@ export default {
         let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' })
         this.socket = socket;
         this.socket.on('message', (data) => {
-
           if (data['function']){
             this.position = data['position']
             this[data['function']](data['args'])
@@ -319,11 +318,10 @@ export default {
       }
     },
     sendMessage(e) {
-      if (this.settings.serverside){
+      if (this.settings.controller){
         e['position'] = this.position;
-        socket.emit('message', e)
+        this.socket.emit('broadcast', e)
       }
-
       this[e['function']](e['args'])
     },
     hide: function(){
