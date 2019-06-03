@@ -411,7 +411,7 @@ figcaption {
 
 @media only screen and (max-width: 600px) {
   .annotation {
-    width: 100%;
+    width: calc(100% - 4px);
     resize: both;
     border: 2px solid black;
     background: white;

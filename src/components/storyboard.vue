@@ -127,17 +127,17 @@ export default {
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
         var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
-        canvasId = [].concat(canvasId)
-        var sections = []
+        canvasId = [].concat(canvasId);
+        var sections = [];
         var content_data = shared.chars(anno[i]);
         var type = content_data['type'];
         var svg_path = [];
         for (var jar=0; jar<canvasId.length; jar++){
           var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
-          var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict)
-          sections.push(canvasRegion['canvasRegion'])
+          var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
+          sections.push(canvasRegion['canvasRegion']);
           var canvas = canvasRegion['canvasId'];
-          var svg_overlay = shared.getSVGoverlay(jarondict)
+          var svg_overlay = shared.getSVGoverlay(jarondict);
           if (svg_overlay) {
             type = svg_overlay.getAttribute('id').split("_")[0];
             svg_path.push(svg_overlay);
@@ -153,9 +153,9 @@ export default {
         this.annotations.push(content_data);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
-        this.getManifestData(manifestlink, canvas, canvasId)
+        this.getManifestData(manifestlink, canvas, canvasId);
       } else {
-        this.buildseadragon(canvas)
+        this.buildseadragon(canvas);
       }
       var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
       for (var tc=0; tc<tags.length; tc++){
@@ -184,23 +184,23 @@ export default {
             homeFillsViewer: fit,
             constrainDuringPan: true,
             visibilityRatio: 1
-      }
+      };
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
       var vue = this;
       viewer.addHandler('canvas-click', function(){
-        vue.reposition()
+        vue.reposition();
       });
       viewer.addHandler('canvas-scroll', function(){
-        vue.reposition()
+        vue.reposition();
       });
       viewer.addHandler('canvas-drag', function(){
-        vue.reposition()
+        vue.reposition();
       });
       viewer.addHandler('open', function(){
         if (!fit) {
-          vue.viewer.viewport.fitVertically()
+          vue.viewer.viewport.fitVertically();
         }
         if(vue.settings.autorun_onload){
           vue.autoRun(vue.settings.autorun_interval);
@@ -208,10 +208,10 @@ export default {
         for (var i=0; i<zoomsections.length; i++){
           if (vue.annotations[i]['tags'].length > 0){
             for (var jl=0; jl<vue.annotations[i]['tags'].length; jl++){
-              vue.createOverlayElement(i, vue.annotations[i]['tags'][jl], zoomsections[i])
+              vue.createOverlayElement(i, vue.annotations[i]['tags'][jl], zoomsections[i]);
             }
           } else {
-            vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i])
+            vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i]);
           }
         }
         if (vue.annotationurl){
@@ -223,7 +223,7 @@ export default {
           vue.createOverlay();
         }
         if (vue.currentlang) {
-          vue.changeLang(vue.currentlang)
+          vue.changeLang(vue.currentlang);
         }
       });
     },
@@ -235,7 +235,7 @@ export default {
     },
     newSocket () {
       if (this.$props.ws){
-        let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' })
+        let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' });
         this.socket = socket;
         this.socket.on('message', (data) => {
           if (data['function']){
@@ -256,7 +256,7 @@ export default {
       this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
       if (this.settings.tts){
         this.settings.tts = lang;
-        this.tts(this.currentanno.split('<div class="tags">')[0])
+        this.tts(this.currentanno.split('<div class="tags">')[0]);
       }
     },
     close: function(){
@@ -275,25 +275,25 @@ export default {
         elem.style.display = 'none';
         elem.id = `position${position}`;
         var multi = zoomsections['section'].length > 1 ? 'multi' : '';
-        var classes = `overlay ${tags} ${multi}`.trim()
+        var classes = `overlay ${tags} ${multi}`.trim();
         elem.className = `${zoomsections['type']} ${classes}`;
         var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
         if (zoomsections['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
           elem.style.fill = color;
         } else if (zoomsections['svg_path'][jt]){
-          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-          svg.setAttribute('viewBox', xywh.join(" "))
+          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.setAttribute('viewBox', xywh.join(" "));
           var path = zoomsections['svg_path'][jt];
           path.style.stroke = color;
-          var path2 = document.createElement("path")
-          path2.setAttribute('d', path.getAttribute('d'))
-          path2.classList.add('svgactive')
+          var path2 = document.createElement("path");
+          path2.setAttribute('d', path.getAttribute('d'));
+          path2.classList.add('svgactive');
           var origin = `${parseInt(xywh[0])+(parseInt(xywh[2])/2)}px ${parseInt(xywh[1])+(parseInt(xywh[3])/2)}px`;
           path2.style.transformOrigin = origin;
           path2.style.webkitTransformOrigin = origin;
           svg.innerHTML  = path2.outerHTML + path.outerHTML;
-          elem.appendChild(svg)
+          elem.appendChild(svg);
         }
         if (color){
           elem.style.borderColor = color;
@@ -311,68 +311,67 @@ export default {
       var synth = window.speechSynthesis;
       if (synth.paused){
         synth.resume();
-        this.buttons.playpause = '<i class="fas fa-pause"></i>'
+        this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else if (!synth.speaking) {
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
-        this.tts(content)
-        this.buttons.playpause = '<i class="fas fa-pause"></i>'
+        this.tts(content);
+        this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else {
         synth.pause();
-        this.buttons.playpause = '<i class="fas fa-play"></i>'
+        this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
     },
     sendMessage(e) {
       if (this.settings.controller){
         e['position'] = this.position;
         e['booleanitems'] = this.booleanitems;
-        this.socket.emit('broadcast', e)
+        this.socket.emit('broadcast', e);
       }
-      this[e['function']](e['args'])
+      this[e['function']](e['args']);
     },
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
       if(this.booleanitems.ishidden === true){
         this.booleanitems.ishidden = false;
-        this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
+        this.buttons.hide_button = '<i class="fas fa-caret-up"></i>';
       } else {
         this.booleanitems.ishidden = true;
-        this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
+        this.buttons.hide_button = '<i class="fas fa-caret-down"></i>';
       }
     },
     showtags: function(){
       this.booleanitems.isclosed = false;
       if(this.booleanitems.istags){
-        this.buttons.tags = '<i class="fas fa-tag"></i>'
+        this.buttons.tags = '<i class="fas fa-tag"></i>';
         this.booleanitems.istags = false;
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length) {
-          this.buttons.tags = '<i class="fas fa-window-close"></i>'
+          this.buttons.tags = '<i class="fas fa-window-close"></i>';
         } else {
-          this.buttons.tags = '<i class="fas fa-file-alt"></i>'
+          this.buttons.tags = '<i class="fas fa-file-alt"></i>';
         }
         this.booleanitems.istags = true;
       }
     },
     hideshowalltags: function(tag){
-      var elem = this.anno_elem.getElementsByClassName(tag)
-      var box_elements = this.anno_elem.getElementsByClassName("overlay");
+      var elem = this.anno_elem.getElementsByClassName(tag);
       var checked = this.tagslist[tag].checked;
       for (var j=0; j<elem.length; j++){
-        var multi = document.querySelectorAll(`#${elem[j].id}`)
+        var multi = document.querySelectorAll(`#${elem[j].id}`);
         for (var aj=0; aj<multi.length; aj++){
           multi[aj].style.zIndex = 0;
         }
         if (checked === true) {
-          elem[j].style.display = 'none'
+          elem[j].style.display = 'none';
           this.tagslist[tag].checked = false;
         } else {
-          elem[j].style.display = 'block'
+          elem[j].style.display = 'block';
           elem[j].style.zIndex = 1000;
           this.tagslist[tag].checked = true;
         }
       }
-      var areviewable = Object.values(this.tagslist).map(element => element['checked'])
+      var areviewable = Object.values(this.tagslist).map(element => element['checked']);
       if (areviewable.indexOf(true) === -1){
         this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
         this.booleanitems.isoverlaytoggled = false;
@@ -397,11 +396,11 @@ export default {
               this.seadragontile = canvas_tile + "info.json";
             }
           }
-          this.buildseadragon(canvasId)
+          this.buildseadragon(canvasId);
       });
     },
     buildseadragon: function(canvasId){
-      this.settings = shared.getsettings(this.styling)
+      this.settings = shared.getsettings(this.styling);
       this.settings.truncate_length = this.settings.truncate_length ? this.settings.truncate_length : 2;
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
@@ -424,7 +423,7 @@ export default {
         this.viewer.viewport.zoomBy(.9);
       } else if (inorout === 'home') {
         if (this.settings.fit == 'fill') {
-          this.viewer.viewport.fitBounds(this.viewer.viewport.getHomeBounds())
+          this.viewer.viewport.fitBounds(this.viewer.viewport.getHomeBounds());
         } else {
           this.viewer.viewport.fitVertically();
         }
@@ -437,7 +436,7 @@ export default {
       synth.cancel();
       var div = document.createElement("div");
       div.innerHTML = text;
-      var speak = div.textContent
+      var speak = div.textContent;
       var speech = new SpeechSynthesisUtterance(speak);
       var lang = this.annotations[this.position] ? this.annotations[this.position]['language'] : '';
       speech.lang = lang ? lang : this.settings.tts;
@@ -451,13 +450,13 @@ export default {
         this_functions.buttons.playpause = '<i class="fas fa-pause"></i>';
       }
       if (!text){
-        this.autoRunTTS()
+        this.autoRunTTS();
       } else {
-        speech.onend = this_functions.autoRunTTS
+        speech.onend = this_functions.autoRunTTS;
       }
       console.log("utterance", speech);
-      synth.speak(speech)
-      this.buttons.playpause = '<i class="fas fa-pause"></i>'
+      synth.speak(speech);
+      this.buttons.playpause = '<i class="fas fa-pause"></i>';
     },
     autoRunTTS: function(){
       if (this.isautorunning){
@@ -467,13 +466,13 @@ export default {
         var this_functions = this;
         var interval = this.settings.autorun_interval*1000;
         this_functions.isautorunning = setTimeout(function(){
-          this_functions.next('next')
+          this_functions.next('next');
         }, interval);
       } else {
-        clearTimeout(this.isautorunning)
+        clearTimeout(this.isautorunning);
       }
       if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
-        this.buttons.playpause = '<i class="fas fa-play"></i>'
+        this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
     },
     createOverlay: function(){
@@ -492,7 +491,7 @@ export default {
         this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
       }
       for (var key in this.tagslist){
-        this.tagslist[key].checked = checked
+        this.tagslist[key].checked = checked;
       }
       for (var a=0; a<box_elements.length; a++){
         box_elements[a].style.display = display_setting;
@@ -502,9 +501,9 @@ export default {
       new openseadragon.MouseTracker({
         element: node,
         clickHandler: function() {
-          functions.position = position
+          functions.position = position;
           functions.makeactive(position);
-          functions.sendMessage({'function':'next', 'args': '', 'position': functions.position})
+          functions.sendMessage({'function':'next', 'args': '', 'position': functions.position});
           functions.goToArea(rect);
           functions.reposition();
         }
@@ -513,9 +512,9 @@ export default {
     goToArea: function(rect){
       var xywh = this.zoomsections[this.position]['section'][0].split(",");
       if (xywh.join("") == 'full'){
-        this.zoom('home')
+        this.zoom('home');
       } else if (this.settings.panorzoom == 'pan'){
-        this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints()
+        this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints();
       } else {
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
@@ -532,7 +531,7 @@ export default {
         currentactive[0].classList.remove("active");
       }
       if (Number.isInteger(position)) {
-        var node = this.anno_elem.querySelectorAll(`#position${position}`)
+        var node = this.anno_elem.querySelectorAll(`#position${position}`);
         for (var k=0; k<node.length; k++){
           node[k].classList.add('active');
         }
@@ -562,46 +561,46 @@ export default {
 
       if (this.settings.tts){
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
-        this.tts(content)
+        this.tts(content);
       }
       if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
-        var multielements = document.getElementsByClassName("multi")
+        var multielements = document.getElementsByClassName("multi");
         for (var we=0; we<multielements.length; we++){
           multielements[we].style.display = "none";
         }
       }
       if (this.zoomsections[this.position] === undefined){
-        this.zoom('home')
+        this.zoom('home');
         this.currentanno = '';
-        this.makeactive(undefined)
+        this.makeactive(undefined);
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
         if (this.settings.textposition) {
           this.overlayPosition(xywh);
         }
-        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true)
+        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
         this.makeactive(this.position);
 
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           this.goToArea(rect);
         } else {
-          var sections = this.zoomsections[this.position]['section']
-          var xs = sections.map(element => element.split(",")[0])
-          var lowx = Math.min(...xs)
-          var highx = Math.max(...xs)
-          var ys = sections.map(element => element.split(",")[1])
+          var sections = this.zoomsections[this.position]['section'];
+          var xs = sections.map(element => element.split(",")[0]);
+          var lowx = Math.min(...xs);
+          var highx = Math.max(...xs);
+          var ys = sections.map(element => element.split(",")[1]);
           var lowy = Math.min(...ys);
           var highy = Math.max(...ys);
-          var ws = sections.map(element => element.split(",")[2])
-          var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+          var ws = sections.map(element => element.split(",")[2]);
+          var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0);
           var width = (highx - lowx) + sumw;
-          var highinfo = sections.filter(element => parseInt(element.split(",")[1]) === highy)[0]
+          var highinfo = sections.filter(element => parseInt(element.split(",")[1]) === highy)[0];
           var height = highy - lowy + parseInt(highinfo.split(',')[3]);
           var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, width, height);
           this.goToArea(zoomarea);
-          var elements = this.anno_elem.querySelectorAll(`#position${this.position}`)
+          var elements = this.anno_elem.querySelectorAll(`#position${this.position}`);
           for (var tk=0; tk<elements.length; tk++){
             elements[tk].style.display = 'block';
           }
@@ -624,7 +623,7 @@ export default {
         left: {'x': parseInt(xywh[0]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_RIGHT'},
         top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM'},
         bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP'}
-      }
+      };
       var positions = positioning[this.settings.textposition];
       var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
@@ -633,10 +632,10 @@ export default {
       elem.classList.add(`${this.settings.textposition}`);
       var vue = this;
       elem.addEventListener("mouseover",function(){
-        vue.enableOSDmouse(false)
+        vue.enableOSDmouse(false);
       });
       elem.addEventListener("mouseout",function(){
-        vue.enableOSDmouse(true)
+        vue.enableOSDmouse(true);
       });
       elem.style.maxHeight = `${maxheight-35}px`;
       elem.style.maxWidth = `${maxwidth-35}px`;
@@ -664,7 +663,7 @@ export default {
         var this_functions = this;
         if (this.settings.tts) {
           this.isautorunning = true;
-          this.next('next')
+          this.next('next');
         } else {
           this.isautorunning = setInterval(function() {
             this_functions.next('next')
