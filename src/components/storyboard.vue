@@ -7,6 +7,10 @@
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
+        <button v-on:click="getInfo()" v-if="imageinfo.text || annoinfo.text"  id="infoButton" class="toolbarButton">
+          <span v-html="buttons.info"></span>
+          <span class="toolbartext">View source image information</span>
+        </button>
         <button v-on:click="showtags()" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
@@ -39,23 +43,39 @@
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
+
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="isclosed !== true && (istags || prev_inactive !== true && next_inactive !== true)">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="shown">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-      <span class="close_button" ><i class="fas fa-times" v-on:click="close()"></i></span>
+      <span class="close_button" ><i class="fas fa-times" v-on:click="shown = false"></i></span>
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
       <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
-      <span class="lang-icon" v-if="languages.length > 0"><select class="lang_drop close_button" v-on:change="changeLang($event)" v-html="languages.join('')"></select></span>
+      <span v-html="buttons.info"  v-if="imageinfo.text || annoinfo.text" class="close_button" v-on:click="getInfo()"></span>
+      <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select></span>
       </span>
-      <div id="tags" v-if="istags && !ishidden">
+      <div id="tags" v-if="shown == 'tags'">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
           <input type="checkbox" class="tagscheck" v-on:click="hideshowalltags(key)" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
-      <div id="annotation_excerpt" style="height: auto;" v-if="ishidden && !istags" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
-      <div id="annotation_text" v-html="currentanno" v-if="!ishidden && !istags"></div>
+      <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
+        <a class="infolink" v-on:click="annoinfo.shown = !annoinfo.shown" v-if="annoinfo.text">Annotation information</a>
+        <div v-if="annoinfo.shown" class="annoinfo">
+          <span v-html="annoinfo.text"></span>
+          <div class="annotationslist">
+            <div v-for="annoinfo in annoinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
+              <div class="title"><a v-on:click="next(annoinfo.position)">{{annoinfo.title}}</a></div>
+              <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
+            </div>
+          </div>
+        </div>
+        <a class="infolink" v-if="imageinfo.text" v-on:click="imageinfo.shown = !imageinfo.shown">Full object information</a>
+        <div v-if="imageinfo.shown" v-html="imageinfo.text" class="imageinfo"></div>
+      </div>
+      <div id="annotation_excerpt" style="height: auto;" v-if="shown == 'excerpt'" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
+      <div id="annotation_text" v-html="currentanno" v-if="shown == 'anno'"></div>
     </div>
   </div>
 </div>
@@ -90,12 +110,10 @@ export default {
       prev_inactive: true,
       next_inactive: false,
       toolbar_id: '',
-      title: '',
-      isclosed: false,
-      ishidden: false,
+      isexcerpt: false,
+      shown: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
-      istags: false,
       isautorunning: '',
       buttons: {
         'autorunbutton': '<i class="fas fa-magic"></i>',
@@ -103,13 +121,16 @@ export default {
         'expandbutton' : '<i class="fas fa-expand"></i>',
         'hide_button' : '<i class="fas fa-caret-up"></i>',
         'playpause': '<i class="fas fa-play"></i>',
-        'tags': '<i class="fas fa-tag"></i>'
+        'tags': '<i class="fas fa-tag"></i>',
+        'info': '<i class="fas fa-info-circle"></i>'
       },
       settings: {},
       currentlang: '',
       languages: [],
       fullscreen: false,
-      tagslist: {}
+      tagslist: {},
+      annoinfo: {'text': '', 'annodata': [], 'shown':false},
+      imageinfo: {'text': '', 'shown':false}
     }
   },
   created() {
@@ -118,6 +139,8 @@ export default {
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       anno = [].concat(anno);
+      this.annoinfo.text += `<div class="listinfo"><b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a>
+      <br><b>Number of Annotations:</b> ${anno.length}</div>`
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
@@ -146,6 +169,14 @@ export default {
         }
         content_data['authors'] = shared.getAuthor(anno[i]);
         this.annotations.push(content_data);
+        var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
+        var content = shared.createContent(content_data, this.currentlang, true);
+        var additionaltext = `
+          ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
+          ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
+          ${content_data['rights'] ? `<b>Rights:</b> ${content_data['rights']}<br>` : ``}
+          ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].join(", ")}<br>` : ``}`
+        this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId)
@@ -218,11 +249,6 @@ export default {
         this.tts(this.currentanno.split('<div class="tags">')[0])
       }
     },
-    close: function(){
-      this.istags = true;
-      this.showtags();
-      this.isclosed = true;
-    },
     createOverlayElement: function(position, tags, zoomsections) {
       for (var jt=0; jt<zoomsections['section'].length; jt++){
         var xywh = zoomsections['section'][jt].split(",");
@@ -283,26 +309,51 @@ export default {
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
-      if(this.ishidden === true){
-        this.ishidden = false;
+      if(this.shown === 'excerpt'){
+        this.shown = 'anno';
+        this.isexcerpt = false;
         this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
       } else {
-        this.ishidden = true;
+        this.shown = 'excerpt';
+        this.isexcerpt = true;
         this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
       }
     },
-    showtags: function(){
-      this.isclosed = false;
-      if(this.istags){
-        this.buttons.tags = '<i class="fas fa-tag"></i>'
-        this.istags = false;
+    getInfo: function(){
+      var element = document.getElementById(`${this.seadragonid}_annotation`);
+      element.style.removeProperty("height");
+      if(this.shown === 'info'){
+        this.switchButtons()
+        this.buttons.info = '<i class="fas fa-info-circle"></i>'
       } else {
+        this.shown = 'info';
+        this.switchButtons('info')
+      }
+    },
+    showtags: function(){
+      if(this.shown === 'tags'){
+        this.buttons.tags = '<i class="fas fa-tag"></i>'
+        this.switchButtons()
+      } else {
+        this.shown = 'tags';
+        this.switchButtons('tags')
+      }
+    },
+    switchButtons: function(button=false) {
+      this.buttons.info = '<i class="fas fa-info-circle"></i>'
+      this.buttons.tags = '<i class="fas fa-tag"></i>'
+      if (button){
         if (this.position == -1 || this.position === this.zoomsections.length) {
-          this.buttons.tags = '<i class="fas fa-window-close"></i>'
+          this.buttons[button] = '<i class="fas fa-window-close"></i>'
         } else {
-          this.buttons.tags = '<i class="fas fa-file-alt"></i>'
+          this.buttons[button] = '<i class="fas fa-file-alt"></i>'
         }
-        this.istags = true;
+      } else {
+        if (this.position == -1 || this.position === this.zoomsections.length){
+          this.shown = false;
+        } else {
+          this.shown = this.isexcerpt ? 'excerpt' : 'anno';
+        }
       }
     },
     hideshowalltags: function(tag){
@@ -333,10 +384,17 @@ export default {
     },
     getManifestData: function(manifestlink, canvas, canvasId){
         axios.get(manifestlink).then(canvas_data => {
-          var label = canvas_data.data.label;
-          if (label !== undefined){
-            label = label['en'] ? label.en[0] : label['@value'] ?  label['@value']  : label;
-            this.title = truncate(label, 6, { byWords: true });
+          var metadata = [{'label': 'Full object', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
+          {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
+          metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
+          for (var j=0; j<metadata.length; j++){
+            var label = Array.isArray(metadata[j]['label']) ? metadata[j]['label'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['label'];
+            label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
+            var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
+            value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
+            if (value != canvas_data.data.label && value != canvas_data.data.description && value){
+              this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+            }
           }
           var canvases = canvas_data.data.sequences[0].canvases;
           for (var i = 0; i< canvases.length; i++){
@@ -497,18 +555,18 @@ export default {
       this.fullscreen = fullscreen;
     },
     next: function(nextorprev){
-      this.isclosed = false;
-      this.istags = true;
-      this.showtags();
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
       if (nextorprev === 'prev'){
         this.position -= 1;
       } else if (nextorprev === 'next') {
         this.position += 1;
+      } else if(!isNaN(nextorprev)) {
+        this.position = nextorprev;
       } else {
         this.position = this.position;
       }
+      this.switchButtons();
       if (this.settings.tts){
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         this.tts(content)
@@ -522,7 +580,8 @@ export default {
       if (this.zoomsections[this.position] === undefined){
         this.zoom('home')
         this.currentanno = '';
-        this.makeactive(undefined)
+        this.makeactive(undefined);
+        this.shown = false;
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
@@ -531,7 +590,6 @@ export default {
         }
         this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true)
         this.makeactive(this.position);
-
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           this.goToArea(rect);
@@ -632,7 +690,11 @@ export default {
   },
   filters: {
     truncate: function(string, words_length) {
-      return truncate(string.split('<span class="tags">')[0], words_length, { byWords: true });
+      string = string ? string.split('<div class="tags">')[0] : '';
+      var tmp = document.createElement("DIV");
+      tmp.innerHTML = string;
+      var text = tmp.textContent || tmp.innerText || "";
+      return truncate(text, words_length, { byWords: true });
     }
   }
 }

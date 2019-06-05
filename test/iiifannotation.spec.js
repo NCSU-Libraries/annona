@@ -53,7 +53,7 @@ describe('Component', () => {
       expect(annotations['content']['label']).toBe("The Bees")
       expect(annotations['content']['ocr']).toEqual([])
       expect(annotations.fullImage).toBe("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/1200,/0/default.jpg")
-      expect(annotations['rendered_content']).toBe('<span style=\"direction: ltr;\"><figcaption class=\"label\">The Bees</figcaption></span>')
+      expect(annotations['rendered_content']).toBe('<span style=\"direction: ltr;\"><div class=\"title\">The Bees</div></span>')
       expect(annotations.tags).toBe('<div class="tagging">So many bees.</div>')
       expect(annotations.altText).toBe("The Bees")
     })
