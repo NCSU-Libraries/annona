@@ -57,7 +57,8 @@
       </span>
       <div id="tags" v-if="shown == 'tags'">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
-          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
+          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
+          <span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
@@ -554,6 +555,9 @@ export default {
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
       var display_setting;
       var checked;
+      for (var key in this.tagslist){
+        this.tagslist[key].checked = checked;
+      }
       if (this.booleanitems.isoverlaytoggled){
         display_setting = 'none';
         checked = false;
@@ -564,9 +568,6 @@ export default {
         checked = true;
         this.booleanitems.isoverlaytoggled = true;
         this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
-      }
-      for (var key in this.tagslist){
-        this.tagslist[key].checked = checked;
       }
       for (var a=0; a<box_elements.length; a++){
         box_elements[a].style.display = display_setting;
