@@ -22,6 +22,7 @@ code {
 | annotationlist | ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
 | styling | string structured styling. See [settings table](#settings) for more options |
+| ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 
 
 # AnnotationList or AnnotationPage Storyboard
@@ -83,6 +84,32 @@ Additionally each of these viewer's CSS can be individually customized. The over
 | tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. If language is set in the individual annotations it will set the language automatically and this can be set to **true** (see [Auto Language TTS example](#auto-language-tts-example)). A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (click Auto Run button) to work in Chrome but will work fine in Safari and Firefox. |
 | showtags | **true** or **false**. By default is **true**; If there are tags in the annotations tags will be available for toggling based on tags.|
 | truncate_length | **Any Integer.** By default it is set to **2**; This determines how many words appear when the hide button (<i class="fas fa-caret-up"></i>) is clicked. The hide button will only show words in the annotation and will truncate the annotation and hide the tags. If you are looking for a way to hide the tags listed in the annotation (not the tags button) add to css to `.tags {display: none;}` |
+| additionalinfo | Is the id for an HTML object whose innerHTML will be loaded into the info tab. This HTML object should have a title tag |
+| startenddisplay | Choices are **'tags'** or **'info'**. By default the first and last items are the full image. This setting allows for the information or tags tab to be toggled during these items |
+| controller | should only be instantiated if prop of ws is also used. To set variable is **true** |
+
+## Web sockets
+Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.
+  ```
+  socket.on('broadcast', (message) => {
+    socket.broadcast.emit('message', message);
+  });
+  ```
+
+In order to instantiate a controller the item server url will have to loaded into the storyboard.
+
+```
+<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json" styling="controller: true;"></iiif-storyboard>```
+```
+
+Another instance can be loaded in another webpage if a "receiver" is needed. This is not required. If you open the controller in multiple webpages they will change with any actions. The reason for adding a receiver is to be able to customize the look and stop actions from being reflected back to all other pages.
+```
+<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json"></iiif-storyboard>
+```
+An example of the web sockets in use can be seen in the video below. The window on the far left has a instantiated item on a server and is a receiver (controller has not been set in settings). The two windows next to it are the same URL and are the controllers.
+<video width="100%" controls>
+  <source src="{{site.baseurl}}/videos/websockets.m4v" type="video/mp4">
+</video>
 
 ## Auto Language TTS example
 This annotation has the language set for each of the annotations in the annotation. This allows for the language to be set using the annotation instead of manually.
@@ -117,7 +144,10 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 ```
 ## Single annotation setting
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5;"></iiif-storyboard>
+<div id="anno1" title="example info">
+This is an example of the info that is loaded.
+</div>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info"></iiif-storyboard>
 
 <style>
 [id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
@@ -154,7 +184,10 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 }
 </style>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5;"></iiif-storyboard>
+<div id="anno1" title="example info">
+This is an example of the info that is loaded.
+</div>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info"></iiif-storyboard>
 
 <style>
 [id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
