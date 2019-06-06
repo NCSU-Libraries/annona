@@ -7,7 +7,7 @@
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'getInfo', 'args': ''});" v-if="imageinfo || annoinfo.text"  id="infoButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'getInfo', 'args': ''});" v-if="imageinfo || annoinfo.text || settings.additionalinfo"  id="infoButton" class="toolbarButton">
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
@@ -61,6 +61,8 @@
         </div>
       </div>
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
+        <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</a>
+        <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
         <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</a>
         <div v-if="booleanitems.annoinfoshown" class="annoinfo">
           <span v-html="annoinfo.text"></span>
@@ -116,7 +118,8 @@ export default {
         isexcerpt: false,
         isoverlaytoggled: false,
         annoinfoshown: false,
-        imageinfoshown: false
+        imageinfoshown: false,
+        additionalinfoshown: false
       },
       shown: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
@@ -407,7 +410,7 @@ export default {
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
-          this.shown = false;
+          this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
         } else {
           this.shown = this.booleanitems.isexcerpt ? 'excerpt' : 'anno';
         }
@@ -467,6 +470,12 @@ export default {
     },
     buildseadragon: function(canvasId){
       this.settings = shared.getsettings(this.styling);
+      this.settings.startenddisplay ? this.switchButtons(this.settings.startenddisplay) : '';
+      this.settings.startenddisplay ? this.shown = this.settings.startenddisplay : '';
+      var infoelement = this.settings.additionalinfo ? document.getElementById(this.settings.additionalinfo) : '';
+      infoelement ? this.settings.additionalinfotitle = infoelement.title ? infoelement.title : '' : '';
+      infoelement ? this.settings.additionalinfo = infoelement.innerHTML : '';
+      infoelement ? infoelement.remove() : ''
       this.settings.truncate_length = this.settings.truncate_length ? this.settings.truncate_length : 2;
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
@@ -638,7 +647,6 @@ export default {
         this.zoom('home');
         this.currentanno = '';
         this.makeactive(undefined);
-        this.shown = false;
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
