@@ -167,5 +167,7 @@ describe('Component', () => {
       expect(data.anno_elem).toEqual(null)
       expect(shared.createContent(data.annotations[0], null, true)).toEqual('<span style="direction: ltr;"><div class="textualbody">Campo San Maurizio</div><div class="tags">Tags: campo</div></span>')
       expect(shared.createContent(data.annotations[1], null, true)).toEqual('<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>')
+      expect(data.annoinfo.annodata.length).toBe(8)
+      expect(data.annoinfo.annodata[0].title).toBe('Annotation 1')
     })
 })

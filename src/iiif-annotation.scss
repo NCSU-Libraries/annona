@@ -12,7 +12,7 @@ $active_color: lightgreen;
   pointer-events: none;
 }
 .toolbarButton {
-  font-size: 22px;
+  font-size: 1.5rem;
   background-color: #F0F0F0;
   border: 2px solid #D3D3D3;
   width: 100%;
@@ -52,7 +52,7 @@ $active_color: lightgreen;
   word-wrap: break-word;
 }
 
-#annotation_text, #annotation_excerpt {
+.annotation > div {
   word-wrap: break-word;
   height: auto;
   padding: 2px 5px 5px;
@@ -70,7 +70,7 @@ $active_color: lightgreen;
 #annotation_text img, #annotation_text iframe {
     width: 100%;
     height: auto;
-    object-fit: scale-down;
+    object-fit: contain;
 }
 
 .rect:hover {
@@ -160,10 +160,11 @@ $active_color: lightgreen;
   background: #000;
   border: 1px solid #000;
   z-index: 102;
+  font-size: 30px;
 }
 
-.fullpage .toolbarButton {
-  margin-left: 5px;
+.fullpage .toolbarButton:not(:last-child) {
+  margin-right: 5px;
 }
 
 .fullpage .toolbarButton .toolbartext {
@@ -196,6 +197,11 @@ $active_color: lightgreen;
 
 .fullpage #header_toolbar {
   margin: 0px;
+}
+
+.fullpage .annotation {
+  top: 55px;
+  max-height: calc(100% - 110px);
 }
 
 .tags, .authorship, .attribution {
@@ -327,9 +333,10 @@ figcaption {
   border-color: black transparent transparent transparent;
 }
 
-.toolbarButton:hover:not(.toolbarButton:active) .toolbartext {
+.toolbarButton:hover:not(:active) .toolbartext {
   visibility: visible;
-  transition-delay:1s;
+  transition-delay:2s;
+  z-index: 1000;
 }
 
 .active.rect {
@@ -372,21 +379,22 @@ figcaption {
   flex-wrap: wrap;
 }
 
-.close_button.lang_drop {
+.lang_drop {
   -webkit-appearance: attachment;
   -moz-appearance: meterbar;
   -o-appearance: button-bevel;
   appearance: button-bevel;
-  height: 20px;
-  width: 20px;
-  margin-top: -10px;
+  margin-top: -1px;
+  width: 12px;
+  height: 12px;
   outline: none;
   border: none;
   color: black;
+  background: black;
 }
 
 @supports (-moz-appearance:none) {
-    .close_button.lang_drop {
+    .lang_drop {
       color: white!important;
     }
 }
@@ -400,13 +408,9 @@ figcaption {
     position:absolute;
     pointer-events:none;
     background: black;
-    padding-left: 2.5px;
-    font-size: 13px;
     text-align: center;
-    width: 10px;
-    height: 10px;
     vertical-align: middle;
-    display:block;
+    display:inline;
 }
 
 @media only screen and (max-width: 600px) {
@@ -416,14 +420,19 @@ figcaption {
     border: 2px solid black;
     background: white;
     position: absolute;
-    top: 44px;
+    font-size: 14px!important;
+    top: calc(.79rem + 6px)!important;
     z-index: 2000;
     max-width: 100%;
     height: auto!important;
     overflow: scroll;
     margin-left: 0px;
     word-wrap: break-word;
-    max-height: 33%;
+    max-height: 33%!important;
+  }
+  .toolbarButton {
+    margin: 0px!important;
+    font-size: .79rem;
   }
   .left, .right, .top, .bottom {
     width: auto;
@@ -442,12 +451,52 @@ figcaption {
 }
 
 #header_toolbar {
-  float: right;
-  margin: 10px 0px 1px;
   width: 100%;
   display: flex;
 }
 
 #header_toolbar > .toolbarButton:not(:last-child) {
     margin-right: 2px;
+}
+
+.imageinfo > div {
+  padding-bottom: 5px;
+}
+
+.imageinfo > h1 {
+  margin: 0px;
+  font-size: 1.4em;
+  margin-block-end: .3em;
+  margin-block-start: .3em;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.infolink {
+  padding-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+  display: block;
+  font-size: large;
+}
+
+a {
+  color: -webkit-link;
+  color: -moz-hyperlinkText;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.annoinfo {
+  padding-bottom: 10px;
+}
+
+.additionaltext {
+  padding-bottom: 10px;
+}
+
+.annotationslist {
+  padding-top: 10px;
 }

@@ -134,7 +134,7 @@ export default {
       var language = currentlang ? currentlang : annotation['language']
       var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr'
       text = `<span style="direction: ${direction};">`
-      text += annotation['label'] ? `<figcaption class="label">${annotation['label']}</figcaption>` : ``;
+      text += annotation['label'] ? `<div class="title">${annotation['label']}</div>` : ``;
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
       var authors = annotation['authors'];
