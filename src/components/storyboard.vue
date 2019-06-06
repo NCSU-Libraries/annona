@@ -3,43 +3,43 @@
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen ">
-        <button v-show="!annotationurl" id="autoRunButton" v-on:click="autoRun(settings.autorun_interval)" class="toolbarButton">
+        <button v-show="!annotationurl" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-on:click="getInfo()" v-if="imageinfo.text || annoinfo.text"  id="infoButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'getInfo', 'args': ''});" v-if="imageinfo || annoinfo.text || settings.additionalinfo"  id="infoButton" class="toolbarButton">
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
-        <button v-on:click="showtags()" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'showtags', 'args': ''});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
-        <button v-show="!annotationurl" id="overlayButton" v-on:click="createOverlay()" class="toolbarButton">
+        <button v-show="!annotationurl" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
         </button>
-        <button v-on:click="zoom('in')" id="zoomInButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
           <i class="fas fa-search-plus"></i>
           <span class="toolbartext">Zoom in</span>
         </button>
-        <button v-on:click="zoom('out')" id="zoomOutButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
           <i class="fas fa-search-minus"></i>
           <span class="toolbartext">Zoom out</span>
         </button>
-        <button v-on:click="zoom('home')" id="homeZoomButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
           <i class="fas fa-home"></i>
           <span class="toolbartext">View full image</span>
         </button>
-        <button v-show="!annotationurl" id="previousButton" v-on:click="next('prev')" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+        <button v-show="!annotationurl" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-left"></i>
           <span class="toolbartext">Previous Annotation</span>
         </button>
-        <button v-show="!annotationurl" id="nextButton" v-on:click="next('next')" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+        <button v-show="!annotationurl" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
-        <button v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
+        <button v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
@@ -49,30 +49,32 @@
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="shown">
       <span v-show="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
       <span class="close_button" ><i class="fas fa-times" v-on:click="shown = false"></i></span>
-      <span v-html="buttons.hide_button" class="close_button"  v-on:click="hide()"></span>
-      <span v-html="buttons.playpause" class="close_button" v-on:click="playpause()" v-if="settings.tts"></span>
-      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="showtags()"></span>
-      <span v-html="buttons.info"  v-if="imageinfo.text || annoinfo.text" class="close_button" v-on:click="getInfo()"></span>
-      <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select></span>
+      <span v-html="buttons.hide_button" class="close_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
+      <span v-html="buttons.playpause" class="close_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
+      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="sendMessage({'function': 'showtags', 'args': ''});"></span>
+      <span v-html="buttons.info"  v-if="imageinfo || annoinfo.text" class="close_button" v-on:click="sendMessage({'function': 'getInfo', 'args': ''});"></span>
+      <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="tags" v-if="shown == 'tags'">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
-          <input type="checkbox" class="tagscheck" v-on:click="hideshowalltags(key)" v-bind:checked="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
+          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked"><span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
         </div>
       </div>
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
-        <a class="infolink" v-on:click="annoinfo.shown = !annoinfo.shown" v-if="annoinfo.text">Annotation information</a>
-        <div v-if="annoinfo.shown" class="annoinfo">
+        <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</a>
+        <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
+        <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</a>
+        <div v-if="booleanitems.annoinfoshown" class="annoinfo">
           <span v-html="annoinfo.text"></span>
           <div class="annotationslist">
             <div v-for="annoinfo in annoinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
-              <div class="title"><a v-on:click="next(annoinfo.position)">{{annoinfo.title}}</a></div>
+              <div class="title"><a v-on:click="sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</a></div>
               <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
             </div>
           </div>
         </div>
-        <a class="infolink" v-if="imageinfo.text" v-on:click="imageinfo.shown = !imageinfo.shown">Full object information</a>
-        <div v-if="imageinfo.shown" v-html="imageinfo.text" class="imageinfo"></div>
+        <a class="infolink" v-if="imageinfo" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">Full object information</a>
+        <div v-if="booleanitems.imageinfoshown" v-html="imageinfo" class="imageinfo"></div>
       </div>
       <div id="annotation_excerpt" style="height: auto;" v-if="shown == 'excerpt'" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
       <div id="annotation_text" v-html="currentanno" v-if="shown == 'anno'"></div>
@@ -88,6 +90,7 @@ import openseadragon from 'openseadragon';
 import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
+import SocketIO from 'socket.io-client';
 
 Vue.use(fullscreen);
 
@@ -97,7 +100,8 @@ export default {
     'annotationlist':String,
     'manifesturl':String,
     'annotationurl': String,
-    'styling': String
+    'styling': String,
+    'ws': String
   },
   data: function() {
     return {
@@ -110,7 +114,13 @@ export default {
       prev_inactive: true,
       next_inactive: false,
       toolbar_id: '',
-      isexcerpt: false,
+      booleanitems: {
+        isexcerpt: false,
+        isoverlaytoggled: false,
+        annoinfoshown: false,
+        imageinfoshown: false,
+        additionalinfoshown: false
+      },
       shown: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
@@ -129,8 +139,8 @@ export default {
       languages: [],
       fullscreen: false,
       tagslist: {},
-      annoinfo: {'text': '', 'annodata': [], 'shown':false},
-      imageinfo: {'text': '', 'shown':false}
+      annoinfo: {'text': '', 'annodata': []},
+      imageinfo: ''
     }
   },
   created() {
@@ -145,17 +155,17 @@ export default {
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
         var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
-        canvasId = [].concat(canvasId)
-        var sections = []
+        canvasId = [].concat(canvasId);
+        var sections = [];
         var content_data = shared.chars(anno[i]);
         var type = content_data['type'];
         var svg_path = [];
         for (var jar=0; jar<canvasId.length; jar++){
           var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
-          var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict)
-          sections.push(canvasRegion['canvasRegion'])
+          var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
+          sections.push(canvasRegion['canvasRegion']);
           var canvas = canvasRegion['canvasId'];
-          var svg_overlay = shared.getSVGoverlay(jarondict)
+          var svg_overlay = shared.getSVGoverlay(jarondict);
           if (svg_overlay) {
             type = svg_overlay.getAttribute('id').split("_")[0];
             svg_path.push(svg_overlay);
@@ -179,9 +189,9 @@ export default {
         this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
-        this.getManifestData(manifestlink, canvas, canvasId)
+        this.getManifestData(manifestlink, canvas, canvasId);
       } else {
-        this.buildseadragon(canvas)
+        this.buildseadragon(canvas);
       }
       var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
       for (var tc=0; tc<tags.length; tc++){
@@ -189,7 +199,11 @@ export default {
         var checked = this.settings.toggleoverlay ? true : false;
         this.tagslist[tags[tc]] = {'color':randomcolor, 'checked': checked};
       }
+
   });
+  },
+  mounted () {
+    this.newSocket();
   },
   methods: {
     createViewer: function(){
@@ -206,14 +220,23 @@ export default {
             homeFillsViewer: fit,
             constrainDuringPan: true,
             visibilityRatio: 1
-      }
+      };
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
       var vue = this;
+      viewer.addHandler('canvas-click', function(){
+        vue.reposition();
+      });
+      viewer.addHandler('canvas-scroll', function(){
+        vue.reposition();
+      });
+      viewer.addHandler('canvas-drag', function(){
+        vue.reposition();
+      });
       viewer.addHandler('open', function(){
         if (!fit) {
-          vue.viewer.viewport.fitVertically()
+          vue.viewer.viewport.fitVertically();
         }
         if(vue.settings.autorun_onload){
           vue.autoRun(vue.settings.autorun_interval);
@@ -221,10 +244,10 @@ export default {
         for (var i=0; i<zoomsections.length; i++){
           if (vue.annotations[i]['tags'].length > 0){
             for (var jl=0; jl<vue.annotations[i]['tags'].length; jl++){
-              vue.createOverlayElement(i, vue.annotations[i]['tags'][jl], zoomsections[i])
+              vue.createOverlayElement(i, vue.annotations[i]['tags'][jl], zoomsections[i]);
             }
           } else {
-            vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i])
+            vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i]);
           }
         }
         if (vue.annotationurl){
@@ -236,9 +259,34 @@ export default {
           vue.createOverlay();
         }
         if (vue.currentlang) {
-          vue.changeLang(vue.currentlang)
+          vue.changeLang(vue.currentlang);
         }
       });
+    },
+    reposition: function(rect = false) {
+      if (this.settings.controller){
+        rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
+        var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
+        this.socket.emit('broadcast', {'bounds': bounds});
+      }
+    },
+    newSocket () {
+      if (this.$props.ws){
+        let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' });
+        this.socket = socket;
+        this.socket.on('message', (data) => {
+          if (data['function']){
+            this.position = data['position'];
+            this.shown = data['shown'];
+            this.booleanitems = data['booleanitems'];
+            this[data['function']](data['args']);
+          }
+          if (data['bounds']) {
+            var conversion = this.viewer.world.getItemAt(0).imageToViewportRectangle(data['bounds'].x, data['bounds'].y, data['bounds'].width, data['bounds'].height);
+            this.viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
+          }
+        })
+      }
     },
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
@@ -246,7 +294,7 @@ export default {
       this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
       if (this.settings.tts){
         this.settings.tts = lang;
-        this.tts(this.currentanno.split('<div class="tags">')[0])
+        this.tts(this.currentanno.split('<div class="tags">')[0]);
       }
     },
     createOverlayElement: function(position, tags, zoomsections) {
@@ -260,25 +308,25 @@ export default {
         elem.style.display = 'none';
         elem.id = `position${position}`;
         var multi = zoomsections['section'].length > 1 ? 'multi' : '';
-        var classes = `overlay ${tags} ${multi}`.trim()
+        var classes = `overlay ${tags} ${multi}`.trim();
         elem.className = `${zoomsections['type']} ${classes}`;
         var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
         if (zoomsections['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
           elem.style.fill = color;
         } else if (zoomsections['svg_path'][jt]){
-          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-          svg.setAttribute('viewBox', xywh.join(" "))
+          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.setAttribute('viewBox', xywh.join(" "));
           var path = zoomsections['svg_path'][jt];
           path.style.stroke = color;
-          var path2 = document.createElement("path")
-          path2.setAttribute('d', path.getAttribute('d'))
-          path2.classList.add('svgactive')
+          var path2 = document.createElement("path");
+          path2.setAttribute('d', path.getAttribute('d'));
+          path2.classList.add('svgactive');
           var origin = `${parseInt(xywh[0])+(parseInt(xywh[2])/2)}px ${parseInt(xywh[1])+(parseInt(xywh[3])/2)}px`;
           path2.style.transformOrigin = origin;
           path2.style.webkitTransformOrigin = origin;
           svg.innerHTML  = path2.outerHTML + path.outerHTML;
-          elem.appendChild(svg)
+          elem.appendChild(svg);
         }
         if (color){
           elem.style.borderColor = color;
@@ -296,26 +344,35 @@ export default {
       var synth = window.speechSynthesis;
       if (synth.paused){
         synth.resume();
-        this.buttons.playpause = '<i class="fas fa-pause"></i>'
+        this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else if (!synth.speaking) {
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
-        this.tts(content)
-        this.buttons.playpause = '<i class="fas fa-pause"></i>'
+        this.tts(content);
+        this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else {
         synth.pause();
-        this.buttons.playpause = '<i class="fas fa-play"></i>'
+        this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
+    },
+    sendMessage(e) {
+      if (this.settings.controller){
+        e['position'] = this.position;
+        e['booleanitems'] = this.booleanitems;
+        e['shown'] = this.shown;
+        this.socket.emit('broadcast', e);
+      }
+      this[e['function']](e['args']);
     },
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
       if(this.shown === 'excerpt'){
         this.shown = 'anno';
-        this.isexcerpt = false;
+        this.booleanitems.isexcerpt = false;
         this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
       } else {
         this.shown = 'excerpt';
-        this.isexcerpt = true;
+        this.booleanitems.isexcerpt = true;
         this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
       }
     },
@@ -339,6 +396,9 @@ export default {
         this.switchButtons('tags')
       }
     },
+    switchShown: function(item) {
+      this.booleanitems[item] = !this.booleanitems[item];
+    },
     switchButtons: function(button=false) {
       this.buttons.info = '<i class="fas fa-info-circle"></i>'
       this.buttons.tags = '<i class="fas fa-tag"></i>'
@@ -350,36 +410,36 @@ export default {
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
-          this.shown = false;
+          this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
         } else {
-          this.shown = this.isexcerpt ? 'excerpt' : 'anno';
+          this.shown = this.booleanitems.isexcerpt ? 'excerpt' : 'anno';
         }
       }
     },
     hideshowalltags: function(tag){
-      var elem = this.anno_elem.getElementsByClassName(tag)
-      var box_elements = this.anno_elem.getElementsByClassName("overlay");
+      var elem = this.anno_elem.getElementsByClassName(tag);
+      var checked = this.tagslist[tag].checked;
       for (var j=0; j<elem.length; j++){
-        var multi = document.querySelectorAll(`#${elem[j].id}`)
+        var multi = document.querySelectorAll(`#${elem[j].id}`);
         for (var aj=0; aj<multi.length; aj++){
           multi[aj].style.zIndex = 0;
         }
-        if (elem[j].style.display != 'none') {
-          elem[j].style.display = 'none'
+        if (checked === true) {
+          elem[j].style.display = 'none';
           this.tagslist[tag].checked = false;
         } else {
-          elem[j].style.display = 'block'
+          elem[j].style.display = 'block';
           elem[j].style.zIndex = 1000;
           this.tagslist[tag].checked = true;
         }
       }
-      var displaying = Array.from(box_elements).some(function(element) {
-        return element.style.display !== 'none';
-      });
-      if (displaying){
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
-      } else {
+      var areviewable = Object.values(this.tagslist).map(element => element['checked']);
+      if (areviewable.indexOf(true) === -1){
         this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
+        this.booleanitems.isoverlaytoggled = false;
+      } else {
+        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
+        this.booleanitems.isoverlaytoggled = true;
       }
     },
     getManifestData: function(manifestlink, canvas, canvasId){
@@ -393,7 +453,7 @@ export default {
             var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
             value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
             if (value != canvas_data.data.label && value != canvas_data.data.description && value){
-              this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+              this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
             }
           }
           var canvases = canvas_data.data.sequences[0].canvases;
@@ -405,11 +465,17 @@ export default {
               this.seadragontile = canvas_tile + "info.json";
             }
           }
-          this.buildseadragon(canvasId)
+          this.buildseadragon(canvasId);
       });
     },
     buildseadragon: function(canvasId){
-      this.settings = shared.getsettings(this.styling)
+      this.settings = shared.getsettings(this.styling);
+      this.settings.startenddisplay ? this.switchButtons(this.settings.startenddisplay) : '';
+      this.settings.startenddisplay ? this.shown = this.settings.startenddisplay : '';
+      var infoelement = this.settings.additionalinfo ? document.getElementById(this.settings.additionalinfo) : '';
+      infoelement ? this.settings.additionalinfotitle = infoelement.title ? infoelement.title : '' : '';
+      infoelement ? this.settings.additionalinfo = infoelement.innerHTML : '';
+      infoelement ? infoelement.remove() : ''
       this.settings.truncate_length = this.settings.truncate_length ? this.settings.truncate_length : 2;
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
@@ -432,7 +498,7 @@ export default {
         this.viewer.viewport.zoomBy(.9);
       } else if (inorout === 'home') {
         if (this.settings.fit == 'fill') {
-          this.viewer.viewport.fitBounds(this.viewer.viewport.getHomeBounds())
+          this.viewer.viewport.fitBounds(this.viewer.viewport.getHomeBounds());
         } else {
           this.viewer.viewport.fitVertically();
         }
@@ -445,7 +511,7 @@ export default {
       synth.cancel();
       var div = document.createElement("div");
       div.innerHTML = text;
-      var speak = div.textContent
+      var speak = div.textContent;
       var speech = new SpeechSynthesisUtterance(speak);
       var lang = this.annotations[this.position] ? this.annotations[this.position]['language'] : '';
       speech.lang = lang ? lang : this.settings.tts;
@@ -459,13 +525,13 @@ export default {
         this_functions.buttons.playpause = '<i class="fas fa-pause"></i>';
       }
       if (!text){
-        this.autoRunTTS()
+        this.autoRunTTS();
       } else {
-        speech.onend = this_functions.autoRunTTS
+        speech.onend = this_functions.autoRunTTS;
       }
       console.log("utterance", speech);
-      synth.speak(speech)
-      this.buttons.playpause = '<i class="fas fa-pause"></i>'
+      synth.speak(speech);
+      this.buttons.playpause = '<i class="fas fa-pause"></i>';
     },
     autoRunTTS: function(){
       if (this.isautorunning){
@@ -475,33 +541,32 @@ export default {
         var this_functions = this;
         var interval = this.settings.autorun_interval*1000;
         this_functions.isautorunning = setTimeout(function(){
-          this_functions.next('next')
+          this_functions.next('next');
         }, interval);
       } else {
-        clearTimeout(this.isautorunning)
+        clearTimeout(this.isautorunning);
       }
       if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
-        this.buttons.playpause = '<i class="fas fa-play"></i>'
+        this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
     },
     createOverlay: function(){
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
-      var displaying = Array.from(box_elements).some(function(element) {
-        return element.style.display !== 'none' && element.className.indexOf('multi') === -1;
-      });
       var display_setting;
       var checked;
-      if (displaying){
+      if (this.booleanitems.isoverlaytoggled){
         display_setting = 'none';
         checked = false;
+        this.booleanitems.isoverlaytoggled = false;
         this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
       } else {
         display_setting = 'block';
         checked = true;
+        this.booleanitems.isoverlaytoggled = true;
         this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
       }
       for (var key in this.tagslist){
-        this.tagslist[key].checked = checked
+        this.tagslist[key].checked = checked;
       }
       for (var a=0; a<box_elements.length; a++){
         box_elements[a].style.display = display_setting;
@@ -511,19 +576,20 @@ export default {
       new openseadragon.MouseTracker({
         element: node,
         clickHandler: function() {
-          functions.position = position
+          functions.position = position;
           functions.makeactive(position);
-          functions.next();
+          functions.sendMessage({'function':'next', 'args': functions.position});
           functions.goToArea(rect);
+          functions.reposition(rect)
         }
       }).setTracking(true);
     },
     goToArea: function(rect){
       var xywh = this.zoomsections[this.position]['section'][0].split(",");
       if (xywh.join("") == 'full'){
-        this.zoom('home')
+        this.zoom('home');
       } else if (this.settings.panorzoom == 'pan'){
-        this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints()
+        this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints();
       } else {
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
@@ -540,7 +606,7 @@ export default {
         currentactive[0].classList.remove("active");
       }
       if (Number.isInteger(position)) {
-        var node = this.anno_elem.querySelectorAll(`#position${position}`)
+        var node = this.anno_elem.querySelectorAll(`#position${position}`);
         for (var k=0; k<node.length; k++){
           node[k].classList.add('active');
         }
@@ -569,52 +635,51 @@ export default {
       this.switchButtons();
       if (this.settings.tts){
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
-        this.tts(content)
+        this.tts(content);
       }
       if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
-        var multielements = document.getElementsByClassName("multi")
+        var multielements = document.getElementsByClassName("multi");
         for (var we=0; we<multielements.length; we++){
           multielements[we].style.display = "none";
         }
       }
       if (this.zoomsections[this.position] === undefined){
-        this.zoom('home')
+        this.zoom('home');
         this.currentanno = '';
         this.makeactive(undefined);
-        this.shown = false;
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
         if (this.settings.textposition) {
           this.overlayPosition(xywh);
         }
-        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true)
+        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
         this.makeactive(this.position);
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           this.goToArea(rect);
         } else {
-          var sections = this.zoomsections[this.position]['section']
-          var xs = sections.map(element => element.split(",")[0])
-          var lowx = Math.min(...xs)
-          var highx = Math.max(...xs)
-          var ys = sections.map(element => element.split(",")[1])
+          var sections = this.zoomsections[this.position]['section'];
+          var xs = sections.map(element => element.split(",")[0]);
+          var lowx = Math.min(...xs);
+          var highx = Math.max(...xs);
+          var ys = sections.map(element => element.split(",")[1]);
           var lowy = Math.min(...ys);
           var highy = Math.max(...ys);
-          var ws = sections.map(element => element.split(",")[2])
-          var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0)
+          var ws = sections.map(element => element.split(",")[2]);
+          var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0);
           var width = (highx - lowx) + sumw;
-          var highinfo = sections.filter(element => parseInt(element.split(",")[1]) === highy)[0]
+          var highinfo = sections.filter(element => parseInt(element.split(",")[1]) === highy)[0];
           var height = highy - lowy + parseInt(highinfo.split(',')[3]);
           var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, width, height);
           this.goToArea(zoomarea);
-          var elements = this.anno_elem.querySelectorAll(`#position${this.position}`)
+          var elements = this.anno_elem.querySelectorAll(`#position${this.position}`);
           for (var tk=0; tk<elements.length; tk++){
             elements[tk].style.display = 'block';
           }
         }
       }
-      if (this.position === this.zoomsections.length){
+      if (this.position >= this.zoomsections.length){
         this.next_inactive = true;
       } else {
         this.next_inactive = false;
@@ -631,7 +696,7 @@ export default {
         left: {'x': parseInt(xywh[0]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_RIGHT'},
         top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM'},
         bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP'}
-      }
+      };
       var positions = positioning[this.settings.textposition];
       var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
@@ -640,10 +705,10 @@ export default {
       elem.classList.add(`${this.settings.textposition}`);
       var vue = this;
       elem.addEventListener("mouseover",function(){
-        vue.enableOSDmouse(false)
+        vue.enableOSDmouse(false);
       });
       elem.addEventListener("mouseout",function(){
-        vue.enableOSDmouse(true)
+        vue.enableOSDmouse(true);
       });
       elem.style.maxHeight = `${maxheight-35}px`;
       elem.style.maxWidth = `${maxwidth-35}px`;
@@ -671,7 +736,7 @@ export default {
         var this_functions = this;
         if (this.settings.tts) {
           this.isautorunning = true;
-          this.next('next')
+          this.next('next');
         } else {
           this.isautorunning = setInterval(function() {
             this_functions.next('next')
