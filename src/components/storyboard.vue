@@ -7,7 +7,7 @@
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'getInfo', 'args': ''});" v-if="imageinfo.text || annoinfo.text"  id="infoButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'getInfo', 'args': ''});" v-if="imageinfo || annoinfo.text"  id="infoButton" class="toolbarButton">
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
@@ -52,7 +52,7 @@
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
       <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="sendMessage({'function': 'showtags', 'args': ''});"></span>
-      <span v-html="buttons.info"  v-if="imageinfo.text || annoinfo.text" class="close_button" v-on:click="sendMessage({'function': 'getInfo', 'args': ''});"></span>
+      <span v-html="buttons.info"  v-if="imageinfo || annoinfo.text" class="close_button" v-on:click="sendMessage({'function': 'getInfo', 'args': ''});"></span>
       <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="tags" v-if="shown == 'tags'">
@@ -61,18 +61,18 @@
         </div>
       </div>
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
-        <a class="infolink" v-on:click="annoinfo.shown = !annoinfo.shown" v-if="annoinfo.text">Annotation information</a>
-        <div v-if="annoinfo.shown" class="annoinfo">
+        <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</a>
+        <div v-if="booleanitems.annoinfoshown" class="annoinfo">
           <span v-html="annoinfo.text"></span>
           <div class="annotationslist">
             <div v-for="annoinfo in annoinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
-              <div class="title"><a v-on:click="next(annoinfo.position)">{{annoinfo.title}}</a></div>
+              <div class="title"><a v-on:click="sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</a></div>
               <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
             </div>
           </div>
         </div>
-        <a class="infolink" v-if="imageinfo.text" v-on:click="imageinfo.shown = !imageinfo.shown">Full object information</a>
-        <div v-if="imageinfo.shown" v-html="imageinfo.text" class="imageinfo"></div>
+        <a class="infolink" v-if="imageinfo" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">Full object information</a>
+        <div v-if="booleanitems.imageinfoshown" v-html="imageinfo" class="imageinfo"></div>
       </div>
       <div id="annotation_excerpt" style="height: auto;" v-if="shown == 'excerpt'" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
       <div id="annotation_text" v-html="currentanno" v-if="shown == 'anno'"></div>
@@ -112,7 +112,12 @@ export default {
       prev_inactive: true,
       next_inactive: false,
       toolbar_id: '',
-      isexcerpt: false,
+      booleanitems: {
+        isexcerpt: false,
+        isoverlaytoggled: false,
+        annoinfoshown: false,
+        imageinfoshown: false
+      },
       shown: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
@@ -131,8 +136,8 @@ export default {
       languages: [],
       fullscreen: false,
       tagslist: {},
-      annoinfo: {'text': '', 'annodata': [], 'shown':false},
-      imageinfo: {'text': '', 'shown':false}
+      annoinfo: {'text': '', 'annodata': []},
+      imageinfo: ''
     }
   },
   created() {
@@ -255,9 +260,10 @@ export default {
         }
       });
     },
-    reposition: function() {
+    reposition: function(rect = false) {
       if (this.settings.controller){
-        var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(this.viewer.viewport.getBounds());
+        rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
+        var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
         this.socket.emit('broadcast', {'bounds': bounds});
       }
     },
@@ -268,12 +274,13 @@ export default {
         this.socket.on('message', (data) => {
           if (data['function']){
             this.position = data['position'];
+            this.shown = data['shown'];
             this.booleanitems = data['booleanitems'];
             this[data['function']](data['args']);
           }
           if (data['bounds']) {
             var conversion = this.viewer.world.getItemAt(0).imageToViewportRectangle(data['bounds'].x, data['bounds'].y, data['bounds'].width, data['bounds'].height);
-            this.viewer.viewport.fitBoundsWithConstraints(conversion);
+            this.viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
           }
         })
       }
@@ -348,6 +355,7 @@ export default {
       if (this.settings.controller){
         e['position'] = this.position;
         e['booleanitems'] = this.booleanitems;
+        e['shown'] = this.shown;
         this.socket.emit('broadcast', e);
       }
       this[e['function']](e['args']);
@@ -357,11 +365,11 @@ export default {
       element.style.removeProperty("height");
       if(this.shown === 'excerpt'){
         this.shown = 'anno';
-        this.isexcerpt = false;
+        this.booleanitems.isexcerpt = false;
         this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
       } else {
         this.shown = 'excerpt';
-        this.isexcerpt = true;
+        this.booleanitems.isexcerpt = true;
         this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
       }
     },
@@ -385,6 +393,9 @@ export default {
         this.switchButtons('tags')
       }
     },
+    switchShown: function(item) {
+      this.booleanitems[item] = !this.booleanitems[item];
+    },
     switchButtons: function(button=false) {
       this.buttons.info = '<i class="fas fa-info-circle"></i>'
       this.buttons.tags = '<i class="fas fa-tag"></i>'
@@ -398,7 +409,7 @@ export default {
         if (this.position == -1 || this.position === this.zoomsections.length){
           this.shown = false;
         } else {
-          this.shown = this.isexcerpt ? 'excerpt' : 'anno';
+          this.shown = this.booleanitems.isexcerpt ? 'excerpt' : 'anno';
         }
       }
     },
@@ -439,7 +450,7 @@ export default {
             var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
             value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
             if (value != canvas_data.data.label && value != canvas_data.data.description && value){
-              this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+              this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
             }
           }
           var canvases = canvas_data.data.sequences[0].canvases;
@@ -558,9 +569,9 @@ export default {
         clickHandler: function() {
           functions.position = position;
           functions.makeactive(position);
-          functions.sendMessage({'function':'next', 'args': '', 'position': functions.position});
+          functions.sendMessage({'function':'next', 'args': functions.position});
           functions.goToArea(rect);
-          functions.reposition();
+          functions.reposition(rect)
         }
       }).setTracking(true);
     },
