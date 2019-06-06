@@ -442,6 +442,8 @@ export default {
         this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
         this.booleanitems.isoverlaytoggled = true;
       }
+      this.shown = false;
+      this.shown = 'tags';
     },
     getManifestData: function(manifestlink, canvas, canvasId){
         axios.get(manifestlink).then(canvas_data => {
