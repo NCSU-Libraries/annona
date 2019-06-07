@@ -111,6 +111,11 @@ An example of the web sockets in use can be seen in the video below. The window 
   <source src="{{site.baseurl}}/videos/websockets.m4v" type="video/mp4">
 </video>
 
+The instatiated storyboards do not have to be the same object, however they should be the same number of annotations. The video below shows two different annotations list on the same page of the The Cantebury Tales but two different digital surrogates of physical objects.
+<video width="100%" controls>
+  <source src="{{site.baseurl}}/videos/websockets2.m4v" type="video/mp4">
+</video>
+
 ## Auto Language TTS example
 This annotation has the language set for each of the annotations in the annotation. This allows for the language to be set using the annotation instead of manually.
 
