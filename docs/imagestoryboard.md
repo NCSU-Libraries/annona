@@ -99,7 +99,7 @@ Web sockets allow for communication across websites. In order to use this functi
 In order to instantiate a controller the item server url will have to loaded into the storyboard.
 
 ```
-<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json" styling="controller: true;"></iiif-storyboard>```
+<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json" styling="controller: true;"></iiif-storyboard>
 ```
 
 Another instance can be loaded in another webpage if a "receiver" is needed. This is not required. If you open the controller in multiple webpages they will change with any actions. The reason for adding a receiver is to be able to customize the look and stop actions from being reflected back to all other pages.

@@ -271,7 +271,7 @@ export default {
         this.socket.emit('broadcast', {'bounds': bounds});
       }
     },
-    newSocket () {
+    newSocket: function() {
       if (this.$props.ws){
         let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' });
         this.socket = socket;
@@ -355,7 +355,7 @@ export default {
         this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
     },
-    sendMessage(e) {
+    sendMessage: function(e) {
       if (this.settings.controller){
         e['position'] = this.position;
         e['booleanitems'] = this.booleanitems;
@@ -455,9 +455,7 @@ export default {
             label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
             var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
             value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
-            if (value != canvas_data.data.label && value != canvas_data.data.description && value){
-              this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
-            }
+            this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
           }
           var canvases = canvas_data.data.sequences[0].canvases;
           for (var i = 0; i< canvases.length; i++){
@@ -583,7 +581,7 @@ export default {
           functions.makeactive(position);
           functions.sendMessage({'function':'next', 'args': functions.position});
           functions.goToArea(rect);
-          functions.reposition(rect)
+          functions.reposition(rect);
         }
       }).setTracking(true);
     },
