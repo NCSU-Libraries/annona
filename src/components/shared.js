@@ -72,7 +72,8 @@ export default {
         shapetype = res_data.selector.value;
       }
     }
-    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language']};
+    var authors = this.getAuthor(anno);
+    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
   },
   canvasRegion: function(canvasId, ondict){
     var canvasRegion;

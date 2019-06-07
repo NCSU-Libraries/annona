@@ -178,16 +178,8 @@ export default {
           this.currentlang = content_data['textual_body'][0]['language'];
           this.languages = Array.from(new Set(this.languages.concat(content_data.languages)));
         }
-        content_data['authors'] = shared.getAuthor(anno[i]);
         this.annotations.push(content_data);
-        var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
-        var content = shared.createContent(content_data, this.currentlang, true);
-        var additionaltext = `
-          ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
-          ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
-          ${content_data['rights'] ? `<b>Rights:</b> ${content_data['rights']}<br>` : ``}
-          ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].join(", ")}<br>` : ``}`
-        this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
+        this.getAnnoInfo(content_data, i);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId);
@@ -289,10 +281,36 @@ export default {
         })
       }
     },
+    getImageInfo: function(canvas_data, manifestlink){
+      var metadata = [{'label': 'Full object', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
+      {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
+      metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
+      for (var j=0; j<metadata.length; j++){
+        var label = Array.isArray(metadata[j]['label']) ? metadata[j]['label'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['label'];
+        label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
+        var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
+        value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
+        this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+      }
+    },
+    getAnnoInfo: function(content_data, i){
+      var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
+      var content = shared.createContent(content_data, this.currentlang, true);
+      var additionaltext = `
+        ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
+        ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
+        ${content_data['rights'] ? `<b>Rights:</b> ${content_data['rights']}<br>` : ``}
+        ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].join(", ")}<br>` : ``}`
+      this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
+    },
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
       this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
+      this.annoinfo.annodata = [];
+      for (var ai=0; ai<this.annotations.length; ai++){
+        this.getAnnoInfo(this.annotations[ai], ai);
+      }
       if (this.settings.tts){
         this.settings.tts = lang;
         this.tts(this.currentanno.split('<div class="tags">')[0]);
@@ -447,16 +465,7 @@ export default {
     },
     getManifestData: function(manifestlink, canvas, canvasId){
         axios.get(manifestlink).then(canvas_data => {
-          var metadata = [{'label': 'Full object', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
-          {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
-          metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
-          for (var j=0; j<metadata.length; j++){
-            var label = Array.isArray(metadata[j]['label']) ? metadata[j]['label'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['label'];
-            label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
-            var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
-            value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
-            this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
-          }
+          this.getImageInfo(canvas_data, manifestlink)
           var canvases = canvas_data.data.sequences[0].canvases;
           for (var i = 0; i< canvases.length; i++){
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
