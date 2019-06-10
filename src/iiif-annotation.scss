@@ -102,8 +102,8 @@ $active_color: lightgreen;
 .active > svg .svgactive {
   stroke-width: 5px!important;
   stroke: $active_color;
-  -webkit-transform: scale(.99);
-  transform: scale(.99);
+  -webkit-transform: scale(.994);
+  transform: scale(.994);
 }
 
 .overlay > svg path {
@@ -394,7 +394,7 @@ figcaption {
 }
 
 @supports (-moz-appearance:none) {
-    .lang_drop {
+    .storyboard_viewer .lang_drop {
       color: white!important;
     }
 }
