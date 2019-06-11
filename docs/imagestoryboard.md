@@ -148,6 +148,7 @@ Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json"></iiif-storyboard>
 ```
 ## Single annotation setting
+Annotation settings can be set inline. Additionally colors can be changed using CSS styling.
 ```
 <div id="anno1" title="example info">
 This is an example of the info that is loaded.
@@ -155,37 +156,27 @@ This is an example of the info that is loaded.
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info"></iiif-storyboard>
 
 <style>
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
-  border: 2px solid blue;
+#mc00084-001-te0159-000-001-0001 .overlay>svg path {
+  stroke: orange;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker {
-  color: blue;
-  font-size: 39px;
+.standing > svg path, #standing_tags > span {
+  stroke: green!important;
+  color: green!important;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .map-marker {
-  position:absolute;
-  bottom:0;
-  left: calc(50% - 13px);
+.standing > svg circle {
+  fill: green!important;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.box {
-  border: 2px solid red;
-  outline: 2px solid red;
+.reactor > svg path, #reactor_tags > span {
+  stroke: blue!important;
+  color: blue!important;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.mapmarker {
-  -webkit-text-stroke: 2.5px red!important;
-}
-
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker.overlay.active circle, rect {
-  fill: red;
-}
-
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .left {
-  margin-left: -.5vw;
-  margin-top: calc(-39px + .5vh)
+.demolished > svg path, #demolished_tags > span {
+  stroke: red!important;
+  color: red!important;
 }
 </style>
 ```
@@ -195,37 +186,27 @@ This is an example of the info that is loaded.
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info"></iiif-storyboard>
 
 <style>
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .box {
-  border: 2px solid blue;
+#mc00084-001-te0159-000-001-0001 .overlay>svg path {
+  stroke: orange;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker {
-  color: blue;
-  font-size: 39px;
+.standing > svg path, #standing_tags > span {
+  stroke: green!important;
+  color: green!important;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .map-marker {
-  position:absolute;
-  bottom:0;
-  left: calc(50% - 13px);
+.standing > svg circle {
+  fill: green!important;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.box {
-  border: 2px solid red;
-  outline: 2px solid red;
+.reactor > svg path, #reactor_tags > span {
+  stroke: blue!important;
+  color: blue!important;
 }
 
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .active.mapmarker {
-  -webkit-text-stroke: 2.5px red!important;
-}
-
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .mapmarker.overlay.active circle, rect {
-  fill: red;
-}
-
-[id="\34 058a628-c593-463e-9736-8a821e178fee"] .left {
-  margin-left: -.5vw;
-  margin-top: calc(-39px + .5vh)
+.demolished > svg path, #demolished_tags > span {
+  stroke: red!important;
+  color: red!important;
 }
 </style>
 
