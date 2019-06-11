@@ -18,7 +18,7 @@ code {
 
 | Props      | Values |
 | ----------- | ----------- |
-| annotationurl | Single Annotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-1.json](https://dnoneill.github.io/annotate/annotations/segins-004-1.json)|
+| annotationurl | Single Annotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
 | annotationlist | ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
 | styling | string structured styling. See [settings table](#settings) for more options |
@@ -231,8 +231,8 @@ This application also allows for a single annotation to be loaded in an OpenSead
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-1.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-001.json"></iiif-storyboard>
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-1.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-001.json"></iiif-storyboard>
