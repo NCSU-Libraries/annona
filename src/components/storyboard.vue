@@ -290,7 +290,9 @@ export default {
         label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
         var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
         value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
-        this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+        if (value){
+          this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+        }
       }
     },
     getAnnoInfo: function(content_data, i){
