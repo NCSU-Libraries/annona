@@ -29,22 +29,7 @@ code {
 
 In order to create the viewer below the following four lines of code need to be entered into any html page.
 
-Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard). Be aware that the last annotation in a list of annotations will be the color to display on top. The colors for the annotation tag types will be randomly generated. To override these colors look at the CSS styling below.
-
-```
-<!-- each tag defines class name for the overlay and the tag+'_tags' for the key for toggling overlays -->
-<style>
-.constellations, #constellations_tags .tagskey {
-  border-color: lightskyblue!important;
-  color: lightskyblue!important;
-}
-
-.zodiac, #zodiac_tags .tagskey {
-  border-color: lightcoral!important;
-  color: lightcoral!important;
-}
-</style>
-```
+Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard). Be aware that the last annotation in a list of annotations will be the color to display on top. The colors for the annotation tag types will be randomly generated. To override these colors see [the CSS styling in the single annotation setting example](#single-annotation-setting).
 
 The code below makes use of default without any overrides or CSS styling.
 
@@ -75,7 +60,7 @@ Additionally each of these viewer's CSS can be individually customized. The over
 |autorun_onload | **true** or **false**. Will start autorun on page load. **Default** is false.      |
 | hide_toolbar   | **true** or **false**. This will only hide the toolbar when the storyboard is full screen. In order to exit from full screen without the toolbar hit escape key (<kbd>esc</kbd>). **Default** is false. |
 |fullpage|**true** or **false**. This will only fill the browser window. It will only work with a single storyboard. This will not display the storyboard full screen, due to permissions that has to be done by an operator. This will only fill the browser window. **Default** is false |
-|hide_annocontrols| **true** or **false**. This setting hides <i class="fas fa-times close_button"></i> and <i class="fas fa-caret-square-up close_button"></i> in annotation box. **Default** is false |
+|hide_annocontrols| **true** or **false**. This setting hides <i class="fas fa-times close_button"></i>, <i class="fas fa-caret-square-up close_button"></i> and any other icons in annotation box. **Default** is false |
 | fit | By default the image is fit vertically to the OpenSeadragon viewer. The other option which can be set is to fill the viewer with the image. This can mean the full image is not visible. The value for this is **fill** |
 | panorzoom | **pan**. By default when clicking or tabbing through annotations the viewer will zoom into the annotation area. This can also be set to "pan" which will keep the aspect ration and recenter the image to the clicked annotation |
 | mapmarker | Any HTML object. When creating annotations with Mirador, if a pin is used the default view in the OpenSeadragon viewer is: <i class="fas fa-map-marker-alt"></i>. This can be overridden by entering new HTML for the map marker |
@@ -106,12 +91,13 @@ Another instance can be loaded in another webpage if a "receiver" is needed. Thi
 ```
 <iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json"></iiif-storyboard>
 ```
-An example of the web sockets in use can be seen in the video below. The window on the far left has a instantiated item on a server and is a receiver (controller has not been set in settings). The two windows next to it are the same URL and are the controllers.
+An example of the web sockets in use can be seen in the video below. The window on the far left has a instantiated item on a server and is a receiver (controller has not been set in settings). The two windows next to it are the same URL and are the controllers. As you should be able to see from the video, the receiver can still navigate through the annotations but it will not affect the controllers. Additionally, on reload of the receiver the toolbar disappears. Like all aspects of the library elements can be hidden with the CSS functionality.
+
 <video width="100%" controls>
   <source src="{{site.baseurl}}/videos/websockets.m4v" type="video/mp4">
 </video>
 
-The instatiated storyboards do not have to be the same object, however they should be the same number of annotations. The video below shows two different annotations list on the same page of the The Cantebury Tales but two different digital surrogates of physical objects.
+The instantiated storyboards do not have to be the same object, however they should be the same number of annotations. The video below shows two different annotations list on the same page of the The Cantebury Tales but in different versions.
 <video width="100%" controls>
   <source src="{{site.baseurl}}/videos/websockets2.m4v" type="video/mp4">
 </video>
@@ -215,7 +201,7 @@ This is an example of the info that is loaded.
 | Icon      | Purpose |
 | ----------- | ----------- |
 | <i class="fas fa-magic"></i> | This button will automatically go through all the annotations and the sections associated with the annotation until stopped. When it is running it will be replaced with <i class="fas fa-stop-circle"></i> icon until it is pressed again. |
-|< i class="fas fa-info-circle"></i> | This button will display a list of the annotations available. It also displays manifest metadata if a manifest is provided. Also it will show specialized information loaded through the settings. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
+|<i class="fas fa-info-circle"></i> | This button will display a list of the annotations available. It also displays manifest metadata if a manifest is provided. Also it will show specialized information loaded through the settings. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
 | <i class="fas fa-tag"></i> | This button will display all of the tags in the storyboard and allow the users to view overlays based on tags. It works with resources with multiple tags, however they will display on top of each other so only one color is visible at one time. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
 | <i class="fas fa-toggle-on"></i> | This button will display the sections that are annotated. When toggled on, these sections are clickable. It is replaced with <i class="fas fa-toggle-off"></i> when the toggle is active |
 | <i class="fas fa-search-plus"></i><i class="fas fa-search-minus"></i> | Zoom in/out buttons |
