@@ -471,7 +471,7 @@ export default {
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
               var imgResource = canvases[i].images[0].resource;
               var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
-              canvas_tile = canvas_tile.indexOf('wikimedia') > -1 && canvas_tile.endsWith('.jpg') ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
+              canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
               canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
               this.seadragontile = canvas_tile + "info.json";
             }
