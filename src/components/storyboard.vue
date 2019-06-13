@@ -147,7 +147,7 @@ export default {
       fullscreen: false,
       tagslist: {},
       annoinfo: {'text': '', 'annodata': []},
-      imageinfo: {'text': '', 'label': 'Full object information'},
+      imageinfo: {'text': '', 'label': 'Manifest information'},
       imagetitle: ''
     }
   },
