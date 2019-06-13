@@ -62,23 +62,29 @@
         </div>
       </div>
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
-        <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</a>
-        <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
-        <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</a>
-        <div v-if="booleanitems.annoinfoshown" class="annoinfo">
-          <span v-html="annoinfo.text"></span>
-          <div class="annotationslist">
-            <div v-for="annoinfo in annoinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
-              <div class="title"><a v-on:click="sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</a></div>
-              <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
+        <div class="imagetitle"><h1>{{imagetitle}}</h1></div>
+        <span v-if="!booleanitems.isexcerpt">
+          <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+          <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</a>
+          <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
+          <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</a>
+          <div v-if="booleanitems.annoinfoshown" class="annoinfo">
+            <span v-html="annoinfo.text"></span>
+            <div class="annotationslist">
+              <div v-for="annoinfo in annoinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
+                <div class="title"><a v-on:click="sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</a></div>
+                <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
+              </div>
             </div>
           </div>
-        </div>
-        <a class="infolink" v-if="imageinfo" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">Full object information</a>
-        <div v-if="booleanitems.imageinfoshown" v-html="imageinfo" class="imageinfo"></div>
+          <a class="infolink" v-if="imageinfo.text" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{imageinfo.label}}</a>
+          <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
+        </span>
       </div>
-      <div id="annotation_excerpt" style="height: auto;" v-if="shown == 'excerpt'" v-html="$options.filters.truncate(currentanno, settings.truncate_length)"></div>
-      <div id="annotation_text" v-html="currentanno" v-if="shown == 'anno'"></div>
+      <div id="annotation_text" v-if="shown == 'anno'">
+        <span v-html="currentanno" v-if="!booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+      </div>
     </div>
   </div>
 </div>
@@ -141,7 +147,8 @@ export default {
       fullscreen: false,
       tagslist: {},
       annoinfo: {'text': '', 'annodata': []},
-      imageinfo: ''
+      imageinfo: {'text': '', 'label': 'Manifest information'},
+      imagetitle: ''
     }
   },
   created() {
@@ -282,16 +289,20 @@ export default {
       }
     },
     getImageInfo: function(canvas_data, manifestlink){
-      var metadata = [{'label': 'Full object', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
+      var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
       {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
       metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
+      canvas_data.data.sequences.length == 1 ? this.imageinfo.label = 'Image information' : '';
       for (var j=0; j<metadata.length; j++){
         var label = Array.isArray(metadata[j]['label']) ? metadata[j]['label'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['label'];
         label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
         var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
         value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
+        if (label === 'title' && j == 1){
+          this.imagetitle = value;
+        }
         if (value){
-          this.imageinfo += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+          this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
         }
       }
     },
@@ -387,12 +398,10 @@ export default {
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
-      if(this.shown === 'excerpt'){
-        this.shown = 'anno';
+      if(this.booleanitems.isexcerpt){
         this.booleanitems.isexcerpt = false;
         this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
       } else {
-        this.shown = 'excerpt';
         this.booleanitems.isexcerpt = true;
         this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
       }
@@ -433,7 +442,7 @@ export default {
         if (this.position == -1 || this.position === this.zoomsections.length){
           this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
         } else {
-          this.shown = this.booleanitems.isexcerpt ? 'excerpt' : 'anno';
+          this.shown = 'anno';
         }
       }
     },
@@ -472,6 +481,9 @@ export default {
           for (var i = 0; i< canvases.length; i++){
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
               var imgResource = canvases[i].images[0].resource;
+              var title = canvases[i].label;
+              title = title && title.constructor.name == 'Object' ? title['@value'] : title;
+              title !== this.imagetitle ? this.imagetitle += ': ' + title : '';
               var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
               canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
               canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
