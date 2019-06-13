@@ -483,7 +483,7 @@ export default {
               var imgResource = canvases[i].images[0].resource;
               var title = canvases[i].label;
               title = title && title.constructor.name == 'Object' ? title['@value'] : title;
-              title !== this.imagetitle ? this.imagetitle += ': ' + title : '';
+              this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
               var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
               canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
               canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
