@@ -146,7 +146,7 @@ This is an example of the info that is loaded.
   stroke: orange;
 }
 
-#mc00084-001-te0159-000-001-0001 .standing > svg path, #mc00084-001-te0159-000-001-0001 #standing_tags > span {
+#mc00084-001-te0159-000-001-0001 .standing > svg path, #mc00084-001-te0159-000-001-0001_annotation #standing_tags > span {
   stroke: green!important;
   color: green!important;
 }
@@ -155,12 +155,12 @@ This is an example of the info that is loaded.
   fill: green!important;
 }
 
-#mc00084-001-te0159-000-001-0001 .reactor > svg path, #mc00084-001-te0159-000-001-0001 #reactor_tags > span {
+#mc00084-001-te0159-000-001-0001 .reactor > svg path, #mc00084-001-te0159-000-001-0001_annotation #reactor_tags > span {
   stroke: blue!important;
   color: blue!important;
 }
 
-#mc00084-001-te0159-000-001-0001 .demolished > svg path, #mc00084-001-te0159-000-001-0001 #demolished_tags > span {
+#mc00084-001-te0159-000-001-0001 .demolished > svg path, #mc00084-001-te0159-000-001-0001_annotation #demolished_tags > span {
   stroke: red!important;
   color: red!important;
 }
@@ -176,7 +176,7 @@ This is an example of the info that is loaded.
   stroke: orange;
 }
 
-#mc00084-001-te0159-000-001-0001 .standing > svg path, #mc00084-001-te0159-000-001-0001 #standing_tags > span {
+#mc00084-001-te0159-000-001-0001 .standing > svg path, #mc00084-001-te0159-000-001-0001_annotation #standing_tags > span {
   stroke: green!important;
   color: green!important;
 }
@@ -185,12 +185,12 @@ This is an example of the info that is loaded.
   fill: green!important;
 }
 
-#mc00084-001-te0159-000-001-0001 .reactor > svg path, #mc00084-001-te0159-000-001-0001 #reactor_tags > span {
+#mc00084-001-te0159-000-001-0001 .reactor > svg path, #mc00084-001-te0159-000-001-0001_annotation #reactor_tags > span {
   stroke: blue!important;
   color: blue!important;
 }
 
-#mc00084-001-te0159-000-001-0001 .demolished > svg path, #mc00084-001-te0159-000-001-0001 #demolished_tags > span {
+#mc00084-001-te0159-000-001-0001 .demolished > svg path, #mc00084-001-te0159-000-001-0001_annotation #demolished_tags > span {
   stroke: red!important;
   color: red!important;
 }
