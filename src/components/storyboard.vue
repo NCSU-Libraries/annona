@@ -162,7 +162,7 @@ export default {
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
-        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
+        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict[0].source ? ondict.map(element => element.source) : ondict.flatMap(element => element);
         canvasId = [].concat(canvasId);
         var sections = [];
         var content_data = shared.chars(anno[i]);
