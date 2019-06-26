@@ -7,17 +7,21 @@
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'getInfo', 'args': ''});" v-if="imageinfo || annoinfo.text || settings.additionalinfo"  id="infoButton" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});" v-if="imageinfo || annoinfo.text || settings.additionalinfo"  id="infoButton" class="toolbarButton">
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'showtags', 'args': ''});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
         <button v-show="!annotationurl" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
+        </button>
+        <button v-show="layers.length > 0" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
+          <span v-html="buttons.layer"></span>
+          <span class="toolbartext">View layers</span>
         </button>
         <button v-on:click="sendMessage({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
           <i class="fas fa-search-plus"></i>
@@ -51,10 +55,17 @@
       <span class="close_button" ><i class="fas fa-times" v-on:click="shown = false"></i></span>
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
-      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="sendMessage({'function': 'showtags', 'args': ''});"></span>
-      <span v-html="buttons.info"  v-if="imageinfo || annoinfo.text" class="close_button" v-on:click="sendMessage({'function': 'getInfo', 'args': ''});"></span>
+      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></span>
+      <span v-html="buttons.info"  v-if="imageinfo || annoinfo.text" class="close_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></span>
       <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
+      <div id="layers" v-if="shown == 'layer'">
+        <div v-for="layer in layers" v-bind:key="layer.tile">
+          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'setOpacity', 'args': layer });" v-model="layer.checked">
+          <span>{{layer.label}}</span>
+          <div class="slidecontainer">Opacity: <input v-on:change="sendMessage({'function': 'setOpacity', 'args': {'event': $event, 'layer': layer} })" type="range" min="0" max="100" v-bind:value="layer.opacity*100" class="slider"></div>
+        </div>
+      </div>
       <div id="tags" v-if="shown == 'tags'">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
@@ -139,7 +150,8 @@ export default {
         'hide_button' : '<i class="fas fa-caret-up"></i>',
         'playpause': '<i class="fas fa-play"></i>',
         'tags': '<i class="fas fa-tag"></i>',
-        'info': '<i class="fas fa-info-circle"></i>'
+        'info': '<i class="fas fa-info-circle"></i>',
+        'layer': '<i class="fas fa-layer-group"></i>'
       },
       settings: {},
       currentlang: '',
@@ -148,7 +160,8 @@ export default {
       tagslist: {},
       annoinfo: {'text': '', 'annodata': []},
       imageinfo: {'text': '', 'label': 'Manifest information'},
-      imagetitle: ''
+      imagetitle: '',
+      layers: []
     }
   },
   created() {
@@ -235,6 +248,7 @@ export default {
         vue.reposition();
       });
       viewer.addHandler('open', function(){
+        vue.addLayers();
         if (!fit) {
           vue.viewer.viewport.fitVertically();
         }
@@ -292,7 +306,7 @@ export default {
       var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
       {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
       metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
-      canvas_data.data.sequences.length == 1 ? this.imageinfo.label = 'Image information' : '';
+      canvas_data.data.sequences[0].canvases.length == 1 ? this.imageinfo.label = 'Image information' : '';
       for (var j=0; j<metadata.length; j++){
         var label = Array.isArray(metadata[j]['label']) ? metadata[j]['label'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['label'];
         label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
@@ -407,32 +421,23 @@ export default {
         this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
       }
     },
-    getInfo: function(){
+    clickButton: function(field){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
-      if(this.shown === 'info'){
-        this.switchButtons()
-        this.buttons.info = '<i class="fas fa-info-circle"></i>'
-      } else {
-        this.shown = 'info';
-        this.switchButtons('info')
-      }
-    },
-    showtags: function(){
-      if(this.shown === 'tags'){
-        this.buttons.tags = '<i class="fas fa-tag"></i>'
+      if(this.shown === field){
         this.switchButtons()
       } else {
-        this.shown = 'tags';
-        this.switchButtons('tags')
+        this.shown = field;
+        this.switchButtons(field)
       }
     },
     switchShown: function(item) {
       this.booleanitems[item] = !this.booleanitems[item];
     },
     switchButtons: function(button=false) {
-      this.buttons.info = '<i class="fas fa-info-circle"></i>'
-      this.buttons.tags = '<i class="fas fa-tag"></i>'
+      this.buttons.info = '<i class="fas fa-info-circle"></i>';
+      this.buttons.layer = '<i class="fas fa-layer-group"></i>';
+      this.buttons.tags = '<i class="fas fa-tag"></i>';
       if (button){
         if (this.position == -1 || this.position === this.zoomsections.length) {
           this.buttons[button] = '<i class="fas fa-window-close"></i>'
@@ -482,6 +487,7 @@ export default {
           for (var i = 0; i< canvases.length; i++){
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
               var imgResource = canvases[i].images[0].resource;
+              this.getLayerData(canvases[i].images);
               var title = canvases[i].label;
               title = title && title.constructor.name == 'Object' ? title['@value'] : title;
               this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
@@ -513,6 +519,45 @@ export default {
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
+    },
+    getLayerData: function(images) {
+      for (var i=1; i<images.length; i++){
+        var imgResource = images[i].resource;
+        var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
+        canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
+        var xywh = images[i].on.split("xywh=").slice(-1)[0].split(",");
+        var label = images[i].resource.label ? images[i].resource.label : `Layer ${i}`;
+        canvas_tile += 'info.json';
+        this.layers.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: false, 'opacity': 0});
+      }
+    },
+    addLayers: function(){
+      for(var j=0; j<this.layers.length; j++) {
+        this.setLayers(this.layers[j], j);
+      }
+    },
+    setLayers: function(layer, position) {
+      var xywh = layer.xywh;
+      var vue = this;
+      var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
+      this.viewer.addTiledImage({
+          tileSource: layer.tile,
+          x: rect.x,
+          y: rect.y,
+          width: rect.width,
+          opacity: 0,
+          success: function (obj) {
+            vue.layers[position]['object'] = obj.item;
+          }
+      });
+    },
+    setOpacity: function(data){
+      var layerdata = data.layer ? data.layer : data;
+      var opacity = data.event ? data.event.target.value/100 : layerdata.opacity > 0 ? 0 : 1;
+      layerdata.object.setOpacity(opacity);
+      layerdata.opacity = opacity;
+      var checked = opacity != 0 ? true : false;
+      layerdata.checked = checked;
     },
     zoom: function(inorout){
       var oldzoom = parseFloat(this.viewer.viewport.getZoom());
