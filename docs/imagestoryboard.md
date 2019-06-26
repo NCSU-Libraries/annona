@@ -60,11 +60,11 @@ Some manifests can layer images on top of each other two examples of this can be
 
 
  ```
- <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json"></iiif-storyboard>
+ <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json" styling="togglelayers: true;"></iiif-storyboard>
  ```
 
-  <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json"></iiif-storyboard>
-
+ <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json" styling="togglelayers: true;"></iiif-storyboard>
+ 
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
 
@@ -88,6 +88,7 @@ Additionally each of these viewer's CSS can be individually customized. The over
 | additionalinfo | Is the id for an HTML object whose innerHTML will be loaded into the info tab. This HTML object should have a title tag |
 | startenddisplay | Choices are **'tags'** or **'info'**. By default the first and last items are the full image. This setting allows for the information or tags tab to be toggled during these items |
 | controller | should only be instantiated if prop of ws is also used. To set variable is **true** |
+| togglelayers |**true** or **false**. By default is **false**; shows all layers on load when set to true |
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.

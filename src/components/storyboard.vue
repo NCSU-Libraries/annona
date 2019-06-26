@@ -487,7 +487,7 @@ export default {
           for (var i = 0; i< canvases.length; i++){
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
               var imgResource = canvases[i].images[0].resource;
-              this.getLayerData(canvases[i].images);
+              var images = canvases[i].images;
               var title = canvases[i].label;
               title = title && title.constructor.name == 'Object' ? title['@value'] : title;
               this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
@@ -498,6 +498,7 @@ export default {
             }
           }
           this.buildseadragon(canvasId);
+          this.getLayerData(images);
       });
     },
     buildseadragon: function(canvasId){
@@ -528,7 +529,9 @@ export default {
         var xywh = images[i].on.split("xywh=").slice(-1)[0].split(",");
         var label = images[i].resource.label ? images[i].resource.label : `Layer ${i}`;
         canvas_tile += 'info.json';
-        this.layers.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: false, 'opacity': 0});
+        var checked = this.settings.togglelayers ? true : false;
+        var opacity = this.settings.togglelayers ? 1 : 0;
+        this.layers.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
       }
     },
     addLayers: function(){
@@ -545,7 +548,7 @@ export default {
           x: rect.x,
           y: rect.y,
           width: rect.width,
-          opacity: 0,
+          opacity: layer.opacity,
           success: function (obj) {
             vue.layers[position]['object'] = obj.item;
           }
