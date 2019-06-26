@@ -49,6 +49,22 @@ W3 standards allow for transitions between multiple bodies [https://www.w3.org/T
 
 <iiif-storyboard annotationlist="/iiif-annotation/webannotations/annotationslist.json" styling="tts:true"></iiif-storyboard>
 
+# Manifests with layers
+Some manifests can layer images on top of each other two examples of this can be seen below. The layers can be toggled using the <i class="fas fa-layer-group"></i> button.
+
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-5005-cons-overlay-list.json"></iiif-storyboard>
+```
+
+ <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-5005-cons-overlay-list.json"></iiif-storyboard>
+
+
+ ```
+ <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json"></iiif-storyboard>
+ ```
+
+  <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json"></iiif-storyboard>
+
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
 
@@ -204,6 +220,7 @@ This is an example of the info that is loaded.
 |<i class="fas fa-info-circle"></i> | This button will display a list of the annotations available. It also displays manifest metadata if a manifest is provided. Also it will show specialized information loaded through the settings. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
 | <i class="fas fa-tag"></i> | This button will display all of the tags in the storyboard and allow the users to view overlays based on tags. It works with resources with multiple tags, however they will display on top of each other so only one color is visible at one time. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
 | <i class="fas fa-toggle-on"></i> | This button will display the sections that are annotated. When toggled on, these sections are clickable. It is replaced with <i class="fas fa-toggle-off"></i> when the toggle is active |
+| <i class="fas fa-layer-group"></i> | This button will show the layers avaliable, allow for toggling them and changing the opacity on the layers |
 | <i class="fas fa-search-plus"></i><i class="fas fa-search-minus"></i> | Zoom in/out buttons |
 | <i class="fas fa-home"></i> | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load |
 | <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i> | These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list |
