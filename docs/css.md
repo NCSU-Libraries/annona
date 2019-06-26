@@ -3,6 +3,8 @@ permalink: /css_settings/
 title: Custom views
 layout: default
 ---
+* A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
+{:toc}
 These are some of the CSS styling I believe might be most requested for implementation. This is by no means an extensive list. View [the annotation css](https://github.com/NCSU-Libraries/iiif-annotation/blob/master/src/iiif-annotation.scss) for annotation specifics. Below there is a table with CSS. See [examples](#examples) for examples of implementation.
 
 # Selected CSS fields
@@ -31,7 +33,7 @@ These are some of the CSS styling I believe might be most requested for implemen
 
 # Examples
 
-**Note** Each viewer is given an unique identifier derived from the annotation. For example, `http://example.com/annotations/annotation-about-something-list.json` will have an id of `annotation-about-something`. This is useful to change the setting of a single viewer. The 
+**Note** Each viewer is given an unique identifier derived from the annotation. For example, `http://example.com/annotations/annotation-about-something-list.json` will have an id of `annotation-about-something`. This is useful to change the setting of a single viewer. The
 ## Move annotation out of viewer
 ```
 <script src="https://ncsu-libraries.github.io/iiif-annotation/dist/iiif-annotation.js"></script>
