@@ -523,7 +523,7 @@ export default {
         canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
         canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
         var xywh = images[i].on ? images[i].on.split("xywh=").slice(-1)[0].split(",") : '';
-        var label = images[i].resource.label ? images[i].resource.label : `Layer ${i}`;
+        var label = images[i].resource.label ? images[i].resource.label : `Layer ${i + 1}`;
         canvas_tile += 'info.json';
         var checked = this.settings.togglelayers || i == 0 ? true : false;
         var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;
