@@ -486,19 +486,14 @@ export default {
           var canvases = canvas_data.data.sequences[0].canvases;
           for (var i = 0; i< canvases.length; i++){
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
-              var imgResource = canvases[i].images[0].resource;
               var images = canvases[i].images;
               var title = canvases[i].label;
               title = title && title.constructor.name == 'Object' ? title['@value'] : title;
               this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
-              var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
-              canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
-              canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
-              this.seadragontile = canvas_tile + "info.json";
             }
           }
-          this.buildseadragon(canvasId);
           this.getLayerData(images);
+          this.buildseadragon(canvasId);
       });
     },
     buildseadragon: function(canvasId){
@@ -522,20 +517,23 @@ export default {
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
     },
     getLayerData: function(images) {
-      for (var i=1; i<images.length; i++){
+      for (var i=0; i<images.length; i++){
         var imgResource = images[i].resource;
         var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
+        canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
         canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
-        var xywh = images[i].on.split("xywh=").slice(-1)[0].split(",");
+        var xywh = images[i].on ? images[i].on.split("xywh=").slice(-1)[0].split(",") : '';
         var label = images[i].resource.label ? images[i].resource.label : `Layer ${i}`;
         canvas_tile += 'info.json';
-        var checked = this.settings.togglelayers ? true : false;
-        var opacity = this.settings.togglelayers ? 1 : 0;
+        var checked = this.settings.togglelayers || i == 0 ? true : false;
+        var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;
         this.layers.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
       }
+      this.seadragontile = this.layers[0].tile;
     },
     addLayers: function(){
-      for(var j=0; j<this.layers.length; j++) {
+      this.layers[0]['object'] = this.viewer.world.getItemAt(0);
+      for(var j=1; j<this.layers.length; j++) {
         this.setLayers(this.layers[j], j);
       }
     },
