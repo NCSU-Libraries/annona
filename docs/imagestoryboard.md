@@ -37,11 +37,11 @@ The code below makes use of default without any overrides or CSS styling.
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
 ```
 
 <div id="example">
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
 </div>
 
 # AnnotationList or AnnotationPage Storyboard with Multiple languages
@@ -60,11 +60,16 @@ Some manifests can layer images on top of each other two examples of this can be
 
 
  ```
- <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json" styling="togglelayers: true;"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/14057-c0-list.json"></iiif-storyboard>
  ```
 
- <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/canvas-981394-list.json" styling="togglelayers: true;"></iiif-storyboard>
- 
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/14057-c0-list.json"></iiif-storyboard>
+
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
+
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
 
@@ -101,12 +106,12 @@ Web sockets allow for communication across websites. In order to use this functi
 In order to instantiate a controller the item server url will have to loaded into the storyboard.
 
 ```
-<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json" styling="controller: true;"></iiif-storyboard>
+<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json" styling="controller: true;"></iiif-storyboard>
 ```
 
 Another instance can be loaded in another webpage if a "receiver" is needed. This is not required. If you open the controller in multiple webpages they will change with any actions. The reason for adding a receiver is to be able to customize the look and stop actions from being reflected back to all other pages.
 ```
-<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json"></iiif-storyboard>
+<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
 ```
 An example of the web sockets in use can be seen in the video below. The window on the far left has a instantiated item on a server and is a receiver (controller has not been set in settings). The two windows next to it are the same URL and are the controllers. As you should be able to see from the video, the receiver can still navigate through the annotations but it will not affect the controllers. Additionally, on reload of the receiver the toolbar disappears. Like all aspects of the library elements can be hidden with the CSS functionality.
 
