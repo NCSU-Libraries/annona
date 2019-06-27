@@ -181,7 +181,8 @@ export default {
           baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
         }
         var path = shared.getSVGoverlay(ondict[cn])
-        var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/default.jpg`;
+        var jpgformat = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'].split("/").slice(-1)[0] : 'default.jpg';
+        var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/${jpgformat}`;
         var imagehtml;
         if (path) {
           imagehtml = this.createSVG(imageurl, regionCanvas, dictionary, path, cn)
@@ -194,7 +195,7 @@ export default {
           imagehtml.style[key] = this.settings.imagesettings[key];
         }
         images.push(imagehtml.outerHTML)
-        fullImage = this.fullImage(baseImageUrl, regionCanvas);
+        fullImage = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'] : this.fullImage(baseImageUrl, regionCanvas);
       }
       return {'fullImage': fullImage, 'image': images}
     },
