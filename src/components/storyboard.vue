@@ -728,6 +728,7 @@ export default {
           this.overlayPosition(xywh);
         }
         this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
+        this.currentanno == '' ? this.shown = false : '';
         this.makeactive(this.position);
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));

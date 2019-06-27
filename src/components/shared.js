@@ -131,7 +131,8 @@ export default {
   },
   createContent: function(annotation, currentlang, storyboard) {
     var text = ''
-    if (annotation){
+    var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];
+    if (filter.length > 0){
       var language = currentlang ? currentlang : annotation['language']
       var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr'
       text = `<span style="direction: ${direction};">`
