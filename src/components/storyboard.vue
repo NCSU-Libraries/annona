@@ -201,6 +201,7 @@ export default {
         this.getAnnoInfo(content_data, i);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
+        manifestlink = manifestlink.replace("https://", "http://");
         this.getManifestData(manifestlink, canvas, canvasId);
       } else {
         this.buildseadragon(canvas);
