@@ -2,7 +2,7 @@
 <div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
-      <span id="header_toolbar" v-if="!settings.multi" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
+      <span id="header_toolbar" v-if="!$parent.multi" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
         <button v-show="!annotationurl" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
@@ -211,7 +211,9 @@ export default {
         var checked = this.settings.toggleoverlay ? true : false;
         this.tagslist[tags[tc]] = {'color':randomcolor, 'checked': checked};
       }
-
+      if (this.$parent.multi) {
+        tags.length > 0 ? this.$parent.tags = true : '';
+      }
   });
   },
   mounted () {
@@ -279,13 +281,11 @@ export default {
       });
     },
     reposition: function(rect = false) {
+      rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
+      var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
       if (this.settings.controller){
-        rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
-        var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
         this.socket.emit('broadcast', {'bounds': bounds});
-      } else if (this.settings.multi) {
-        rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
-        var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
+      } else if (this.$parent.multi) {
         this.$parent.moveArea(bounds)
       }
     },

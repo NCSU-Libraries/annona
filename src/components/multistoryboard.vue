@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="multistoryboard">
   <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
     <button v-show="!annotationurls" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
@@ -41,7 +41,7 @@
       <i class="fa fa-arrow-right"></i>
       <span class="toolbartext">Next Annotation</span>
     </button>
-    <button v-on:click="multiButton(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
+    <button v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
       <span v-html="buttons.expandbutton"></span>
       <span class="toolbartext">Toggle fullscreen</span>
     </button>
@@ -87,13 +87,13 @@ export default {
         },
         settings: {},
         stylingstring: "",
-        widthvar: ""
+        widthvar: "",
+        multi: true
       }
     },
     created(){
       this.anno_data = this.$props.annotationlists ? this.$props.annotationlists.split(";") : this.$props.annotationurls.split(";");
       this.settings = shared.getsettings(this.styling);
-      this.settings.multi = true;
       this.widthvar = `${parseInt((100/this.anno_data.length))}%`
       this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
       for (var key in this.settings){
@@ -108,9 +108,23 @@ export default {
           viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
         }
       },
+      fullscreenChange (fullscreen) {
+        if(fullscreen){
+          this.buttons.expandbutton = '<i class="fas fa-compress"></i>';
+        } else {
+          this.buttons.expandbutton = '<i class="fas fa-expand"></i>';
+        }
+        this.fullscreen = fullscreen;
+      },
+      toggle_fullscreen (){
+        this.$fullscreen.toggle(this.$el, {
+          wrap: false,
+          callback: this.fullscreenChange
+        });
+      },
       multiButton(e) {
         for (var i=0; i<this.$children.length; i++){
-          this.$children[i][e['function']](e['args']);
+          this.$children[i].sendMessage(e);
         }
         var data = this.$children[0]._data;
         this.position = data.position;
