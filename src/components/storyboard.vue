@@ -165,6 +165,7 @@ export default {
   },
   created() {
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
+    annotationurl = annotationurl.replace("https://", "http://")
     this.seadragonid = annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
