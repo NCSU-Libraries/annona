@@ -21,15 +21,15 @@ To import and use library copy and paste code. Change url if you use locally dow
 
 
 ```
-<script src="https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/js/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/css/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/stable/iiif-annotation.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/stable/iiif-annotation.css">
 ```
 
-| Dist Latest Stable | <a href="https://github.com/NCSU-Libraries/iiif-annotation/blob/v1.1.1/docs/dist2.zip?raw=true" download="https://github.com/NCSU-Libraries/iiif-annotation/blob/v1.1.1/docs/dist2.zip?raw=true"><i class="fas fa-download"></i></a>
+| Dist Latest Stable | <a href="{{site.baseurl}}/stable/dist2.zip" download="dist.zip"><i class="fas fa-download"></i></a>
 | ------------- |
-| [iiif-annotation.css](https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/css/iiif-annotation.css) | <a onclick="downloaddist('https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/css/iiif-annotation.css')"><i class="fas fa-download"></i></a> |
-| [iiif-annotation.js](https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/js/iiif-annotation.js) | <a onclick="downloaddist('https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/js/iiif-annotation.js')"><i class="fas fa-download"></i></a> |
-| [iiif-annotation.js.map](https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/js/iiif-annotation.js.map) | <a onclick="downloaddist('https://raw.githubusercontent.com/NCSU-Libraries/iiif-annotation/v1.1.1/dist/js/iiif-annotation.js.map')"><i class="fas fa-download"></i></a> |
+| [iiif-annotation.css](iiif-annotation.css) | <a href="{{site.baseurl}}/stable/iiif-annotation.css" download><i class="fas fa-download"></i></a> |
+| [iiif-annotation.js](iiif-annotation.js) | <a href="{{site.baseurl}}/stable/iiif-annotation.js" download><i class="fas fa-download"></i></a> |
+| [iiif-annotation.js.map](iiif-annotation.js.map) | <a href="{{site.baseurl}}/stable/iiif-annotation.js.map" download="iiif-annotation.js.map"><i class="fas fa-download"></i></a> |
 
 <script>
 

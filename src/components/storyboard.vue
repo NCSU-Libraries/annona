@@ -2,7 +2,7 @@
 <div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative; display:flex">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
-      <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen ">
+      <span id="header_toolbar" v-if="!settings.multi" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
         <button v-show="!annotationurl" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
@@ -47,7 +47,6 @@
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
-
       </span>
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="shown">
@@ -248,7 +247,7 @@ export default {
         vue.reposition();
       });
       viewer.addHandler('open', function(){
-        if (this.layers && this.layers.length > 0){
+        if (vue.layers && vue.layers.length > 0){
           vue.addLayers();
         }
         if (!fit) {
@@ -284,6 +283,10 @@ export default {
         rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
         var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
         this.socket.emit('broadcast', {'bounds': bounds});
+      } else if (this.settings.multi) {
+        rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
+        var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
+        this.$parent.moveArea(bounds)
       }
     },
     newSocket: function() {

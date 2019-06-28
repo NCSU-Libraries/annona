@@ -1,5 +1,5 @@
-cp dist/js/* docs/dist/
-cp dist/css/* docs/dist/
-cd docs
+cp dist/js/* docs/stable/
+cp dist/css/* docs/stable/
+cd docs/stable/
 rm dist2.zip
-zip -r dist2.zip dist/ -x "*.md"
+zip -r dist2.zip . -x "*.md"
