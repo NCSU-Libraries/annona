@@ -248,7 +248,9 @@ export default {
         vue.reposition();
       });
       viewer.addHandler('open', function(){
-        vue.addLayers();
+        if (this.layers && this.layers.length > 0){
+          vue.addLayers();
+        }
         if (!fit) {
           vue.viewer.viewport.fitVertically();
         }
