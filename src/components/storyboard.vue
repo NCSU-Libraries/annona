@@ -165,7 +165,6 @@ export default {
   },
   created() {
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
-    annotationurl = annotationurl.replace("https://", "http://")
     this.seadragonid = annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
@@ -202,7 +201,6 @@ export default {
         this.getAnnoInfo(content_data, i);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       } if (manifestlink) {
-        manifestlink = manifestlink.replace("https://", "http://");
         this.getManifestData(manifestlink, canvas, canvasId);
       } else {
         this.buildseadragon(canvas);
