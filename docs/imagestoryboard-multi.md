@@ -14,12 +14,19 @@ This replaces the need for websockets for comparing two or more annotations. It 
 | styling | string structured styling. See [settings table](#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 
+# Important Notes on use
+ * Annotations should be separated by a `;` in the props
+ * Settings and ws are set the same way as in the storyboard
+ * Annotation lists should be the same length; Otherwise some weird things can happen.
+ * When clicking on the overlays they will go the same position on each image not the same annotation. This is a conscious choice to allow for comparison at a certain point.
+ * Wait for all images to load before using the toolbar.
+
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 
 ```
-<iiif-multistoryboard annotationlists="{{site.url}}/{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}/{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
+<iiif-multistoryboard annotationlists="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
 
 ```
 
-<iiif-multistoryboard annotationlists="{{site.url}}/{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}/{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
+<iiif-multistoryboard annotationlists="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
