@@ -658,6 +658,14 @@ export default {
           functions.sendMessage({'function':'next', 'args': functions.position});
           functions.goToArea(rect);
           functions.reposition(rect);
+          if (functions.$parent.multi) {
+            var children = functions.$parent.$children;
+            functions.$parent.next_inactive = functions.next_inactive;
+            functions.$parent.prev_inactive = functions.prev_inactive;
+            for (var ch=0; ch<children.length; ch++){
+              children[ch].position = position;
+            }
+          }
         }
       }).setTracking(true);
     },

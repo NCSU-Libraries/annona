@@ -16,8 +16,8 @@ This replaces the need for websockets for comparing two or more annotations. It 
 | styling | string structured styling. See [settings table](#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
 
 ```
 <iiif-multistoryboard annotationlists="https://dnoneill.github.io/annotate/annotations/627551b3-516f-4d34-8725-2db778724503-list.json;https://dnoneill.github.io/annotate/annotations/fmb-cb-0048-fmb-cb-0048-001r-list.json"></iiif-multistoryboard>
