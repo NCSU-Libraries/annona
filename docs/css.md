@@ -52,17 +52,17 @@ These are some of the CSS styling I believe might be most requested for implemen
   max-height: none!important;
 }
 </style>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json" styling="startenddisplay: info;"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json" styling="startenddisplay: info;"></iiif-storyboard>
 ```
 
 <script src="https://ncsu-libraries.github.io/iiif-annotation/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="https://ncsu-libraries.github.io/iiif-annotation/dist/iiif-annotation.css">
 <style>
-[id="\30 001"].seadragonbox {
+#wh234bz9013-0001.seadragonbox {
   width: 80%;
   left: 20%;
 }
-[id="\30 001_annotation"] {
+#wh234bz9013-0001_annotation {
   height: 106.1%;
   width: 20%;
   top: 2px!important;
@@ -72,7 +72,7 @@ These are some of the CSS styling I believe might be most requested for implemen
 }
 }
 </style>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/0001-list.json" styling="startenddisplay: info;"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json" styling="startenddisplay: info;"></iiif-storyboard>
 
 ## Resize Annotation, remove buttons and change non svg overlay colors
 ```
