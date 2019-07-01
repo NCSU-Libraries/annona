@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "release": "jest && vue-cli-service build && ./docs.sh",
+    "release": "jest && vue-cli-service build && ./docs.sh && ./prerelease.sh",
     "build": "jest && vue-cli-service build && ./prerelease.sh",
     "lint": "vue-cli-service lint",
     "test": "jest"

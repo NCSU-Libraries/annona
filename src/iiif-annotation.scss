@@ -516,3 +516,9 @@ figcaption {
 .multistoryboard .annotation{
   top: 20px;
 }
+
+@media only screen and (max-width: 600px) {
+  .multistoryboard .annotation {
+    top: 0px!important;
+  }
+}
