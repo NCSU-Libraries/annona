@@ -17,7 +17,7 @@
       <span v-html="buttons.overlaybutton"></span>
       <span class="toolbartext">Toggle Overlays</span>
     </button>
-    <button v-show="layers" id="layerButton" v-on:click="multiButton({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
+    <button v-show="layerslist" id="layerButton" v-on:click="multiButton({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
       <span v-html="buttons.layer"></span>
       <span class="toolbartext">View layers</span>
     </button>
@@ -47,8 +47,8 @@
     </button>
   </span>
 <div v-for="anno in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-  <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring"></storyboard>
-  <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring"></storyboard>
+  <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+  <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
 
 </div>
 </div>
@@ -65,12 +65,15 @@ export default {
       'manifesturl':String,
       'annotationurls': String,
       'styling': String,
-      'ws': String
+      'ws': String,
+      'layers': String
     },
     data: function() {
       return {
         tags: false,
-        layers: false,
+        layerslist: false,
+        customlayers: '[]',
+        isws: '',
         position: -1,
         prev_inactive: false,
         next_inactive: false,
@@ -94,8 +97,10 @@ export default {
     created(){
       this.anno_data = this.$props.annotationlists ? this.$props.annotationlists.split(";") : this.$props.annotationurls.split(";");
       this.settings = shared.getsettings(this.styling);
-      this.widthvar = `${parseInt((100/this.anno_data.length))}%`
+      this.widthvar = `${parseInt((100/this.anno_data.length))}%`;
       this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
+      this.$props.ws ? this.ws = this.$props.ws : '';
+      this.$props.layers ? this.customlayers = this.$props.layers : '';
       for (var key in this.settings){
         this.stylingstring += `${key}:${this.settings[key]};`
       }

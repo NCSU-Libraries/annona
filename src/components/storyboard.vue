@@ -547,6 +547,7 @@ export default {
           this.layerslist.push({'tile': layer_dict['image'], 'xywh':xwyhset, 'label': layer_dict['label'], checked: ischecked, 'opacity': setopacity});
         }
       }
+      this.$parent.multi && this.layerslist.length > 1 ? this.$parent.layerslist = true : '';
     },
     addLayers: function(){
       this.layerslist[0]['object'] = this.viewer.world.getItemAt(0);
