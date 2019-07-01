@@ -19,7 +19,7 @@
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
         </button>
-        <button v-show="layers.length > 1" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
+        <button v-show="layerslist.length > 1" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
           <span v-html="buttons.layer"></span>
           <span class="toolbartext">View layers</span>
         </button>
@@ -59,9 +59,9 @@
       <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="layers" v-if="shown == 'layer'">
-        <div v-for="layer in layers" v-bind:key="layer.tile">
+        <div v-for="layer in layerslist" v-bind:key="layer.tile">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'setOpacity', 'args': layer });" v-model="layer.checked">
-          <span>{{layer.label}}</span>
+          <span v-html="layer.label"></span>
           <div class="slidecontainer">Opacity: <input v-on:change="sendMessage({'function': 'setOpacity', 'args': {'event': $event, 'layer': layer} })" type="range" min="0" max="100" v-bind:value="layer.opacity*100" class="slider"></div>
         </div>
       </div>
@@ -118,7 +118,8 @@ export default {
     'manifesturl':String,
     'annotationurl': String,
     'styling': String,
-    'ws': String
+    'ws': String,
+    'layers': String
   },
   data: function() {
     return {
@@ -160,7 +161,7 @@ export default {
       annoinfo: {'text': '', 'annodata': []},
       imageinfo: {'text': '', 'label': 'Manifest information'},
       imagetitle: '',
-      layers: []
+      layerslist: []
     }
   },
   created() {
@@ -249,7 +250,7 @@ export default {
         vue.reposition();
       });
       viewer.addHandler('open', function(){
-        if (vue.layers && vue.layers.length > 0){
+        if (vue.layerslist && vue.layerslist.length > 0){
           vue.addLayers();
         }
         if (!fit) {
@@ -532,14 +533,25 @@ export default {
         canvas_tile += 'info.json';
         var checked = this.settings.togglelayers || i == 0 ? true : false;
         var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;
-        this.layers.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
+        this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
       }
-      this.seadragontile = this.layers[0].tile;
+      this.seadragontile = this.layerslist[0].tile;
+      if (this.$props.layers) {
+        var layers = this.$props.layers.replace(/'/gm, '"');
+        layers = JSON.parse(layers);
+        for (var lay=0; lay<layers.length;lay++){
+          var layer_dict = layers[lay];
+          var xwyhset = layer_dict['xywh'] ? layer_dict['xywh'].split(",") : [0,0,0,0];
+          var ischecked = this.settings.togglelayers ? true : false;
+          var setopacity = this.settings.togglelayers ? 1 : 0;
+          this.layerslist.push({'tile': layer_dict['image'], 'xywh':xwyhset, 'label': layer_dict['label'], checked: ischecked, 'opacity': setopacity});
+        }
+      }
     },
     addLayers: function(){
-      this.layers[0]['object'] = this.viewer.world.getItemAt(0);
-      for(var j=1; j<this.layers.length; j++) {
-        this.setLayers(this.layers[j], j);
+      this.layerslist[0]['object'] = this.viewer.world.getItemAt(0);
+      for(var j=1; j<this.layerslist.length; j++) {
+        this.setLayers(this.layerslist[j], j);
       }
     },
     setLayers: function(layer, position) {
@@ -553,7 +565,7 @@ export default {
           width: rect.width,
           opacity: layer.opacity,
           success: function (obj) {
-            vue.layers[position]['object'] = obj.item;
+            vue.layerslist[position]['object'] = obj.item;
           }
       });
     },

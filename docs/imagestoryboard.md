@@ -3,7 +3,7 @@ layout: page
 title: Storyboard Viewer
 permalink: /storyboard/
 ---
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
+<script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <style>
 code {
@@ -23,7 +23,7 @@ code {
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
 | styling | string structured styling. See [settings table](#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
-
+| layers | String in JSON format. Required fields are 'label' and 'image'. Optional field of xywh. Read about what each of these are in the [Add custom layers](#add-custom-layers) section. |
 
 # AnnotationList or AnnotationPage Storyboard
 
@@ -69,6 +69,17 @@ Some manifests can layer images on top of each other two examples of this can be
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
+
+# Add custom layers
+
+**This is only avaliable in the latest release. It is not avaliable in the stable release**
+
+In order to add custom layers (no limit to number) a JSON object has to be set for the `layers` property. For ease of use I would suggest replacing fields in the example below. The `label` fields defines what will show up in the layer controller. This can be HTML as in the example below. The `image` field should be the info.json format. See [https://iiif.io/api/image/2.1/#image-information-request-uri-syntax](https://iiif.io/api/image/2.1/#image-information-request-uri-syntax) for more information on this format. The `xywh` field defines how the image gets layered on top of the top image. It should be four numbers separated with commas and no whitespace. In order they are x coordinate, y coordinate, width and height. Width is the measurement used to calculate the height, so figuring out the height is not necessary. In the example below the overlaid image is larger than the annotated image. This allows a better fit.
+
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-main-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-main-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
 
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. Otherwise the variable does not need to be set. The code and options can be seen below. Like the image viewer these settings can be set on a single item as well.
