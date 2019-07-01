@@ -453,7 +453,7 @@ export default {
         if (this.position == -1 || this.position === this.zoomsections.length){
           this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
         } else {
-          this.shown = 'anno';
+          this.shown = this.currentanno != '' ? 'anno' : false;
         }
       }
     },
@@ -717,7 +717,6 @@ export default {
       } else {
         this.position = this.position;
       }
-      this.switchButtons();
       if (this.settings.tts){
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         this.tts(content);
@@ -765,6 +764,7 @@ export default {
           }
         }
       }
+      this.switchButtons();
       if (this.position >= this.zoomsections.length){
         this.next_inactive = true;
       } else {
