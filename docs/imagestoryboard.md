@@ -119,7 +119,8 @@ An example of the web sockets in use can be seen in the video below. The window 
   <source src="{{site.baseurl}}/videos/websockets.m4v" type="video/mp4">
 </video>
 
-The instantiated storyboards do not have to be the same object, however they should be the same number of annotations. The video below shows two different annotations list on the same page of the The Cantebury Tales but in different versions.
+The instantiated storyboards do not have to be the same object, however they should be the same number of annotations. The video below shows two different annotations list on the same page of the The Cantebury Tales but in different versions. **This can also now be done without websockets see [Multi Storyboard]({{site.baseurl}}/multistoryboard) for more info**
+
 <video width="100%" controls>
   <source src="{{site.baseurl}}/videos/websockets2.m4v" type="video/mp4">
 </video>

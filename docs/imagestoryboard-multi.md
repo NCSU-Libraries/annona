@@ -4,8 +4,6 @@ title: Multi Storyboard Viewer
 permalink: /multistoryboard/
 ---
 
-**Currently only avaliable in latest release [Dist](https://ncsu-libraries.github.io/iiif-annotation/dist) for release links**
-
 This replaces the need for websockets for comparing two or more annotations. It works exactly the same as the [Storyboard]({{site.baseurl}}/storyboard) and has all the same settings. The bolded props are the only changes in regards to input.
 
 | Props      | Values |
