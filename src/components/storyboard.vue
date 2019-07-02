@@ -445,7 +445,7 @@ export default {
       this.buttons.layer = '<i class="fas fa-layer-group"></i>';
       this.buttons.tags = '<i class="fas fa-tag"></i>';
       if (button){
-        if (this.position == -1 || this.position === this.zoomsections.length) {
+        if (this.position == -1 || this.position >= this.zoomsections.length) {
           this.buttons[button] = '<i class="fas fa-window-close"></i>'
         } else {
           this.buttons[button] = '<i class="fas fa-file-alt"></i>'
@@ -625,12 +625,12 @@ export default {
     },
     autoRunTTS: function(){
       if (this.isautorunning){
-        if (this.position === this.zoomsections.length){
-          this.position = -1;
-        }
         var this_functions = this;
         var interval = this.settings.autorun_interval*1000;
         this_functions.isautorunning = setTimeout(function(){
+          if (this.position === this.zoomsections.length){
+            this.position = -1;
+          }
           this_functions.next('next');
         }, interval);
       } else {
@@ -829,19 +829,16 @@ export default {
       interval = interval * 1000;
       var length = this.zoomsections.length;
       if (this.isautorunning === ''){
-        if (this.position === length){
-          this.position = -1;
-        }
         var this_functions = this;
         if (this.settings.tts) {
           this.isautorunning = true;
           this.next('next');
         } else {
           this.isautorunning = setInterval(function() {
-            this_functions.next('next')
-            if(this_functions.position === length){
+            if(this_functions.position >= length){
               this_functions.position = -1;
             }
+            this_functions.next('next');
           }, interval);
         }
         this.buttons.autorunbutton = '<i class="fas fa-stop-circle"></i>';

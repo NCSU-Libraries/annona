@@ -49,7 +49,6 @@
 <div v-for="anno in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
   <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-
 </div>
 </div>
 </template>
@@ -74,8 +73,7 @@ export default {
         layerslist: false,
         customlayers: '[]',
         isws: '',
-        position: -1,
-        prev_inactive: false,
+        prev_inactive: true,
         next_inactive: false,
         anno_data: [],
         buttons: {
@@ -132,7 +130,6 @@ export default {
           this.$children[i].sendMessage(e);
         }
         var data = this.$children[0]._data;
-        this.position = data.position;
         this.buttons = data.buttons;
         this.prev_inactive = data.prev_inactive;
         this.next_inactive = data.next_inactive;
