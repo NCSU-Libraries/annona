@@ -8,6 +8,7 @@ permalink: /imageviewer/
 <style>
 code {
   word-wrap: break-word;
+  whitespace: normal;
 }
 </style>
 
