@@ -75,11 +75,6 @@ Some manifests define multiple images for a "canvas" allowing for images to be p
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
 
 # Add custom layers
-
-**This is only available in the latest release. It is not available in the stable release**
-
-View [dist]({{site.baseurl}}/dist) for latest release.
-
 This allows for layers to be created without having to define the layers in a manifest. In order to add custom layers (no limit to number) a JSON object has to be set for the `layers` property. For ease of use I would suggest replacing fields in the example below. The `label` fields defines what will show up in the layer controller. This can be HTML as in the example below. The `image` field should be a IIIF image in info.json format. See [https://iiif.io/api/image/2.1/#image-information-request-uri-syntax](https://iiif.io/api/image/2.1/#image-information-request-uri-syntax) for more information on this format. The `xywh` field defines how the image gets layered on top of the top image. It should be four numbers separated with commas and no whitespace. In order they are x coordinate, y coordinate, width and height. Width is the measurement used to calculate the height, so figuring out the height is not necessary. In the example below the overlaid image is larger than the annotated image so xywh is set to 185,180,4750,6513. This means the image is moved down by 180 and to the right by 185 and the width of the image is set to 4750.
 
 ```
