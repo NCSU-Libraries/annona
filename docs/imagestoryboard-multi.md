@@ -6,7 +6,7 @@ permalink: /multistoryboard/
 <style>
 code {
   word-wrap: break-word;
-  whitespace: normal;
+  white-space: normal;
 }
 </style>
 
