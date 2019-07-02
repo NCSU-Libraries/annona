@@ -166,7 +166,8 @@ export default {
   },
   created() {
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
-    this.seadragonid = annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
+    this.settings = shared.getsettings(this.styling);
+    this.seadragonid = this.settings.customid ? this.settings.customid : annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       anno = [].concat(anno);
@@ -202,7 +203,6 @@ export default {
         this.getAnnoInfo(content_data, i);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       }
-      this.settings = shared.getsettings(this.styling);
       if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId);
       } else {
