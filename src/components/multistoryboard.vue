@@ -49,12 +49,17 @@
 <div v-for="anno in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
   <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+
 </div>
-</div>
+<div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
+  <div v-bind:id="image.id" class="seadragonbox"></div>
+</div></div>
 </template>
 <script>
 import storyboard from './storyboard'
 import shared from './shared'
+import openseadragon from 'openseadragon';
+
 export default {
     components: {
         storyboard
@@ -65,7 +70,8 @@ export default {
       'annotationurls': String,
       'styling': String,
       'ws': String,
-      'layers': String
+      'layers': String,
+      'images': String
     },
     data: function() {
       return {
@@ -89,24 +95,45 @@ export default {
         settings: {},
         stylingstring: "",
         widthvar: "",
-        multi: true
+        multi: true,
+        allimages: [],
+        viewers: []
       }
     },
+    mounted(){
+      this.createViewers()
+    },
     created(){
-      this.anno_data = this.$props.annotationlists ? this.$props.annotationlists.split(";") : this.$props.annotationurls.split(";");
+      var annotations = this.$props.annotationlists ? this.$props.annotationlists.split(";") : this.$props.annotationurls.split(";");
+      this.anno_data = annotations.filter(function (el) {
+        return el != null && el != '';
+      });
       this.settings = shared.getsettings(this.styling);
-      this.widthvar = `${parseInt((100/this.anno_data.length))}%`;
       this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
       this.$props.ws ? this.ws = this.$props.ws : '';
       this.$props.layers ? this.customlayers = this.$props.layers : '';
       for (var key in this.settings){
         this.stylingstring += `${key}:${this.settings[key]};`
       }
+      if (this.$props.images){
+        var images = this.$props.images.split(";").filter(function (el) {
+          return el != null && el != '';
+        });
+        for (var img =0; img<images.length; img++){
+          this.allimages.push({'id': images[img].split("/").slice(-2)[0], 'tile': images[img]})
+        }
+      }
+      this.widthvar = `${parseInt((100/(this.anno_data.length + this.allimages.length)))}%`;
     },
     methods: {
       moveArea (bounds) {
         for (var i=0; i<this.$children.length; i++){
           var viewer =this.$children[i].viewer;
+          var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
+          viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
+        }
+        for (var i=0; i<this.viewers.length; i++){
+          var viewer =this.viewers[i];
           var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
           viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
         }
@@ -125,9 +152,45 @@ export default {
           callback: this.fullscreenChange
         });
       },
+      createViewers: function(tile){
+        var fit = this.settings.fit == 'fill' ? true : false;
+        for(var g=0; g<this.allimages.length; g++){
+          var image = this.allimages[g];
+          var osdsettings = {
+                id: `${image.id}`,
+                type: "image",
+                nextButton: 'next',
+                previousButton: 'previous',
+                homeFillsViewer: fit,
+                tileSources: `${image.tile}`,
+                showNavigator:  false,
+                showNavigationControl: false,
+                constrainDuringPan: true,
+                visibilityRatio: 1
+          };
+          var viewer = openseadragon(osdsettings);
+          this.viewers.push(viewer);
+          var vue = this;
+          viewer.addHandler('canvas-click', function(){
+            var bounds = viewer.world.getItemAt(0).viewportToImageRectangle(viewer.viewport.getBounds());
+            vue.moveArea(bounds);
+          });
+          viewer.addHandler('canvas-scroll', function(){
+            var bounds = viewer.world.getItemAt(0).viewportToImageRectangle(viewer.viewport.getBounds());
+            vue.moveArea(bounds);
+          });
+          viewer.addHandler('canvas-drag', function(){
+            var bounds = viewer.world.getItemAt(0).viewportToImageRectangle(viewer.viewport.getBounds());
+            vue.moveArea(bounds);
+          });
+        }
+      },
       multiButton(e) {
         for (var i=0; i<this.$children.length; i++){
           this.$children[i].sendMessage(e);
+        }
+        for (var k=0; k<this.viewers.length; k++){
+          this.viewers[k].viewport.fitBounds(this.$children[0].viewer.viewport.getBounds())
         }
         var data = this.$children[0]._data;
         this.buttons = data.buttons;
