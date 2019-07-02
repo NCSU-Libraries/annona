@@ -111,7 +111,7 @@ export default {
           size = 'full';
         }
         if (hasmanifest) {
-          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], size, dictionary)
+          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], dictionary)
           dictionary['image'] = dictionary['image'].concat(imagedata['image']);
           dictionary['fullImage'] = imagedata['fullImage'];
         } else {
@@ -160,7 +160,7 @@ export default {
       svg.innerHTML = inner + path.outerHTML;
       return svg;
     },
-    getManifestCanvas: function(canvasId, anno, size, dictionary){
+    getManifestCanvas: function(canvasId, anno, dictionary){
       var images = [];
       var fullImage;
       for (var cn = 0; cn < canvasId.length; cn++){
@@ -182,6 +182,8 @@ export default {
         }
         var path = shared.getSVGoverlay(ondict[cn])
         var jpgformat = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'].split("/").slice(-1)[0] : 'default.jpg';
+        fullImage = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'] : this.fullImage(baseImageUrl, regionCanvas);
+        var size = fullImage.split("/").slice(-3)[0];
         var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/${jpgformat}`;
         var imagehtml;
         if (path) {
@@ -195,7 +197,6 @@ export default {
           imagehtml.style[key] = this.settings.imagesettings[key];
         }
         images.push(imagehtml.outerHTML)
-        fullImage = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'] : this.fullImage(baseImageUrl, regionCanvas);
       }
       return {'fullImage': fullImage, 'image': images}
     },

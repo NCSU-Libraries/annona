@@ -516,6 +516,8 @@ export default {
         tile = tile.split("#")[0];
         tile += tile.slice(-1) !== '/' ? "/" : '';
         this.seadragontile = tile + "info.json";
+        this.layerslist.push({'tile': this.seadragontile, 'label': 'Layer 1', checked: true, 'opacity': 1});
+        this.getLayerData([]);
       }
       this.createViewer();
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
@@ -535,7 +537,7 @@ export default {
         var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;
         this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
       }
-      this.seadragontile = this.layerslist[0].tile;
+      this.layerslist.length > 0 ? this.seadragontile =  this.layerslist[0].tile : '';
       if (this.$props.layers) {
         var layers = this.$props.layers.replace(/'/gm, '"');
         layers = JSON.parse(layers);
