@@ -117,6 +117,7 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | startenddisplay | Choices are **'tags'** or **'info'**. By default the first and last items are the full image without a text box. This setting allows for the information or tags tab to be toggled at the first and last item. |
 | controller | **true** or **false**. Should only be instantiated if property of `ws` is also used. Default is **false**. Sets the storyboard as being able to control other storyboards connected to the web socket server. |
 | togglelayers |**true** or **false**. By default is **false**; shows all layers on load when set to true. |
+| customid | **String**. If for some reason you would like to customize the identifier which gets automatically generated from the annotation filename use this setting. An example can be seen in the second storyboard in [add custom layers](#add-custom-layers). This setting is necessary if two storyboards with the same annotation get added to the same page. |
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.
