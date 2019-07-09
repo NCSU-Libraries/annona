@@ -6,6 +6,7 @@ permalink: /multistoryboard/
 <style>
 code {
   word-wrap: break-word;
+  white-space: normal;
 }
 </style>
 
@@ -27,7 +28,7 @@ This replaces the need for websockets for comparing two or more annotations. It 
  * Wait for all images to load before using the toolbar.
 
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
 
 ```
 <iiif-multistoryboard annotationlists="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>

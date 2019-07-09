@@ -126,16 +126,18 @@ export default {
       this.widthvar = `${parseInt((100/(this.anno_data.length + this.allimages.length)))}%`;
     },
     methods: {
-      moveArea (bounds) {
+      moveArea (bounds, ignore) {
         for (var i=0; i<this.$children.length; i++){
           var viewer =this.$children[i].viewer;
           var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
           viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
         }
-        for (var i=0; i<this.viewers.length; i++){
-          var viewer =this.viewers[i];
-          var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
-          viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
+        for (var j=0; j<this.viewers.length; j++){
+          if (j != ignore){
+            var imageviewer =this.viewers[j];
+            var imageconversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
+            imageviewer.viewport.fitBoundsWithConstraints(imageconversion).ensureVisible();
+          }
         }
       },
       fullscreenChange (fullscreen) {
@@ -152,7 +154,7 @@ export default {
           callback: this.fullscreenChange
         });
       },
-      createViewers: function(tile){
+      createViewers: function(){
         var fit = this.settings.fit == 'fill' ? true : false;
         for(var g=0; g<this.allimages.length; g++){
           var image = this.allimages[g];
@@ -171,17 +173,24 @@ export default {
           var viewer = openseadragon(osdsettings);
           this.viewers.push(viewer);
           var vue = this;
-          viewer.addHandler('canvas-click', function(){
-            var bounds = viewer.world.getItemAt(0).viewportToImageRectangle(viewer.viewport.getBounds());
-            vue.moveArea(bounds);
+          var elements = this.allimages.map(element => element.id);
+          viewer.addHandler('canvas-click', function(event){
+            var id = event.eventSource.id;
+            var ignore = elements.indexOf(id);
+            var bounds = event.eventSource.world.getItemAt(0).viewportToImageRectangle(event.eventSource.viewport.getConstrainedBounds());
+            vue.moveArea(bounds, ignore);
           });
-          viewer.addHandler('canvas-scroll', function(){
-            var bounds = viewer.world.getItemAt(0).viewportToImageRectangle(viewer.viewport.getBounds());
-            vue.moveArea(bounds);
+          viewer.addHandler('canvas-scroll', function(event){
+            var id = event.eventSource.id;
+            var ignore = elements.indexOf(id);
+            var bounds = event.eventSource.world.getItemAt(0).viewportToImageRectangle(event.eventSource.viewport.getConstrainedBounds());
+            vue.moveArea(bounds, ignore);
           });
-          viewer.addHandler('canvas-drag', function(){
-            var bounds = viewer.world.getItemAt(0).viewportToImageRectangle(viewer.viewport.getBounds());
-            vue.moveArea(bounds);
+          viewer.addHandler('canvas-drag', function(event){
+            var id = event.eventSource.id;
+            var ignore = elements.indexOf(id);
+            var bounds = event.eventSource.world.getItemAt(0).viewportToImageRectangle(event.eventSource.viewport.getConstrainedBounds());
+            vue.moveArea(bounds, ignore);
           });
         }
       },
@@ -190,7 +199,7 @@ export default {
           this.$children[i].sendMessage(e);
         }
         for (var k=0; k<this.viewers.length; k++){
-          this.viewers[k].viewport.fitBounds(this.$children[0].viewer.viewport.getBounds())
+          this.viewers[k].viewport.fitBounds(this.$children[0].viewer.viewport.getConstrainedBounds())
         }
         var data = this.$children[0]._data;
         this.buttons = data.buttons;

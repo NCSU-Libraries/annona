@@ -9,6 +9,7 @@ permalink: /storyboard/
 <style>
 code {
   word-wrap: break-word;
+  white-space: normal;
 }
 </style>
 
@@ -75,12 +76,22 @@ Some manifests define multiple images for a "canvas" allowing for images to be p
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
 
 # Add custom layers
-This allows for layers to be created without having to define the layers in a manifest. In order to add custom layers (no limit to number) a JSON object has to be set for the `layers` property. For ease of use I would suggest replacing fields in the example below. The `label` fields defines what will show up in the layer controller. This can be HTML as in the example below. The `image` field should be a IIIF image in info.json format. See [https://iiif.io/api/image/2.1/#image-information-request-uri-syntax](https://iiif.io/api/image/2.1/#image-information-request-uri-syntax) for more information on this format. The `xywh` field defines how the image gets layered on top of the top image. It should be four numbers separated with commas and no whitespace. In order they are x coordinate, y coordinate, width and height. Width is the measurement used to calculate the height, so figuring out the height is not necessary. In the example below the overlaid image is larger than the annotated image so xywh is set to 185,180,4750,6513. This means the image is moved down by 180 and to the right by 185 and the width of the image is set to 4750.
+This allows for layers to be created without having to define the layers in a manifest. In order to add custom layers (no limit to number) a JSON object has to be set for the `layers` property. For ease of use I would suggest replacing fields in the example below. The `label` fields defines what will show up in the layer controller. This can be HTML as in the example below. The `image` field should be a IIIF image in info.json format. See [https://iiif.io/api/image/2.1/#image-information-request-uri-syntax](https://iiif.io/api/image/2.1/#image-information-request-uri-syntax) for more information on this format. The `xywh` field defines how the image gets layered on top of the top image. It should be four numbers separated with commas and no whitespace. In order they are x coordinate, y coordinate, width and height. Width is the measurement used to calculate the height, so figuring out the height is not necessary. In the example below the overlaid image is larger than the annotated image so xywh is set to 185,180,4750,6513. This means the image is moved down by 180 and to the right by 185 and the width of the image is set to 4750. `rotation` is the rotation of the overlaid image, the rotation is clockwise. `section` allows for a section of the image you have inputed.
+
+**Note: In order to determine the `xywh` and `section` fields try using any of the cropping tools listed on the [Awesome IIIF list.](https://github.com/IIIF/awesome-iiif#image-tools)**
 
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-main-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-main-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '185,180,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
+
+**Rotation, section are only avaliable with the latest dist**
+
+```
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>
+```
+
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>
 
 # Settings
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set almost all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. The code and options can be seen below. Like the image viewer these settings can be set for a single storyboard or all storyboards on a page.
@@ -106,6 +117,7 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | startenddisplay | Choices are **'tags'** or **'info'**. By default the first and last items are the full image without a text box. This setting allows for the information or tags tab to be toggled at the first and last item. |
 | controller | **true** or **false**. Should only be instantiated if property of `ws` is also used. Default is **false**. Sets the storyboard as being able to control other storyboards connected to the web socket server. |
 | togglelayers |**true** or **false**. By default is **false**; shows all layers on load when set to true. |
+| customid | **String**. If for some reason you would like to customize the identifier which gets automatically generated from the annotation filename use this setting. An example can be seen in the second storyboard in [add custom layers](#add-custom-layers). This setting is necessary if two storyboards with the same annotation get added to the same page. |
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.

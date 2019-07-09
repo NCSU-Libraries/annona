@@ -166,7 +166,8 @@ export default {
   },
   created() {
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
-    this.seadragonid = annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
+    this.settings = shared.getsettings(this.styling);
+    this.seadragonid = this.settings.customid ? this.settings.customid : annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       anno = [].concat(anno);
@@ -201,7 +202,8 @@ export default {
         this.annotations.push(content_data);
         this.getAnnoInfo(content_data, i);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
-      } if (manifestlink) {
+      }
+      if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId);
       } else {
         this.buildseadragon(canvas);
@@ -503,7 +505,6 @@ export default {
       });
     },
     buildseadragon: function(canvasId){
-      this.settings = shared.getsettings(this.styling);
       this.settings.startenddisplay ? this.switchButtons(this.settings.startenddisplay) : '';
       this.settings.startenddisplay ? this.shown = this.settings.startenddisplay : '';
       var infoelement = this.settings.additionalinfo ? document.getElementById(this.settings.additionalinfo) : '';
@@ -527,7 +528,7 @@ export default {
     getLayerData: function(images) {
       for (var i=0; i<images.length; i++){
         var imgResource = images[i].resource;
-        var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
+        var canvas_tile = imgResource.service ? imgResource.service['@id'].split("/full/")[0] : imgResource['@id'];
         canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
         canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
         var xywh = images[i].on ? images[i].on.split("xywh=").slice(-1)[0].split(",") : '';
@@ -544,9 +545,11 @@ export default {
         for (var lay=0; lay<layers.length;lay++){
           var layer_dict = layers[lay];
           var xwyhset = layer_dict['xywh'] ? layer_dict['xywh'].split(",") : [0,0,0,0];
+          var section = layer_dict['section'] ? layer_dict['section'].split(",").map(element => parseInt(element)) : '';
           var ischecked = this.settings.togglelayers ? true : false;
           var setopacity = this.settings.togglelayers ? 1 : 0;
-          this.layerslist.push({'tile': layer_dict['image'], 'xywh':xwyhset, 'label': layer_dict['label'], checked: ischecked, 'opacity': setopacity});
+          var rotation = layer_dict['rotation'] ? layer_dict['rotation'] : 0;
+          this.layerslist.push({'tile': layer_dict['image'], 'xywh':xwyhset, 'label': layer_dict['label'], checked: ischecked, 'opacity': setopacity, 'section': section, 'rotation': rotation});
         }
       }
       this.$parent.multi && this.layerslist.length > 1 ? this.$parent.layerslist = true : '';
@@ -561,12 +564,15 @@ export default {
       var xywh = layer.xywh;
       var vue = this;
       var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
+      var clip = layer.section ? new openseadragon.Rect(layer.section[0], layer.section[1], layer.section[2], layer.section[3]) : 0;
       this.viewer.addTiledImage({
           tileSource: layer.tile,
           x: rect.x,
           y: rect.y,
           width: rect.width,
           opacity: layer.opacity,
+          clip: clip,
+          degrees: layer.rotation,
           success: function (obj) {
             vue.layerslist[position]['object'] = obj.item;
           }
