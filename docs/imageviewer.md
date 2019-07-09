@@ -28,6 +28,7 @@ code {
 # Getting started
 In order to create any of the viewers listed on the website the following code needs to be added to an HTML file once.
 
+
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
@@ -44,6 +45,7 @@ Below is an example of annotation url. This is a single annotation. In the JSON 
 <iiif-annotation annotationurl="{{site.url}}{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>
 
 ```
+
 <iiif-annotation annotationurl="{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>
 
 # Annotation Lists
@@ -76,8 +78,8 @@ What areas are shown in the embedded image are customizable either through setti
 | view_larger   | **true** or **false**. Shows/hides the "View Full Image" button. **Default** is true |
 | view_full_object |  **true** or **false**. Shows/hides the full object url. **Default** is true |
 | view_tags | **true** or **false**. Shows/hides the tags if they exists. **Default** is true |
-| height | Any css height dimension. Changes annotation and full size image size. **Default** is 'auto' |
-| width | Any css width dimension. Changes annotation and full size image size. **Default** is 49% |
+| height | Any height dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
+| width | Any width dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
 | image_only | **true** or **false**. Will only show the annotated image. **Default** is false |
 
 ## Global settings
@@ -90,14 +92,14 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
   "view_larger":false,
   "view_full_object":false,
   "view_tags": false,
-  "height": "200px"
+  "height": "200"
 }</script>
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
 ```
 
 ## Single annotation settings
 ```
-<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200px'></iiif-annotation>
+<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200'></iiif-annotation>
 ```
 
-<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200px'></iiif-annotation>
+<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200'></iiif-annotation>

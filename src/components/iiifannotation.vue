@@ -50,10 +50,10 @@ export default {
   created() {
     this.settings = shared.getsettings(this.styling);
     if (this.settings.height){
-      var width = this.settings.width ? this.settings.width : 'auto';
-      this.settings.imagesettings = {'height':this.settings.height, 'width':width};
+      var width = this.settings.width ? `${this.settings.width}px` : 'auto';
+      this.settings.imagesettings = {'height':`${this.settings.height}px`, 'width':width};
     } else if (this.settings.width) {
-      this.settings.imagesettings = {'width':this.settings.width};
+      this.settings.imagesettings = {'width':`${this.settings.width}px`};
     }
     this.annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios.get(this.annotation_json).then(response => {
@@ -81,10 +81,9 @@ export default {
         change_html.innerHTML = "View Full Image";
       }
     },
-    fullImage: function(baseImageUrl, canvasRegion){
-      var fullImage =  canvasRegion !== "full" ? baseImageUrl + '/full/1200,/0/default.jpg' : '';
+    fullImage: function(baseImageUrl, canvasRegion, size){
+      var fullImage =  canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/default.jpg` : '';
       return fullImage;
-
     },
     getManifestData: function(){
       axios.get(this.manifestlink).then(response => {
@@ -105,13 +104,11 @@ export default {
         var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
         canvasId = [].concat(canvasId);
         var size;
-        if (this.manifestlink.indexOf('iiif/2.0') > -1){
-          size = '1200,';
-        } else {
-          size = 'full';
-        }
+        var width = this.settings.width ? this.settings.width : this.manifestlink.indexOf('iiif/2.0') > -1 ? '1200' : '';
+        var height = this.settings.height ? this.settings.height : '';
+        size = `${width}${height}` != '' ? `${width},${height}` : 'full';
         if (hasmanifest) {
-          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], dictionary)
+          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], dictionary, size)
           dictionary['image'] = dictionary['image'].concat(imagedata['image']);
           dictionary['fullImage'] = imagedata['fullImage'];
         } else {
@@ -132,7 +129,7 @@ export default {
               imagehtml.style[key] = this.settings.imagesettings[key];
             }
             dictionary['image'].push(imagehtml.outerHTML);
-            dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion']);
+            dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
           }
         }
         if (!dictionary['image']){
@@ -160,7 +157,7 @@ export default {
       svg.innerHTML = inner + path.outerHTML;
       return svg;
     },
-    getManifestCanvas: function(canvasId, anno, dictionary){
+    getManifestCanvas: function(canvasId, anno, dictionary, size){
       var images = [];
       var fullImage;
       for (var cn = 0; cn < canvasId.length; cn++){
@@ -182,8 +179,8 @@ export default {
         }
         var path = shared.getSVGoverlay(ondict[cn])
         var jpgformat = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'].split("/").slice(-1)[0] : 'default.jpg';
-        fullImage = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'] : this.fullImage(baseImageUrl, regionCanvas);
-        var size = fullImage.split("/").slice(-3)[0];
+        fullImage = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'] : this.fullImage(baseImageUrl, regionCanvas, size);
+        size = this.settings.height || this.settings.width ? size : fullImage.split("/").slice(-3)[0];
         var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/${jpgformat}`;
         var imagehtml;
         if (path) {
@@ -192,6 +189,9 @@ export default {
           imagehtml = document.createElement("img");
           imagehtml.setAttribute('src', imageurl);
           imagehtml.setAttribute('alt', dictionary['altText']);
+        }
+        for (var key in this.settings.imagesettings){
+          imagehtml.style[key] = this.settings.imagesettings[key];
         }
         for (var key in this.settings.imagesettings){
           imagehtml.style[key] = this.settings.imagesettings[key];

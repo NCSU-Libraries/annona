@@ -66,7 +66,7 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0]
-      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/mc00084-001-te0159-000-001_0001/1800,2000,500,500/1200,/0/default.jpg\" alt=\"Image section of &quot;undefined&quot;\">"])
+      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/mc00084-001-te0159-000-001_0001/1800,2000,500,500/full/0/default.jpg\" alt=\"Image section of &quot;undefined&quot;\">"])
       expect(annotations.id).toBe('page0')
       expect(annotations.label).toBe(undefined)
       expect(annotations['content']['ocr']).toEqual([])
@@ -88,15 +88,30 @@ describe('Component', () => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationlist: 'oa.json',
-          styling: 'image_only:true'
+          styling: 'image_only:true; width: 200',
         }
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0]
-      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/full/0/default.jpg\" alt=\"Image section of &quot;undefined&quot;\">"])
+      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/200,/0/default.jpg\" alt=\"Image section of &quot;undefined&quot;\" style=\"width: 200px;\">"])
       expect(Object.keys(annotations).length).toBe(4)
+      expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/200,/0/default.jpg")
       expect(Object.keys(annotations)).toEqual(["image", "altText", "id", "fullImage"])
+    })
+    test('test settings height', async ()  => {
+      const wrapper =  mount(iiifAnnotation,{
+        propsData: {
+          annotationlist: 'oa.json',
+          styling: 'height: 200',
+        }
+      })
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      const annotations = wrapper.vm.$data.annotation_items[0]
+      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/,200/0/default.jpg\" alt=\"Annotation 1\" style=\"height: 200px; width: auto;\">"])
+      expect(Object.keys(annotations).length).toBe(7)
+      expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/,200/0/default.jpg")
     })
     test('test non-existent urls', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
@@ -108,4 +123,5 @@ describe('Component', () => {
       await flushPromises()
       expect(wrapper.html()).toContain('"bees2.json" did not render. Please ensure your annotation link is correct.')
     })
+
 })

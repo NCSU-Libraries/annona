@@ -385,7 +385,7 @@ figcaption {
   flex-wrap: wrap;
 }
 
-.storyboard_viewer .lang_drop {
+#storyboard_viewer .lang_drop {
   -webkit-appearance: attachment;
   -moz-appearance: meterbar;
   -o-appearance: button-bevel;
@@ -400,7 +400,7 @@ figcaption {
 }
 
 @supports (-moz-appearance:none) {
-    .storyboard_viewer .lang_drop {
+    #storyboard_viewer .lang_drop {
       color: white!important;
     }
 }
