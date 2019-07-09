@@ -255,7 +255,9 @@ export default {
         if (vue.layerslist && vue.layerslist.length > 0){
           vue.addLayers();
         }
-        if (!fit) {
+        if (vue.settings.fit == 'horizontal') {
+          vue.viewer.viewport.fitHorizontally();
+        } else if(!fit) {
           vue.viewer.viewport.fitVertically();
         }
         if(vue.settings.autorun_onload){
@@ -597,6 +599,8 @@ export default {
       } else if (inorout === 'home') {
         if (this.settings.fit == 'fill') {
           this.viewer.viewport.fitBounds(this.viewer.viewport.getHomeBounds());
+        } else if (this.settings.fit == 'horizontal') {
+          this.viewer.viewport.fitHorizontally();
         } else {
           this.viewer.viewport.fitVertically();
         }
