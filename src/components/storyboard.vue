@@ -528,7 +528,7 @@ export default {
     getLayerData: function(images) {
       for (var i=0; i<images.length; i++){
         var imgResource = images[i].resource;
-        var canvas_tile = imgResource.service ? imgResource.service['@id'].split("full")[0] : imgResource['@id'];
+        var canvas_tile = imgResource.service ? imgResource.service['@id'].split("/full/")[0] : imgResource['@id'];
         canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
         canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
         var xywh = images[i].on ? images[i].on.split("xywh=").slice(-1)[0].split(",") : '';
