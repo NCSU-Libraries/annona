@@ -36,7 +36,7 @@ $active_color: lightgreen;
   height: 100vh;
 }
 
-.multistoryboard.fullscreen .seadragonbox {
+#multistoryboard.fullpage .seadragonbox {
   width: 100%;
   display: inline-block;
   height: 100vh;
@@ -405,7 +405,7 @@ figcaption {
     }
 }
 
-.lang-icon {position:relative}
+.lang-icon {position:relative;}
 .lang-icon:before {
     content:"\f0ac";
     font-weight: 900;
@@ -519,12 +519,12 @@ figcaption {
   width: 100%;
 }
 
-.multistoryboard .annotation{
+#multistoryboard .annotation{
   top: 20px;
 }
 
 @media only screen and (max-width: 600px) {
-  .multistoryboard .annotation {
+  #multistoryboard .annotation {
     top: 0px!important;
   }
 }

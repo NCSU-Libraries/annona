@@ -1,5 +1,5 @@
 <template>
-<div class="multistoryboard">
+<div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'fullpage']">
   <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
     <button v-show="!annotationurls" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
@@ -115,7 +115,9 @@ export default {
       this.$props.ws ? this.ws = this.$props.ws : '';
       this.$props.layers ? this.customlayers = this.$props.layers : '';
       for (var key in this.settings){
-        this.stylingstring += `${key}:${this.settings[key]};`
+        if (key != 'fullpage'){
+          this.stylingstring += `${key}:${this.settings[key]};`
+        }
       }
       // Get custom images
       if (this.$props.images){
