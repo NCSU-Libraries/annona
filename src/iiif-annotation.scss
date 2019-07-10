@@ -36,7 +36,7 @@ $active_color: lightgreen;
   height: 100vh;
 }
 
-#multistoryboard.fullpage .seadragonbox {
+.multifullpage .seadragonbox {
   width: 100%;
   display: inline-block;
   height: 100vh;
@@ -155,7 +155,7 @@ $active_color: lightgreen;
   left: calc(50% - #{$mid_pin});
 }
 
-.fullpage {
+.fullpage, .multifullpage{
   position: fixed;
   top: 0;
   bottom: 0;

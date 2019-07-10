@@ -1,5 +1,5 @@
 <template>
-<div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'fullpage']">
+<div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage']">
   <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
     <button v-show="!annotationurls" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
