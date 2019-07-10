@@ -171,9 +171,11 @@ export default {
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       anno = [].concat(anno);
+      //Get basic annotation information
       this.annoinfo.text += `<div class="listinfo"><b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a>
       <br><b>Number of Annotations:</b> ${anno.length}</div>`
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
+      //loop through annotations
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
         var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict[0].source ? ondict.map(element => element.source) : ondict.flatMap(element => element);
@@ -182,6 +184,7 @@ export default {
         var content_data = shared.chars(anno[i]);
         var type = content_data['type'];
         var svg_path = [];
+        //get SVG paths for each canvas
         for (var jar=0; jar<canvasId.length; jar++){
           var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
@@ -195,6 +198,7 @@ export default {
             type = 'rect';
           }
         }
+        //If languages set current language to first in list
         if(content_data.languages){
           this.currentlang = content_data['textual_body'][0]['language'];
           this.languages = Array.from(new Set(this.languages.concat(content_data.languages)));
@@ -208,6 +212,7 @@ export default {
       } else {
         this.buildseadragon(canvas);
       }
+      //get tags and set corresponding color
       var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
       for (var tc=0; tc<tags.length; tc++){
         var randomcolor = '#'+Math.random().toString(16).substr(-6);
@@ -223,6 +228,7 @@ export default {
     this.newSocket();
   },
   methods: {
+    //Create OpenSeadragon viewer
     createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;
       var osdsettings = {
@@ -242,6 +248,7 @@ export default {
       var viewer = this.viewer;
       var zoomsections = this.zoomsections;
       var vue = this;
+      // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){
         vue.reposition();
       });
@@ -251,18 +258,23 @@ export default {
       viewer.addHandler('canvas-drag', function(){
         vue.reposition();
       });
+      // on viewer open
       viewer.addHandler('open', function(){
+        // add layers to viewer
         if (vue.layerslist && vue.layerslist.length > 0){
           vue.addLayers();
         }
+        // Set view fit
         if (vue.settings.fit == 'horizontal') {
           vue.viewer.viewport.fitHorizontally();
         } else if(!fit) {
           vue.viewer.viewport.fitVertically();
         }
+        // If autorun on load start autorun
         if(vue.settings.autorun_onload){
           vue.autoRun(vue.settings.autorun_interval);
         }
+        // create overlays for each annotation
         for (var i=0; i<zoomsections.length; i++){
           if (vue.annotations[i]['tags'].length > 0){
             for (var jl=0; jl<vue.annotations[i]['tags'].length; jl++){
@@ -272,11 +284,13 @@ export default {
             vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i]);
           }
         }
+        // If annotation url (single annotation) show overlays and set position as first annotation
         if (vue.annotationurl){
           vue.createOverlay();
           vue.position = 0;
           vue.next();
         }
+        // if setting call for toggled and language set to values
         if (vue.settings.toggleoverlay){
           vue.createOverlay();
         }
@@ -285,6 +299,7 @@ export default {
         }
       });
     },
+    // reposition viewer to coordinates
     reposition: function(rect = false) {
       rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
       var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
@@ -294,6 +309,7 @@ export default {
         this.$parent.moveArea(bounds)
       }
     },
+    // Create socket connections to web socket server
     newSocket: function() {
       if (this.$props.ws){
         let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' });
@@ -312,6 +328,7 @@ export default {
         })
       }
     },
+    // Get image info from manifest
     getImageInfo: function(canvas_data, manifestlink){
       var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
       {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
@@ -330,6 +347,7 @@ export default {
         }
       }
     },
+    // Create TOC for each annotation
     getAnnoInfo: function(content_data, i){
       var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
       var content = shared.createContent(content_data, this.currentlang, true);
@@ -340,6 +358,7 @@ export default {
         ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].join(", ")}<br>` : ``}`
       this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
     },
+    // On language change, change annotation language
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
@@ -353,29 +372,37 @@ export default {
         this.tts(this.currentanno.split('<div class="tags">')[0]);
       }
     },
+    //Create overlays on OpenSeadragon viewer
     createOverlayElement: function(position, tags, zoomsections) {
       for (var jt=0; jt<zoomsections['section'].length; jt++){
         var xywh = zoomsections['section'][jt].split(",");
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         rect = xywh[0] == 'full' ? imagesize : rect;
+        // calculate zindex based on coordinates
         var zindex = parseInt((xywh[0]*xywh[1])/(xywh[2]*xywh[3]));
         zindex = xywh[0] == 'full' ? 1 : zindex;
+        //create div with section
         var elem = document.createElement('div');
         elem.style.display = 'none';
         elem.id = `position${position}`;
         var multi = zoomsections['section'].length > 1 ? 'multi' : '';
+        //set class as overlay and tags and multi if multiple sections for one annotation
         var classes = `overlay ${tags} ${multi}`.trim();
         elem.className = `${zoomsections['type']} ${classes}`;
+        //set color for overlay based on tag color
         var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
+        // If type is 'pin' use mapmarker icon
         if (zoomsections['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
           elem.style.fill = color;
         } else if (zoomsections['svg_path'][jt]){
           var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          //set viewBox based on section. SVG will not show up without this.
           svg.setAttribute('viewBox', xywh.join(" "));
           var path = zoomsections['svg_path'][jt];
           path.style.stroke = color;
+          //path2 is for in the inner line when active
           var path2 = document.createElement("path");
           path2.setAttribute('d', path.getAttribute('d'));
           path2.classList.add('svgactive');
@@ -397,6 +424,7 @@ export default {
         this.addTracking(elem, rect, position, this);
       }
     },
+    //play pause TTS if enabled. Called when playpause button pressed.
     playpause: function(){
       var synth = window.speechSynthesis;
       if (synth.paused){
@@ -411,6 +439,7 @@ export default {
         this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
     },
+    // call function and send broadcast to WS server if enabled
     sendMessage: function(e) {
       if (this.settings.controller){
         e['position'] = this.position;
@@ -420,6 +449,7 @@ export default {
       }
       this[e['function']](e['args']);
     },
+    //Hide annotation if hide button pressed
     hide: function(){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
@@ -431,6 +461,7 @@ export default {
         this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
       }
     },
+    //when specified button clicked change shown value
     clickButton: function(field){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
@@ -441,9 +472,11 @@ export default {
         this.switchButtons(field)
       }
     },
+    //boolean switch of value shown
     switchShown: function(item) {
       this.booleanitems[item] = !this.booleanitems[item];
     },
+    //Set all buttons to correct value, change specified button and shown value
     switchButtons: function(button=false) {
       this.buttons.info = '<i class="fas fa-info-circle"></i>';
       this.buttons.layer = '<i class="fas fa-layer-group"></i>';
@@ -462,6 +495,7 @@ export default {
         }
       }
     },
+    //for specified tag toggle overlays with that tag
     hideshowalltags: function(tag){
       var elem = this.anno_elem.getElementsByClassName(tag);
       var checked = this.tagslist[tag].checked;
@@ -475,7 +509,6 @@ export default {
           this.tagslist[tag].checked = false;
         } else {
           elem[j].style.display = 'block';
-          elem[j].style.zIndex = 1000;
           this.tagslist[tag].checked = true;
         }
       }
@@ -487,9 +520,11 @@ export default {
         this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
         this.booleanitems.isoverlaytoggled = true;
       }
+      //This is the only way to ensure checkboxes update
       this.shown = false;
       this.shown = 'tags';
     },
+    //get Manifest data from manifest and get layerdata
     getManifestData: function(manifestlink, canvas, canvasId){
         axios.get(manifestlink).then(canvas_data => {
           this.getImageInfo(canvas_data, manifestlink)
@@ -506,6 +541,7 @@ export default {
           this.buildseadragon(canvasId);
       });
     },
+    //set defaults before creating viewer and then create viewer
     buildseadragon: function(canvasId){
       this.settings.startenddisplay ? this.switchButtons(this.settings.startenddisplay) : '';
       this.settings.startenddisplay ? this.shown = this.settings.startenddisplay : '';
@@ -527,6 +563,7 @@ export default {
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
     },
+    //get any layers in manfiest and get custom layers. This is called for all viewers and will get the tile if there are no layers
     getLayerData: function(images) {
       for (var i=0; i<images.length; i++){
         var imgResource = images[i].resource;
@@ -556,12 +593,14 @@ export default {
       }
       this.$parent.multi && this.layerslist.length > 1 ? this.$parent.layerslist = true : '';
     },
+    //add layers to viewer
     addLayers: function(){
       this.layerslist[0]['object'] = this.viewer.world.getItemAt(0);
       for(var j=1; j<this.layerslist.length; j++) {
         this.setLayers(this.layerslist[j], j);
       }
     },
+    //add tiled image to viewer
     setLayers: function(layer, position) {
       var xywh = layer.xywh;
       var vue = this;
@@ -580,6 +619,7 @@ export default {
           }
       });
     },
+    //change opacity when layer is clicked or opacity slider is used
     setOpacity: function(data){
       var layerdata = data.layer ? data.layer : data;
       var opacity = data.event ? data.event.target.value/100 : layerdata.opacity > 0 ? 0 : 1;
@@ -588,6 +628,7 @@ export default {
       var checked = opacity != 0 ? true : false;
       layerdata.checked = checked;
     },
+    //zoom in or out. Used with zoom buttons
     zoom: function(inorout){
       var oldzoom = parseFloat(this.viewer.viewport.getZoom());
       var minzoom = parseFloat(this.viewer.viewport.getMinZoom()) -.2;
@@ -608,6 +649,7 @@ export default {
         return 0;
       }
     },
+    //call TTS for current annotation
     tts: function(text){
       var synth = window.speechSynthesis;
       synth.cancel();
@@ -635,6 +677,7 @@ export default {
       synth.speak(speech);
       this.buttons.playpause = '<i class="fas fa-pause"></i>';
     },
+    // Makes sure that autoRun waits for TTS to finish
     autoRunTTS: function(){
       if (this.isautorunning){
         var this_functions = this;
@@ -652,6 +695,7 @@ export default {
         this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
     },
+    //toggles created overlays
     createOverlay: function(){
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
       var display_setting;
@@ -674,6 +718,7 @@ export default {
         box_elements[a].style.display = display_setting;
       }
     },
+    //add tracking for overlays so that when clicked they show annotations
     addTracking: function(node, rect, position, functions){
       new openseadragon.MouseTracker({
         element: node,
@@ -694,6 +739,7 @@ export default {
         }
       }).setTracking(true);
     },
+    //go to specificed area on OpenSeadragon viewer
     goToArea: function(rect){
       var xywh = this.zoomsections[this.position]['section'][0].split(",");
       if (xywh.join("") == 'full'){
@@ -704,12 +750,14 @@ export default {
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
     },
+    //toggle fullscreen button
     toggle_fullscreen: function(){
       this.$fullscreen.toggle(this.$el, {
         wrap: false,
         callback: this.fullscreenChange
       });
     },
+    //when annotation is clicked make overlay active
     makeactive: function(position){
       var currentactive = this.anno_elem.getElementsByClassName("active");
       while(currentactive[0]){
@@ -730,6 +778,7 @@ export default {
       }
       this.fullscreen = fullscreen;
     },
+    // Click of the next button, so to section and load annotation data.
     next: function(nextorprev){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
@@ -769,6 +818,7 @@ export default {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           this.goToArea(rect);
         } else {
+          //If more than one section try to fit sections to screen with zoom
           var sections = this.zoomsections[this.position]['section'];
           var xs = sections.map(element => element.split(",")[0]);
           var lowx = Math.min(...xs);
@@ -790,6 +840,7 @@ export default {
         }
       }
       this.switchButtons();
+      //set button classes based on position
       if (this.position >= this.zoomsections.length){
         this.next_inactive = true;
       } else {
@@ -800,6 +851,7 @@ export default {
         this.prev_inactive = false;
       }
     },
+    //For annotation box position, will position box in specified location is set.
     overlayPosition: function(xywh){
       var elem = document.getElementById(`${this.seadragonid}_annotation`);
       var positioning = {
@@ -833,10 +885,12 @@ export default {
         });
       }
     },
+    //Allows for scrolling in annotation box if it is moved to left, right, top or bottom
     enableOSDmouse: function(disable) {
       this.viewer.setControlsEnabled(disable);
       this.viewer.setMouseNavEnabled(disable);
     },
+    //Autorun through annotations
     autoRun: function(interval){
       interval = interval * 1000;
       var length = this.zoomsections.length;
@@ -861,6 +915,7 @@ export default {
       }
     }
   },
+  //truncate item in annotation box
   filters: {
     truncate: function(string, words_length) {
       string = string ? string.split('<div class="tags">')[0] : '';

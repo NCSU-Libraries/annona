@@ -104,10 +104,12 @@ export default {
       this.createViewers()
     },
     created(){
+      // get annotation urls
       var annotations = this.$props.annotationlists ? this.$props.annotationlists.split(";") : this.$props.annotationurls.split(";");
       this.anno_data = annotations.filter(function (el) {
         return el != null && el != '';
       });
+      // Get settings and create styling string
       this.settings = shared.getsettings(this.styling);
       this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
       this.$props.ws ? this.ws = this.$props.ws : '';
@@ -115,6 +117,7 @@ export default {
       for (var key in this.settings){
         this.stylingstring += `${key}:${this.settings[key]};`
       }
+      // Get custom images
       if (this.$props.images){
         var images = this.$props.images.split(";").filter(function (el) {
           return el != null && el != '';
@@ -123,9 +126,11 @@ export default {
           this.allimages.push({'id': images[img].split("/").slice(-2)[0], 'tile': images[img]})
         }
       }
+      // get width calculated by number of annotations and images
       this.widthvar = `${parseInt((100/(this.anno_data.length + this.allimages.length)))}%`;
     },
     methods: {
+      // move annotations and image viewers based on bounds
       moveArea (bounds, ignore) {
         for (var i=0; i<this.$children.length; i++){
           var viewer =this.$children[i].viewer;
@@ -140,6 +145,7 @@ export default {
           }
         }
       },
+      // set fullscreen. See vue-fullscreen for more info
       fullscreenChange (fullscreen) {
         if(fullscreen){
           this.buttons.expandbutton = '<i class="fas fa-compress"></i>';
@@ -154,6 +160,7 @@ export default {
           callback: this.fullscreenChange
         });
       },
+      // Create OpenSeadragon viewers for custom images
       createViewers: function(){
         var fit = this.settings.fit == 'fill' ? true : false;
         for(var g=0; g<this.allimages.length; g++){
@@ -174,6 +181,7 @@ export default {
           this.viewers.push(viewer);
           var vue = this;
           var elements = this.allimages.map(element => element.id);
+          //listeners for when viewer clicked, scrolled or dragged
           viewer.addHandler('canvas-click', function(event){
             var id = event.eventSource.id;
             var ignore = elements.indexOf(id);
@@ -194,6 +202,7 @@ export default {
           });
         }
       },
+      //Sends message to each storyboard viewer and each image viewer
       multiButton(e) {
         for (var i=0; i<this.$children.length; i++){
           this.$children[i].sendMessage(e);

@@ -2,6 +2,7 @@ import ISO6391 from 'iso-639-1';
 import rtlDetect from 'rtl-detect';
 
 export default {
+  //gets on structure for annotation
   on_structure: function(anno){
     if (typeof anno['on'] === 'undefined'){
       return 'undefined';
@@ -11,6 +12,7 @@ export default {
       return [anno['on']];
     }
   },
+  // get and parse settings from styling or config
   getsettings: function(styling) {
     var settings = {};
     if (document.getElementById("config") !== null && document.getElementById("config").innerHTML != ''){
@@ -30,6 +32,7 @@ export default {
     }
     return settings;
   },
+  // Get ocr, text, tags, languages, authors, and type of annotation
   chars: function(anno) {
     var res = anno.body ? anno.body : anno.resource;
     var textual_body = [];
@@ -75,6 +78,7 @@ export default {
     var authors = this.getAuthor(anno);
     return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
   },
+  //get canvas information and section of image annotated
   canvasRegion: function(canvasId, ondict){
     var canvasRegion;
     if (ondict && typeof ondict.selector !== 'undefined') {
@@ -96,6 +100,7 @@ export default {
     }
     return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion};
   },
+  //get the manifest link from annotation
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
     if (manifesturl === undefined){
@@ -110,6 +115,7 @@ export default {
     }
     return manifestlink;
   },
+  //get SVG path from annotation
   getSVGoverlay: function(ondict){
     var svg_path;
     if (ondict && ondict.selector && ondict.selector.item !== undefined){
@@ -120,6 +126,7 @@ export default {
     }
     return svg_path;
   },
+  // parse author information
   getAuthor: function(annotation) {
     var author;
     if (Array.isArray(annotation.creator)) {
@@ -129,6 +136,7 @@ export default {
     }
     return author;
   },
+  //Create HTML element using chars data
   createContent: function(annotation, currentlang, storyboard) {
     var text = ''
     var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];

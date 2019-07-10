@@ -48,13 +48,17 @@ export default {
       }
   },
   created() {
-    this.settings = shared.getsettings(this.styling);
+    this.settings = shared.getsettings(this.styling); //get settings
+
+    //CSS custom height/width settings
     if (this.settings.height){
       var width = this.settings.width ? `${this.settings.width}px` : 'auto';
       this.settings.imagesettings = {'height':`${this.settings.height}px`, 'width':width};
     } else if (this.settings.width) {
       this.settings.imagesettings = {'width':`${this.settings.width}px`};
     }
+
+    //get annotation URL and get annotation data
     this.annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
     axios.get(this.annotation_json).then(response => {
       this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
@@ -69,6 +73,7 @@ export default {
     })
   },
   methods: {
+    //toggle hide/view full image
     toggle: function(event){
       var parent = event.target.parentElement;
       var fullImage = parent.querySelector("#fullimage");
@@ -81,37 +86,44 @@ export default {
         change_html.innerHTML = "View Full Image";
       }
     },
+    //get full image URL
     fullImage: function(baseImageUrl, canvasRegion, size){
       var fullImage =  canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/default.jpg` : '';
       return fullImage;
     },
+    //get manifest data from URL
     getManifestData: function(){
       axios.get(this.manifestlink).then(response => {
         this.manifest = response.data;
         this.annoloop(true);
       }).catch((error) => {this.rendered = false; console.log(error);})
     },
+    // when annotation has choice, change language
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       for(var ai=0; ai<this.annotation_items.length; ai++){
         this.annotation_items[ai]['rendered_content'] = shared.createContent(this.annotation_items[ai]['content'], lang);
       }
     },
+    // Loop through annotations
     annoloop: function(hasmanifest) {
       for (var i =0; i < this.anno.length; i++){
-        var dictionary = this.getImageData(this.anno[i], this.annotation_json, i);
+        var dictionary = this.getImageData(this.anno[i], this.annotation_json, i); //get image data for annotation
         var ondict = shared.on_structure(this.anno[i]);
         var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
         canvasId = [].concat(canvasId);
+        // Get custom size values
         var size;
         var width = this.settings.width ? this.settings.width : this.manifestlink.indexOf('iiif/2.0') > -1 ? '1200' : '';
         var height = this.settings.height ? this.settings.height : '';
         size = `${width}${height}` != '' ? `${width},${height}` : 'full';
+        // If has manifest take canvas ids and check canvas against manifest to get image
         if (hasmanifest) {
           var imagedata = this.getManifestCanvas(canvasId, this.anno[i], dictionary, size)
           dictionary['image'] = dictionary['image'].concat(imagedata['image']);
           dictionary['fullImage'] = imagedata['fullImage'];
         } else {
+          //If image does not have a manifest go through canvases, get image urls and create HTML img or svg element
           for (var cn = 0; cn < canvasId.length; cn++){
             var canvasItem = canvasId[cn]
             var imagehtml;
@@ -132,6 +144,7 @@ export default {
             dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
           }
         }
+        // If received image render element
         if (!dictionary['image']){
           this.rendered = false;
         } else {
@@ -140,6 +153,7 @@ export default {
         this.annotation_items.push(dictionary);
       }
     },
+    // Create SVG elements and corresponding image
     createSVG: function(imageurl, regionCanvas, dictionary, path, position) {
       var id = dictionary['id'] + '-' + position;
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -157,6 +171,7 @@ export default {
       svg.innerHTML = inner + path.outerHTML;
       return svg;
     },
+    //gets image by matching against manifest
     getManifestCanvas: function(canvasId, anno, dictionary, size){
       var images = [];
       var fullImage;
@@ -178,11 +193,14 @@ export default {
           baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
         }
         var path = shared.getSVGoverlay(ondict[cn])
+        //get jpg format
         var jpgformat = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'].split("/").slice(-1)[0] : 'default.jpg';
         fullImage = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'] : this.fullImage(baseImageUrl, regionCanvas, size);
         size = this.settings.height || this.settings.width ? size : fullImage.split("/").slice(-3)[0];
+        //construct image URL
         var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/${jpgformat}`;
         var imagehtml;
+        //if svg path create svg element else create img element
         if (path) {
           imagehtml = this.createSVG(imageurl, regionCanvas, dictionary, path, cn)
         } else {
@@ -190,9 +208,7 @@ export default {
           imagehtml.setAttribute('src', imageurl);
           imagehtml.setAttribute('alt', dictionary['altText']);
         }
-        for (var key in this.settings.imagesettings){
-          imagehtml.style[key] = this.settings.imagesettings[key];
-        }
+        // set custom width and height
         for (var key in this.settings.imagesettings){
           imagehtml.style[key] = this.settings.imagesettings[key];
         }
@@ -200,6 +216,7 @@ export default {
       }
       return {'fullImage': fullImage, 'image': images}
     },
+    //get all image data
     getImageData: function(anno, annotation_json, i){
       var dictionary = {'image':[]};
       if (this.settings.image_only !== true){
@@ -222,6 +239,7 @@ export default {
     }
   },
   computed: {
+    // get full object URL
     full_object: function(){
       var link;
       var keys = Object.keys(this.manifest);
