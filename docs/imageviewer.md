@@ -81,6 +81,7 @@ What areas are shown in the embedded image are customizable either through setti
 | height | Any height dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
 | width | Any width dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
 | image_only | **true** or **false**. Will only show the annotated image. **Default** is false |
+| text_only |  **true** or **false**. Will only show the text and tags. **Default** is false |
 
 ## Global settings
 Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
@@ -98,8 +99,18 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
 ```
 
 ## Single annotation settings
+
+### Image Only
 ```
 <iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200'></iiif-annotation>
 ```
 
 <iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200'></iiif-annotation>
+
+### Text only
+
+```
+<iiif-annotation annotationlist='https://wellcomelibrary.org/iiif/b18020446/contentAsText/10' styling='text_only:true'></iiif-annotation>
+```
+
+<iiif-annotation annotationlist='https://wellcomelibrary.org/iiif/b18020446/contentAsText/10' styling='text_only:true'></iiif-annotation>

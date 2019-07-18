@@ -2,19 +2,17 @@
   <div class="iiifannotation"  v-if="rendered === true">
     <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <div v-for="item in annotation_items" :key="item.id" :id="item.id">
-    <span v-for="image in item.image" :key="image">
-    <span v-html="image" id="annoimage"></span>
-    </span>
-    <img v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
-    <div id="content" v-show="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
-    <div v-show="settings.view_tags !== false" v-html="item.tags"></div>
-    <button v-on:click="toggle($event)" class="togglebutton" v-show="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
-    <div id="link_to_object" v-show="settings.view_full_object !== false && full_object && full_object !== '' && settings.image_only != true">
-      Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
+      <span v-for="image in item.image" :key="image">
+      <span v-html="image" id="annoimage"></span>
+      </span>
+      <img v-if="item.fullImage" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+      <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
+      <div v-if="settings.view_tags !== false && item.tags" v-html="item.tags"></div>
+      <button v-on:click="toggle($event)" class="togglebutton" v-if="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
+      <div id="link_to_object" v-if="settings.view_full_object !== false && full_object && full_object !== '' && settings.image_only != true && settings.text_only != true">
+        Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
+      </div>
     </div>
-    <div>
-  </div>
-  </div>
   </div>
   <div v-else-if="rendered === false">
   "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
@@ -65,7 +63,7 @@ export default {
       this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], response.data)
     }).catch((error) => {this.rendered = false;console.log(error);}).then(() => {
-        if (this.manifestlink) {
+        if (this.manifestlink && !this.settings.text_only) {
           this.getManifestData()
         } else {
           this.annoloop(false)
@@ -122,7 +120,7 @@ export default {
           var imagedata = this.getManifestCanvas(canvasId, this.anno[i], dictionary, size)
           dictionary['image'] = dictionary['image'].concat(imagedata['image']);
           dictionary['fullImage'] = imagedata['fullImage'];
-        } else {
+        } else if (!this.settings.text_only) {
           //If image does not have a manifest go through canvases, get image urls and create HTML img or svg element
           for (var cn = 0; cn < canvasId.length; cn++){
             var canvasItem = canvasId[cn]
@@ -145,7 +143,7 @@ export default {
           }
         }
         // If received image render element
-        if (!dictionary['image']){
+        if (dictionary['image'].length == 0 && !this.settings.text_only){
           this.rendered = false;
         } else {
           this.rendered = true;
