@@ -114,3 +114,6 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
 ```
 
 <iiif-annotation annotationlist='https://wellcomelibrary.org/iiif/b18020446/contentAsText/10' styling='text_only:true'></iiif-annotation>
+
+### Rendering multiple annotations
+The example show on the [multitext page]({{site.baseurl}}/multipage) can be done with any set of annotations and any set of settings. This is a simple JavaScript application. The reason we are showing an application with text only is it is a good example of one of the many ways this application can be used.
