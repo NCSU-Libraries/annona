@@ -726,6 +726,17 @@ export default {
           functions.position = position;
           functions.makeactive(position);
           functions.sendMessage({'function':'next', 'args': functions.position});
+          //Check to see if multiple annotations on same section
+          var matching_sections = functions.zoomsections.map((section, i) => section.section.map(sect => functions.zoomsections[position].section.indexOf(sect) > -1).some(x => x === true) ? i : -1)
+          matching_sections = matching_sections.filter(index => index != -1);
+          if (matching_sections.length > 1){
+            var multipletexts = '<hr>';
+            for (var i=0; i<matching_sections.length; i++){
+              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang);
+              multipletexts += '<hr>';
+            }
+            functions.currentanno = multipletexts;
+          }
           functions.goToArea(rect);
           functions.reposition(rect);
           if (functions.$parent.multi) {
