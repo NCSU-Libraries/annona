@@ -400,6 +400,7 @@ export default {
           var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
           //set viewBox based on section. SVG will not show up without this.
           svg.setAttribute('viewBox', xywh.join(" "));
+          svg.setAttribute('style', 'position: absolute');
           var path = zoomsections['svg_path'][jt];
           path.style.stroke = color;
           //path2 is for in the inner line when active
