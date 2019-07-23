@@ -221,7 +221,9 @@ export default {
         var dict = shared.chars(anno);
         dict['authors'] = shared.getAuthor(anno);
         this.languages = dict['languages'] ? [...new Set(this.languages.concat(dict['languages']))] : this.languages;
-        this.currentlang = this.currentlang ? this.currentlang : dict['textual_body'][0] && dict['textual_body'][0]['language'];
+        var all_langs = dict['textual_body'].map(el => el.language);
+        var langs = all_langs.filter(element => navigator.language.indexOf(element) > -1);
+        this.currentlang = langs.length > 0 ? langs[0] : this.currentlang ? this.currentlang : dict['textual_body'][0] && dict['textual_body'][0]['language'];
         dictionary['rendered_content'] = shared.createContent(dict, this.currentlang);
         dictionary['content'] = dict;
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;

@@ -2,7 +2,7 @@ import ISO6391 from 'iso-639-1';
 import rtlDetect from 'rtl-detect';
 
 export default {
-  //gets on structure for annotation
+  //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.
   on_structure: function(anno){
     if (typeof anno['on'] === 'undefined'){
       return 'undefined';
@@ -12,7 +12,8 @@ export default {
       return [anno['on']];
     }
   },
-  // get and parse settings from styling or config
+  // get and parse settings from styling or config. This will check the config element in the page and the inline styling.
+  //For inline styling it will split out the values, change boolean and int strings into correct values and remove whitespace.
   getsettings: function(styling) {
     var settings = {};
     if (document.getElementById("config") !== null && document.getElementById("config").innerHTML != ''){
@@ -32,7 +33,9 @@ export default {
     }
     return settings;
   },
-  // Get ocr, text, tags, languages, authors, and type of annotation
+  // Get ocr, text, tags, languages, authors, and type of annotation;
+  //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
+  //Looks at type in resource field to define which item the resource belongs to.
   chars: function(anno) {
     var res = anno.body ? anno.body : anno.resource;
     var textual_body = [];
@@ -57,7 +60,7 @@ export default {
       } else if (res_data[type] === 'oa:Tag'){
         tags.push(value);
       } else if (res_data[type] === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}">${ISO6391.getNativeName(element['language']) ? ISO6391.getNativeName(element['language']) : element['language']}</option>`);
+        langs = res_data['items'].map(element => `<option value="${element['language']}" ${navigator.language.indexOf(element['language']) > -1 ? 'selected' : ''}>${ISO6391.getNativeName(element['language']) ? ISO6391.getNativeName(element['language']) : element['language']}</option>`);
         var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${element['value']}"}`));
         textual_body = textual_body.concat(values)
       } else if (res_data[type] === 'dctypes:Image') {
@@ -78,7 +81,10 @@ export default {
     var authors = this.getAuthor(anno);
     return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
   },
-  //get canvas information and section of image annotated
+  //get canvas information and section of image annotated.
+  //Looks at selector field to see if selector exists and portion of the canvas is defined in the field.
+  //Tries to find the canvas defined in the annotation.
+  //Looks at canvasId to see if section of image is defined in the canvasId
   canvasRegion: function(canvasId, ondict){
     var canvasRegion;
     if (ondict && typeof ondict.selector !== 'undefined') {
@@ -100,7 +106,10 @@ export default {
     }
     return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion};
   },
-  //get the manifest link from annotation
+  //get the manifest link from annotation;
+  //looks at specific fields for the manifest associated with the annotation.
+  // partof and partofmain looks at two different poritions of the annotation to see if any field contains 'partof'.
+  //The partof field defines the manifest but tends to have some parity in terms of formating people use (partOf, dcterms:partOf).
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
     if (manifesturl === undefined){
@@ -115,7 +124,7 @@ export default {
     }
     return manifestlink;
   },
-  //get SVG path from annotation
+  //get SVG path from annotation; looks at specific fields and gets the path without the SVG container from a field in the annotation.
   getSVGoverlay: function(ondict){
     var svg_path;
     if (ondict && ondict.selector && ondict.selector.item !== undefined){
@@ -126,7 +135,7 @@ export default {
     }
     return svg_path;
   },
-  // parse author information
+  // parse author information; looks at creator field. Is going to be expanded to reflect OA standards
   getAuthor: function(annotation) {
     var author;
     if (Array.isArray(annotation.creator)) {
@@ -136,7 +145,8 @@ export default {
     }
     return author;
   },
-  //Create HTML element using chars data
+  //Create HTML element using chars data; This uses the data from the chars() function up above.
+  //It takes the chars data and renders the data as an HTML object.
   createContent: function(annotation, currentlang, storyboard) {
     var text = ''
     var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];

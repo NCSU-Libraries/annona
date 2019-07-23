@@ -50,7 +50,7 @@ The code below makes use of default without any overrides or CSS styling.
 </div>
 
 # AnnotationList or AnnotationPage Storyboard with Multiple languages
-W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only one body is used at a time. This library supports this model. The assumption this library makes is that the changes are between different languages which are defined in ISO standard in the annotation. If TTS is enabled, the dropdown will automatically switch the TTS language. An example of this can be seen in the storyboard below.
+W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only one body is used at a time. This library supports this model. The assumption this library makes is that the changes are between different languages which are defined in ISO standard in the annotation. An example of this can be seen in the storyboard below.
 
 <iiif-storyboard annotationlist="/iiif-annotation/webannotations/annotationslist.json" styling="tts:true"></iiif-storyboard>
 

@@ -175,7 +175,7 @@ export default {
       this.annoinfo.text += `<div class="listinfo"><b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a>
       <br><b>Number of Annotations:</b> ${anno.length}</div>`
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
-      //loop through annotations
+      //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
         var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict[0].source ? ondict.map(element => element.source) : ondict.flatMap(element => element);
@@ -184,7 +184,7 @@ export default {
         var content_data = shared.chars(anno[i]);
         var type = content_data['type'];
         var svg_path = [];
-        //get SVG paths for each canvas
+        //get SVG paths for each canvas; add svg path to list for each annotation
         for (var jar=0; jar<canvasId.length; jar++){
           var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
@@ -198,15 +198,21 @@ export default {
             type = 'rect';
           }
         }
-        //If languages set current language to first in list
-        if(content_data.languages){
-          this.currentlang = content_data['textual_body'][0]['language'];
-          this.languages = Array.from(new Set(this.languages.concat(content_data.languages)));
-        }
         this.annotations.push(content_data);
         this.getAnnoInfo(content_data, i);
         this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       }
+      //Looks at all language options (if existing)
+      //gets all languages, sees if browser language is option for languages; otherwise sets language to first in list.
+      //sets html dropdown to selected
+      if(this.annotations.filter(element => element.languages).length > 0){
+        var all_langs = this.annotations.map(element => element.textual_body.map(els => els.language)).flat();
+        var lang = all_langs.filter(element => navigator.language.indexOf(element.toLowerCase()) > -1)
+        this.currentlang = lang.length > 0 ? lang[0] : all_langs[0];
+        this.languages = Array.from(new Set(this.languages.concat(content_data.languages)));
+      }
+      //If manifest link avaliable use getManifestData() function to match canvas to image.
+      //Else use image link listed in the annotation.
       if (manifestlink) {
         this.getManifestData(manifestlink, canvas, canvasId);
       } else {
@@ -228,7 +234,7 @@ export default {
     this.newSocket();
   },
   methods: {
-    //Create OpenSeadragon viewer
+    //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;
       var osdsettings = {
@@ -299,7 +305,7 @@ export default {
         }
       });
     },
-    // reposition viewer to coordinates
+    // reposition viewer to coordinates; This is for the multistoryboard and websocket viewers
     reposition: function(rect = false) {
       rect = rect ? rect : this.viewer.viewport.getConstrainedBounds();
       var bounds = this.viewer.world.getItemAt(0).viewportToImageRectangle(rect);
@@ -309,7 +315,7 @@ export default {
         this.$parent.moveArea(bounds)
       }
     },
-    // Create socket connections to web socket server
+    // Create socket connections to web socket server; Based on message either execute function or move viewer
     newSocket: function() {
       if (this.$props.ws){
         let socket = SocketIO(this.$props.ws, { origins: 'http://localhost:*/* http://127.0.0.1:*/*' });
@@ -328,7 +334,7 @@ export default {
         })
       }
     },
-    // Get image info from manifest
+    // Get image info from manifest; This populates the info button for the image.
     getImageInfo: function(canvas_data, manifestlink){
       var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
       {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
@@ -347,7 +353,7 @@ export default {
         }
       }
     },
-    // Create TOC for each annotation
+    // Create TOC for each annotation; Gets a list of annotations and corresponding data
     getAnnoInfo: function(content_data, i){
       var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
       var content = shared.createContent(content_data, this.currentlang, true);
@@ -358,7 +364,7 @@ export default {
         ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].join(", ")}<br>` : ``}`
       this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
     },
-    // On language change, change annotation language
+    // On language change, change annotation language; update annotation in viewer and update information language;
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
@@ -379,7 +385,7 @@ export default {
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         rect = xywh[0] == 'full' ? imagesize : rect;
-        // calculate zindex based on coordinates
+        // calculate zindex based on coordinates; This allows for boxes that are in other boxes to be clickable.
         var zindex = parseInt((xywh[0]*xywh[1])/(xywh[2]*xywh[3]));
         zindex = xywh[0] == 'full' ? 1 : zindex;
         //create div with section
@@ -601,7 +607,7 @@ export default {
         this.setLayers(this.layerslist[j], j);
       }
     },
-    //add tiled image to viewer
+    //add tiled image to viewer; This is the function to actually add the image layers
     setLayers: function(layer, position) {
       var xywh = layer.xywh;
       var vue = this;
@@ -696,7 +702,7 @@ export default {
         this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
     },
-    //toggles created overlays
+    //toggles created overlays;
     createOverlay: function(){
       var box_elements = this.anno_elem.getElementsByClassName("overlay");
       var display_setting;
@@ -727,9 +733,10 @@ export default {
           functions.position = position;
           functions.makeactive(position);
           functions.sendMessage({'function':'next', 'args': functions.position});
-          //Check to see if multiple annotations on same section
+          //Check to see if multiple annotations on same section.
           var matching_sections = functions.zoomsections.map((section, i) => section.section.map(sect => functions.zoomsections[position].section.indexOf(sect) > -1).some(x => x === true) ? i : -1)
           matching_sections = matching_sections.filter(index => index != -1);
+          //If there is multiple annotations for the same section, add all the text to the box with horizontal lines seperating.
           if (matching_sections.length > 1){
             var multipletexts = '<hr>';
             for (var i=0; i<matching_sections.length; i++){
@@ -740,6 +747,7 @@ export default {
           }
           functions.goToArea(rect);
           functions.reposition(rect);
+          //This is for multistoryboard views. updates the position and data.
           if (functions.$parent.multi) {
             var children = functions.$parent.$children;
             functions.$parent.next_inactive = functions.next_inactive;
@@ -751,7 +759,7 @@ export default {
         }
       }).setTracking(true);
     },
-    //go to specificed area on OpenSeadragon viewer
+    //go to specified area on OpenSeadragon viewer
     goToArea: function(rect){
       var xywh = this.zoomsections[this.position]['section'][0].split(",");
       if (xywh.join("") == 'full'){
@@ -769,7 +777,7 @@ export default {
         callback: this.fullscreenChange
       });
     },
-    //when annotation is clicked make overlay active
+    //when annotation is clicked add active class to overlay.
     makeactive: function(position){
       var currentactive = this.anno_elem.getElementsByClassName("active");
       while(currentactive[0]){
@@ -782,6 +790,7 @@ export default {
         }
       }
     },
+    //on fullscreen change toggle button and set value;
     fullscreenChange (fullscreen) {
       if(fullscreen){
         this.buttons.expandbutton = '<i class="fas fa-compress"></i>';
@@ -790,7 +799,8 @@ export default {
       }
       this.fullscreen = fullscreen;
     },
-    // Click of the next button, so to section and load annotation data.
+    // Click of the next button, goes to section and load annotation data.
+    // If multiple sections annotated for one annotation center zoom on all annotations.
     next: function(nextorprev){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
@@ -863,7 +873,7 @@ export default {
         this.prev_inactive = false;
       }
     },
-    //For annotation box position, will position box in specified location is set.
+    //For annotation box position, will position box in specified location is set;
     overlayPosition: function(xywh){
       var elem = document.getElementById(`${this.seadragonid}_annotation`);
       var positioning = {
