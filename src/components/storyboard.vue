@@ -207,7 +207,7 @@ export default {
       //sets html dropdown to selected
       if(this.annotations.filter(element => element.languages).length > 0){
         var all_langs = this.annotations.map(element => element.textual_body.map(els => els.language)).flat();
-        var lang = all_langs.filter(element => navigator.language.indexOf(element.toLowerCase()) > -1)
+        var lang = all_langs.filter(element => element != undefined && navigator.language.indexOf(element.toLowerCase()) > -1)
         this.currentlang = lang.length > 0 ? lang[0] : all_langs[0];
         this.languages = Array.from(new Set(this.languages.concat(content_data.languages)));
       }
