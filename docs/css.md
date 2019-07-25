@@ -5,7 +5,7 @@ layout: default
 ---
 * A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
 {:toc}
-These are some of the CSS styling I believe might be most requested for implementation. This is by no means an extensive list. View [the annotation css](https://github.com/NCSU-Libraries/iiif-annotation/blob/master/src/iiif-annotation.scss) for annotation specifics. Below there is a table with CSS. See [examples](#examples) for examples of implementation.
+These are some of the CSS styling I believe might be most requested for implementation. This is by no means an extensive list. View [the annotation css](https://github.com/NCSU-Libraries/iiif-annotation/blob/master/src/iiif-annotation.scss) for annotation specifics. Below there is a table with CSS. See [the css examples section](#examples) for examples of implementation.
 
 # Selected CSS fields
 
@@ -27,7 +27,7 @@ These are some of the CSS styling I believe might be most requested for implemen
 | ![#nextButton]({{site.baseurl}}/images/next.png "#nextButton") | #nextButton | none | none | none |to hide add display: none; to css |
 | ![#fullScreenButton]({{site.baseurl}}/images/fullscreen.png "#fullScreenButton") | #fullScreenButton | none | none | none |to hide add display: none; to css |
 | ![#infoButton]({{site.baseurl}}/images/info.png "#infoButton") | .toolbarButton | font-size: 1.5rem; background-color: #F0F0F0; border: 2px solid #D3D3D3; width: 100%; position: relative; margin-right: 2px; (except for last button) | margin: 0px!important; font-size: .79rem; | margin-right: 5px; (execept for last button)| This is the class on all the buttons, not just the info button |
-| ![.annotation]({{site.baseurl}}/images/annotation.png ".annotation") | .annotation |  width: 10%; resize: both; border: 2px solid black; background: white; position: absolute; top: 75px; z-index: 2000; max-width: calc(100% - 20px); max-height: calc(100% - 75px); height: auto; overflow: scroll; margin-left: 20px; word-wrap: break-word;| width: calc(100% - 4px); resize: both; border: 2px solid black; background: white; position: absolute; font-size: 14px!important; top: calc(.79rem + 6px)!important; z-index: 2000; max-width: 100%; height: auto!important; overflow: scroll; margin-left: 0px; word-wrap: break-word; max-height: 33%!important; | top: 55px; max-height: calc(100% - 110px); | none |
+| ![.annotation]({{site.baseurl}}/images/annotation.png ".annotation") | .annotation |  width: 20%; resize: both; border: 2px solid black; background: white; position: absolute; top: 75px; z-index: 2000; max-width: calc(100% - 20px); max-height: calc(100% - 75px); height: auto; overflow: scroll; margin-left: 20px; word-wrap: break-word;| width: calc(100% - 4px); resize: both; border: 2px solid black; background: white; position: absolute; font-size: 14px!important; top: calc(.79rem + 6px)!important; z-index: 2000; max-width: 100%; height: auto!important; overflow: scroll; margin-left: 0px; word-wrap: break-word; max-height: 33%!important; | top: 55px; max-height: calc(100% - 110px); | none |
 | ![#annotation_controls]({{site.baseurl}}/images/annotation_controls.png "#annotation_controls") | #annotation_controls |  display: flex; background: black; position: -web-sticky; position: sticky; top: 0; flex-wrap: wrap; | none | none | none |
 | ![#annotation_text]({{site.baseurl}}/images/annotation_text.png "#annotation_text") | #annotation_text |  none | none | none | none |
 
