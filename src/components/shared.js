@@ -54,7 +54,7 @@ export default {
       if (res_data[type] === 'TextualBody'){
         if (purpose === 'tagging'){
           tags.push(value);
-        } else {
+        } else if (value){
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
       } else if (res_data[type] === 'oa:Tag'){
@@ -158,7 +158,7 @@ export default {
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
       var authors = annotation['authors'];
-      if (currentlang && oldtext[0]['language']) {
+      if (currentlang && oldtext[0] && oldtext[0]['language']) {
         var correctdata = oldtext.filter(element => element['language'] === currentlang);
         if(correctdata.length > 0){
           text += `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
@@ -176,6 +176,8 @@ export default {
       }
       text += '</span>'
     }
+    var isempty = /<span style="direction: (ltr|rtl);"><\/span>/g;
+    text = isempty.test(text) ? '' : text;
     return text;
   }
 }
