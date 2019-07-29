@@ -62,7 +62,6 @@ $active_color: lightgreen;
   word-wrap: break-word;
   height: auto;
   padding: 2px 5px 5px;
-  box-sizing: content-box;
 }
 
 #annotation_excerpt p {
@@ -384,6 +383,7 @@ figcaption {
   position: sticky;
   top: 0;
   flex-wrap: wrap;
+  box-sizing: content-box;
 }
 
 #storyboard_viewer .lang_drop {
