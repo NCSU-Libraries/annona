@@ -62,6 +62,7 @@ $active_color: lightgreen;
   word-wrap: break-word;
   height: auto;
   padding: 2px 5px 5px;
+  box-sizing: content-box;
 }
 
 #annotation_excerpt p {
