@@ -112,7 +112,7 @@ export default {
   //The partof field defines the manifest but tends to have some parity in terms of formating people use (partOf, dcterms:partOf).
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
-    if (manifesturl === undefined){
+    if (manifesturl === undefined || manifesturl === ''){
       var target_dict = anno['target'] ? anno['target'] : this.on_structure(anno)[0];
       var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))];
       var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))];

@@ -167,6 +167,7 @@ export default {
   created() {
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
     this.settings = shared.getsettings(this.styling);
+    this.imagetitle = this.settings.title ? this.settings.title : '';
     this.seadragonid = this.settings.customid ? this.settings.customid : annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
@@ -345,7 +346,7 @@ export default {
         label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
         var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
         value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
-        if (label === 'title' && j == 1){
+        if (label === 'title' && j == 1 && !this.imagetitle){
           this.imagetitle = value;
         }
         if (value){
@@ -539,9 +540,11 @@ export default {
           for (var i = 0; i< canvases.length; i++){
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
               var images = canvases[i].images;
-              var title = canvases[i].label;
-              title = title && title.constructor.name == 'Object' ? title['@value'] : title;
-              this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
+              if (!this.imagetitle){
+                var title = canvases[i].label;
+                title = title && title.constructor.name == 'Object' ? title['@value'] : title;
+                this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
+              }
             }
           }
           this.getLayerData(images);
