@@ -1,0 +1,43 @@
+{
+  "@context": "http://iiif.io/api/presentation/2/context.json",
+  "@id": "/annotate/annotations/cultobjid50724-list.json",
+  "@type": "sc:AnnotationList",
+  "resources": [
+    {
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "2a8443e4-930a-4416-88b8-847899ed468e",
+      "@type": "oa:Annotation",
+      "motivation": [
+        "oa:commenting"
+      ],
+      "on": [
+        {
+          "@type": "oa:SpecificResource",
+          "full": "https://www.nga.gov/api/v1/iiif/presentation/manifest/sequence/canvas.json?cultObj:id=50724",
+          "selector": {
+            "@type": "oa:Choice",
+            "default": {
+              "@type": "oa:FragmentSelector",
+              "value": "xywh=3502,2200,4217,4849"
+            },
+            "item": {
+              "@type": "oa:SvgSelector",
+              "value": "<svg xmlns='http://www.w3.org/2000/svg'><path xmlns=\"http://www.w3.org/2000/svg\" d=\"M4119.32382,2909.75992c389.32253,-407.24792 938.52504,-710.51164 1490.38896,-710.14932l0,0l0,0c551.86392,0.36232 1032.62998,284.06065 1490.38896,710.14932c457.75898,426.08867 635.68409,1075.36556 617.33932,1714.45213c-18.34477,639.08657 -232.95942,1267.98283 -617.33932,1714.45213c-384.3799,446.4693 -938.52504,710.51164 -1490.38896,710.14932c-551.86392,-0.36232 -1101.44663,-265.12931 -1490.38896,-710.14932c-388.94233,-445.02001 -617.24427,-1070.29304 -617.33932,-1714.45213c-0.09505,-644.15908 228.01679,-1307.20421 617.33932,-1714.45213z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:1,&quot;rotation&quot;:0,&quot;deleteIcon&quot;:null,&quot;rotationIcon&quot;:null,&quot;group&quot;:null,&quot;editable&quot;:true,&quot;annotation&quot;:null}\" id=\"ellipse_876b2910-27e6-4675-8f40-9f18497111a7\" fill-opacity=\"0\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"15.41129\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"/></svg>"
+            }
+          },
+          "within": {
+            "@id": "https://www.nga.gov/content/ngaweb/api/v1/iiif/presentation/manifest.json?cultObj:id=50724",
+            "@type": "sc:Manifest"
+          }
+        }
+      ],
+      "resource": [
+        {
+          "@type": "dctypes:Text",
+          "chars": "<p>Ginevra de' Benci</p>",
+          "format": "text/html"
+        }
+      ]
+    }
+  ]
+}

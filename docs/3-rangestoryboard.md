@@ -32,3 +32,8 @@ code {
 ```
 
 <iiif-rangestoryboard rangeurl="{{site.baseurl}}/webannotations/range.json" styling="togglelayers: true;"></iiif-rangestoryboard>
+
+## Notes about creating a range
+- Currently the application expects that if the `canvases` field exists it is the same length as the annotation list.
+- `canvases` is not a required field assuming the annotation already has the manifest defined in the annotation.
+- Highest level `label` field is used for the title for each annotation.

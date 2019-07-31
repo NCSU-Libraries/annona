@@ -273,9 +273,10 @@ export default {
         if (vue.settings.imagecrop) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
           var tiledImage = vue.viewer.world.getItemAt(0);
-          tiledImage.setClip(new openseadragon.Rect(cropxywh[0], cropxywh[1], cropxywh[2], cropxywh[3]))
+          tiledImage.setClip(new openseadragon.Rect(cropxywh[0], cropxywh[1], cropxywh[2], cropxywh[3]));
+          vue.zoom('home');
         }
-        // add layers to viewer
+        // add layers to viewer.
         if (vue.layerslist && vue.layerslist.length > 0){
           vue.addLayers();
         }

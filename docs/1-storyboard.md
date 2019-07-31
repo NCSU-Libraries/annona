@@ -116,6 +116,8 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | controller | **true** or **false**. Should only be instantiated if property of `ws` is also used. Default is **false**. Sets the storyboard as being able to control other storyboards connected to the web socket server. |
 | togglelayers |**true** or **false**. By default is **false**; shows all layers on load when set to true. |
 | customid | **String**. If for some reason you would like to customize the identifier which gets automatically generated from the annotation filename use this setting. An example can be seen in the second storyboard in [add custom layers](#add-custom-layers). This setting is necessary if two storyboards with the same annotation get added to the same page. |
+| imagecrop | **String**. X,Y,W,H coordinates on the image in the following format "x,y,w,h", e.g. "200,300,600,400". This will crop the image in the viewer. Make sure not to crop out any annotations you have created. **Only available in latest release** |
+| title | **String**. Allows for a custom title to be placed in the info box. **Only available in latest release** |
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.
@@ -157,7 +159,7 @@ This annotation has the language set for each of the annotations in the annotati
 <iiif-storyboard annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json" styling="tts:true"></iiif-storyboard>
 
 ## Global Settings
-Item here: [all settings example]({{site.baseurl}}/storyboard_settings)
+Item here: [global settings example]({{site.baseurl}}/storyboard_settings)
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
@@ -184,7 +186,7 @@ Annotation settings can be set inline. Additionally colors can be changed using 
 <div id="anno1" title="example info">
 This is an example of the info that is loaded.
 </div>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; imagecrop: 400,400,400,400"></iiif-storyboard>
 
 <style>
 #mc00084-001-te0159-000-001-0001 .overlay>svg path {
@@ -214,7 +216,7 @@ This is an example of the info that is loaded.
 <div id="anno1" title="example info">
 This is an example of the info that is loaded.
 </div>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info;title: Example custom title;></iiif-storyboard>
 
 <style>
 #mc00084-001-te0159-000-001-0001 .overlay>svg path {

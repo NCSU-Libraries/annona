@@ -1,0 +1,3641 @@
+{
+  "@context": "http://iiif.io/api/presentation/2/context.json",
+  "@id": "https://oculus-dev.harvardx.harvard.edu/manifests/cellx:201602/list/cellx-euk-annotation-list.json",
+  "@type": "oa:AnnotationList",
+  "resources": [
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12729,6696,9877,5783"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=16454,11668,5632,1303"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Phospholipid Bilayer</strong><br> A symmetrical two-layer structure that forms the envelope around many cellular structures. Polar phosphate heads point outwards while nonpolar hydrocarbon tails align inwards. This unique polar-nonpolar-polar layering prevents entry of large complex molecules into the cell. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:07:58 UTC",
+      "annotatedAt": "2016-04-27T23:12:06 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125973",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10118,5954,17067,9993"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=18262,13434,4876,3278"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Extracellular Matrix</strong><br> An insoluble network of fibrous proteins, polysaccharides, and other proteins that provide structural support on the exterior of the cell surface. It is also thought to play a role in biochemical signaling between cells.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:08:10 UTC",
+      "annotatedAt": "2016-04-27T23:11:49 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125972",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=8384,2542,19753,11566"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=20237,6918,1891,1303"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Nucleolus</strong><br> A portion of the nucleus in which most eukaryotic ribosomal RNA is synthesized and ribosomal subunits are assembled. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:07:25 UTC",
+      "annotatedAt": "2016-04-27T23:12:41 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125975",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=8384,2542,19753,11566"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=18388,5699,5128,3236"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Nucleus</strong><br> A large membrane-bound structure in eukaryotic cells containing DNA. This is also the site of RNA transcription prior to export to the cytoplasm. Â </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:07:45 UTC",
+      "annotatedAt": "2016-04-27T23:12:33 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125974",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=8384,2542,19753,11566"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=22292,4678,307,324"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Nuclear Pore</strong><br> Connections between the inner and outer nuclear membrane that allow access to the nucleus through a series of protein complexes. RNA transcripts pass through these pores to exit the nucleus. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:22:52 UTC",
+      "annotatedAt": "2016-04-28T16:24:13 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126048",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12729,6696,9877,5783"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13138,5960,1689,1520"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Centrosome</strong><br> A protein complex that is the organizing center of microtubules that also regulates phases of the cell cycle.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:08:53 UTC",
+      "annotatedAt": "2016-04-27T23:10:31 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125968",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=-1707,-6199,34133,29678"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=10821,6330,1849,588"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Microtubules</strong><br> A component of the cytoskeleto<a href=\"https://en.wikipedia.org/wiki/Cytoskeleton\" data-mce-href=\"https://en.wikipedia.org/wiki/Cytoskeleton\">n</a>, found throughout the cytoplasm. Polymers of tubulin are highly dynamic. Motor proteins move organelles and other cellular along microtubules.</span><br></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:07:11 UTC",
+      "annotatedAt": "2016-04-27T23:12:57 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125976",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=8384,2542,19753,11566"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=22287,2681,1974,1912"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Endoplasmic Reticulum (Rough)</strong><br> Interconnected membranous structure connected to the nuclear membrane. The rough endoplasmic reticulum is studded with ribosomes and is the site of translation of membrane and secretory proteins.</span></p><p><span><strong>Ribosome</strong><br> The site of translation of RNA transcripts into polypeptide chains in protein synthesis. Ribosomes are composed of a large and small subunit each made of catalytic RNA structures. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:22:19 UTC",
+      "annotatedAt": "2016-04-28T16:27:08 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126050",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=17704,4021,8533,4996"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=24070,6041,1439,2250"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Endoplasmic Reticulum (Smooth)</strong><br> Interconnected membranous structure connected to the nuclear membrane. The smooth endoplasmic reticulum has no ribosomes but is contiguous with the rough endoplasmic reticulum and is a site of lipid synthesis. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:08:33 UTC",
+      "annotatedAt": "2016-04-27T23:11:21 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125970",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=9486,587,21234,12432"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=16243,2769,3919,2320"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Golgi Complex</strong><br> Stacked membranous structure responsible for sorting and packaging of lipids and proteins before secretion or compartmentalization.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:23:13 UTC",
+      "annotatedAt": "2016-04-28T16:21:01 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126045",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=144,-311,30576,17903"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=15345,2969,727,666"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Vesicle</strong><br> Small transport packages enclosed by lipid-bilayers that contain materials to be transported between different parts of the cell.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:23:03 UTC",
+      "annotatedAt": "2016-04-28T16:21:53 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126046",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=8384,2542,19753,11566"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=14787,4141,1336,1303"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Peroxisome</strong><br> A small organelle that degrades fatty acids and amino acids through reactions that produce hydrogen peroxide. Hydrogen peroxide is converted to water and oxygen by the enzyme catalase. </p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:22:38 UTC",
+      "annotatedAt": "2016-04-28T16:25:02 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126049",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=7260,1961,15288,8951"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13259,3576,1450,1071"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Lysosome</strong><br> Membrane-bound vesicles that contain acidic degradative enzymes. Cellular components are broken down into component parts for recycling in this compartment.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:06:57 UTC",
+      "annotatedAt": "2016-04-27T23:13:16 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125977",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12919,4818,14746,8634"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=24516,8997,1052,893"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Cytoplasm</strong><br> A solution of salts, water, and proteins that encompases cellular components within the plasma membrane.</span></p><p><br data-mce-bogus=\"1\"></p><p><strong>Cytoskeleton</strong><br> A network of fibrous elements that provides structural support and movement of organelles contained within the cytoplasm of cells. It is composed of microtubules, intermediate filaments, and actin microfilaments.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:21:50 UTC",
+      "annotatedAt": "2016-04-28T16:17:55 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126044",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11977,7285,3211,1880"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=14381,8198,209,67"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Outer membrane</strong><br> The membrane enclosing the entire organelle from the rest of the cell. It is dotted with structures called porins to allow small proteins to enter into the intermembrane space.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:30:56 UTC",
+      "annotatedAt": "2016-04-28T16:10:24 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126037",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11977,7285,3211,1880"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=14871,8352,87,74"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Intermembrane space</strong><br> The space between the inner and outer membranes into which protons are pumped from the matrix during electron transport.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:31:12 UTC",
+      "annotatedAt": "2016-04-28T16:09:52 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126036",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=9686,6425,5753,3368"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=14042,9031,130,52"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Inner membrane</strong><br> The membrane separating the mitochondrial matrix from the intermembrane space. This membrane contains the protein complexes from the electron transport chain and is the permeable to oxygen, carbon dioxide, and water and is not permeable to ions and small molecules.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:31:26 UTC",
+      "annotatedAt": "2016-04-28T16:09:23 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126035",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12765,8188,3853,2256"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=14517,8766,67,46"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Matrix</strong><br> The viscous contents of the cristae in mitochondria. It contains enzymes necessary for oxidative phosphorylation and ATP synthesis and is also home to the mitochondrial DNA.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:31:40 UTC",
+      "annotatedAt": "2016-04-28T16:05:36 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126034",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12765,8188,3853,2256"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=14572,8405,139,342"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Cristae</strong><br> The crinkled folds of the inner membrane of mitochondria in which the electron transport chain is embedded and ATP synthesis takes place. It appears bunched and folded to maximize surface area.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:31:58 UTC",
+      "annotatedAt": "2016-04-28T16:05:08 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126033",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=9153,5248,7898,6867"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13909,8088,2528,2470"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Mitochondrion</strong><br> An organelle with two phospholipid bilayers that contains machinery necessary for oxidative phosphorylation and therefore the site of ATP synthesis. Containing its own genome, mitochondria are thought to have originated as an independent organism.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:09:42 UTC",
+      "annotatedAt": "2016-04-27T23:09:20 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125965",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11844,9297,2078,1208"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13549,10215,320,152"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Electron Transport Chain</strong><br> A series of complexes that transfer electrons from electron donors to electron acceptors via redox reactions, and couples this electron transfer with the transfer of protons (H+ ions) across the inner mitochondrial membrane.</span><br></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:06:30 UTC",
+      "annotatedAt": "2016-04-27T23:15:39 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125979",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10839,9316,3853,2256"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12926,9422,98,133"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Complex I</strong><br> Also known as NADH-Ubiquinone Oxidoreductase, this is the first site of the electron transport chain. Two electrons are removed from NADH and transferred to ubiquinone (Q), a lipid soluble carrier, which can then diffuse across the membrane as ubiquinol (QH2). This process ultimately moves four H+ protons across the membrane, producing a proton gradient.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:33:05 UTC",
+      "annotatedAt": "2016-04-28T16:01:36 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126029",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10839,9316,3853,2256"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12766,9664,92,77"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Complex II</strong><br> Also called succinate dehydrogenase, complex II acts in parallel to complex I to deliver electrons to quinone pool. These electrons come from succinate originally produced in the citric acid cycle which were transferred through FAD. However, no protons are delivered to the intermembrane space by complex II.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:32:50 UTC",
+      "annotatedAt": "2016-04-28T16:02:19 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126030",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10839,9316,3853,2256"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13063,10264,72,111"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Complex III</strong><br> Also known as CoQH2-cytochrome c reductase, this complex transfers two electrons from QH2 to two molecules of cytochrome c, a water-soluble intermembrane molecule. Two other electrons are passed across to reduce quinone to quinol. In total, four protons are translocated: two in the reduction of quinone to quinol and two are released from two ubiquinol molecules.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:32:31 UTC",
+      "annotatedAt": "2016-04-28T16:03:38 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126031",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10839,9316,3853,2256"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13344,9352,104,102"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Complex IV</strong><br> Also called cytochrome c oxidase, here four electrons are removed from four molecules of cytochrome c and are transferred to O2 oxygen to produce two molecules of water. Simultaneously, eight protons are removed from the mitochondrial matrix, contributing to the proton gradient.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:32:14 UTC",
+      "annotatedAt": "2016-04-28T16:04:05 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126032",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12759,9848,886,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13171,10243,92,153"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>ATP Synthase</strong><br> The site of ATP synthesis at the end of the electrochemical gradient of the electron transport chain. It is composed of a membranous subunit (FO) and lumen-facing subunit (F1). H+ ions pass through the FO subunit to provide energy to the oxidative phosphorylation reaction (ADP + Pi) that takes place at the F1 subunit.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:10:31 UTC",
+      "annotatedAt": "2016-04-27T21:00:04 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125962",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10891,7820,4624,2707"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13013,9686,129,78"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Matrix</strong><br> The viscous contents of the cristae in mitochondria. It contains enzymes necessary for oxidative phosphorylation and ATP synthesis and is also home to the mitochondrial DNA.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:25:29 UTC",
+      "annotatedAt": "2016-04-28T16:12:28 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126043",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10891,7820,4624,2707"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12727,9374,159,82"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Intermembrane space</strong><br> The space between the inner and outer membranes into which protons are pumped from the matrix during electron transport.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:26:43 UTC",
+      "annotatedAt": "2016-04-28T16:12:10 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126042",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10891,7820,4624,2707"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13307,10324,104,74"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Inner membrane</strong><br> The membrane separating the mitochondrial matrix from the intermembrane space. This membrane contains the protein complexes from the electron transport chain and is the permeable to oxygen, carbon dioxide, and water and is not permeable to ions and small molecules.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:26:55 UTC",
+      "annotatedAt": "2016-04-28T16:11:57 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126041",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10891,7820,4624,2707"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12593,10274,121,100"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Outer membrane</strong><br> The membrane enclosing the entire organelle from the rest of the cell. It is dotted with structures called porins to allow small proteins to enter into the intermembrane space.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:27:08 UTC",
+      "annotatedAt": "2016-04-28T16:11:44 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126040",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11262,8473,3211,1880"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12863,9783,171,81"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>NAD+</strong><br> A coenzyme involved in metabolism as an oxidizing agent â€“ it accepts electrons from other molecules and becomes reduced.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:33:38 UTC",
+      "annotatedAt": "2016-04-28T16:00:22 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126027",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11262,8473,3211,1880"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12882,9884,147,83"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>NADH</strong><br> A coenzyme involved in metabolism as a reducing Â agent â€“ it donates electrons (shown in blue) to other molecules and becomes oxidized.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:33:51 UTC",
+      "annotatedAt": "2016-04-28T16:00:04 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126026",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11934,9216,1039,903"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12001,9398,94,78"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Glucose</strong><br> A simple carbohydrate built on a six-carbon backbone. This is the primary unit of energy derived from food and is the basis for ATP generation through glycolysis, citric acid cycle, and electron transport chain.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:06:44 UTC",
+      "annotatedAt": "2016-04-27T23:13:40 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125978",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11934,9216,1039,903"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12106,9367,84,121"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Hexokinase</strong><br> An enzyme that adds a phosphate group to carbon 6 of glucose. This reaction allows for continual flow of glucose into the cell by keeping the concentration of non-phosphorylated glucose low. This reaction uses ATP.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:04:13 UTC",
+      "annotatedAt": "2016-04-27T23:18:21 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125980",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11934,9216,1039,903"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12195,9478,115,67"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Glucose-6-Phosphate</strong><br> Glucose that has had a phosphate group added to carbon 6. This molecule is unable to exit the cell with the added phosphate. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:03:54 UTC",
+      "annotatedAt": "2016-04-27T23:18:39 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125981",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11934,9216,1039,903"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12131,9554,84,81"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Phosphoglucose isomerase</strong><br> An enzyme responsible for the rearrangement of glucose-6-phosphate into fructose-6-phosphate. It is a reversible reaction that is driven by rapid use of fructose-6-phosphate.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:03:36 UTC",
+      "annotatedAt": "2016-04-27T23:18:57 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125982",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11934,9216,1039,903"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=11992,9636,129,99"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Fructose-6-Phosphate</strong><br> A six-carbon isomer of glucose-6-phosphate. This Â isomer is required for further breakdown in glycolysis, while glucose-6-phosphate is unable to participate.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:03:03 UTC",
+      "annotatedAt": "2016-04-27T23:19:11 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125983",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11934,9216,1039,903"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12015,9769,80,88"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Phosphofructokinase</strong><br> An enzyme which adds an additional phosphate group to fructose-6-phosphate. This reaction uses ATP and is the key-regulatory Â step of glycolysis.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:02:52 UTC",
+      "annotatedAt": "2016-04-27T23:19:36 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125984",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11967,9541,738,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=11971,9893,168,103"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Fructose-1,6-Bisphosphate</strong><br> A six-carbon fructose structure with phosphate groups added to carbons 1 and 6. The presence of two highly charged phosphate groups destabilizes the molecule for the subsequent reaction.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:02:40 UTC",
+      "annotatedAt": "2016-04-27T23:22:02 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125985",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11967,9541,738,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12151,9874,95,102"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Fructose-bisphosphate aldolase</strong><br> An enzyme that breaks fructose-1,6-bisphosphate into glyceraldehyde-3-phosphate and dihydroxyacetone phosphate.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:02:29 UTC",
+      "annotatedAt": "2016-04-27T23:22:15 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125986",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11967,9541,738,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12257,9814,70,80"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Dihydroxyacetone phosphate</strong><br> A three-carbon structure that must be converted into glyceraldehyde-3-phosphate to continue through glycolysis. The phosphate group on carbon 3 prevents free diffusion out of the cell.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:02:18 UTC",
+      "annotatedAt": "2016-04-27T23:22:30 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125987",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11967,9541,738,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12204,9719,60,94"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Triose phosphate isomerase</strong><br> An enzyme that converts dihydroxyacetone phosphate into glyceraldehyde-3-phosphate.<br></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:02:06 UTC",
+      "annotatedAt": "2016-04-27T23:22:51 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125988",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11967,9541,738,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12289,9653,76,105"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Glyceraldehyde-3-Phosphate</strong><br> A three-carbon structure able to continue through glycolysis. The phosphate group on carbon 3 prevents free diffusion of this molecule out of the cell.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:01:46 UTC",
+      "annotatedAt": "2016-04-27T23:23:11 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125989",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12136,9487,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12398,9591,108,122"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Glyceraldehyde phosphate dehydrogenase</strong><br> An enzyme that oxidizes glyceraldehyde-3-phosphate and adds an additional phosphate group. This reaction produces NADH.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:01:27 UTC",
+      "annotatedAt": "2016-04-27T23:25:29 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125990",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12136,9487,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12424,9725,101,118"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>1,3-Bisphosphoglycerate</strong><br> A three-carbon structure with phosphate groups on carbons 1 and 3 that can be used in subsequent reactions to phosphorylate ADP.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:01:11 UTC",
+      "annotatedAt": "2016-04-27T23:25:42 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125991",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12136,9487,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12381,9874,95,136"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Phosphoglycerate kinase</strong><br> An enzyme that uses the phosphate group on carbon 1 of 1,3-bisphosphoglycerate to produce ATP from ADP.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:00:57 UTC",
+      "annotatedAt": "2016-04-27T23:25:59 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125992",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12136,9487,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12254,9990,84,80"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>3-Phosphoglycerate</strong><br> A three-carbon structure with a phosphate group on carbon 3. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:00:44 UTC",
+      "annotatedAt": "2016-04-27T23:26:19 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125993",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11854,9487,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12099,10053,108,123"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Phosphoglycerate mutase</strong><br> An enzyme that shifts the phosphate functional group from carbon 3 to carbon 2 of phosphoglycerate.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T18:00:09 UTC",
+      "annotatedAt": "2016-04-27T23:26:47 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125994",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11854,9872,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12149,10195,94,99"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>2-Phosphoglycerate</strong><br> A three-carbon structure with a phosphate group on carbon 2 to reorganize the molecule for pyruvate formation.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:59:57 UTC",
+      "annotatedAt": "2016-04-27T23:26:55 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125995",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11854,9872,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12224,10300,81,78"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Enolase</strong><br> An enzyme that dehydrates 2-phosphoglycerate to produce phosphoenolpyruvate.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:59:41 UTC",
+      "annotatedAt": "2016-04-27T23:27:08 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125996",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12136,9872,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12343,10245,100,110"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Phosphoenolpyruvate</strong><br> A pyruvate enol structure that holds a phosphate group to be used in creation of ATP.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:59:31 UTC",
+      "annotatedAt": "2016-04-27T23:29:03 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125997",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12136,9872,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12480,10215,81,101"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Pyruvate kinase</strong><br> An enzyme that converts phosphoenolpyruvate into pyruvate by removal of a phosphate group. This reaction produces ATP and pyruvate, which then enters the citric acid cycle.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:59:18 UTC",
+      "annotatedAt": "2016-04-27T23:29:18 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125998",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12136,9872,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12487,10105,88,80"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Pyruvate</strong><br> The final product of glycolysis and the initial carbon source for the citric acid cycle. Two three-carbon pyruvate molecules are produced from one six-carbon molecule of glucose. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:59:03 UTC",
+      "annotatedAt": "2016-04-27T23:29:38 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "125999",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10891,7820,4624,2707"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=11969,9353,612,1049"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Glycolysis</strong><br> A 10-step pathway in which one molecule of glucose is converted into two molecules of pyruvate and two molecules of NADH.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:29:02 UTC",
+      "annotatedAt": "2016-04-28T16:11:28 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126039",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12621,9854,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12828,10013,86,87"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Pyruvate</strong><br> The final product of glycolysis and the initial carbon source for the citric acid cycle. Two three-carbon pyruvate molecules are produced from one six-carbon molecule of glucose. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:58:52 UTC",
+      "annotatedAt": "2016-04-27T23:29:56 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126000",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12856,9854,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=12942,10039,99,85"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Pyruvate dehydrogenase</strong><br> A component of the pyruvate dehydrogenase complex that participates in decarboxylation of pyruvate to form Acetyl-CoA. This reaction produces one molecule of carbon dioxide and one molecule of NADH.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:58:41 UTC",
+      "annotatedAt": "2016-04-27T23:31:15 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126001",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12856,9854,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13065,10040,76,76"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Acetyl-CoA</strong><br> The first component in the citric acid cycle. Following decarboxylation, it has lost one carbon in the form of CO2 and now contains two carbon atoms.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:58:31 UTC",
+      "annotatedAt": "2016-04-27T23:31:40 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126002",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13091,9533,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13151,9825,62,83"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Citrate synthase</strong><br> The enzyme responsible for transferring the two-carbon acetyl group from acetyl-CoA to the four-carbon oxaloacetate in the formation of the six-carbon molecule citrate.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:58:22 UTC",
+      "annotatedAt": "2016-04-27T23:35:53 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126003",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13091,9533,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13240,9890,95,90"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Citrate</strong><br> The second substrate in the citric acid cycle. This six-carbon structure contains multiple carboxylic acid residues that are functionalized in subsequent steps.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:58:12 UTC",
+      "annotatedAt": "2016-04-27T23:36:07 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126004",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13091,9533,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13241,9990,79,68"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Aconitase</strong><br> The enzyme responsible for the rearrangement of citrate into cis-aconitate and isocitrate through dehydration and hydration.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:58:01 UTC",
+      "annotatedAt": "2016-04-27T23:36:30 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126005",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=11066,8309,4114,2829"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13347,9999,72,98"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Isocitrate</strong><br> A six-carbon structure that forms through rehydration of cis-Aconitate. The -OH group is always added on the same side of the molecule as the adjacent carboxyl group.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:57:51 UTC",
+      "annotatedAt": "2016-04-27T23:36:45 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126006",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=12210,9126,2439,1677"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13429,10053,88,57"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Isocitrate dehydrogenase</strong><br> Enzyme responsible the oxidation of isocitrate to form oxalosuccinate and NADH. Further responsible for decarboxylation of oxalosuccinate to release CO2 and form Î±-ketoglutarate. </p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:57:40 UTC",
+      "annotatedAt": "2016-04-27T23:37:29 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126007",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10933,8182,4878,3354"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13547,9963,108,77"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Î±-ketoglutarate</strong><br> A five-carbon structure formed by the removal of a carboxyl group from oxalosuccinate (a six-carbon structure that forms the intermediate between isocitrate and Î±-ketoglutarate. Decarboxylation of this molecule is by isocitrate dehydrogenase is the key regulatory step of the citric acid cycle.)</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:57:29 UTC",
+      "annotatedAt": "2016-04-27T23:37:49 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126008",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13514,9603,738,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13661,9889,107,108"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Î±-ketoglutarate dehydrogenase complex</strong><br> An enzyme complex that acts on Î±-ketoglutarate in an irreversible reaction to give rise to Succinyl-CoA, CO2, and NADH.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:52:24 UTC",
+      "annotatedAt": "2016-04-28T15:14:28 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126018",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13186,9348,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13648,9809,80,54"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Succinyl-CoA</strong><br> A four-carbon structure (excluding CoA) generated from Î±-ketoglutarate. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:52:34 UTC",
+      "annotatedAt": "2016-04-27T23:42:57 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126017",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13186,9348,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13595,9714,68,88"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Succinyl-CoA synthetase</strong><br> An enzyme that generates succinate from succinyl-CoA. This reaction also generates CoA-SH and GTP from GDP and Pi. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:52:47 UTC",
+      "annotatedAt": "2016-04-27T23:42:31 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126016",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13186,9348,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13561,9623,85,66"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Succinate</strong><br> A four-carbon structure generated from succinyl-CoA.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:53:04 UTC",
+      "annotatedAt": "2016-04-27T23:42:21 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126015",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13155,9405,1063,924"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13555,9502,65,92"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Succinate dehydrogenase (also calledÂ </span>Complex II)</strong><br> An enzyme that uses succinate and ubiquinone in an oxidation reaction that produces FADH2, ubiquinol, and fumarate.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:56:06 UTC",
+      "annotatedAt": "2016-04-27T23:42:03 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126014",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13186,9348,564,770"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13395,9557,95,68"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Fumarate</strong><br> A four-carbon structure formed from succinate. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:56:49 UTC",
+      "annotatedAt": "2016-04-27T23:41:42 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126013",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13091,9533,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13301,9538,78,63"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Fumarase</strong><br> An enzyme that hydrates fumarate at the double bond to form malate.</span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:56:38 UTC",
+      "annotatedAt": "2016-04-27T23:41:20 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126012",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13243,9462,738,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13255,9612,105,73"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Malate</strong><br> A four-carbon structure that is generated from fumarate by hydration.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:56:58 UTC",
+      "annotatedAt": "2016-04-27T23:41:06 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126011",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13091,9533,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13207,9659,49,76"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Malate dehydrogenase</strong><br> An enzyme that participates in an oxidation reaction of malate to form oxaloacetate and NADH. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:57:08 UTC",
+      "annotatedAt": "2016-04-27T23:40:52 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126010",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=13091,9533,470,642"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13183,9755,120,61"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Oxaloacetate</strong><br> A four-carbon structure generated from malate. Oxaloacetate is used with citrate synthase and acetyl-CoA to restart the citric acid cycle and form citrate. </span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:57:18 UTC",
+      "annotatedAt": "2016-04-27T23:40:34 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126009",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=10891,7820,4624,2707"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=13197,9525,582,595"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>The Citric Acid Cycle</strong><br> An eight step pathway which harvests chemical energy and produces a total of three NADH molecules.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:30:25 UTC",
+      "annotatedAt": "2016-04-28T16:11:04 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126038",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=2040,5799,14074,8240"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=4869,7034,697,346"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p dir=\"ltr\"><strong>Capsule (Cyan)</strong><br> The outer layer of prokaryotic cells which is gummy or slimy covering that may help bacteria stay together in colonies and/or provide some protection to the cell.</p><p dir=\"ltr\"><strong>Cell Wall (Purple)</strong><br> A rigid framework of murein, which is a polysaccharide cross-linked by peptide chains.</p><p><span></span></p><p dir=\"ltr\"><strong>Plasma membrane (Yellow)</strong> <br> A symmetrical two-layer structure that surrounds the cytoplasm and regulates the flow of substances in and out of the cell.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:46:37 UTC",
+      "annotatedAt": "2016-04-28T15:36:34 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126023",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=2795,6964,7037,4120"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=3414,8054,239,231"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong>Purple Ribosomes</strong><br>Â The sites of translation of RNA transcripts into polypeptide chains in protein synthesis. Ribosomes are composed of a large and small subunit each made of catalytic RNA structures. </p><p> <strong>Cytoplasm (Yellow)</strong><br>Â A solution of salts, water, and proteins that encompases cellular components within the plasma membrane.</p><p><span style=\"color: rgb(0, 0, 0); font-size: 14.6667px; white-space: pre-wrap; line-height: 1.38; background-color: transparent;\"><br></span></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:47:33 UTC",
+      "annotatedAt": "2016-04-28T15:31:38 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126022",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=2040,5799,14074,8240"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=6040,6974,1621,749"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span></span></p><p dir=\"ltr\">Flagella</strong><br> Long, whip-like protrusions that aid cellular locomotion. The flagellum of a prokaryotic cell does not \"beat\" but rotates about a \"bearing\" in the cell wall - resulting in a \"corkscrew\" motion that drives the cell forwards.</p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:47:57 UTC",
+      "annotatedAt": "2016-04-28T15:31:22 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126021",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=2040,5799,14074,8240"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=4323,7659,860,394"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Nucleoid</strong><br>  An irregularly shaped region within the cell of a prokaryote that contains all or most of the genetic material, called genophore. In contrast to the nucleus of a eukaryotic cell, it is not surrounded by a nuclear membrane. The genome of prokaryotic organisms is generally a circular, double-stranded piece of DNA, of which multiple copies may exist at any time. </span><br></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:50:26 UTC",
+      "annotatedAt": "2016-04-28T15:31:03 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126020",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    },
+    {
+      "annotatedBy": {
+        "@id": "521fbf758511f5b6d3e320354dcf94dd",
+        "name": "CellX"
+      },
+      "on": {
+        "source": "https://oculus.harvardx.harvard.edu/manifests/cellx:201602/canvas/canvas-euk_cell.json",
+        "scope": {
+          "@context": "http://www.harvard.edu/catch/oa.json",
+          "@type": "catch:Viewport",
+          "value": "xywh=2040,5799,14074,8240"
+        },
+        "@type": "oa:SpecificResource",
+        "selector": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=3928,7663,318,274"
+        }
+      },
+      "motivation": [
+        "oa:commenting"
+      ],
+      "resource": [
+        {
+          "chars": "<p><strong><span>Plasmid</strong><br> A small DNA molecule within a cell that is physically separated from a chromosomal DNA and can replicate independently.</span><br></p>",
+          "@type": "dctypes:Text",
+          "format": "text/html"
+        }
+      ],
+      "serializedAt": "2016-04-28T17:52:11 UTC",
+      "annotatedAt": "2016-04-28T15:30:41 UTC",
+      "@context": "http://iiif.io/api/presentation/2/context.json",
+      "@id": "126019",
+      "@type": "oa:Annotation",
+      "permissions": {
+        "admin": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "read": [],
+        "update": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ],
+        "delete": [
+          "521fbf758511f5b6d3e320354dcf94dd"
+        ]
+      }
+    }
+  ]
+}

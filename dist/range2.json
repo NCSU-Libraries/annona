@@ -1,0 +1,17 @@
+{
+  "@context": "http://iiif.io/api/presentation/2/context.json",
+  "@id": "https://tomcrane.github.io/iiif-collector/objects/chapter.json",
+  "@type": "sc:Range",
+  "label": "Chapter VI - The Skeleton",
+  "description": "Chapter from The human body: an account of its structure and activities and the conditions of its healthy working",
+  "contentLayer": {
+    "@id": "https://tomcrane.github.io/iiif-collector/objects/chapter",
+    "@type": "sc:Layer",
+    "label": "Content of 'The Skeleton' chapter",
+    "otherContent": [
+      "https://storiiies.cogapp.com/ycba/annotations/painting_list.json",
+      "https://storiiies.cogapp.com/ycba/annotations/infrared_list.json",
+      "https://storiiies.cogapp.com/ycba/annotations/xray_list.json"
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "resource": [
+    {
+      "@type": "dctypes:Text",
+      "format": "text/html",
+      "chars": "<p>Harrelson Hall</p>\n<p><iframe src=\"https://projects.ncsu.edu/facilities/buildings/harrelson.html\"></iframe></p>"
+    },
+    {
+      "@type": "oa:Tag",
+      "chars": "demolished"
+    }
+  ],
+  "on": [
+    {
+      "@type": "oa:SpecificResource",
+      "selector": {
+        "@type": "oa:Choice",
+        "default": {
+          "@type": "oa:FragmentSelector",
+          "value": "xywh=4902,2076,578,168"
+        },
+        "item": {
+          "@type": "oa:SvgSelector",
+          "value": "<svg xmlns='http://www.w3.org/2000/svg'><path xmlns=\"http://www.w3.org/2000/svg\" d=\"M4644.71762,2917.53386c90.3125,-81.26354 217.71291,-141.77775 345.7307,-141.70545l0,0l0,0c128.01779,0.0723 239.54276,56.68236 345.7307,141.70545c106.18794,85.02309 147.46184,214.58186 143.20634,342.10723c-4.2555,127.52537 -54.0404,253.01733 -143.20634,342.10723c-89.16594,89.0899 -217.71291,141.77775 -345.7307,141.70545c-128.01779,-0.0723 -255.5064,-52.90474 -345.7307,-141.70545c-90.2243,-88.80071 -143.18429,-213.56968 -143.20634,-342.10723c-0.02205,-128.53755 52.89384,-260.84369 143.20634,-342.10723z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:5,&quot;rotation&quot;:0,&quot;annotation&quot;:null,&quot;editable&quot;:true}\" id=\"ellipse_babc0cf9-985c-4422-b227-1657c485a67a\" fill-opacity=\"0.00001\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"10.84503\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"/></svg>"
+        }
+      },
+      "within": {
+        "@id": "https://d.lib.ncsu.edu/collections/catalog/mc00084-001-te0159-000-001_0001/manifest.json",
+        "@type": "sc:Manifest"
+      },
+      "full": "https://d.lib.ncsu.edu/collections/canvas/mc00084-001-te0159-000-001_0001"
+    }
+  ],
+  "@id": "2602c26b-1f8a-4532-a137-a3d06a26661a",
+  "@type": "oa:Annotation",
+  "@context": "http://iiif.io/api/presentation/2/context.json",
+  "motivation": [
+    "oa:commenting",
+    "oa:tagging"
+  ]
+}
