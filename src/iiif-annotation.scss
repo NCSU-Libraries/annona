@@ -526,7 +526,7 @@ figcaption {
 }
 
 .pageButton {
-  z-index: 1000;
+  z-index: 3000000000;
   width: 5%;
   font-size: 3em;
   border: none;
@@ -554,4 +554,8 @@ figcaption {
 .rangestoryboard .storyboard_viewer {
   width: 100%;
   height: auto;
+}
+
+.rangefullpage .pageButton{
+  color: white;
 }

@@ -165,6 +165,9 @@ export default {
     }
   },
   created() {
+    if(this.$parent.range) {
+      this.fullscreenChange(this.$parent.isfullscreen);
+    }
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
     this.settings = shared.getsettings(this.styling);
     this.imagetitle = this.settings.title ? this.settings.title : '';
@@ -267,6 +270,11 @@ export default {
       });
       // on viewer open
       viewer.addHandler('open', function(){
+        if (vue.settings.imagecrop) {
+          var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
+          var tiledImage = vue.viewer.world.getItemAt(0);
+          tiledImage.setClip(new openseadragon.Rect(cropxywh[0], cropxywh[1], cropxywh[2], cropxywh[3]))
+        }
         // add layers to viewer
         if (vue.layerslist && vue.layerslist.length > 0){
           vue.addLayers();
@@ -775,7 +783,8 @@ export default {
     },
     //toggle fullscreen button
     toggle_fullscreen: function(){
-      this.$fullscreen.toggle(this.$el, {
+      var element = this.$parent.range ? this.$parent.$el : this.$el;
+      this.$fullscreen.toggle(element, {
         wrap: false,
         callback: this.fullscreenChange
       });
@@ -801,6 +810,9 @@ export default {
         this.buttons.expandbutton = '<i class="fas fa-expand"></i>';
       }
       this.fullscreen = fullscreen;
+      if(this.$parent.range) {
+        this.$parent.updateFullScreen(fullscreen, this.buttons.expandbutton);
+      }
     },
     // Click of the next button, goes to section and load annotation data.
     // If multiple sections annotated for one annotation center zoom on all annotations.

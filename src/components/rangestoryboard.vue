@@ -1,5 +1,5 @@
 <template>
-<div v-bind:id="rangeid" class="rangestoryboard">
+<div v-bind:id="rangeid" class="rangestoryboard" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
   <storyboard :key="position" v-if="annotationurl" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="{ 'pageinactive' : prevPageInactive }">
     <i class="fas fa-chevron-left"></i><span class="toolbartext">Previous page</span>
@@ -31,6 +31,7 @@ export default {
         tags: false,
         layerslist: false,
         isws: '',
+        range: true,
         anno_data: [],
         buttons: {
           'autorunbutton': '<i class="fas fa-magic"></i>',
@@ -51,7 +52,8 @@ export default {
         prevPageInactive: true,
         nextPageInactive: false,
         rangeid: '',
-        customlayers: ''
+        customlayers: '',
+        isfullscreen: false
       }
     },
     created(){
@@ -63,9 +65,14 @@ export default {
         this.title = response.data.label;
         for (var ca=0; ca<annos.length; ca++){
           var canvas = canvases[ca];
+          var xywh = '';
           var manifest = canvas ? canvas['within'] : '';
           manifest = manifest['@id'] ? manifest['@id'] : manifest['id'] ? manifest['id'] : manifest;
-          this.rangelist.push({'canvas': canvas, 'anno': annos[ca], 'manifest': manifest})
+          if (canvas){
+            var canvasid = canvas['@id'] ? canvas['@id'] : canvas['id'] ? canvas['id'] : canvas;
+            xywh = canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
+          }
+          this.rangelist.push({'canvas': canvas, 'anno': annos[ca], 'manifest': manifest, section: xywh})
           if (ca == 0) {
             this.annotationurl = this.rangelist[0];
           }
@@ -76,11 +83,8 @@ export default {
         !this.settings.title ? this.settings.title = this.title : '';
         this.$props.ws ? this.ws = this.$props.ws : '';
         this.$props.layers ? this.customlayers = this.$props.layers : '';
-        for (var key in this.settings){
-          if (key != 'fullpage'){
-            this.stylingstring += `${key}:${this.settings[key]};`
-          }
-        }
+        this.settings.imagecrop = this.annotationurl.section;
+        this.getStylingString();
       })
     },
     methods: {
@@ -97,8 +101,19 @@ export default {
         } else if (this.position >= this.rangelist.length-1) {
           this.nextPageInactive = true;
         }
-
         this.annotationurl = this.rangelist[this.position];
+        this.settings.imagecrop = this.annotationurl.section;
+        this.getStylingString();
+      },
+      getStylingString: function(){
+        for (var key in this.settings){
+          this.stylingstring += `${key}:${this.settings[key]};`
+        }
+      },
+      updateFullScreen: function(fullscreen, expandbutton) {
+        this.$children[0].buttons.expandbutton = expandbutton;
+        this.isfullscreen = fullscreen;
+        this.$children[0].fullscreen = fullscreen;
       }
     }
 }
