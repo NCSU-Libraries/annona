@@ -1,5 +1,0 @@
-<%= form_tag({:controller => "annoeditor", :action => "download_anno"}, {:method => "get"}) do %>
-  Annotation Url <%= text_field_tag :annotationurl, params[:annotationurl] %>
-  Manifest Url <%= text_field_tag :manifesturl, params[:manifesturl] %>
-  <%= submit_tag 'Load Annotation', name: nil %>
-<% end %>
