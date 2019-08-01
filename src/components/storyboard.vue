@@ -570,7 +570,7 @@ export default {
       var infoelement = this.settings.additionalinfo ? document.getElementById(this.settings.additionalinfo) : '';
       infoelement ? this.settings.additionalinfotitle = infoelement.title ? infoelement.title : '' : '';
       infoelement ? this.settings.additionalinfo = infoelement.innerHTML : '';
-      infoelement ? infoelement.remove() : ''
+      infoelement ? infoelement.parentNode.removeChild(infoelement) : ''
       this.settings.truncate_length = this.settings.truncate_length ? this.settings.truncate_length : 2;
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
