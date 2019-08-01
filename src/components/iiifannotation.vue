@@ -24,6 +24,7 @@
 <script>
 import axios from 'axios';
 import shared from './shared';
+require("es6-promise").polyfill();
 
 export default {
   name: 'iiifannotation',
@@ -108,7 +109,7 @@ export default {
       for (var i =0; i < this.anno.length; i++){
         var dictionary = this.getImageData(this.anno[i], this.annotation_json, i); //get image data for annotation
         var ondict = shared.on_structure(this.anno[i]);
-        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict.flatMap(element => element);
+        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : shared.flatten(ondict);
         canvasId = [].concat(canvasId);
         // Get custom size values
         var size;

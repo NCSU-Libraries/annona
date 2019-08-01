@@ -108,6 +108,7 @@ import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
 import SocketIO from 'socket.io-client';
+require("es6-promise").polyfill();
 
 Vue.use(fullscreen);
 
@@ -170,6 +171,8 @@ export default {
     }
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
     this.settings = shared.getsettings(this.styling);
+    var isIE = /*@cc_on!@*/false || !!document.documentMode;
+    isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
     this.seadragonid = this.settings.customid ? this.settings.customid : annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
     axios.get(annotationurl).then(response => {
@@ -182,7 +185,7 @@ export default {
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
-        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict[0].source ? ondict.map(element => element.source) : ondict.flatMap(element => element);
+        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict[0].source ? ondict.map(element => element.source) : shared.flatten(ondict);
         canvasId = [].concat(canvasId);
         var sections = [];
         var content_data = shared.chars(anno[i]);
@@ -210,7 +213,7 @@ export default {
       //gets all languages, sees if browser language is option for languages; otherwise sets language to first in list.
       //sets html dropdown to selected
       if(this.annotations.filter(element => element.languages).length > 0){
-        var all_langs = this.annotations.map(element => element.textual_body.map(els => els.language)).flat();
+        var all_langs = shared.flatten(this.annotations.map(element => element.textual_body.map(els => els.language)));
         var lang = all_langs.filter(element => element != undefined && navigator.language.indexOf(element.toLowerCase()) > -1)
         this.currentlang = lang.length > 0 ? lang[0] : all_langs[0];
         this.languages = Array.from(new Set(this.languages.concat(content_data.languages)));
@@ -223,7 +226,7 @@ export default {
         this.buildseadragon(canvas);
       }
       //get tags and set corresponding color
-      var tags = Array.from(new Set(this.annotations.flatMap(a => a.tags))).sort();
+      var tags = Array.from(new Set(shared.flatten(this.annotations, 'tags'))).sort();
       for (var tc=0; tc<tags.length; tc++){
         var randomcolor = '#'+Math.random().toString(16).substr(-6);
         var checked = this.settings.toggleoverlay ? true : false;
@@ -426,7 +429,8 @@ export default {
           var origin = `${parseInt(xywh[0])+(parseInt(xywh[2])/2)}px ${parseInt(xywh[1])+(parseInt(xywh[3])/2)}px`;
           path2.style.transformOrigin = origin;
           path2.style.webkitTransformOrigin = origin;
-          svg.innerHTML  = path2.outerHTML + path.outerHTML;
+          svg.appendChild(path2);
+          svg.appendChild(path);
           elem.appendChild(svg);
         }
         if (color){

@@ -1,5 +1,6 @@
-import ISO6391 from 'iso-639-1';
+import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
+import "@babel/polyfill";
 
 export default {
   //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.
@@ -60,7 +61,7 @@ export default {
       } else if (res_data[type] === 'oa:Tag'){
         tags.push(value);
       } else if (res_data[type] === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}" ${navigator.language.indexOf(element['language']) > -1 ? 'selected' : ''}>${ISO6391.getNativeName(element['language']) ? ISO6391.getNativeName(element['language']) : element['language']}</option>`);
+        langs = res_data['items'].map(element => `<option value="${element['language']}" ${navigator.language.indexOf(element['language']) > -1 ? 'selected' : ''}>${by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
         var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${element['value']}"}`));
         textual_body = textual_body.concat(values)
       } else if (res_data[type] === 'dctypes:Image') {
@@ -163,7 +164,7 @@ export default {
         if(correctdata.length > 0){
           text += `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
         } else {
-          var langtranslation = ISO6391.getNativeName(currentlang)
+          var langtranslation = by639_1[currentlang]['nativeName'];
           text += `Translation not avaliable in "${langtranslation ? langtranslation : currentlang}"`;
         }
       } else {
@@ -179,5 +180,12 @@ export default {
     var isempty = /<span style="direction: (ltr|rtl);"><\/span>/g;
     text = isempty.test(text) ? '' : text;
     return text;
+  },
+  flatten: function(array, element) {
+    if (element) {
+      return array.reduce((acc, val) => acc.concat(val[element]), [])
+    } else {
+      return array.reduce((acc, val) => acc.concat(val), [])
+    }
   }
 }
