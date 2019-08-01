@@ -28,7 +28,7 @@ This replaces the need for websockets for comparing two or more annotations. It 
  * When clicking on the overlays they will go the same position on each image not the same annotation. This is a conscious choice to allow for comparison at a certain point.
  * Wait for all images to load before using the toolbar.
 
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
+<script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
 
 # Defaults

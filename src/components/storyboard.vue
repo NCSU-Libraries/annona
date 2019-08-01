@@ -108,7 +108,6 @@ import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
 import SocketIO from 'socket.io-client';
-require("es6-promise").polyfill();
 
 Vue.use(fullscreen);
 

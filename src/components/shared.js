@@ -1,6 +1,5 @@
 import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
-import "@babel/polyfill";
 
 export default {
   //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.

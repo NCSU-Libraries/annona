@@ -3,8 +3,8 @@ layout: page
 title: Image Viewer
 permalink: /imageviewer/
 ---
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
 <style>
 code {
   word-wrap: break-word;

@@ -59,7 +59,6 @@
 import storyboard from './storyboard'
 import shared from './shared'
 import openseadragon from 'openseadragon';
-require("es6-promise").polyfill();
 
 export default {
     components: {

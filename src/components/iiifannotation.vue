@@ -24,7 +24,6 @@
 <script>
 import axios from 'axios';
 import shared from './shared';
-require("es6-promise").polyfill();
 
 export default {
   name: 'iiifannotation',
