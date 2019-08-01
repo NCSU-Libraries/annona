@@ -430,8 +430,7 @@ export default {
           var origin = `${parseInt(xywh[0])+(parseInt(xywh[2])/2)}px ${parseInt(xywh[1])+(parseInt(xywh[3])/2)}px`;
           path2.style.transformOrigin = origin;
           path2.style.webkitTransformOrigin = origin;
-          svg.appendChild(path2);
-          svg.appendChild(path);
+          svg.innerHTML = path2.outerHTML + path.outerHTML;
           elem.appendChild(svg);
         }
         if (color){
