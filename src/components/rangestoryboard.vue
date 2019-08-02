@@ -33,6 +33,7 @@ export default {
         isws: '',
         range: true,
         anno_data: [],
+        toctitle: 'Range Pages',
         buttons: {
           'autorunbutton': '<i class="fas fa-magic"></i>',
           'overlaybutton': '<i class="fas fa-toggle-on"></i>',
@@ -53,7 +54,8 @@ export default {
         nextPageInactive: false,
         rangeid: '',
         customlayers: '',
-        isfullscreen: false
+        isfullscreen: false,
+        toc: []
       }
     },
     created(){
@@ -62,9 +64,10 @@ export default {
       axios.get(this.$props.rangeurl).then(response => {
         var annos = response.data.contentLayer.otherContent;
         var canvases = response.data.canvases ? response.data.canvases : [];
-        this.title = response.data.label;
+        var rangetitle = response.data.label;
         for (var ca=0; ca<annos.length; ca++){
           var canvas = canvases[ca];
+          var anno = annos[ca];
           var xywh = '';
           var manifest = canvas ? canvas['within'] : '';
           manifest = manifest['@id'] ? manifest['@id'] : manifest['id'] ? manifest['id'] : manifest;
@@ -72,15 +75,17 @@ export default {
             var canvasid = canvas['@id'] ? canvas['@id'] : canvas['id'] ? canvas['id'] : canvas;
             xywh = canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
           }
-          this.rangelist.push({'canvas': canvas, 'anno': annos[ca], 'manifest': manifest, section: xywh})
-          if (ca == 0) {
-            this.annotationurl = this.rangelist[0];
-          }
+          var annostring = anno['@id'] ? anno['@id'] : anno['id'] ? anno['id'] : anno;
+          var toclabel = anno['label'] ? anno['label'] : `Page: ${ca + 1}`
+          var description = anno['description'] ?  anno['description'] : '';
+          this.toc.push({ 'position' :ca, 'label' : toclabel, 'description': description});
+          this.rangelist.push({'canvas': canvas, 'anno': annostring,  'manifest': manifest, section: xywh, title: toclabel})
         }
+        this.annotationurl = this.rangelist[0];
         // Get settings and create styling string
         this.settings = shared.getsettings(this.styling);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
-        !this.settings.title ? this.settings.title = this.title : '';
+        this.settings.title = rangetitle ? rangetitle : '' + this.annotationurl.title;
         this.$props.ws ? this.ws = this.$props.ws : '';
         this.$props.layers ? this.customlayers = this.$props.layers : '';
         this.settings.imagecrop = this.annotationurl.section;
@@ -91,8 +96,10 @@ export default {
       nextItemRange: function(prevornext){
         if (prevornext == 'prev') {
           this.position -= 1;
-        } else {
+        } else if (prevornext == 'next') {
           this.position += 1;
+        } else {
+          this.position = prevornext;
         }
         this.prevPageInactive = false;
         this.nextPageInactive = false;
@@ -103,6 +110,7 @@ export default {
         }
         this.annotationurl = this.rangelist[this.position];
         this.settings.imagecrop = this.annotationurl.section;
+        this.settings.title = this.annotationurl.title;
         this.getStylingString();
       },
       getStylingString: function(){

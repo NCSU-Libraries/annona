@@ -75,8 +75,18 @@
         <div class="imagetitle"><h1>{{imagetitle}}</h1></div>
         <span v-if="!booleanitems.isexcerpt">
           <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+
           <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</a>
           <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
+
+          <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 0">{{$parent.toctitle}}</a>
+          <div v-if="booleanitems.tocshown" class="tocinfo">
+            <div v-for="toc in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
+              <div class="title"><a v-on:click="$parent.nextItemRange(toc.position);">{{toc.label}}</a></div>
+              <div class="additionaltext" v-html="toc.description" v-if="toc.description"></div>
+            </div>
+          </div>
+
           <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</a>
           <div v-if="booleanitems.annoinfoshown" class="annoinfo">
             <span v-html="annoinfo.text"></span>
@@ -87,6 +97,7 @@
               </div>
             </div>
           </div>
+
           <a class="infolink" v-if="imageinfo.text" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{imageinfo.label}}</a>
           <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
         </span>
@@ -137,7 +148,8 @@ export default {
         isoverlaytoggled: false,
         annoinfoshown: false,
         imageinfoshown: false,
-        additionalinfoshown: false
+        additionalinfoshown: false,
+        tocshown: false
       },
       shown: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
@@ -588,6 +600,7 @@ export default {
     },
     //get any layers in manfiest and get custom layers. This is called for all viewers and will get the tile if there are no layers
     getLayerData: function(images) {
+      images = images ? images : [];
       for (var i=0; i<images.length; i++){
         var imgResource = images[i].resource;
         var canvas_tile = imgResource.service ? imgResource.service['@id'].split("/full/")[0] : imgResource['@id'];
