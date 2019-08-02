@@ -1,16 +1,6 @@
 {
   "@id": "https://ncsu-libraries.github.io/iiif-annotation/webannotations/range.json",
   "@type": "sc:Range",
-  "canvases": [
-    {
-      "@id": "",
-      "within": null
-    },
-    {
-      "@id": "",
-      "within": null
-    }
-  ],
   "contentLayer": {
     "otherContent": [
       {
