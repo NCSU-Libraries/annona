@@ -76,7 +76,7 @@ export default {
             xywh = canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
           }
           var annostring = anno['@id'] ? anno['@id'] : anno['id'] ? anno['id'] : anno;
-          var toclabel = anno['label'] ? anno['label'] : `Page: ${ca + 1}`
+          var toclabel = anno['label'] ? anno['label'] : `Page ${ca + 1}`
           var description = anno['description'] ?  anno['description'] : '';
           this.toc.push({ 'position' :ca, 'label' : toclabel, 'description': description});
           this.rangelist.push({'canvas': canvas, 'anno': annostring,  'manifest': manifest, section: xywh, title: toclabel})

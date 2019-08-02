@@ -1,14 +1,28 @@
 {
-  "@context": "http://iiif.io/api/presentation/2/context.json",
   "@id": "https://ncsu-libraries.github.io/iiif-annotation/webannotations/range.json",
   "@type": "sc:Range",
-  "label": "Two pages from Manuscrit reconstitué : Châteauroux, Bibliothèque municipale, ms. 5 (Grandes Chroniques de France)",
+  "canvases": [
+    {
+      "@id": "",
+      "within": null
+    },
+    {
+      "@id": "",
+      "within": null
+    }
+  ],
   "contentLayer": {
-    "@id": "https://ncsu-libraries.github.io/iiif-annotation/webannotations/range.json",
-    "@type": "sc:Layer",
     "otherContent": [
-      "https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json",
-      "https://dnoneill.github.io/annotate/annotations/4490-canvas-981395-list.json"
+      {
+        "@id": "https://dnoneill.github.io/annotate/annotations/4490-canvas-981395-list.json",
+        "description": "",
+        "label": ""
+      },
+      {
+        "@id": "https://dnoneill.github.io/annotate/annotations/4490-canvas-981395-list.json",
+        "description": "",
+        "label": ""
+      }
     ]
   }
 }
