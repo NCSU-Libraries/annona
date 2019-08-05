@@ -73,7 +73,7 @@ export default {
           manifest = manifest['@id'] ? manifest['@id'] : manifest['id'] ? manifest['id'] : manifest;
           if (canvas){
             var canvasid = canvas['@id'] ? canvas['@id'] : canvas['id'] ? canvas['id'] : canvas;
-            xywh = canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
+            xywh = canvasid.constructor.name == String && canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
           }
           var annostring = anno['@id'] ? anno['@id'] : anno['id'] ? anno['id'] : anno;
           var toclabel = anno['label'] ? anno['label'] : `Page ${ca + 1}`
