@@ -58,7 +58,8 @@ export default {
         customlayers: '',
         isfullscreen: false,
         toc: [],
-        viewingDirection: 'ltr'
+        viewingDirection: 'ltr',
+        rangetitle: ''
       }
     },
     created(){
@@ -73,7 +74,7 @@ export default {
           this.buttons.prev = this.buttons.next;
           this.buttons.next = '<i class="fas fa-chevron-left"></i>';
         }
-        var rangetitle = response.data.label;
+        this.rangetitle = response.data.label;
         for (var ca=0; ca<annos.length; ca++){
           var canvas = canvases[ca];
           var anno = annos[ca];
@@ -88,13 +89,13 @@ export default {
           var toclabel = anno['label'] ? anno['label'] : `Page ${ca + 1}`
           var description = anno['description'] ?  anno['description'] : '';
           this.toc.push({ 'position' :ca, 'label' : toclabel, 'description': description});
-          this.rangelist.push({'canvas': canvas, 'anno': annostring,  'manifest': manifest, section: xywh, title: toclabel})
+          this.rangelist.push({'canvas': canvas, 'anno': annostring,  'manifest': manifest, section: xywh, title: anno['label']})
         }
         this.annotationurl = this.rangelist[0];
         // Get settings and create styling string
         this.settings = shared.getsettings(this.styling);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
-        this.settings.title = rangetitle ? rangetitle : '' + this.annotationurl.title;
+        this.getTitle();
         this.$props.ws ? this.ws = this.$props.ws : '';
         this.$props.layers ? this.customlayers = this.$props.layers : '';
         this.settings.imagecrop = this.annotationurl.section;
@@ -119,13 +120,19 @@ export default {
         }
         this.annotationurl = this.rangelist[this.position];
         this.settings.imagecrop = this.annotationurl.section;
-        this.settings.title = this.annotationurl.title;
+        this.getTitle();
         this.getStylingString();
       },
       getStylingString: function(){
         for (var key in this.settings){
           this.stylingstring += `${key}:${this.settings[key]};`
         }
+      },
+      getTitle: function() {
+        var title = this.rangetitle ? this.rangetitle : '';
+        this.rangetitle && this.annotationurl.title ? title += ': ' : '';
+        title += this.annotationurl.title ? this.annotationurl.title : '';
+        this.settings.title = title;
       },
       updateFullScreen: function(fullscreen, expandbutton) {
         this.$children[0].buttons.expandbutton = expandbutton;

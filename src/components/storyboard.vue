@@ -371,7 +371,7 @@ export default {
         label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
         var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
         value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
-        if (label === 'title' && j == 1 && !this.imagetitle){
+        if (label === 'title' && j == 1 && !this.settings.title){
           this.imagetitle = value;
         }
         if (value){
@@ -565,7 +565,7 @@ export default {
           for (var i = 0; i< canvases.length; i++){
             if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
               var images = canvases[i].images;
-              if (!this.imagetitle){
+              if (!this.settings.title){
                 var title = canvases[i].label;
                 title = title && title.constructor.name == 'Object' ? title['@value'] : title;
                 this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
