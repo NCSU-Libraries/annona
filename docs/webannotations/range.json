@@ -1,17 +1,18 @@
 {
   "@id": "https://ncsu-libraries.github.io/iiif-annotation/webannotations/range.json",
   "@type": "sc:Range",
+  "label": "Manuscrit reconstitué : Châteauroux, Bibliothèque municipale, ms. 5 (Grandes Chroniques de France)",
   "contentLayer": {
     "otherContent": [
       {
-        "@id": "https://dnoneill.github.io/annotate/annotations/4490-canvas-981395-list.json",
+        "@id": "https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json",
         "description": "",
-        "label": ""
+        "label": "Manuscrit reconstitué : Châteauroux, Bibliothèque municipale, ms. 5 (Grandes Chroniques de France): f. 033v - 034"
       },
       {
         "@id": "https://dnoneill.github.io/annotate/annotations/4490-canvas-981395-list.json",
         "description": "",
-        "label": ""
+        "label": "Manuscrit reconstitué : Châteauroux, Bibliothèque municipale, ms. 5 (Grandes Chroniques de France): f. 034v - 035"
       }
     ]
   }
