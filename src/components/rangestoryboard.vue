@@ -1,11 +1,11 @@
 <template>
 <div v-bind:id="rangeid" class="rangestoryboard" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
   <storyboard :key="position" v-if="annotationurl" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-  <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="{ 'pageinactive' : prevPageInactive }">
-    <i class="fas fa-chevron-left"></i><span class="toolbartext">Previous page</span>
+  <button id="previousPageInactiveButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="{ 'pageinactive' : prevPageInactive, 'floatleft' : viewingDirection == 'rtl' }" v-html="buttons.prev">
+    <span class="toolbartext">Previous page</span>
   </button>
-  <button id="nextPageInactiveButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="{ 'pageinactive' : nextPageInactive }">
-    <i class="fas fa-chevron-right"></i><span class="toolbartext">Next Page</span>
+  <button id="nextPageInactiveButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="{ 'pageinactive' : nextPageInactive, 'floatleft' : viewingDirection == 'ltr' }" v-html="buttons.next">
+    <span class="toolbartext">Next Page</span>
   </button>
 </div>
 </template>
@@ -42,7 +42,9 @@ export default {
           'playpause': '<i class="fas fa-play"></i>',
           'tags': '<i class="fas fa-tag"></i>',
           'info': '<i class="fas fa-info-circle"></i>',
-          'layer': '<i class="fas fa-layer-group"></i>'
+          'layer': '<i class="fas fa-layer-group"></i>',
+          'prev' : '<i class="fas fa-chevron-left"></i>',
+          'next': '<i class="fas fa-chevron-right"></i>'
         },
         settings: {},
         stylingstring: "",
@@ -55,7 +57,8 @@ export default {
         rangeid: '',
         customlayers: '',
         isfullscreen: false,
-        toc: []
+        toc: [],
+        viewingDirection: 'ltr'
       }
     },
     created(){
@@ -64,6 +67,12 @@ export default {
       axios.get(this.$props.rangeurl).then(response => {
         var annos = response.data.contentLayer.otherContent;
         var canvases = response.data.canvases ? response.data.canvases : [];
+        var viewingDirection = response.data.viewingDirection;
+        if(viewingDirection === 'right-to-left'){
+          this.viewingDirection = 'rtl';
+          this.buttons.prev = this.buttons.next;
+          this.buttons.next = '<i class="fas fa-chevron-left"></i>';
+        }
         var rangetitle = response.data.label;
         for (var ca=0; ca<annos.length; ca++){
           var canvas = canvases[ca];
