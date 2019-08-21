@@ -58,17 +58,16 @@ W3 standards allow for transitions between multiple bodies [https://www.w3.org/T
 Some manifests define multiple images for a "canvas" allowing for images to be placed on top of each other. Three examples of annotations created on manifests with layers can be seen below. The layers can be toggled using the <i class="fas fa-layer-group"></i> button.
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-5005-cons-overlay-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json"></iiif-storyboard>
 ```
 
- <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-5005-cons-overlay-list.json"></iiif-storyboard>
-
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json"></iiif-storyboard>
 
  ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/14057-c0-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json"></iiif-storyboard>
  ```
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/14057-c0-list.json"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json"></iiif-storyboard>
 
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
@@ -81,9 +80,9 @@ This allows for layers to be created without having to define the layers in a ma
 **Note: In order to determine the `xywh` and `section` fields try using any of the cropping tools listed on the [Awesome IIIF list.](https://github.com/IIIF/awesome-iiif#image-tools)**
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-main-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-main-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '185,180,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
 
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>
@@ -263,7 +262,7 @@ This is an example of the info that is loaded.
 This application also allows for a single annotation to be loaded in an OpenSeadragon viewer. In order to embed an storyboard viewer for a single annotation the code is below:
 
 ```
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-001.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json"></iiif-storyboard>
 ```
 
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-001.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json"></iiif-storyboard>

@@ -43,7 +43,7 @@ This replaces the need for websockets for comparing two or more annotations. It 
 This setting works similarly to layers in the storyboard viewer. This will load the image next to the annotation(s). **Note** The annotation is on the image [https://data.getty.edu/museum/api/iiif/366589/info.json](https://data.getty.edu/museum/api/iiif/366589/info.json) which has a width 5127 and height of 6513. The loaded image is [https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json](https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json) and has a width of 3864 and height of 5076. Due to the height differentials, zooming on the smaller image will move to a different section than the larger image. It can not be avoided but should be kept in mind when using this functionality.
 
 ```
-<iiif-multistoryboard annotationlists="https://dnoneill.github.io/annotate/annotations/131424-main-list.json;" images="https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json;"></iiif-multistoryboard>
+<iiif-multistoryboard annotationlists="https://dnoneill.github.io/annotate/annotations/131424-list.json;" images="https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json;"></iiif-multistoryboard>
 ```
 
-<iiif-multistoryboard annotationlists="https://dnoneill.github.io/annotate/annotations/131424-main-list.json;" images="https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json;"></iiif-multistoryboard>
+<iiif-multistoryboard annotationlists="https://dnoneill.github.io/annotate/annotations/131424-list.json;" images="https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json;"></iiif-multistoryboard>
