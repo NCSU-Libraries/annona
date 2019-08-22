@@ -257,12 +257,16 @@ export default {
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;
+      var tilesource = this.seadragontile;
+      if (this.seadragontile.endsWith('.jpg')){
+          tilesource = { type: 'image', url:  `${this.seadragontile}`, buildPyramid: true }
+      }
       var osdsettings = {
             id: `${this.seadragonid}`,
             type: "image",
             nextButton: 'next',
             previousButton: 'previous',
-            tileSources: `${this.seadragontile}`,
+            tileSources: tilesource,
             toolbar: `${this.toolbar_id}`,
             showNavigator:  false,
             showNavigationControl: false,
@@ -588,8 +592,12 @@ export default {
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
         tile = tile.split("#")[0];
-        tile += tile.slice(-1) !== '/' ? "/" : '';
-        this.seadragontile = tile + "info.json";
+        if (tile.endsWith('.jpg')){
+          this.seadragontile = tile;
+        } else {
+          tile += tile.slice(-1) !== '/' ? "/" : '';
+          this.seadragontile = tile + "info.json";
+        }
         this.layerslist.push({'tile': this.seadragontile, 'label': 'Layer 1', checked: true, 'opacity': 1});
         this.getLayerData([]);
       }
