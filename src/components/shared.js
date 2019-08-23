@@ -2,6 +2,7 @@ import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
 
 export default {
+  imageextensions: ['jpg', 'jpeg', 'png', 'svg'],
   //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.
   on_structure: function(anno){
     if (typeof anno['on'] === 'undefined'){

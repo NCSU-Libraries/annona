@@ -192,8 +192,9 @@ export default {
         }
         var path = shared.getSVGoverlay(ondict[cn])
         //get jpg format
-        var jpgformat = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'].split("/").slice(-1)[0] : 'default.jpg';
-        fullImage = canvas.images[0].resource['@id'] ? canvas.images[0].resource['@id'] : this.fullImage(baseImageUrl, regionCanvas, size);
+        var resourceid = canvas.images[0].resource['@id'] && canvas.images[0].resource['@id'].includes('/full') ? canvas.images[0].resource['@id'] : '';
+        var jpgformat = resourceid ? resourceid.split("/").slice(-1)[0] : 'default.jpg';
+        fullImage = resourceid ? resourceid : this.fullImage(baseImageUrl, regionCanvas, size);
         size = this.settings.height || this.settings.width ? size : fullImage.split("/").slice(-3)[0];
         //construct image URL
         var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/${jpgformat}`;

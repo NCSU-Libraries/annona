@@ -258,8 +258,9 @@ export default {
     createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;
       var tilesource = this.seadragontile;
-      if (this.seadragontile.endsWith('.jpg')){
-          tilesource = { type: 'image', url:  `${this.seadragontile}`, buildPyramid: true }
+      var extension = tilesource.split('.').slice(-1)[0].toLowerCase();
+      if (shared.imageextensions.includes(extension)){
+          tilesource = { type: 'image', url:  `${this.seadragontile}` }
       }
       var osdsettings = {
             id: `${this.seadragonid}`,
@@ -592,7 +593,8 @@ export default {
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
         tile = tile.split("#")[0];
-        if (tile.endsWith('.jpg')){
+        var extension = tile.split('.').slice(-1)[0].toLowerCase();
+        if (shared.imageextensions.includes(extension)){
           this.seadragontile = tile;
         } else {
           tile += tile.slice(-1) !== '/' ? "/" : '';
