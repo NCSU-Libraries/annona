@@ -5,7 +5,7 @@
       <span v-for="image in item.image" :key="image">
       <span v-html="image" id="annoimage"></span>
       </span>
-      <img v-if="item.fullImage" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+      <img v-if="item.fullImage && !settings.image_only && !settings.view_larger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
       <div v-if="settings.view_tags !== false && item.tags" v-html="item.tags"></div>
       <button v-on:click="toggle($event)" class="togglebutton" v-if="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
