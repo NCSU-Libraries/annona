@@ -181,6 +181,13 @@ export default {
     text = isempty.test(text) ? '' : text;
     return text;
   },
+  getTileFormat: function(tilesource) {
+    var extension = tilesource.split('.').slice(-1)[0].toLowerCase();
+    if (shared.imageextensions.includes(extension)){
+        tilesource = { type: 'image', url:  `${tilesource}` }
+    }
+    return tilesource;
+  },
   flatten: function(array, element) {
     if (element) {
       return array.reduce((acc, val) => acc.concat(val[element]), [])

@@ -23,8 +23,7 @@ export default {
       'rangeurl':String,
       'styling': String,
       'ws': String,
-      'layers': String,
-      'images': String
+      'layers': String
     },
     data: function() {
       return {

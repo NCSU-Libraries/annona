@@ -257,11 +257,7 @@ export default {
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;
-      var tilesource = this.seadragontile;
-      var extension = tilesource.split('.').slice(-1)[0].toLowerCase();
-      if (shared.imageextensions.includes(extension)){
-          tilesource = { type: 'image', url:  `${this.seadragontile}` }
-      }
+      var tilesource = shared.getTileFormat(this.seadragontile);
       var osdsettings = {
             id: `${this.seadragonid}`,
             type: "image",
@@ -650,10 +646,11 @@ export default {
     setLayers: function(layer, position) {
       var xywh = layer.xywh;
       var vue = this;
+      var tilesource = shared.getTileFormat(layer.tile);
       var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
       var clip = layer.section ? new openseadragon.Rect(layer.section[0], layer.section[1], layer.section[2], layer.section[3]) : 0;
       this.viewer.addTiledImage({
-          tileSource: layer.tile,
+          tileSource: tilesource,
           x: rect.x,
           y: rect.y,
           width: rect.width,

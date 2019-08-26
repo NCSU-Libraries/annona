@@ -167,13 +167,14 @@ export default {
         var fit = this.settings.fit == 'fill' ? true : false;
         for(var g=0; g<this.allimages.length; g++){
           var image = this.allimages[g];
+          var tiles = shared.getTileFormat(image.tile);
           var osdsettings = {
                 id: `${image.id}`,
                 type: "image",
                 nextButton: 'next',
                 previousButton: 'previous',
                 homeFillsViewer: fit,
-                tileSources: `${image.tile}`,
+                tileSources: `${tiles}`,
                 showNavigator:  false,
                 showNavigationControl: false,
                 constrainDuringPan: true,
