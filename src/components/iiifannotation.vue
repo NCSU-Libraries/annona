@@ -126,7 +126,8 @@ export default {
             var canvasItem = canvasId[cn]
             var imagehtml;
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
-            var imageurl = `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`
+            var extension = canvasRegion['canvasId'].split('.').slice(-1)[0].toLowerCase();
+            var imageurl = shared.imageextensions.includes(extension) ? canvasRegion['canvasId'] : `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
             var path = shared.getSVGoverlay(ondict[cn]);
             if (path) {
               imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
@@ -135,11 +136,17 @@ export default {
               imagehtml.setAttribute('src', imageurl);
               imagehtml.setAttribute('alt', dictionary['altText']);
             }
+            if (shared.imageextensions.includes(extension)) {
+             var canv = document.createElement('canvas');
+             canv.id = `${dictionary['id']}_canvas`
+             canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id);
+             imagehtml = canv;
+            }
             for (var key in this.settings.imagesettings){
               imagehtml.style[key] = this.settings.imagesettings[key];
             }
             dictionary['image'].push(imagehtml.outerHTML);
-            dictionary['fullImage'] = this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
+            dictionary['fullImage'] = shared.imageextensions.includes(extension) ? canvasRegion['canvasId'] : this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
           }
         }
         // If received image render element
@@ -168,6 +175,16 @@ export default {
       path.setAttribute("stroke", "none")
       svg.innerHTML = inner + path.outerHTML;
       return svg;
+    },
+    writecanvas: function(img, xywh, id) {
+      setTimeout(function(){
+        xywh = xywh.split(',')
+        var canvas1 = document.getElementById(id); //find new canvas we created
+        var context = canvas1.getContext('2d');
+        canvas1.width = xywh[2]
+        canvas1.height = xywh[3]
+        context.drawImage(img, -xywh[0], -xywh[1]); //draws background image
+      }, 1000);
     },
     //gets image by matching against manifest
     getManifestCanvas: function(canvasId, anno, dictionary, size){
