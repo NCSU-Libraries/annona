@@ -183,7 +183,7 @@ export default {
   },
   getTileFormat: function(tilesource) {
     var extension = tilesource.split('.').slice(-1)[0].toLowerCase();
-    if (shared.imageextensions.includes(extension)){
+    if (this.imageextensions.includes(extension)){
         tilesource = { type: 'image', url:  `${tilesource}` }
     }
     return tilesource;
