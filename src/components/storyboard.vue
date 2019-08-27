@@ -589,7 +589,7 @@ export default {
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
         tile = tile.split("#")[0];
-        var extension = tile.split('.').slice(-1)[0].toLowerCase();
+        var extension = shared.getExtension(tile)
         if (shared.imageextensions.includes(extension)){
           this.seadragontile = tile;
         } else {

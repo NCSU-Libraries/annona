@@ -126,7 +126,7 @@ export default {
             var canvasItem = canvasId[cn]
             var imagehtml;
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
-            var extension = canvasRegion['canvasId'].split('.').slice(-1)[0].toLowerCase();
+            var extension = shared.getExtension(canvasRegion['canvasId']);
             var imageurl = shared.imageextensions.includes(extension) ? canvasRegion['canvasId'] : `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
             var path = shared.getSVGoverlay(ondict[cn]);
             if (path) {

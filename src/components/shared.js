@@ -181,8 +181,11 @@ export default {
     text = isempty.test(text) ? '' : text;
     return text;
   },
+  getExtension: function (tile) {
+    return tile.split('?')[0].split('.').slice(-1)[0].toLowerCase();
+  },
   getTileFormat: function(tilesource) {
-    var extension = tilesource.split('.').slice(-1)[0].toLowerCase();
+    var extension = this.getExtension(tilesource)
     if (this.imageextensions.includes(extension)){
         tilesource = { type: 'image', url:  `${tilesource}` }
     }
