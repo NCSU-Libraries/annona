@@ -139,13 +139,17 @@ export default {
   },
   // parse author information; looks at creator field. Is going to be expanded to reflect OA standards
   getAuthor: function(annotation) {
-    var author;
-    if (Array.isArray(annotation.creator)) {
-      author = annotation.creator.join(", ");
-    } else {
-      author = annotation.creator;
+    var authors = [];
+    var authorfield = annotation.creator ? annotation.creator : annotation['annotatedBy'] ? annotation['annotatedBy'] : annotation['oa:annotatedBy'] ? annotation['oa:annotatedBy'] : '';
+    if (!Array.isArray(authorfield)) {
+      authorfield = [authorfield];
     }
-    return author;
+    for (var au = 0; au<authorfield.length; au++){
+      var author = authorfield[au];
+      var author_string = author['name'] ? author['name'] : author['label'] ? author['label'] : author;
+      authors.push(author_string)
+    }
+    return authors.join(', ');
   },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
