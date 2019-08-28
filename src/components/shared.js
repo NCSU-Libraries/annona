@@ -91,7 +91,8 @@ export default {
     if (ondict && typeof ondict.selector !== 'undefined') {
       canvasRegion = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
       canvasRegion = canvasRegion.split("=").slice(-1)[0]
-    } else if (typeof canvasId !== 'string'){
+    }
+    if (typeof canvasId !== 'string'){
       if (canvasId['source']){
         canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
         canvasId = canvasId.source;
