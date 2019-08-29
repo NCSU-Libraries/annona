@@ -1,10 +1,10 @@
 <template>
 <div v-bind:id="rangeid" class="rangestoryboard" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
   <storyboard :key="position" v-if="annotationurl" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-  <button id="previousPageInactiveButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="{ 'pageinactive' : prevPageInactive, 'floatleft' : viewingDirection == 'rtl' }" v-html="buttons.prev">
+  <button id="previousPageInactiveButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]" v-html="buttons.prev">
     <span class="toolbartext">Previous page</span>
   </button>
-  <button id="nextPageInactiveButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="{ 'pageinactive' : nextPageInactive, 'floatleft' : viewingDirection == 'ltr' }" v-html="buttons.next">
+  <button id="nextPageInactiveButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']" v-html="buttons.next">
     <span class="toolbartext">Next Page</span>
   </button>
 </div>

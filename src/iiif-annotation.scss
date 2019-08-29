@@ -542,6 +542,10 @@ figcaption {
   left: 95%;
 }
 
+.floatright {
+  left: 0;
+}
+
 .pageinactive {
   display: none;
 }
@@ -560,4 +564,5 @@ figcaption {
 
 .rangefullpage .pageButton{
   color: white;
+  position: fixed;
 }
