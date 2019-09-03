@@ -31,7 +31,6 @@ export default {
         layerslist: false,
         isws: '',
         range: true,
-        anno_data: [],
         toctitle: 'Range Pages',
         buttons: {
           'autorunbutton': '<i class="fas fa-magic"></i>',
@@ -48,7 +47,6 @@ export default {
         settings: {},
         stylingstring: "",
         annotationurl: '',
-        title: '',
         rangelist: [],
         position: 0,
         prevPageInactive: true,
@@ -95,10 +93,11 @@ export default {
         this.settings = shared.getsettings(this.styling);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.getTitle();
-        this.$props.ws ? this.ws = this.$props.ws : '';
+        this.$props.ws ? this.isws = this.$props.ws : '';
         this.$props.layers ? this.customlayers = this.$props.layers : '';
-        this.settings.imagecrop = this.annotationurl.section;
+        this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
+        this.rangelist.length == 1 ? this.nextPageInactive = true : ''
       })
     },
     methods: {
@@ -118,7 +117,7 @@ export default {
           this.nextPageInactive = true;
         }
         this.annotationurl = this.rangelist[this.position];
-        this.settings.imagecrop = this.annotationurl.section;
+        this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getTitle();
         this.getStylingString();
       },

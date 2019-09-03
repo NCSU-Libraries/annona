@@ -726,8 +726,8 @@ export default {
         var this_functions = this;
         var interval = this.settings.autorun_interval*1000;
         this_functions.isautorunning = setTimeout(function(){
-          if (this.position === this.zoomsections.length){
-            this.position = -1;
+          if (this_functions.position === this_functions.zoomsections.length){
+            this_functions.position = -1;
           }
           this_functions.next('next');
         }, interval);
