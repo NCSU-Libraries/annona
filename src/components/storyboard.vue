@@ -241,7 +241,9 @@ export default {
       //get tags and set corresponding color
       var tags = Array.from(new Set(shared.flatten(this.annotations, 'tags'))).sort();
       for (var tc=0; tc<tags.length; tc++){
-        var randomcolor = '#'+Math.random().toString(16).substr(-6);
+        var jsonparse = this.settings.tagscolor ? JSON.parse(this.settings.tagscolor.replace(/'/g, '"')) : '';
+        var set_color = jsonparse && jsonparse[tags[tc]] ? jsonparse[tags[tc]] : '';
+        var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
         var checked = this.settings.toggleoverlay ? true : false;
         this.tagslist[tags[tc]] = {'color':randomcolor, 'checked': checked};
       }
@@ -424,7 +426,7 @@ export default {
         var classes = `overlay ${tags} ${multi}`.trim();
         elem.className = `${zoomsections['type']} ${classes}`;
         //set color for overlay based on tag color
-        var color = this.tagslist[tags] ? this.tagslist[tags].color : '';
+        var color = this.tagslist[tags] ? this.tagslist[tags].color : this.settings.overlaycolor ? this.settings.overlaycolor : '';
         // If type is 'pin' use mapmarker icon
         if (zoomsections['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
@@ -440,6 +442,7 @@ export default {
           var path2 = document.createElement("path");
           path2.setAttribute('d', path.getAttribute('d'));
           path2.classList.add('svgactive');
+          this.settings.activecolor ? path2.style.stroke = this.settings.activecolor : '';
           var origin = `${parseInt(xywh[0])+(parseInt(xywh[2])/2)}px ${parseInt(xywh[1])+(parseInt(xywh[3])/2)}px`;
           path2.style.transformOrigin = origin;
           path2.style.webkitTransformOrigin = origin;
@@ -449,6 +452,7 @@ export default {
         if (color){
           elem.style.borderColor = color;
           elem.style.color = color;
+          this.settings.activecolor ? elem.style.cssText += `outline-color: ${this.settings.activecolor}!important` : '';
         }
         elem.style.zIndex = zindex;
         this.viewer.addOverlay({
