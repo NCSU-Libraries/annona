@@ -85,9 +85,12 @@ export default {
       }
     },
     //get full image URL
-    fullImage: function(baseImageUrl, canvasRegion, size){
-      var fullImage =  canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/default.jpg` : '';
-      return fullImage;
+    getImages: function(baseImageUrl, canvasRegion, size, jpgformat='default.jpg'){
+      baseImageUrl = baseImageUrl.indexOf('upload.wikimedia.org') > -1 ? `https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=${baseImageUrl.split('/').slice(-1)[0]}` : baseImageUrl;
+      var extension = shared.getExtension(baseImageUrl);
+      var imageurl = shared.imageextensions.includes(extension) ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
+      var fullImage = shared.imageextensions.includes(extension) ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
+      return {'fullImage':fullImage, 'imageurl': imageurl};
     },
     //get manifest data from URL
     getManifestData: function(){
@@ -127,8 +130,9 @@ export default {
             var imagehtml;
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
             var extension = shared.getExtension(canvasRegion['canvasId']);
-            var imageurl = shared.imageextensions.includes(extension) ? canvasRegion['canvasId'] : `${canvasRegion['canvasId']}/${canvasRegion['canvasRegion']}/${size}/0/default.jpg`;
             var path = shared.getSVGoverlay(ondict[cn]);
+            var imagedict = this.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
+            var imageurl = imagedict['imageurl'];
             if (path) {
               imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
             } else {
@@ -146,7 +150,7 @@ export default {
               imagehtml.style[key] = this.settings.imagesettings[key];
             }
             dictionary['image'].push(imagehtml.outerHTML);
-            dictionary['fullImage'] = shared.imageextensions.includes(extension) ? canvasRegion['canvasId'] : this.fullImage(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
+            dictionary['fullImage'] = imagedict['fullImage']
           }
         }
         // If received image render element
@@ -184,7 +188,7 @@ export default {
         canvas1.width = xywh[2]
         canvas1.height = xywh[3]
         context.drawImage(img, -xywh[0], -xywh[1]); //draws background image
-      }, 1000);
+      }, 1599);
     },
     //gets image by matching against manifest
     getManifestCanvas: function(canvasId, anno, dictionary, size){
@@ -205,16 +209,17 @@ export default {
         if (canvas === undefined) {
           baseImageUrl = canvasItem.split("#")[0];
         } else {
-          baseImageUrl  = canvas.images[0].resource.service['@id']  ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+          baseImageUrl = canvas.images[0].resource.service ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
         }
         var path = shared.getSVGoverlay(ondict[cn])
         //get jpg format
         var resourceid = canvas.images[0].resource['@id'] && canvas.images[0].resource['@id'].includes('/full') ? canvas.images[0].resource['@id'] : '';
         var jpgformat = resourceid ? resourceid.split("/").slice(-1)[0] : 'default.jpg';
-        fullImage = resourceid ? resourceid : this.fullImage(baseImageUrl, regionCanvas, size);
-        size = this.settings.height || this.settings.width ? size : fullImage.split("/").slice(-3)[0];
+        size = this.settings.height || this.settings.width ? size : resourceid ? resourceid.split("/").slice(-3)[0] : 'full';
+        var imagedict = this.getImages(baseImageUrl, regionCanvas, size, jpgformat);
+        fullImage = imagedict['fullImage'];
         //construct image URL
-        var imageurl = `${baseImageUrl}/${regionCanvas}/${size}/0/${jpgformat}`;
+        var imageurl = imagedict['imageurl'];
         var imagehtml;
         //if svg path create svg element else create img element
         if (path) {
