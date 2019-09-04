@@ -117,9 +117,9 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | customid | **String**. If for some reason you would like to customize the identifier which gets automatically generated from the annotation filename use this setting. An example can be seen in the second storyboard in [add custom layers](#add-custom-layers). This setting is necessary if two storyboards with the same annotation get added to the same page. |
 | imagecrop | **String**. X,Y,W,H coordinates on the image in the following format "x,y,w,h", e.g. "200,300,600,400". This will crop the image in the viewer. Make sure not to crop out any annotations you have created. **Only available in latest release** |
 | title | **String**. Allows for a custom title to be placed in the info box. **Only available in latest release** |
-| tagscolor | String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. `{'tag name': 'color', 'tag name 2': 'color2'}` |
-|overlaycolor | change the overlay color; default is `#00bfff`|
-| activecolor | change active color; default is `lightgreen` |
+| tagscolor | String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. `{'tag name': 'color', 'tag name 2': 'color2'}`. See [single annotation settings](#single-annotation-setting) for an example. |
+|overlaycolor | change the overlay color; default is `#00bfff`. See [single annotation settings](#single-annotation-setting) for an example.|
+| activecolor | change active color; default is `lightgreen`. See [single annotation settings](#single-annotation-setting) for an example. |
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.
@@ -188,12 +188,12 @@ Annotation settings can be set inline. Additionally colors can be changed using 
 <div id="anno1" title="example info">
 This is an example of the info that is loaded.
 </div>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; imagecrop: 400,400,400,400; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
 ```
 <div id="anno1" title="example info">
 This is an example of the info that is loaded.
 </div>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; imagecrop: 400,400,400,400; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
 
 # Toolbar Icons
 
