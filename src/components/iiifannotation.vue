@@ -127,30 +127,12 @@ export default {
           //If image does not have a manifest go through canvases, get image urls and create HTML img or svg element
           for (var cn = 0; cn < canvasId.length; cn++){
             var canvasItem = canvasId[cn]
-            var imagehtml;
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
-            var extension = shared.getExtension(canvasRegion['canvasId']);
-            var path = shared.getSVGoverlay(ondict[cn]);
             var imagedict = this.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
             var imageurl = imagedict['imageurl'];
-            if (path) {
-              imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
-            } else {
-              imagehtml = document.createElement("img");
-              imagehtml.setAttribute('src', imageurl);
-              imagehtml.setAttribute('alt', dictionary['altText']);
-            }
-            if (shared.imageextensions.includes(extension)) {
-             var canv = document.createElement('canvas');
-             canv.id = `${dictionary['id']}_canvas`
-             canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id);
-             imagehtml = canv;
-            }
-            for (var key in this.settings.imagesettings){
-              imagehtml.style[key] = this.settings.imagesettings[key];
-            }
-            dictionary['image'].push(imagehtml.outerHTML);
             dictionary['fullImage'] = imagedict['fullImage']
+            var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, ondict, cn);
+            dictionary['image'].push(imagehtml.outerHTML);
           }
         }
         // If received image render element
@@ -163,6 +145,30 @@ export default {
       }
     },
     // Create SVG elements and corresponding image
+    createimagehtml: function(imageurl, canvasRegion, dictionary, ondict, cn) {
+      var imagehtml;
+      var isderivative = imageurl.indexOf('img/derivatives') > -1;
+      var extension = shared.getExtension(canvasRegion['canvasId']);
+      var path = shared.getSVGoverlay(ondict[cn]);
+      isderivative ? imageurl = dictionary['fullImage'] : '';
+      if (path && !isderivative) {
+        imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
+      } else {
+        imagehtml = document.createElement("img");
+        imagehtml.setAttribute('src', imageurl);
+        imagehtml.setAttribute('alt', dictionary['altText']);
+      }
+      if (shared.imageextensions.includes(extension) || isderivative) {
+       var canv = document.createElement('canvas');
+       canv.id = `${dictionary['id']}_canvas`
+       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
+       imagehtml = canv;
+      }
+      for (var key in this.settings.imagesettings){
+        imagehtml.style[key] = this.settings.imagesettings[key];
+      }
+      return imagehtml;
+    },
     createSVG: function(imageurl, regionCanvas, dictionary, path, position) {
       var id = dictionary['id'] + '-' + position;
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -211,28 +217,16 @@ export default {
         } else {
           baseImageUrl = canvas.images[0].resource.service ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
         }
-        var path = shared.getSVGoverlay(ondict[cn])
         //get jpg format
         var resourceid = canvas.images[0].resource['@id'] && canvas.images[0].resource['@id'].includes('/full') ? canvas.images[0].resource['@id'] : '';
         var jpgformat = resourceid ? resourceid.split("/").slice(-1)[0] : 'default.jpg';
-        size = this.settings.height || this.settings.width ? size : resourceid ? resourceid.split("/").slice(-3)[0] : 'full';
+        size = size != 'full' ? size : resourceid ? resourceid.split("/").slice(-3)[0] : 'full';
         var imagedict = this.getImages(baseImageUrl, regionCanvas, size, jpgformat);
         fullImage = imagedict['fullImage'];
         //construct image URL
         var imageurl = imagedict['imageurl'];
-        var imagehtml;
-        //if svg path create svg element else create img element
-        if (path) {
-          imagehtml = this.createSVG(imageurl, regionCanvas, dictionary, path, cn)
-        } else {
-          imagehtml = document.createElement("img");
-          imagehtml.setAttribute('src', imageurl);
-          imagehtml.setAttribute('alt', dictionary['altText']);
-        }
-        // set custom width and height
-        for (var key in this.settings.imagesettings){
-          imagehtml.style[key] = this.settings.imagesettings[key];
-        }
+        dictionary['fullImage'] = fullImage;
+        var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, ondict, cn);
         images.push(imagehtml.outerHTML)
       }
       return {'fullImage': fullImage, 'image': images}
