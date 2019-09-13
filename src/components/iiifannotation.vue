@@ -57,20 +57,37 @@ export default {
     }
 
     //get annotation URL and get annotation data
-    this.annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
-    axios.get(this.annotation_json).then(response => {
-      this.anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
-      this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
-      this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], response.data)
-    }).catch((error) => {this.rendered = false;console.log(error);}).then(() => {
-        if (this.manifestlink && !this.settings.text_only) {
-          this.getManifestData()
-        } else {
-          this.annoloop(false)
-        }
-    })
+    var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
+    this.annotation_json = this.parseInput(annotation_json);
+    if (this.annotation_json.constructor === String){
+      axios.get(this.annotation_json).then(response => {
+        this.parseAnnoManifest(response.data)
+      }).catch((error) => {this.rendered = false;console.log(error);})
+    } else {
+      var annotation_data = this.annotation_json;
+      this.annotation_json = this.annotation_json['@id'] ? this.annotation_json['@id'] : this.annotation_json['id'];
+      this.parseAnnoManifest(annotation_data);
+    }
   },
   methods: {
+    parseAnnoManifest: function(annotation_data){
+      this.anno = annotation_data.resources ? annotation_data.resources : annotation_data.items ? annotation_data.items : annotation_data;
+      this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
+      this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], annotation_data);
+      if (this.manifestlink && !this.settings.text_only) {
+        this.getManifestData()
+      } else {
+        this.annoloop(false)
+      }
+    },
+    parseInput: function(annotation) {
+      try {
+        return JSON.parse(document.getElementById(annotation).innerHTML)
+      }
+      catch(err) {
+        return annotation;
+      }
+    },
     //toggle hide/view full image
     toggle: function(event){
       var parent = event.target.parentElement;
