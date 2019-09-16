@@ -888,16 +888,13 @@ export default {
           var sections = this.zoomsections[this.position]['section'];
           var xs = sections.map(element => element.split(",")[0]);
           var lowx = Math.min(...xs);
-          var highx = Math.max(...xs);
           var ys = sections.map(element => element.split(",")[1]);
           var lowy = Math.min(...ys);
-          var highy = Math.max(...ys);
+          var highy = Math.max(...sections.map(element => parseInt(element.split(",")[1]) + parseInt(element.split(",")[3])));
           var ws = sections.map(element => element.split(",")[2]);
           var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0);
-          var width = (highx - lowx) + sumw;
-          var highinfo = sections.filter(element => parseInt(element.split(",")[1]) === highy)[0];
-          var height = highy - lowy + parseInt(highinfo.split(',')[3]);
-          var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, width, height);
+          var height = highy - lowy;
+          var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, sumw, height);
           this.goToArea(zoomarea);
           var elements = this.anno_elem.querySelectorAll(`#position${this.position}`);
           for (var tk=0; tk<elements.length; tk++){
