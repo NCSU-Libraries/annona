@@ -11,7 +11,7 @@
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="toolbarButton">
+        <button v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
@@ -54,7 +54,7 @@
       <span class="close_button" ><i class="fas fa-times" v-on:click="shown = false"></i></span>
       <span v-html="buttons.hide_button" class="close_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
       <span v-html="buttons.playpause" class="close_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
-      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && settings.showtags !== false" class="close_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></span>
+      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="close_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></span>
       <span v-html="buttons.info"  v-if="imageinfo || annoinfo.text" class="close_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></span>
       <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>

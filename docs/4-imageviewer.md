@@ -75,9 +75,9 @@ What areas are shown in the embedded image are customizable either through setti
 
 | Variable      | Settings |
 | ----------- | ----------- |
-| view_larger   | **true** or **false**. Shows/hides the "View Full Image" button. **Default** is true |
-| view_full_object |  **true** or **false**. Shows/hides the full object url. **Default** is true |
-| view_tags | **true** or **false**. Shows/hides the tags if they exists. **Default** is true |
+| hide_viewlarger   | **true** or **false**. Shows/hides the "View Full Image" button. **Default** is false |
+| hide_fullobject |  **true** or **false**. Shows/hides the full object url. **Default** is false |
+| hide_tags | **true** or **false**. Shows/hides the tags if they exists. **Default** is false |
 | height | Any height dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
 | width | Any width dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
 | image_only | **true** or **false**. Will only show the annotated image. **Default** is false |
@@ -90,9 +90,9 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 <script id="config" type="application/json">{
-  "view_larger":false,
-  "view_full_object":false,
-  "view_tags": false,
+  "hide_viewlarger":true,
+  "view_full_object":true,
+  "hide_tags": true,
   "height": "200"
 }</script>
 <iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
@@ -102,10 +102,10 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
 
 ### Image Only
 ```
-<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200'></iiif-annotation>
+<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='image_only:true; width:200'></iiif-annotation>
 ```
 
-<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='view_larger:false; image_only:true; width:200'></iiif-annotation>
+<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='image_only:true; width:200'></iiif-annotation>
 
 ### Text only
 

@@ -9,7 +9,7 @@
       <span v-html="buttons.info"></span>
       <span class="toolbartext">View source image information</span>
     </button>
-    <button v-on:click="multiButton({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="tags && settings.showtags !== false" class="toolbarButton">
+    <button v-on:click="multiButton({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="tags && !settings.hide_tags" class="toolbarButton">
       <span v-html="buttons.tags"></span>
       <span class="toolbartext">Toggle Tags</span>
     </button>

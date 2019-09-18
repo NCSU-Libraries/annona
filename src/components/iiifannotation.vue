@@ -5,11 +5,11 @@
       <span v-for="image in item.image" :key="image">
       <span v-html="image" id="annoimage"></span>
       </span>
-      <img v-if="item.fullImage && !settings.image_only && !settings.view_larger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+      <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
-      <div v-if="settings.view_tags !== false && item.tags" v-html="item.tags"></div>
-      <button v-on:click="toggle($event)" class="togglebutton" v-if="item.fullImage && item.fullImage !== '' && settings.view_larger !== false">View Full Image</button>
-      <div id="link_to_object" v-if="settings.view_full_object !== false && full_object && full_object !== '' && settings.image_only != true && settings.text_only != true">
+      <div v-if="!settings.hide_tags && item.tags" v-html="item.tags"></div>
+      <button v-on:click="toggle($event)" class="togglebutton" v-if="item.fullImage && item.fullImage !== '' && !settings.hide_viewlarger !== false">View Full Image</button>
+      <div id="link_to_object" v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">
         Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
       </div>
     </div>
@@ -267,7 +267,7 @@ export default {
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
-        this.settings.view_larger = false;
+        this.settings.hide_viewlarger = true;
       }
       return dictionary;
     }

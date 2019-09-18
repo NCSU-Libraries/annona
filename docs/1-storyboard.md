@@ -108,7 +108,7 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | toggleoverlay | **true** or **false**. By default this is **false** and the overlay is hidden unless toggled. This setting shows the overlays on load. |
 | textposition | **top**, **bottom**, **right**, **left**. Will position to the left, right, bottom, or top of annotated area. By default this option is not instantiated and the annotation text appears in the top left hand corner of the viewer. Additional positioning can be done with CSS. Each option has a dedicated class based on the option name (.top, .right, etc.)|
 | tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. If the language is set in the individual annotations it will set the language automatically and this can be set to **true** (see [Auto Language TTS example](#auto-language-tts-example)). A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (clicking the Auto Run button) to work in Chrome but should work fine in Safari and Firefox. It does not work with Internet Explorer. |
-| showtags | **true** or **false**. By default is **true**; If there are tags in the annotations tags will be available for toggling based on tags. This will remove the icons in both toolbars. |
+| hide_tags | **true** or **false**. By default is **false**; If there are tags in the annotations tags will be available for toggling based on tags. This will remove the icons in both toolbars. |
 | truncate_length | **Any Integer.** By default it is set to **2**; This determines how many words appear when the hide button (<i class="fas fa-caret-up"></i>) is clicked. The hide button will only show words in the annotation and will truncate the annotation and hide the tags. If you are looking for a way to hide the tags listed in the annotation (not the tags button) add to css to `.tags {display: none;}` |
 | additionalinfo | Is the id for an HTML object whose innerHTML will be loaded into the info tab. This HTML object should have a title tag. |
 | startenddisplay | Choices are **'tags'** or **'info'**. By default the first and last items are the full image without a text box. This setting allows for the information or tags tab to be toggled at the first and last item. |
@@ -178,7 +178,7 @@ Item here: [global settings example]({{site.baseurl}}/storyboard_settings)
   "toggleoverlay": true,
   "textposition": "right",
   "tts": "en",
-  "showtags":false
+  "hide_tags":true
 }</script>
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json"></iiif-storyboard>
 ```
