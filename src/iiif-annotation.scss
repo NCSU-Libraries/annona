@@ -297,16 +297,23 @@ figcaption {
   display: inline-block;
 }
 
+.tagscheck {
+  vertical-align: top;
+}
+
 .tags li {
-  height: 26px;
+  height: auto;
   font-size: 20px;
-  line-height: 26px;
+  line-height: auto;
   padding: 1px 9px 1px 8px;
   text-decoration: none;
   border-width: 1px 1px 1px 1px;
   border-style: solid;
   border-color: #dadada #d2d2d2 #c5c5c5;
   border-radius: 3px 0 0 3px;
+  word-break: break-word;
+  max-width: 60%;
+  min-height: 26px;
 }
 
 .tagscount {
