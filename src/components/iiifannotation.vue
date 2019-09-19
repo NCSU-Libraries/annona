@@ -7,7 +7,14 @@
       </span>
       <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
-      <div v-if="!settings.hide_tags && item.tags" v-html="item.tags"></div>
+      <ul v-if="!settings.hide_tags && item.tags" v-for="tag in item.tags" v-bind:key="tag" class="tags">
+        <li>
+          {{tag}}
+          <span class="tagscount" v-bind:style="[counts[tag] ? {background: counts[tag].color }: {}]">
+            <span v-if="!settings.hide_tagcount && annotation_items.length > 1 && counts[tag]">{{counts[tag].count}}</span>
+          </span>
+        </li>
+      </ul>
       <button v-on:click="toggle($event)" class="togglebutton" v-if="item.fullImage && item.fullImage !== '' && !settings.hide_viewlarger !== false">View Full Image</button>
       <div id="link_to_object" v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">
         Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
@@ -42,7 +49,8 @@ export default {
       annotation_items: [],
       rendered: '',
       annotation_json: '',
-      languages: []
+      languages: [],
+      counts: {}
       }
   },
   created() {
@@ -160,6 +168,8 @@ export default {
         }
         this.annotation_items.push(dictionary);
       }
+      var alltags = shared.flatten(this.annotation_items.map(element=>element['tags']));
+      this.counts = shared.getTagDict(alltags, this.settings, '');
     },
     // Create SVG elements and corresponding image
     createimagehtml: function(imageurl, canvasRegion, dictionary, ondict, cn) {
@@ -263,7 +273,7 @@ export default {
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
         dictionary['altText'] = dict['ocr'].length > 0 ? dict['ocr'][0] : dict['label'] !== undefined ? dict['label'] : `Image section of "${this.manifest['label']}"`;
         dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
-        dictionary['tags'] = dict['tags'].length > 0 ? `<div class="tagging">${dict['tags'].join('</div><div class="tagging">')}</div>` : "";
+        dictionary['tags'] = dict['tags'].length > 0 ? dict['tags'] : "";
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;

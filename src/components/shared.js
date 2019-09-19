@@ -151,6 +151,20 @@ export default {
     }
     return authors.join(', ');
   },
+  getTagDict: function(alltags, settings, checked) {
+    var tagdict = {}
+    var tags = Array.from(new Set(alltags)).sort();
+    for (var tc=0; tc<tags.length; tc++){
+      if (tags[tc] != '' && tags[tc]){
+        var jsonparse = settings.tagscolor ? JSON.parse(settings.tagscolor.replace(/'/g, '"')) : '';
+        var set_color = jsonparse && jsonparse[tags[tc]] ? jsonparse[tags[tc]] : '';
+        var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
+        var count = alltags.filter(i => i === tags[tc]).length;
+        tagdict[tags[tc]] = {'color':randomcolor, 'checked': checked, 'count': count};
+      }
+    }
+    return tagdict;
+  },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
   createContent: function(annotation, currentlang, storyboard) {

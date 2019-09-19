@@ -66,10 +66,15 @@
         </div>
       </div>
       <div id="tags" v-if="shown == 'tags'">
-        <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key">
+        <ul v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key" class="tags">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
-          <span v-bind:style="'color: ' + value.color" class="tagskey"> {{key.split("_").join(" ")}}</span>
-        </div>
+          <li>
+           {{key.split("_").join(" ")}}
+          <span v-bind:style="'background: ' + value.color" class="tagscount">
+            <span v-if="!settings.hide_tagcount">{{value.count}}</span>
+          </span>
+          </li>
+        </ul>
       </div>
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
         <div class="imagetitle"><h1>{{imagetitle}}</h1></div>
@@ -239,14 +244,9 @@ export default {
         this.buildseadragon(canvas);
       }
       //get tags and set corresponding color
-      var tags = Array.from(new Set(shared.flatten(this.annotations, 'tags'))).sort();
-      for (var tc=0; tc<tags.length; tc++){
-        var jsonparse = this.settings.tagscolor ? JSON.parse(this.settings.tagscolor.replace(/'/g, '"')) : '';
-        var set_color = jsonparse && jsonparse[tags[tc]] ? jsonparse[tags[tc]] : '';
-        var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
-        var checked = this.settings.toggleoverlay ? true : false;
-        this.tagslist[tags[tc]] = {'color':randomcolor, 'checked': checked};
-      }
+      var tags = shared.flatten(this.annotations, 'tags');
+      var checked = this.settings.toggleoverlay ? true : false;
+      this.tagslist = shared.getTagDict(tags, this.settings, checked);
       if (this.$parent.multi) {
         tags.length > 0 ? this.$parent.tags = true : '';
       }

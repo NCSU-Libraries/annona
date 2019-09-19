@@ -64,6 +64,7 @@ $active_color: lightgreen;
   word-wrap: break-word;
   height: auto;
   padding: 2px 5px 5px;
+  font-size: 20px;
 }
 
 #annotation_excerpt p {
@@ -273,40 +274,56 @@ figcaption {
 }
 
 
-.tagging {
-  background: #92D1E8;
-  border-radius: 3px 0 0 3px;
-  color: black;
-  display: inline-block;
-  height: 26px;
-  line-height: 26px;
-  padding: 0 20px 0 23px;
-  position: relative;
-  margin: 0 10px 10px 0;
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
-}
-.tagging::before {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+.tags:before, .tags:after {
   content: '';
-  height: 6px;
-  left: 10px;
-  position: absolute;
-  width: 6px;
-  top: 10px;
+  display: table;
 }
 
-.tagging::after {
-  background: #fff;
-  border-bottom: 13px solid transparent;
-  border-left: 10px solid #92D1E8;
-  border-top: 13px solid transparent;
-  content: '';
+.tags:after {
+  clear: both;
+}
+
+.tags {
+  margin-top: 1px;
+  margin-bottom: 7px;
+}
+
+.tags li {
+  position: relative;
+  width: auto!important;
+}
+
+.tags li, .tagscount {
+  display: inline-block;
+}
+
+.tags li {
+  height: 26px;
+  font-size: 20px;
+  line-height: 26px;
+  padding: 1px 9px 1px 8px;
+  text-decoration: none;
+  border-width: 1px 1px 1px 1px;
+  border-style: solid;
+  border-color: #dadada #d2d2d2 #c5c5c5;
+  border-radius: 3px 0 0 3px;
+}
+
+.tagscount {
   position: absolute;
-  right: 0;
-  top: 0;
+  left: 100%;
+  font-size: 22px;
+  top: -1px;
+  height: 26px;
+  line-height: 26px;
+  padding: 1px 9px 1px 8px;
+  color: white;
+  background: #eb6b22;
+  border: 1px solid;
+  border-color: #dadada #d2d2d2 #c5c5c5;
+  border-radius: 0 3px 3px 0;
+  border-width: 1px 1px 1px 1px;
+  -webkit-text-stroke: .5px black;
 }
 
 .toolbarButton .toolbartext {
