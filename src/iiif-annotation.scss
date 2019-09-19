@@ -283,17 +283,28 @@ figcaption {
   clear: both;
 }
 
+#tags {
+  width: calc(100% - 10px);
+}
+
 .tags {
   margin-top: 1px;
   margin-bottom: 7px;
+  width: calc(100% - 30px);
 }
 
-.tags li {
+.iiifannotation .tags {
+  width: auto;
+  display: inline-block;
+  padding-right: 3rem;
+}
+
+.tags div {
   position: relative;
   width: auto!important;
 }
 
-.tags li, .tagscount {
+.tags div, .tagscount {
   display: inline-block;
 }
 
@@ -301,7 +312,7 @@ figcaption {
   vertical-align: top;
 }
 
-.tags li {
+.tags div {
   height: auto;
   font-size: 20px;
   line-height: auto;
@@ -309,30 +320,36 @@ figcaption {
   text-decoration: none;
   border-width: 1px 1px 1px 1px;
   border-style: solid;
-  border-color: #dadada #d2d2d2 #c5c5c5;
+  border-color: #dadada;
   border-radius: 3px 0 0 3px;
-  word-break: break-word;
-  max-width: 60%;
+  word-break: break-all;
+  max-width: 100%;
   min-height: 26px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .tagscount {
   position: absolute;
+  width: max-content;
   left: 100%;
   font-size: 22px;
   top: -1px;
-  height: 26px;
+  height: calc(100% - 1px);
   line-height: 26px;
-  padding: 1px 9px 1px 8px;
+  padding: 1px 8px 0px 7px;
   color: white;
   background: #eb6b22;
   border: 1px solid;
-  border-color: #dadada #d2d2d2 #c5c5c5;
+  border-color: #dadada;
   border-radius: 0 3px 3px 0;
   border-width: 1px 1px 1px 1px;
   -webkit-text-stroke: .5px black;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
-
 .toolbarButton .toolbartext {
   visibility: hidden;
   width: 120px;
@@ -405,6 +422,7 @@ figcaption {
   top: 0;
   flex-wrap: wrap;
   box-sizing: content-box;
+  z-index: 20;
 }
 
 #storyboard_viewer .lang_drop {

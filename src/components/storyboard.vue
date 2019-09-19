@@ -66,15 +66,15 @@
         </div>
       </div>
       <div id="tags" v-if="shown == 'tags'">
-        <ul v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key" class="tags">
+        <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key" class="tags">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
-          <li>
+          <div class="countkey">
            {{key.split("_").join(" ")}}
           <span v-bind:style="'background: ' + value.color" class="tagscount">
             <span v-if="!settings.hide_tagcount">{{value.count}}</span>
           </span>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
         <div class="imagetitle"><h1>{{imagetitle}}</h1></div>

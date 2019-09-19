@@ -82,6 +82,7 @@ What areas are shown in the embedded image are customizable either through setti
 | width | Any width dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
 | image_only | **true** or **false**. Will only show the annotated image. **Default** is false |
 | text_only |  **true** or **false**. Will only show the text and tags. **Default** is false |
+| hide_tagcount | **true** or **false**. Will hide the count number in the tag. **Default** is **false** |
 
 ## Global settings
 Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
