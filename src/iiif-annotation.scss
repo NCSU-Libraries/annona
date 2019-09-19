@@ -291,6 +291,7 @@ figcaption {
   margin-top: 1px;
   margin-bottom: 7px;
   width: calc(100% - 30px);
+  text-align: left;
 }
 
 .iiifannotation .tags {
@@ -309,7 +310,7 @@ figcaption {
 }
 
 .tagscheck {
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .tags div {
