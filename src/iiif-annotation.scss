@@ -11,6 +11,7 @@ $borderwidth: $borderwidthnumber + px;
 $toolbarfontsize: 1.5rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
 $annocontrolsize: 1rem;
+$sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
 
 .inactive {
   color: red;
@@ -86,12 +87,16 @@ $annocontrolsize: 1rem;
 
 
 .sidebyside .annotation {
-  height: 105%;
+  height: #{$sidebyside};
   width: 20%;
   top: 0px!important;
   margin: 0px;
   font-size: 18px;
   max-height: none!important;
+}
+
+.multistoryboard .sidebyside .annotation {
+  height: calc(100% - #{$borderwidthnumber*2}px);
 }
 
 .annotation {
@@ -505,7 +510,7 @@ figcaption {
 
 @media only screen and (max-width: 600px) {
   .annotation {
-    width: calc(100% - #{$borderwidth} - #{$borderwidth});
+    width: calc(100% - #{$borderwidth} - #{$borderwidth})!important;
     resize: both;
     border: $borderwidth solid black;
     background: white;
@@ -604,7 +609,7 @@ figcaption {
 }
 
 #multistoryboard .annotation{
-  top: 20px;
+  top: 0px;
 }
 
 @media only screen and (max-width: 600px) {
