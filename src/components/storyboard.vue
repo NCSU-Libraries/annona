@@ -1,6 +1,6 @@
 <template>
 <div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
-  <div style="position:relative; display:flex">
+  <div style="position:relative; display:flex" v-bind:class="[!settings.sidebyside || shown == false ? 'annoinside' : 'sidebyside']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
         <button v-if="!annotationurl" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
@@ -504,7 +504,7 @@ export default {
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
       if(this.shown === field){
-        this.switchButtons()
+        this.switchButtons();
       } else {
         this.shown = field;
         this.switchButtons(field)
@@ -527,7 +527,8 @@ export default {
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
-          this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
+          this.shown = this.settings.startenddisplay && this.shown != this.settings.startenddisplay ? this.settings.startenddisplay : false;
+          this.settings.startenddisplay ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
           this.shown = this.currentanno != '' ? 'anno' : false;
         }

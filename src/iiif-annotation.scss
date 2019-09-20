@@ -43,6 +43,21 @@ $active_color: lightgreen;
   height: 100vh;
 }
 
+.sidebyside .seadragonbox, .sidebyside .seadragonboxfull {
+  width: 80%;
+  left: 20%;
+}
+
+.sidebyside .annotation {
+  height: 105%;
+
+  width: 20%;
+  top: 0px!important;
+  margin-left: 0px;
+  font-size: 18px;
+  max-height: none!important;
+}
+
 .annotation {
   width: 20%;
   resize: both;
@@ -273,16 +288,6 @@ figcaption {
   font-weight: bold;
 }
 
-
-.tags:before, .tags:after {
-  content: '';
-  display: table;
-}
-
-.tags:after {
-  clear: both;
-}
-
 #tags {
   width: calc(100% - 10px);
 }
@@ -292,6 +297,7 @@ figcaption {
   margin-bottom: 7px;
   width: calc(100% - 30px);
   text-align: left;
+  display: inline-flex;
 }
 
 .iiifannotation .tags {
