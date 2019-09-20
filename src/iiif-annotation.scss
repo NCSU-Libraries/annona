@@ -6,15 +6,20 @@ $seadrgon_height: 600px;
 $mid_pin: $pin_size/3 + px;
 $pin_font: $pin_size + px;
 $active_color: lightgreen;
+$borderwidthnumber: 2;
+$borderwidth: $borderwidthnumber + px;
+$toolbarfontsize: 1.5rem;
+$top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
+$annocontrolsize: 1rem;
 
 .inactive {
   color: red;
   pointer-events: none;
 }
 .toolbarButton {
-  font-size: 1.5rem;
+  font-size: $toolbarfontsize;
   background-color: #F0F0F0;
-  border: 2px solid #D3D3D3;
+  border: $borderwidth solid #D3D3D3;
   width: 100%;
   position: relative;
   padding: 0px;
@@ -48,12 +53,43 @@ $active_color: lightgreen;
   left: 20%;
 }
 
+.collapse .annotation {
+  height: calc(100% - #{$borderwidthnumber*2}px);
+  width: 20%;
+  top: $top;
+  transition: 0.3s;
+  margin: 0px;
+  font-size: 18px;
+  max-height: none!important;
+  resize: none;
+}
+
+.collapse .annotation.excerpt {
+  width: $annocontrolsize*2;;
+  transition: 0.3s;
+  height: auto;
+  resize: none;
+}
+
+.collapse .excerpt #annotation_controls .annocontrols_button:not(#hide_button) {
+  display: none;
+}
+
+.collapse .excerpt #hide_button {
+  font-size:  $annocontrolsize*2;
+  height: $annocontrolsize*2;
+  width: $annocontrolsize*2;
+}
+.collapse .excerpt .content {
+  display: none;
+}
+
+
 .sidebyside .annotation {
   height: 105%;
-
   width: 20%;
   top: 0px!important;
-  margin-left: 0px;
+  margin: 0px;
   font-size: 18px;
   max-height: none!important;
 }
@@ -61,10 +97,10 @@ $active_color: lightgreen;
 .annotation {
   width: 20%;
   resize: both;
-  border: 2px solid black;
+  border: $borderwidth solid black;
   background: white;
   position: absolute;
-  top: 8%;
+  top: $top;
   left: 0px;
   z-index: 99999;
   max-width: calc(100% - 20px);
@@ -72,6 +108,7 @@ $active_color: lightgreen;
   height: auto;
   overflow: scroll;
   margin-left: 20px;
+  margin-top: 20px;
   word-wrap: break-word;
 }
 
@@ -147,15 +184,15 @@ $active_color: lightgreen;
   display: none;
 }
 
-.close_button {
+.annocontrols_button {
   color: white;
   background: black;
   padding: 3.5px;
   margin-right: 1.5px;
-  font-size: 10px;
+  font-size: $annocontrolsize;
   text-align: center;
-  width: 10px;
-  height: 10px;
+  width: $annocontrolsize;
+  height: $annocontrolsize;
   border-radius: 15%;
   vertical-align: middle;
   line-height: 10px;
@@ -468,9 +505,9 @@ figcaption {
 
 @media only screen and (max-width: 600px) {
   .annotation {
-    width: calc(100% - 4px);
+    width: calc(100% - #{$borderwidth} - #{$borderwidth});
     resize: both;
-    border: 2px solid black;
+    border: $borderwidth solid black;
     background: white;
     position: absolute;
     font-size: 14px!important;

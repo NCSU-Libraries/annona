@@ -1,6 +1,6 @@
 <template>
 <div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
-  <div style="position:relative; display:flex" v-bind:class="[!settings.sidebyside || shown == false ? 'annoinside' : 'sidebyside']">
+  <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
         <button v-if="!annotationurl" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
@@ -49,23 +49,23 @@
         </button>
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-show="shown">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent']" v-show="shown">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-      <span class="close_button" ><i class="fas fa-times" v-on:click="shown = false"></i></span>
-      <span v-html="buttons.hide_button" class="close_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
-      <span v-html="buttons.playpause" class="close_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
-      <span v-html="buttons.tags"  v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="close_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></span>
-      <span v-html="buttons.info"  v-if="imageinfo || annoinfo.text" class="close_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></span>
-      <span class="lang-icon close_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
+      <span class="annocontrols_button" id="close_button"><i class="fas fa-times" v-on:click="shown = false"></i></span>
+      <span v-html="buttons.hide_button" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
+      <span v-html="buttons.playpause" id="playpause_button" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
+      <span v-html="buttons.tags" id="tags_button" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></span>
+      <span v-html="buttons.info" id="info_button" v-if="imageinfo || annoinfo.text" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></span>
+      <span class="lang-icon annocontrols_button" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
-      <div id="layers" v-if="shown == 'layer'">
+      <div id="layers" v-if="shown == 'layer'" class="content">
         <div v-for="layer in layerslist" v-bind:key="layer.tile">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'setOpacity', 'args': layer });" v-model="layer.checked">
           <span v-html="layer.label"></span>
           <div class="slidecontainer">Opacity: <input v-on:change="sendMessage({'function': 'setOpacity', 'args': {'event': $event, 'layer': layer} })" type="range" min="0" max="100" v-bind:value="layer.opacity*100" class="slider"></div>
         </div>
       </div>
-      <div id="tags" v-if="shown == 'tags'">
+      <div id="tags" v-if="shown == 'tags'" class="content">
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key" class="tags">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
           <div class="countkey">
@@ -76,7 +76,7 @@
           </div>
         </div>
       </div>
-      <div id="information" style="height: auto;" v-if="shown == 'info'" class="info">
+      <div id="information" style="height: auto;" v-if="shown == 'info'" class="info content">
         <div class="imagetitle"><h1>{{imagetitle}}</h1></div>
         <span v-if="!booleanitems.isexcerpt">
           <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
@@ -107,7 +107,7 @@
           <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
         </span>
       </div>
-      <div id="annotation_text" v-if="shown == 'anno'">
+      <div id="annotation_text" v-if="shown == 'anno'" class="content">
         <span v-html="currentanno" v-if="!booleanitems.isexcerpt"></span>
         <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
       </div>
@@ -191,6 +191,7 @@ export default {
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
     this.seadragonid = this.settings.customid ? this.settings.customid : annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
+    this.settings.annoview == 'collapse' ? this.buttons.hide_button = '<i class="fas fa-caret-left"></i>' : '';
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
       anno = [].concat(anno);
@@ -493,16 +494,20 @@ export default {
       element.style.removeProperty("height");
       if(this.booleanitems.isexcerpt){
         this.booleanitems.isexcerpt = false;
-        this.buttons.hide_button = '<i class="fas fa-caret-up"></i>'
+        this.buttons.hide_button = this.settings.annoview == 'collapse' ? '<i class="fas fa-caret-left"></i>' : '<i class="fas fa-caret-up"></i>' ;
       } else {
         this.booleanitems.isexcerpt = true;
-        this.buttons.hide_button = '<i class="fas fa-caret-down"></i>'
+        this.buttons.hide_button = this.settings.annoview == 'collapse' ? '<i class="fas fa-caret-right"></i>' : '<i class="fas fa-caret-down"></i>';
       }
+      console.log(this.booleanitems.isexcerpt)
     },
     //when specified button clicked change shown value
     clickButton: function(field){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
+      if (this.booleanitems.isexcerpt && this.settings.annoview == 'collapse') {
+        this.hide();
+      }
       if(this.shown === field){
         this.switchButtons();
       } else {

@@ -121,6 +121,7 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 |overlaycolor | change the overlay color; default is `#00bfff`. See [single annotation settings](#single-annotation-setting) for an example.|
 | activecolor | change active color; default is `lightgreen`. See [single annotation settings](#single-annotation-setting) for an example. |
 | hide_tagcount | **true** or **false**. Will hide the count number in the tag key. **Default** is **false** |
+| annoview | **sidebyside** or **collapse**. Will change how the annotation and information box style. Collapse positions the box on top of the image viewer and allows for the bar to collapse. Side by side is similar but it is next to the viewer |   
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.
