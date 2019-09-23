@@ -122,6 +122,7 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
   height: auto;
   padding: 2px 5px 5px;
   font-size: 20px;
+  text-align: left;
 }
 
 #annotation_excerpt p {
