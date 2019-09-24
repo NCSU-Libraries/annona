@@ -97,7 +97,8 @@ export default {
         widthvar: "",
         multi: true,
         allimages: [],
-        viewers: []
+        viewers: [],
+        fullscreen: false
       }
     },
     mounted(){

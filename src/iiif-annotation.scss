@@ -89,7 +89,7 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
 .sidebyside .annotation {
   height: #{$sidebyside};
   width: 20%;
-  top: 0px!important;
+  top: 2px!important;
   margin: 0px;
   font-size: 18px;
   max-height: none!important;
