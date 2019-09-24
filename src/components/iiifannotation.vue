@@ -189,7 +189,7 @@ export default {
       }
       if (shared.imageextensions.includes(extension) || isderivative) {
        var canv = document.createElement('canvas');
-       canv.id = `${dictionary['id']}_canvas`
+       canv.id = `${dictionary['id']}_canvas_img${cn}`
        canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
        imagehtml = canv;
       }
@@ -255,6 +255,7 @@ export default {
         //construct image URL
         var imageurl = imagedict['imageurl'];
         dictionary['fullImage'] = fullImage;
+
         var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, ondict, cn);
         images.push(imagehtml.outerHTML)
       }
