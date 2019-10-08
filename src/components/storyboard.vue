@@ -856,9 +856,9 @@ export default {
     next: function(nextorprev){
       var element = document.getElementById(`${this.seadragonid}_annotation`);
       element.style.removeProperty("height");
-      if (nextorprev === 'prev'){
+      if (nextorprev === 'prev' && this.position > -1){
         this.position -= 1;
-      } else if (nextorprev === 'next') {
+      } else if (nextorprev === 'next' && this.position < this.zoomsections.length) {
         this.position += 1;
       } else if(!isNaN(nextorprev)) {
         this.position = nextorprev;
