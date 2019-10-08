@@ -46,10 +46,9 @@
       <span class="toolbartext">Toggle fullscreen</span>
     </button>
   </span>
-<div v-for="anno in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-  <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-  <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-
+<div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
+  <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+  <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
 </div>
 <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
   <div v-bind:id="image.id" class="seadragonbox"></div>
@@ -140,8 +139,10 @@ export default {
       moveArea (bounds, ignore) {
         for (var i=0; i<this.$children.length; i++){
           var viewer =this.$children[i].viewer;
-          var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
-          viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
+          if (!this.settings.matchclick) {
+            var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
+            viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
+          }
         }
         for (var j=0; j<this.viewers.length; j++){
           if (j != ignore){
@@ -187,6 +188,16 @@ export default {
           var viewer = openseadragon(osdsettings);
           this.viewers.push(viewer);
           var vue = this;
+          viewer.addHandler('open', function(){
+            // Set view fit
+            for (var v=0; v<vue.viewers.length; v++){
+              if (vue.settings.fit == 'horizontal') {
+                vue.viewers[v].viewport.fitHorizontally();
+              } else if(!fit) {
+                vue.viewers[v].viewport.fitVertically();
+              }
+            }
+          });
           var elements = this.allimages.map(element => element.id);
           //listeners for when viewer clicked, scrolled or dragged
           viewer.addHandler('canvas-click', function(event){
@@ -208,6 +219,15 @@ export default {
             vue.moveArea(bounds, ignore);
           });
         }
+      },
+      autoRunImages: function() {
+        for (var k=0; k<this.viewers.length; k++){
+          this.viewers[k].viewport.fitBounds(this.$children[0].viewer.viewport.getConstrainedBounds())
+        }
+        var data = this.$children[0]._data;
+        this.buttons = data.buttons;
+        this.prev_inactive = data.prev_inactive;
+        this.next_inactive = data.next_inactive;
       },
       //Sends message to each storyboard viewer and each image viewer
       multiButton(e) {

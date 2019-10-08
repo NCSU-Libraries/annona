@@ -80,9 +80,9 @@ This allows for layers to be created without having to define the layers in a ma
 **Note: In order to determine the `xywh` and `section` fields try using any of the cropping tools listed on the [Awesome IIIF list.](https://github.com/IIIF/awesome-iiif#image-tools)**
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=Van_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg/info.json'}]"></iiif-storyboard>
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json'}]"></iiif-storyboard>
+<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=Van_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg/info.json'}]"></iiif-storyboard>
 
 ```
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>

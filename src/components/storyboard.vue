@@ -193,6 +193,7 @@ export default {
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
     this.seadragonid = this.settings.customid ? this.settings.customid : annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
+    this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
     this.settings.annoview == 'collapse' ? this.buttons.hide_button = '<i class="fas fa-caret-left"></i>' : '';
     axios.get(annotationurl).then(response => {
       var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
@@ -501,7 +502,6 @@ export default {
         this.booleanitems.isexcerpt = true;
         this.buttons.hide_button = this.settings.annoview == 'collapse' ? '<i class="fas fa-caret-right"></i>' : '<i class="fas fa-caret-down"></i>';
       }
-      console.log(this.booleanitems.isexcerpt)
     },
     //when specified button clicked change shown value
     clickButton: function(field){
@@ -802,6 +802,9 @@ export default {
             functions.$parent.prev_inactive = functions.prev_inactive;
             for (var ch=0; ch<children.length; ch++){
               children[ch].position = position;
+              if (functions.settings.matchclick) {
+                children[ch].next(position)
+              }
             }
           }
         }
@@ -920,6 +923,9 @@ export default {
         this.prev_inactive = true;
       } else {
         this.prev_inactive = false;
+      }
+      if (this.$parent.multi && this.isautorunning) {
+       this.$parent.autoRunImages()
       }
     },
     //For annotation box position, will position box in specified location is set;

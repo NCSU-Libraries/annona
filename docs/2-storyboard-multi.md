@@ -10,6 +10,9 @@ code {
 }
 </style>
 
+* A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
+{:toc}
+
 This replaces the need for websockets for comparing two or more annotations. It works exactly the same as the [Storyboard]({{site.baseurl}}/storyboard) and has all the same settings. The bolded props are the only changes in regards to input.
 
 | Props      | Values |
@@ -17,7 +20,7 @@ This replaces the need for websockets for comparing two or more annotations. It 
 | **annotationurls** | Multiple Single Annotations separated by `;`. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
 | **annotationlists** | Multiple ListAnnotation or PageAnnotation separated by `;`. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
-| styling | string structured styling. See [settings table](#settings) for more options |
+| styling | string structured styling. See [settings table](/iiif-annotation/storyboard/#settings) and [multistoryboard settings](#multistoryboard-additional-settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 | images | Should be a IIIF info.json URL(s) separated by `;`. Images that can be loaded into the multi storyboard without annotations. This is useful for viewing the same image without having the annotate two or more images. |
 
@@ -31,19 +34,34 @@ This replaces the need for websockets for comparing two or more annotations. It 
 <script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
 
+# Multistoryboard Additional Settings
+These are settings that only apply to multi storyboards. See [settings table](/iiif-annotation/storyboard/#settings) for global storyboard settings.
+
+| Variable      | Settings |
+| ----------- | ----------- |
+| matchclick | **true** or **false**. When clicking overlays the default is the match the position on the image. If you would like to match position in annotation set this to **true**. See [defaults](#defaults) to see the different of multi storyboards with and without setting. |
+
 # Defaults
+
+## Without matchclick
 ```
 <iiif-multistoryboard annotationlists="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
-
 ```
 
 <iiif-multistoryboard annotationlists="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
+
+## With matchclick
+```
+<iiif-multistoryboard annotationlists="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json" styling="matchclick: true;customid:matchclick;"></iiif-multistoryboard>
+```
+
+<iiif-multistoryboard annotationlists="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json" styling="matchclick: true;customid:matchclick;"></iiif-multistoryboard>
 
 # With Images
 This setting works similarly to layers in the storyboard viewer. This will load the image next to the annotation(s). **Note** The annotation is on the image [https://data.getty.edu/museum/api/iiif/366589/info.json](https://data.getty.edu/museum/api/iiif/366589/info.json) which has a width 5127 and height of 6513. The loaded image is [https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json](https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json) and has a width of 3864 and height of 5076. Due to the height differentials, zooming on the smaller image will move to a different section than the larger image. It can not be avoided but should be kept in mind when using this functionality.
 
 ```
-<iiif-multistoryboard annotationlists="https://dnoneill.github.io/annotate/annotations/131424-list.json;" images="https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json;"></iiif-multistoryboard>
+<iiif-multistoryboard annotationlists='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-multistoryboard>
 ```
 
-<iiif-multistoryboard annotationlists="https://dnoneill.github.io/annotate/annotations/131424-list.json;" images="https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json;"></iiif-multistoryboard>
+<iiif-multistoryboard annotationlists='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-multistoryboard>
