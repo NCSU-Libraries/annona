@@ -15,8 +15,8 @@ import shared from './shared'
 import axios from 'axios';
 require("es6-promise").polyfill();
 import Vue from 'vue';
-import VueSimpleHotkey from 'vue-simple-hotkey'
-Vue.use(VueSimpleHotkey)
+import VueSimpleHotkey from 'vue-simple-hotkey';
+Vue.use(VueSimpleHotkey);
 
 export default {
     components: {

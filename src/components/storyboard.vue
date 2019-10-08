@@ -3,7 +3,7 @@
   <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
-        <button v-if="!annotationurl" v-hotkey="['r', '1']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+        <button v-if="!annotationurl" v-hotkey="['b', '1']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
@@ -43,7 +43,7 @@
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
-        <button v-hotkey="['f', ';']" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
+        <button v-hotkey="['alt+f', ';']" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
@@ -124,8 +124,8 @@ import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
 import SocketIO from 'socket.io-client';
-import VueSimpleHotkey from 'vue-simple-hotkey'
-Vue.use(VueSimpleHotkey)
+import VueSimpleHotkey from 'vue-simple-hotkey';
+Vue.use(VueSimpleHotkey);
 
 Vue.use(fullscreen);
 

@@ -24,8 +24,8 @@ See [toolbar icon](/{{site.baseurl}}/storyboard/#toolbar-icons) table for other 
 
 | Icon      | Keyboard Shortcut | Purpose |
 | ----------- | ----------- | ----------- |
-| <i class="fas fa-chevron-left"></i> | `alt+p` or `alt+,` or  <code>alt+<i class="fas fa-arrow-left"></i></code>| This will go to the next annotation in the list|
-| <i class="fas fa-chevron-right"></i> | `alt+n` or `alt+.` or  <code>alt+<i class="fas fa-arrow-right"></i></code>| This will go to the previous annotation in the list|
+| <i class="fas fa-chevron-left"></i> | `alt+p`(window)/`option+p`(mac) or `alt+,`(windows)/`option+,`(mac) or  <code>alt+<i class="fas fa-arrow-left"></i></code>(window)/<code>option+<i class="fas fa-arrow-left"></i></code>(mac)| This will go to the next annotation in the list|
+| <i class="fas fa-chevron-right"></i> | `alt+n`(window)/`option+n`(mac) or `alt+.`(windows)/`option+.`(mac) or  <code>alt+<i class="fas fa-arrow-right"></i></code>(window)/<code>option+<i class="fas fa-arrow-right"></i></code>(mac) | This will go to the previous annotation in the list|
 
 <script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">

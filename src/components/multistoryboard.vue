@@ -1,7 +1,7 @@
 <template>
 <div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage']">
   <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
-    <button v-show="!annotationurls" v-hotkey="['r', '1']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+    <button v-show="!annotationurls" v-hotkey="['b', '1']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
       <span class="toolbartext">Start/Stop Autorun</span>
     </button>
@@ -41,7 +41,7 @@
       <i class="fa fa-arrow-right"></i>
       <span class="toolbartext">Next Annotation</span>
     </button>
-    <button v-hotkey="['f', ';']" v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
+    <button v-hotkey="['alt+f', ';']" v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
       <span v-html="buttons.expandbutton"></span>
       <span class="toolbartext">Toggle fullscreen</span>
     </button>
@@ -60,8 +60,8 @@ import storyboard from './storyboard'
 import shared from './shared'
 import openseadragon from 'openseadragon';
 import Vue from 'vue';
-import VueSimpleHotkey from 'vue-simple-hotkey'
-Vue.use(VueSimpleHotkey)
+import VueSimpleHotkey from 'vue-simple-hotkey';
+Vue.use(VueSimpleHotkey);
 
 export default {
     components: {
