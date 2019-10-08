@@ -3,47 +3,47 @@
   <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
-        <button v-if="!annotationurl" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+        <button v-if="!annotationurl" v-hotkey="['r', '1']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});" v-if="imageinfo || annoinfo.text || settings.additionalinfo"  id="infoButton" class="toolbarButton">
+        <button v-hotkey="['i', '2']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});" v-if="imageinfo || annoinfo.text || settings.additionalinfo"  id="infoButton" class="toolbarButton">
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="toolbarButton">
+        <button v-hotkey="['t', '3']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
-        <button v-if="!annotationurl" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
+        <button v-hotkey="['o', '4']" v-if="!annotationurl" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
         </button>
-        <button v-if="layerslist.length > 1" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
+        <button v-hotkey="['l', '5']" v-if="layerslist.length > 1" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
           <span v-html="buttons.layer"></span>
           <span class="toolbartext">View layers</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
+        <button v-hotkey="['z', '+', 'shift+up']" v-on:click="sendMessage({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
           <i class="fas fa-search-plus"></i>
           <span class="toolbartext">Zoom in</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
+        <button v-hotkey="['m', '-', 'shift+down']" v-on:click="sendMessage({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
           <i class="fas fa-search-minus"></i>
           <span class="toolbartext">Zoom out</span>
         </button>
-        <button v-on:click="sendMessage({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
+        <button v-hotkey="['h', '0']" v-on:click="sendMessage({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
           <i class="fas fa-home"></i>
           <span class="toolbartext">View full image</span>
         </button>
-        <button v-if="!annotationurl" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+        <button v-hotkey="['p', ',', 'shift+left']" v-if="!annotationurl" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-left"></i>
           <span class="toolbartext">Previous Annotation</span>
         </button>
-        <button v-if="!annotationurl" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+        <button v-hotkey="['n', '.', 'shift+right']" v-if="!annotationurl" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
-        <button v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
+        <button v-hotkey="['f', ';']" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
@@ -124,6 +124,8 @@ import fullscreen from 'vue-fullscreen';
 import Vue from 'vue';
 import shared from './shared';
 import SocketIO from 'socket.io-client';
+import VueSimpleHotkey from 'vue-simple-hotkey'
+Vue.use(VueSimpleHotkey)
 
 Vue.use(fullscreen);
 

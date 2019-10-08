@@ -1,47 +1,47 @@
 <template>
 <div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage']">
   <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
-    <button v-show="!annotationurls" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+    <button v-show="!annotationurls" v-hotkey="['r', '1']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
       <span class="toolbartext">Start/Stop Autorun</span>
     </button>
-    <button v-on:click="multiButton({'function': 'clickButton', 'args': 'info'});" id="infoButton" class="toolbarButton">
+    <button v-hotkey="['i', '2']" v-on:click="multiButton({'function': 'clickButton', 'args': 'info'});" id="infoButton" class="toolbarButton">
       <span v-html="buttons.info"></span>
       <span class="toolbartext">View source image information</span>
     </button>
-    <button v-on:click="multiButton({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="tags && !settings.hide_tags" class="toolbarButton">
+    <button v-hotkey="['t', '3']" v-on:click="multiButton({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="tags && !settings.hide_tags" class="toolbarButton">
       <span v-html="buttons.tags"></span>
       <span class="toolbartext">Toggle Tags</span>
     </button>
-    <button v-show="!annotationurls" id="overlayButton" v-on:click="multiButton({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
+    <button v-hotkey="['o', '4']" v-show="!annotationurls" id="overlayButton" v-on:click="multiButton({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
       <span v-html="buttons.overlaybutton"></span>
       <span class="toolbartext">Toggle Overlays</span>
     </button>
-    <button v-show="layerslist" id="layerButton" v-on:click="multiButton({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
+    <button v-hotkey="['l', '5']" v-show="layerslist" id="layerButton" v-on:click="multiButton({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
       <span v-html="buttons.layer"></span>
       <span class="toolbartext">View layers</span>
     </button>
-    <button v-on:click="multiButton({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
+    <button v-hotkey="['z', '+', 'shift+up']" v-on:click="multiButton({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
       <i class="fas fa-search-plus"></i>
       <span class="toolbartext">Zoom in</span>
     </button>
-    <button v-on:click="multiButton({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
+    <button v-hotkey="['m', '-', 'shift+down']" v-on:click="multiButton({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
       <i class="fas fa-search-minus"></i>
       <span class="toolbartext">Zoom out</span>
     </button>
-    <button v-on:click="multiButton({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
+    <button v-hotkey="['h', '0']" v-on:click="multiButton({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
       <i class="fas fa-home"></i>
       <span class="toolbartext">View full image</span>
     </button>
-    <button v-show="!annotationurls" id="previousButton" v-on:click="multiButton({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+    <button v-hotkey="['p', ',', 'shift+left']" v-show="!annotationurls" id="previousButton" v-on:click="multiButton({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
       <i class="fa fa-arrow-left"></i>
       <span class="toolbartext">Previous Annotation</span>
     </button>
-    <button v-show="!annotationurls" id="nextButton" v-on:click="multiButton({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+    <button v-hotkey="['n', '.', 'shift+right']" v-show="!annotationurls" id="nextButton" v-on:click="multiButton({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
       <i class="fa fa-arrow-right"></i>
       <span class="toolbartext">Next Annotation</span>
     </button>
-    <button v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
+    <button v-hotkey="['f', ';']" v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
       <span v-html="buttons.expandbutton"></span>
       <span class="toolbartext">Toggle fullscreen</span>
     </button>
@@ -59,6 +59,9 @@
 import storyboard from './storyboard'
 import shared from './shared'
 import openseadragon from 'openseadragon';
+import Vue from 'vue';
+import VueSimpleHotkey from 'vue-simple-hotkey'
+Vue.use(VueSimpleHotkey)
 
 export default {
     components: {

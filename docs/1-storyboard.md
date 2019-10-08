@@ -199,17 +199,17 @@ This is an example of the info that is loaded.
 
 # Toolbar Icons
 
-| Icon      | Purpose |
-| ----------- | ----------- |
-| <i class="fas fa-magic"></i> | This button will automatically go through all the annotations and the sections associated with the annotation until stopped. When it is running it will be replaced with <i class="fas fa-stop-circle"></i> icon until it is pressed again. |
-|<i class="fas fa-info-circle"></i> | This button will display a list of the annotations available. It also displays manifest metadata if a manifest is provided. Also it will show specialized information loaded through the settings. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
-| <i class="fas fa-tag"></i> | This button will display all of the tags in the storyboard and allow the users to view overlays based on tags. It works with resources with multiple tags, however they will display on top of each other so only one color is visible at one time. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
-| <i class="fas fa-toggle-on"></i> | This button will display the sections that are annotated. When toggled on, these sections are clickable. It is replaced with <i class="fas fa-toggle-off"></i> when the toggle is active |
-| <i class="fas fa-layer-group"></i> | This button will show the layers available, allow for toggling them and changing the opacity on the layers. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
-| <i class="fas fa-search-plus"></i><i class="fas fa-search-minus"></i> | Zoom in/out buttons |
-| <i class="fas fa-home"></i> | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load. |
-| <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i> | These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list. |
-| <i class="fas fa-expand"></i> | Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen. |
+| Icon      | Keyboard Shortcut | Purpose |
+| ----------- | ----------- | ----------- |
+| <i class="fas fa-magic"></i> | `r` or `1` | This button will automatically go through all the annotations and the sections associated with the annotation until stopped. When it is running it will be replaced with <i class="fas fa-stop-circle"></i> icon until it is pressed again. |
+|<i class="fas fa-info-circle"></i> | `i` or `2` | This button will display a list of the annotations available. It also displays manifest metadata if a manifest is provided. Also it will show specialized information loaded through the settings. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
+| <i class="fas fa-tag"></i> | `t` or `3` | This button will display all of the tags in the storyboard and allow the users to view overlays based on tags. It works with resources with multiple tags, however they will display on top of each other so only one color is visible at one time. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
+| <i class="fas fa-toggle-on"></i> | `o` or `4` | This button will display the sections that are annotated. When toggled on, these sections are clickable. It is replaced with <i class="fas fa-toggle-off"></i> when the toggle is active |
+| <i class="fas fa-layer-group"></i> | `l` or `5` | This button will show the layers available, allow for toggling them and changing the opacity on the layers. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
+| <i class="fas fa-search-plus"></i><i class="fas fa-search-minus"></i> | `z` or `+` or <code>shift+<i class="fas fa-arrow-up"></i></code> (zoom in), `m` or `-` or <code>shift+<i class="fas fa-arrow-down"></i></code>(zoom out) | Zoom in/out buttons |
+| <i class="fas fa-home"></i> | `h` or `0` | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load. |
+| <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i> | `p` or `,` or <code>shift+<i class="fas fa-arrow-left"></i></code>(previous), `n` or `.` or <code>shift+<i class="fas fa-arrow-right"></i></code> (next)| These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list. |
+| <i class="fas fa-expand"></i> | `f` or `;`| Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen. |
 
 
 # Single Annotation Storyboard

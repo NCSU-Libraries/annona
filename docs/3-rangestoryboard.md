@@ -19,6 +19,14 @@ code {
 | styling | string structured styling. See [settings table](#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 
+# Additional Icons
+See [toolbar icon](/{{site.baseurl}}/storyboard/#toolbar-icons) table for other icons.
+
+| Icon      | Keyboard Shortcut | Purpose |
+| ----------- | ----------- | ----------- |
+| <i class="fas fa-chevron-left"></i> | `alt+p` or `alt+,` or  <code>alt+<i class="fas fa-arrow-left"></i></code>| This will go to the next annotation in the list|
+| <i class="fas fa-chevron-right"></i> | `alt+n` or `alt+.` or  <code>alt+<i class="fas fa-arrow-right"></i></code>| This will go to the previous annotation in the list|
+
 <script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
 
