@@ -118,7 +118,6 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
 }
 
 .annotation > div {
-  word-wrap: break-word;
   height: auto;
   padding: 2px 5px 5px;
   font-size: 20px;
@@ -657,4 +656,8 @@ figcaption {
 .rangefullpage .pageButton{
   color: white;
   position: fixed;
+}
+
+.content > * {
+  word-break: break-word;
 }
