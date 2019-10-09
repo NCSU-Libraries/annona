@@ -197,7 +197,7 @@ This is an example of the info that is loaded.
 </div>
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
 
-# Toolbar Icons
+# Icons
 
 | Icon      | Keyboard Shortcut | Purpose |
 | ----------- | ----------- | ----------- |
@@ -210,6 +210,8 @@ This is an example of the info that is loaded.
 | <i class="fas fa-home"></i> | `h` or `0` | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load. |
 | <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i> | `p` or `,` or <code>shift+<i class="fas fa-arrow-left"></i></code>(previous), `n` or `.` or <code>shift+<i class="fas fa-arrow-right"></i></code> (next)| These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list. |
 | <i class="fas fa-expand"></i> | `alt+f`(windows)/`option+f`(mac) or `;`| Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen. |
+| <i class="fas fa-times"></i> | 'x', '6'| Will close the content box. Make sure to navigate to the viewer to use keyboard shortcuts.|
+| <i class="fas fa-caret-up"></i> <i class="fas fa-caret-down"></i>| 'c', '7'| Will truncate the length of the annotation. Make sure to navigate to the viewer to use keyboard shortcuts.|
 | OpenSeadragon viewer | [https://openseadragon.github.io/examples/ui-keyboard-navigation/](https://openseadragon.github.io/examples/ui-keyboard-navigation/) | The OpenSeadragon viewer also has keyboard navigation (the image section of the storyboard). See webpage for keyboard navigation like rotate and flip |
 
 
