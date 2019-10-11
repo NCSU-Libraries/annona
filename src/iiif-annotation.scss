@@ -516,12 +516,12 @@ figcaption {
     background: white;
     position: absolute;
     font-size: 14px!important;
-    top: calc(.79rem + 6px)!important;
+    top: calc(.79rem + 7px)!important;
     z-index: 99999;
     max-width: 100%;
     height: auto!important;
     overflow: scroll;
-    margin-left: 0px;
+    margin: 0px;
     word-wrap: break-word;
     max-height: 33%!important;
   }

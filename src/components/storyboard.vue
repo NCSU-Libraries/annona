@@ -902,10 +902,9 @@ export default {
           var ys = sections.map(element => element.split(",")[1]);
           var lowy = Math.min(...ys);
           var highy = Math.max(...sections.map(element => parseInt(element.split(",")[1]) + parseInt(element.split(",")[3])));
-          var ws = sections.map(element => element.split(",")[2]);
-          var sumw = ws.reduce((a, b) => parseInt(a) + parseInt(b), 0);
           var height = highy - lowy;
-          var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, sumw, height);
+          var width = Math.max(...sections.map(element => parseInt(element.split(",")[0]) + parseInt(element.split(",")[2]))) - lowx;
+          var zoomarea = this.viewer.world.getItemAt(0).imageToViewportRectangle(lowx, lowy, width, height);
           this.goToArea(zoomarea);
           var elements = this.anno_elem.querySelectorAll(`#position${this.position}`);
           for (var tk=0; tk<elements.length; tk++){
