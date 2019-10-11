@@ -878,6 +878,12 @@ export default {
           multielements[we].style.display = "none";
         }
       }
+      if (this.settings.overlaynext && !this.booleanitems.isoverlaytoggled){
+        var overlays = document.getElementsByClassName("overlay");
+        for (var ov=0; ov<overlays.length; ov++){
+          overlays[ov].style.display = "none";
+        }
+      }
       if (this.zoomsections[this.position] === undefined){
         this.zoom('home');
         this.currentanno = '';
@@ -894,6 +900,10 @@ export default {
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
           this.goToArea(rect);
+          if (this.settings.overlaynext && !this.booleanitems.isoverlaytoggled){
+            var positionelement = this.anno_elem.querySelectorAll(`#position${this.position}`);
+            positionelement[0].style.display = 'block';
+          }
         } else {
           //If more than one section try to fit sections to screen with zoom
           var sections = this.zoomsections[this.position]['section'];
