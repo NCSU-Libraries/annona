@@ -576,7 +576,8 @@ export default {
           this.getImageInfo(canvas_data, manifestlink)
           var canvases = canvas_data.data.sequences[0].canvases;
           for (var i = 0; i< canvases.length; i++){
-            if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http")) {
+            var cleancanvas = canvas.split('/canvas').slice(-1)[0];
+            if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http") || canvases[i]['@id'].replace("https", "http").indexOf(cleancanvas) > -1) {
               var images = canvases[i].images;
               if (!this.settings.title){
                 var title = canvases[i].label;
