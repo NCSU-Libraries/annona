@@ -816,7 +816,9 @@ export default {
       if (xywh.join("") == 'full'){
         this.zoom('home');
       } else if (this.settings.panorzoom == 'pan'){
-        this.viewer.viewport.panTo(new openseadragon.Point(rect['x'], rect['y'])).applyConstraints();
+        var x = rect['x']+(rect['width']/2);
+        var y = rect['y']+(rect['height']/2);
+        this.viewer.viewport.panTo(new openseadragon.Point(x,y)).applyConstraints();
       } else {
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
