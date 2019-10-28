@@ -11,7 +11,7 @@ $borderwidth: $borderwidthnumber + px;
 $toolbarfontsize: 1.5rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
 $annocontrolsize: 1rem;
-$sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
+$sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3.5}px);
 
 .inactive {
   color: red;
@@ -55,11 +55,11 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
 }
 
 .collapse .annotation {
-  height: calc(100% - #{$borderwidthnumber*2}px);
+  height: calc(100% - #{$borderwidthnumber*1.5}px);
   width: 20%;
   top: $top;
   transition: 0.3s;
-  margin: 0px;
+  margin: 1px 0px 0px;
   font-size: 18px;
   max-height: none!important;
   resize: none;
@@ -89,7 +89,7 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
 .sidebyside .annotation {
   height: #{$sidebyside};
   width: 20%;
-  top: 2px!important;
+  top: 0px!important;
   margin: 0px;
   font-size: 18px;
   max-height: none!important;
@@ -99,17 +99,20 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3}px);
   height: calc(100% - #{$borderwidthnumber*2}px);
 }
 
+.defaultview .annotation {
+  max-height: calc(100% - 75px);
+  top: $top;
+}
+
 .annotation {
   width: 20%;
   resize: both;
   border: $borderwidth solid black;
   background: white;
   position: absolute;
-  top: $top;
   left: 0px;
   z-index: 99999;
   max-width: calc(100% - 20px);
-  max-height: calc(100% - 75px);
   height: auto;
   overflow: scroll;
   margin-left: 20px;
@@ -509,8 +512,16 @@ figcaption {
 }
 
 @media only screen and (max-width: 600px) {
+  .defaultview .annotation {
+    width: calc(100% - #{$borderwidth} - #{$borderwidth/2})!important;
+    height: auto!important;
+    max-height: 33%!important;
+  }
+  .sidebyside .annotation {
+    height: calc(.79rem + 100% + #{$borderwidthnumber*3}px);
+  }
+
   .annotation {
-    width: calc(100% - #{$borderwidth} - #{$borderwidth})!important;
     resize: both;
     border: $borderwidth solid black;
     background: white;
@@ -519,14 +530,12 @@ figcaption {
     top: calc(.79rem + 7px)!important;
     z-index: 99999;
     max-width: 100%;
-    height: auto!important;
     overflow: scroll;
     margin: 0px;
     word-wrap: break-word;
-    max-height: 33%!important;
   }
   .toolbarButton {
-    margin: 0px!important;
+    margin-left: 0px!important;
     font-size: .79rem;
   }
   .left, .right, .top, .bottom {
@@ -554,6 +563,9 @@ figcaption {
     margin-right: 2px;
 }
 
+#header_toolbar > .toolbarButton {
+  margin-bottom: 2px;
+}
 .imageinfo > div {
   padding-bottom: 5px;
 }
