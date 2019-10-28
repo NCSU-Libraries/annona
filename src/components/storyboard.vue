@@ -882,7 +882,7 @@ export default {
         }
       }
       if (this.settings.overlaynext && !this.booleanitems.isoverlaytoggled){
-        var overlays = document.getElementsByClassName("overlay");
+        var overlays = this.anno_elem.getElementsByClassName("overlay");
         for (var ov=0; ov<overlays.length; ov++){
           overlays[ov].style.display = "none";
         }
