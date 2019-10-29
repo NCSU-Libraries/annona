@@ -144,6 +144,9 @@ export default {
     if (!Array.isArray(authorfield)) {
       authorfield = [authorfield];
     }
+    authorfield = authorfield.filter(function (el) {
+      return el != null && el != '';
+    });
     for (var au = 0; au<authorfield.length; au++){
       var author = authorfield[au];
       var author_string = author['name'] ? author['name'] : author['label'] ? author['label'] : author;
