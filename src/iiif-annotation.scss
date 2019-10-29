@@ -61,7 +61,7 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3.5}px);
   transition: 0.3s;
   margin: 1px 0px 0px;
   font-size: 18px;
-  max-height: none!important;
+  max-height: calc(100% - 3px);
   resize: none;
 }
 
@@ -92,7 +92,7 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3.5}px);
   top: 0px!important;
   margin: 0px;
   font-size: 18px;
-  max-height: none!important;
+  max-height: #{$sidebyside};
 }
 
 .multistoryboard .sidebyside .annotation {
