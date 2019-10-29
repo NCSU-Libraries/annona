@@ -11,7 +11,7 @@ $borderwidth: $borderwidthnumber + px;
 $toolbarfontsize: 1.5rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
 $annocontrolsize: 1rem;
-$sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3.5}px);
+$sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*4}px);
 
 .inactive {
   color: red;
@@ -264,12 +264,8 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3.5}px);
   border-color: transparent transparent black transparent;
 }
 
-.fullpage #header_toolbar {
-  margin: 0px;
-}
-
 .tags, .authorship, .attribution {
-  font-size: smaller;
+  font-size: small;
   font-style: italic;
   padding: 2.5px 0px;
 }
@@ -328,7 +324,7 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*3.5}px);
 }
 
 figcaption {
-  font-size: smaller;
+  font-size: small;
   font-style: italic;
   font-weight: bold;
 }
@@ -402,6 +398,7 @@ figcaption {
   justify-content: center;
   align-items: center;
 }
+
 .toolbarButton .toolbartext {
   visibility: hidden;
   width: 120px;
@@ -534,10 +531,12 @@ figcaption {
     margin: 0px;
     word-wrap: break-word;
   }
+
   .toolbarButton {
     margin-left: 0px!important;
     font-size: .79rem;
   }
+
   .left, .right, .top, .bottom {
     width: auto;
     height: auto;
@@ -560,7 +559,7 @@ figcaption {
 }
 
 #header_toolbar > .toolbarButton:not(:last-child) {
-    margin-right: 2px;
+  margin-right: 2px;
 }
 
 #header_toolbar > .toolbarButton {
