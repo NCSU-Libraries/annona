@@ -944,19 +944,23 @@ export default {
     overlayPosition: function(xywh){
       var elem = document.getElementById(`${this.seadragonid}_annotation`);
       var positioning = {
-        right: {'x': parseInt(xywh[0])+parseInt(xywh[2]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_LEFT'},
-        left: {'x': parseInt(xywh[0]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_RIGHT'},
-        top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM'},
-        bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP'}
+        right: {'x': parseInt(xywh[0])+parseInt(xywh[2]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_LEFT', 'inverse': 'left'},
+        left: {'x': parseInt(xywh[0]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_RIGHT', 'inverse': 'right'},
+        top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM', 'inverse': 'bottom'},
+        bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP', 'inverse': 'top'}
       };
-      var textposition = this.settings.textposition;
-      var positions = positioning[textposition];
-      var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
+      var overlaydict = this.getPositionData(positioning);
+      if (overlaydict['maxHeight'] < 35 || overlaydict['maxWidth'] < 65) {
+        overlaydict = this.getPositionData(positioning, true);
+      }
+      if (overlaydict['maxHeight'] < 35 || overlaydict['maxWidth'] < 65) {
+        overlaydict = this.getPositionData(positioning, false, true);
+      }
+      var overlayrect = overlaydict['overlayrect'];
+      var maxheight = overlaydict['maxHeight'];
+      var maxwidth = overlaydict['maxWidth'];
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
-      var overlaypixels = this.viewer.viewport.pixelFromPoint(overlayrect);
-      var containerpixels = this.viewer.viewport.getContainerSize();
-      var maxwidth = textposition == 'right' ?  containerpixels['x'] - overlaypixels['x'] : overlaypixels['x'];
-      var maxheight = containerpixels['y'] - overlaypixels['y'];
+      var positions = overlaydict['positions'];
       elem.classList.add(`${this.settings.textposition}`);
       var vue = this;
       elem.addEventListener("mouseover",function(){
@@ -967,13 +971,14 @@ export default {
       });
       elem.style.maxHeight = `${maxheight}px`;
       elem.style.maxWidth = `${maxwidth}px`;
+      var placement = openseadragon.Placement[positions['placement']]
       if (existingoverlay) {
-        this.viewer.updateOverlay(elem, overlayrect);
+        this.viewer.updateOverlay(elem.id, overlayrect, placement);
       } else {
         this.viewer.addOverlay({
           element: elem,
           location: overlayrect,
-          placement: positions['placement']
+          placement: placement
         });
       }
     },
@@ -981,6 +986,22 @@ export default {
     enableOSDmouse: function(disable) {
       this.viewer.setControlsEnabled(disable);
       this.viewer.setMouseNavEnabled(disable);
+    },
+    getPositionData: function(positioning, inverse=false, inner=false) {
+      var textposition = inverse ? positioning[this.settings.textposition].inverse : this.settings.textposition;
+      var positions = positioning[textposition];
+      var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
+      var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
+      var overlaypixels = this.viewer.viewport.pixelFromPoint(overlayrect);
+      var containerpixels = this.viewer.viewport.getContainerSize();
+      var maxwidth = textposition == 'right' ?  containerpixels['x'] - overlaypixels['x'] : overlaypixels['x'];
+      var maxheight = textposition == 'top' ? overlaypixels['y'] : containerpixels['y'] - overlaypixels['y'];
+      if (inner) {
+        positions['placement'] = positioning[positioning[this.settings.textposition].inverse].placement;
+        maxwidth < 20 ? maxwidth = "10%" : '';
+        maxheight < 20 ? maxheight = "10%" : '';
+      }
+      return {'positions': positions, 'overlayrect': overlayrect, 'maxWidth': maxwidth, 'maxHeight': maxheight}
     },
     //Autorun through annotations
     autoRun: function(interval){
