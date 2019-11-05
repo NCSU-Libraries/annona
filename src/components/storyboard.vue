@@ -894,9 +894,6 @@ export default {
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
-        if (this.settings.textposition) {
-          this.overlayPosition(xywh);
-        }
         this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
         this.currentanno == '' ? this.shown = false : '';
         this.makeactive(this.position);
@@ -924,6 +921,9 @@ export default {
             elements[tk].style.display = 'block';
           }
         }
+        if (this.settings.textposition) {
+          this.overlayPosition(xywh);
+        }
       }
       this.switchButtons();
       //set button classes based on position
@@ -949,11 +949,14 @@ export default {
         top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM'},
         bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP'}
       };
-      var positions = positioning[this.settings.textposition];
+      var textposition = this.settings.textposition;
+      var positions = positioning[textposition];
       var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
-      var maxwidth = this.viewer.viewport.getContainerSize()['x'] - this.viewer.viewport.pixelFromPoint(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['x'];
-      var maxheight = this.viewer.viewport.getContainerSize()['y'] - this.viewer.viewport.pixelFromPoint(new openseadragon.Point(overlayrect['x'], overlayrect['y']))['y'];
+      var overlaypixels = this.viewer.viewport.pixelFromPoint(overlayrect);
+      var containerpixels = this.viewer.viewport.getContainerSize();
+      var maxwidth = textposition == 'right' ?  containerpixels['x'] - overlaypixels['x'] : overlaypixels['x'];
+      var maxheight = containerpixels['y'] - overlaypixels['y'];
       elem.classList.add(`${this.settings.textposition}`);
       var vue = this;
       elem.addEventListener("mouseover",function(){
@@ -962,8 +965,8 @@ export default {
       elem.addEventListener("mouseout",function(){
         vue.enableOSDmouse(true);
       });
-      elem.style.maxHeight = `${maxheight-35}px`;
-      elem.style.maxWidth = `${maxwidth-35}px`;
+      elem.style.maxHeight = `${maxheight}px`;
+      elem.style.maxWidth = `${maxwidth}px`;
       if (existingoverlay) {
         this.viewer.updateOverlay(elem, overlayrect);
       } else {
