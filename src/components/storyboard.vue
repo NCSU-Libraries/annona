@@ -943,6 +943,7 @@ export default {
     },
     //For annotation box position, will position box in specified location is set;
     overlayPosition: function(xywh){
+      xywh = xywh == 'full' ? [0,0,0,0] : xywh;
       var elem = document.getElementById(`${this.seadragonid}_annotation`);
       var positioning = {
         right: {'x': parseInt(xywh[0])+parseInt(xywh[2]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_LEFT', 'inverse': 'left'},
@@ -950,12 +951,12 @@ export default {
         top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM', 'inverse': 'bottom'},
         bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP', 'inverse': 'top'}
       };
-      var overlaydict = this.getPositionData(positioning);
+      var overlaydict = this.getPositionData(positioning, elem);
       if (overlaydict['maxHeight'] < 35 || overlaydict['maxWidth'] < 65) {
-        overlaydict = this.getPositionData(positioning, true);
+        overlaydict = this.getPositionData(positioning, elem, true);
       }
       if (overlaydict['maxHeight'] < 35 || overlaydict['maxWidth'] < 65) {
-        overlaydict = this.getPositionData(positioning, false, true);
+        overlaydict = this.getPositionData(positioning, elem, false, true);
       }
       var overlayrect = overlaydict['overlayrect'];
       var maxheight = overlaydict['maxHeight'];
@@ -989,8 +990,11 @@ export default {
       this.viewer.setControlsEnabled(disable);
       this.viewer.setMouseNavEnabled(disable);
     },
-    getPositionData: function(positioning, inverse=false, inner=false) {
-      var textposition = inverse ? positioning[this.settings.textposition].inverse : this.settings.textposition;
+    getPositionData: function(positioning, elem, isinverse=false, inner=false) {
+      var inverse = positioning[this.settings.textposition].inverse;
+      elem.classList.remove(inverse);
+      elem.classList.remove(this.settings.textposition);
+      var textposition = isinverse ? inverse : this.settings.textposition;
       var positions = positioning[textposition];
       var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
@@ -999,7 +1003,7 @@ export default {
       var maxwidth = textposition == 'right' ?  containerpixels['x'] - overlaypixels['x'] : overlaypixels['x'];
       var maxheight = textposition == 'top' ? overlaypixels['y'] : containerpixels['y'] - overlaypixels['y'];
       if (inner) {
-        positions['placement'] = positioning[positioning[this.settings.textposition].inverse].placement;
+        positions['placement'] = positioning[inverse].placement;
         maxwidth < 20 ? maxwidth = "10%" : '';
         maxheight < 20 ? maxheight = "10%" : '';
       }
