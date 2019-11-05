@@ -49,7 +49,7 @@
         </button>
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent']" v-show="shown">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', this.textposition]" v-show="shown">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
       <span class="annocontrols_button" id="close_button"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="['x', '6']"></i></span>
       <span v-html="buttons.hide_button" v-hotkey="['c', '7']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
@@ -147,6 +147,7 @@ export default {
       seadragonid: '',
       annotations: [],
       currentanno: '',
+      textposition: 'corner',
       prev_inactive: true,
       next_inactive: false,
       toolbar_id: '',
@@ -961,7 +962,8 @@ export default {
       var maxwidth = overlaydict['maxWidth'];
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
       var positions = overlaydict['positions'];
-      elem.classList.add(`${this.settings.textposition}`);
+      elem.classList.add(`${overlaydict['textposition']}`);
+      this.textposition = overlaydict['textposition'];
       var vue = this;
       elem.addEventListener("mouseover",function(){
         vue.enableOSDmouse(false);
@@ -1001,7 +1003,7 @@ export default {
         maxwidth < 20 ? maxwidth = "10%" : '';
         maxheight < 20 ? maxheight = "10%" : '';
       }
-      return {'positions': positions, 'overlayrect': overlayrect, 'maxWidth': maxwidth, 'maxHeight': maxheight}
+      return {'positions': positions, 'overlayrect': overlayrect, 'maxWidth': maxwidth, 'maxHeight': maxheight, 'textposition': textposition}
     },
     //Autorun through annotations
     autoRun: function(interval){
