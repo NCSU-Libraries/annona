@@ -495,10 +495,11 @@ figcaption {
 }
 
 @media only screen and (max-width: 600px) {
-  .defaultview .annotation {
+  .defaultview .annotation:not(.right,.left,.top,.bottom) {
     width: calc(100% - #{$borderwidth} - #{$borderwidth/2})!important;
     height: auto!important;
     max-height: 33%!important;
+    top: calc(.79rem + 7px)!important;
   }
   .sidebyside .annotation {
     height: calc(.79rem + 100% + #{$borderwidthnumber*3}px);
@@ -510,7 +511,6 @@ figcaption {
     background: white;
     position: absolute;
     font-size: 14px!important;
-    top: calc(.79rem + 7px)!important;
     z-index: 99999;
     max-width: 100%;
     overflow: scroll;
@@ -521,11 +521,6 @@ figcaption {
   .toolbarButton {
     margin-left: 0px!important;
     font-size: .79rem;
-  }
-
-  .left, .right, .top, .bottom {
-    width: auto;
-    height: auto;
   }
 }
 

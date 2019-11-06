@@ -972,8 +972,8 @@ export default {
       elem.addEventListener("mouseout",function(){
         vue.enableOSDmouse(true);
       });
-      elem.style.maxHeight = `${maxheight}px`;
-      elem.style.maxWidth = `${maxwidth}px`;
+      elem.style.maxHeight = `${maxheight-20}px`;
+      elem.style.maxWidth = `${maxwidth-20}px`;
       var placement = openseadragon.Placement[positions['placement']]
       if (existingoverlay) {
         this.viewer.updateOverlay(elem.id, overlayrect, placement);
