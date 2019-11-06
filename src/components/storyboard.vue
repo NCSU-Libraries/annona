@@ -892,6 +892,13 @@ export default {
         this.zoom('home');
         this.currentanno = '';
         this.makeactive(undefined);
+        if (this.settings.textposition){
+          var elem = document.getElementById(`${this.seadragonid}_annotation`);
+          var bounds = this.viewer.viewport.getBounds();
+          var point = new openseadragon.Point(bounds['x'],bounds['y']);
+          this.viewer.updateOverlay(elem, point);
+          this.textposition = 'corner';
+        }
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
@@ -961,9 +968,7 @@ export default {
       var overlayrect = overlaydict['overlayrect'];
       var maxheight = overlaydict['maxHeight'];
       var maxwidth = overlaydict['maxWidth'];
-      var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
       var positions = overlaydict['positions'];
-      elem.classList.add(`${overlaydict['textposition']}`);
       this.textposition = overlaydict['textposition'];
       var vue = this;
       elem.addEventListener("mouseover",function(){
@@ -975,7 +980,7 @@ export default {
       elem.style.maxHeight = `${maxheight-20}px`;
       elem.style.maxWidth = `${maxwidth-20}px`;
       var placement = openseadragon.Placement[positions['placement']]
-      if (existingoverlay) {
+      if (this.viewer.getOverlayById(`${this.seadragonid}_annotation`)) {
         this.viewer.updateOverlay(elem.id, overlayrect, placement);
       } else {
         this.viewer.addOverlay({
@@ -992,8 +997,6 @@ export default {
     },
     getPositionData: function(positioning, elem, isinverse=false, inner=false) {
       var inverse = positioning[this.settings.textposition].inverse;
-      elem.classList.remove(inverse);
-      elem.classList.remove(this.settings.textposition);
       var textposition = isinverse ? inverse : this.settings.textposition;
       var positions = positioning[textposition];
       var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
