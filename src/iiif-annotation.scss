@@ -438,7 +438,7 @@ figcaption {
 }
 
 .active.pin {
-  -webkit-text-stroke: 2.5px $active_color;
+  -webkit-text-stroke: .1rem $active_color;
 }
 
 .pin.overlay.active circle, rect {
