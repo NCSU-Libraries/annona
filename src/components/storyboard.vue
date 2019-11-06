@@ -458,6 +458,7 @@ export default {
           elem.style.borderColor = color;
           elem.style.color = color;
           this.settings.activecolor ? elem.style.cssText += `outline-color: ${this.settings.activecolor}!important` : '';
+          this.settings.activecolor ? elem.style.webkitTextStrokeColor = this.settings.activecolor : '';
         }
         elem.style.zIndex = zindex;
         this.viewer.addOverlay({
@@ -897,6 +898,8 @@ export default {
           var bounds = this.viewer.viewport.getBounds();
           var point = new openseadragon.Point(bounds['x'],bounds['y']);
           this.viewer.updateOverlay(elem, point);
+          elem.style.maxHeight = '';
+          elem.style.maxWidth = '';
           this.textposition = 'corner';
         }
       } else {
