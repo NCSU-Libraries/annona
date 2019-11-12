@@ -122,12 +122,13 @@ $phonetoolbarfontsize: .79rem;
   top: 0px;
 }
 
-.no_toolbar_annotation {
+.no_toolbar_annotation:not(.right):not(.left):not(.bottom):not(.top) {
   top: -1px!important;
 }
 
-.sidebyside .no_toolbar_annotation {
-  height: calc(100% - 2px)!important;
+.collapse .no_toolbar_annotation,  .sidebyside .no_toolbar_annotation{
+  height: calc(100% - 4px);
+  max-height: calc(100% - 4px);
 }
 
 .annotation {
@@ -521,13 +522,18 @@ figcaption {
 }
 
 @media only screen and (max-width: 600px) {
-  .defaultview .annotation:not(.right,.left,.top,.bottom) {
+  .defaultview .annotation:not(.right):not(.left):not(.bottom):not(.top) {
     width: calc(100% - #{$borderwidth} - #{$borderwidth/2})!important;
     height: auto!important;
     max-height: 33%!important;
+
+  }
+
+  .defaultview .annotation:not(.right):not(.left):not(.bottom):not(.top):not(.no_toolbar_annotation) {
     top: calc(#{$phonetoolbarfontsize} + 7px)!important;
   }
-  .sidebyside .annotation {
+
+  .sidebyside .annotation:not(.no_toolbar_annotation) {
     height: calc(#{$phonetoolbarfontsize} + 100% + #{$borderwidthnumber*3}px);
   }
 
@@ -535,7 +541,7 @@ figcaption {
     top: 0px;
   }
 
-  .collapse .bottom_menu_annotation {
+  .collapse .bottom_menu_annotation:not(.no_toolbar_annotation) {
     height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidthnumber*6}px);
     max-height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidthnumber*6}px);
   }
