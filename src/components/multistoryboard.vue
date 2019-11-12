@@ -1,6 +1,6 @@
 <template>
-<div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage']">
-  <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
+<div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.menuposition ? settings.menuposition + '_menu_container' : 'top_menu_container']">
+  <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen" v-bind:class="[settings.menuposition ? settings.menuposition + '_multi_menu' : 'top_multi_menu']">
     <button v-show="!annotationurls" v-hotkey="['b', '1']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
       <span class="toolbartext">Start/Stop Autorun</span>
@@ -46,13 +46,16 @@
       <span class="toolbartext">Toggle fullscreen</span>
     </button>
   </span>
-<div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-  <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-  <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+  <span class="storyboard_containers">
+    <div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
+      <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+      <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+    </div>
+    <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
+      <div v-bind:id="image.id" class="seadragonbox"></div>
+    </div>
+  </span>
 </div>
-<div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
-  <div v-bind:id="image.id" class="seadragonbox"></div>
-</div></div>
 </template>
 <script>
 import storyboard from './storyboard'

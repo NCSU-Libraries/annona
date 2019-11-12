@@ -653,3 +653,25 @@ figcaption {
 .content > * {
   word-break: break-word;
 }
+
+.bottom_menu_container {
+  display:flex;
+  flex-direction: column-reverse;
+}
+
+.bottom_menu_container {
+  display:flex;
+  flex-direction: column-reverse;
+}
+
+#multistoryboard.bottom_menu_container .storyboard_viewer {
+  padding-bottom: 0px;
+}
+
+.multistoryboard.bottom_menu_container {
+  padding-bottom: 50px;
+}
+
+#multistoryboard.bottom_menu_container #header_toolbar {
+  margin-top: -5px;
+}

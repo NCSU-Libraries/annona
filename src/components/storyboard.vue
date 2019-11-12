@@ -1,8 +1,8 @@
 <template>
 <div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
-    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull']" style="position:relative">
-      <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar || settings.hide_toolbar && !fullscreen">
+    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.menuposition && !$parent.multi ? settings.menuposition + '_menu_container' : 'default_menu_container']" style="position:relative">
+      <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar || settings.hide_toolbar && !fullscreen" v-bind:class="[settings.menuposition && !$parent.multi ? settings.menuposition + '_menu' : 'default_menu']">
         <button v-if="!annotationurl" v-hotkey="['b', '1']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
@@ -962,10 +962,10 @@ export default {
         bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP', 'inverse': 'top'}
       };
       var overlaydict = this.getPositionData(positioning, elem);
-      if (overlaydict['maxHeight'] < 35 || overlaydict['maxWidth'] < 65) {
+      if (overlaydict['maxHeight'] < 65 || overlaydict['maxWidth'] < 65) {
         overlaydict = this.getPositionData(positioning, elem, true);
       }
-      if (overlaydict['maxHeight'] < 35 || overlaydict['maxWidth'] < 65) {
+      if (overlaydict['maxHeight'] < 65 || overlaydict['maxWidth'] < 65) {
         overlaydict = this.getPositionData(positioning, elem, false, true);
       }
       var overlayrect = overlaydict['overlayrect'];
@@ -1010,8 +1010,8 @@ export default {
       var maxheight = textposition == 'top' ? overlaypixels['y'] : containerpixels['y'] - overlaypixels['y'];
       if (inner) {
         positions['placement'] = positioning[inverse].placement;
-        maxwidth < 20 ? maxwidth = "10%" : '';
-        maxheight < 20 ? maxheight = "10%" : '';
+        maxwidth < 65 ? maxwidth = "100" : '';
+        maxheight < 65 ? maxheight = "100" : '';
       }
       return {'positions': positions, 'overlayrect': overlayrect, 'maxWidth': maxwidth, 'maxHeight': maxheight, 'textposition': textposition}
     },
