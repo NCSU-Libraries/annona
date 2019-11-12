@@ -12,7 +12,7 @@ $toolbarfontsize: 1.5rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
 $annocontrolsize: 1rem;
 $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*4}px);
-
+$phonetoolbarfontsize: .79rem;
 .inactive {
   color: red;
   pointer-events: none;
@@ -95,13 +95,27 @@ $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*4}px);
   max-height: #{$sidebyside};
 }
 
+.fullpage .sidebyside .annotation {
+  max-height: 100%;
+}
+
 .multistoryboard .sidebyside .annotation {
   height: calc(100% - #{$borderwidthnumber*2}px);
+}
+
+.sidebyside .bottom_menu_annotation {
+  max-height: calc(100% - 6px);
 }
 
 .defaultview .annotation {
   max-height: calc(100% - 75px);
   top: $top;
+}
+
+.collapse .bottom_menu_annotation {
+  top: -1px;
+  height: calc(100% - #{$toolbarfontsize} - #{$borderwidthnumber*7}px);
+  max-height: calc(100% - #{$toolbarfontsize} - #{$borderwidthnumber*7}px);
 }
 
 .annotation {
@@ -499,10 +513,15 @@ figcaption {
     width: calc(100% - #{$borderwidth} - #{$borderwidth/2})!important;
     height: auto!important;
     max-height: 33%!important;
-    top: calc(.79rem + 7px)!important;
+    top: calc(#{$phonetoolbarfontsize} + 7px)!important;
   }
   .sidebyside .annotation {
-    height: calc(.79rem + 100% + #{$borderwidthnumber*3}px);
+    height: calc(#{$phonetoolbarfontsize} + 100% + #{$borderwidthnumber*3}px);
+  }
+
+  .collapse .bottom_menu_annotation {
+    height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidthnumber*6}px);
+    max-height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidthnumber*6}px);
   }
 
   .annotation {

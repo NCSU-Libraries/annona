@@ -49,7 +49,7 @@
         </button>
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', this.textposition]" v-show="shown">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', textposition, settings.menuposition ? settings.menuposition + '_menu_annotation' : '']" v-show="shown">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
       <span class="annocontrols_button" id="close_button"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="['x', '6']"></i></span>
       <span v-html="buttons.hide_button" v-hotkey="['c', '7']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
