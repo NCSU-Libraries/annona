@@ -1,6 +1,6 @@
 <template>
-<div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.menuposition ? settings.menuposition + '_menu_container' : 'top_menu_container']">
-  <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen" v-bind:class="[settings.menuposition ? settings.menuposition + '_multi_menu' : 'top_multi_menu']">
+<div id="multistoryboard" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.toolbarposition ? settings.toolbarposition + '_menu_container' : 'top_menu_container']">
+  <span id="header_toolbar" v-show="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen" v-bind:class="[settings.toolbarposition ? settings.toolbarposition + '_multi_menu' : 'top_multi_menu']">
     <button v-show="!annotationurls" v-hotkey="['b', '1']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
       <span class="toolbartext">Start/Stop Autorun</span>

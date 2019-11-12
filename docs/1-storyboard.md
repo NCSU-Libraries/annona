@@ -99,7 +99,7 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | ----------- | ----------- |
 | autorun_interval   | time between switches in seconds, e.g. 4 will switch between annotations every four seconds; **Default** is 3 seconds. |
 |autorun_onload | **true** or **false**. Will start autorun on page load. **Default** is false.      |
-| hide_toolbar   | **true** or **false**. This will only hide the toolbar when the storyboard is full screen. In order to exit from full screen without the toolbar hit escape key (<kbd>esc</kbd>). **Default** is false. In order to hide the toolbar at all times see [Custom View]({{site.baseurl}}/css_settings) |
+| hide_toolbar   | **true** or **false**. This will only hide the toolbar. **Default** is false. |
 |fullpage|**true** or **false**. This will only fill the browser window. It will only work with a single storyboard. This will not display the storyboard full screen, due to permissions that has to be done by an operator. This will only fill the browser window. **Default** is false |
 |hide_annocontrols| **true** or **false**. This setting hides <i class="fas fa-times close_button"></i>, <i class="fas fa-caret-square-up close_button"></i> and any other icons in annotation box. **Default** is false |
 | fit | By default the image is fit vertically to the OpenSeadragon viewer. The other options  are to fit horizontally or fill the viewer with the image. This can mean the full image is not visible. The options are **horizontal** and **fill** |
@@ -122,7 +122,8 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | activecolor | change active color; default is `lightgreen`. See [single annotation settings](#single-annotation-setting) for an example. |
 | hide_tagcount | **true** or **false**. Will hide the count number in the tag key. **Default** is **false** |
 | annoview | **sidebyside** or **collapse**. Will change how the annotation and information box style. Collapse positions the box on top of the image viewer and allows for the bar to collapse. Side by side is similar but it is next to the viewer |   
-| overlaynext | **true** or **false**. When the overlays are not toggled it will show the overlay for the active annotation only. **Default** is **false** | 
+| overlaynext | **true** or **false**. When the overlays are not toggled it will show the overlay for the active annotation only. **Default** is **false** |
+| toolbarposition | **bottom**. Will move the toolbar to the bottom of the viewer. Default is the top of the viewer |
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.

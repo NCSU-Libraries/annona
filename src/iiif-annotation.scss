@@ -122,6 +122,14 @@ $phonetoolbarfontsize: .79rem;
   top: 0px;
 }
 
+.no_toolbar_annotation {
+  top: -1px!important;
+}
+
+.sidebyside .no_toolbar_annotation {
+  height: calc(100% - 2px)!important;
+}
+
 .annotation {
   width: 20%;
   resize: both;
