@@ -118,6 +118,10 @@ $phonetoolbarfontsize: .79rem;
   max-height: calc(100% - #{$toolbarfontsize} - #{$borderwidthnumber*7}px);
 }
 
+.defaultview .bottom_menu_annotation {
+  top: 0px;
+}
+
 .annotation {
   width: 20%;
   resize: both;
@@ -517,6 +521,10 @@ figcaption {
   }
   .sidebyside .annotation {
     height: calc(#{$phonetoolbarfontsize} + 100% + #{$borderwidthnumber*3}px);
+  }
+
+  .defaultview .bottom_menu_annotation {
+    top: 0px;
   }
 
   .collapse .bottom_menu_annotation {
