@@ -825,6 +825,9 @@ export default {
       } else {
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
+      if (this.settings.textposition) {
+        this.overlayPosition(rect);
+      }
     },
     //toggle fullscreen button
     toggle_fullscreen: function(){
@@ -932,9 +935,6 @@ export default {
             elements[tk].style.display = 'block';
           }
         }
-        if (this.settings.textposition) {
-          this.overlayPosition(xywh);
-        }
       }
       this.switchButtons();
       //set button classes based on position
@@ -956,10 +956,10 @@ export default {
       xywh = xywh == 'full' ? [0,0,0,0] : xywh;
       var elem = document.getElementById(`${this.seadragonid}_annotation`);
       var positioning = {
-        right: {'x': parseInt(xywh[0])+parseInt(xywh[2]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_LEFT', 'inverse': 'left'},
-        left: {'x': parseInt(xywh[0]), 'y' : parseInt(xywh[1]), 'placement': 'TOP_RIGHT', 'inverse': 'right'},
-        top: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1]), 'placement': 'BOTTOM', 'inverse': 'bottom'},
-        bottom: {'x': parseInt(xywh[0])+(parseInt(xywh[2])/2), 'y': parseInt(xywh[1])+parseInt(xywh[3]), 'placement':'TOP', 'inverse': 'top'}
+        right: {'x': xywh['x']+xywh['width'], 'y' : xywh['y'], 'placement': 'TOP_LEFT', 'inverse': 'left'},
+        left: {'x': xywh['x'], 'y' : xywh['y'], 'placement': 'TOP_RIGHT', 'inverse': 'right'},
+        top: {'x': xywh['x']+(xywh['width']/2), 'y': xywh['y'], 'placement': 'BOTTOM', 'inverse': 'bottom'},
+        bottom: {'x': xywh['x']+(xywh['width']/2), 'y': xywh['y']+xywh['height'], 'placement':'TOP', 'inverse': 'top'}
       };
       var overlaydict = this.getPositionData(positioning, elem);
       if (overlaydict['maxHeight'] < 65 || overlaydict['maxWidth'] < 65) {
@@ -1002,7 +1002,7 @@ export default {
       var inverse = positioning[this.settings.textposition].inverse;
       var textposition = isinverse ? inverse : this.settings.textposition;
       var positions = positioning[textposition];
-      var overlayrect = this.viewer.world.getItemAt(0).imageToViewportCoordinates(positions['x'], positions['y']);
+      var overlayrect = new openseadragon.Point(positions['x'],positions['y']);
       var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
       var overlaypixels = this.viewer.viewport.pixelFromPoint(overlayrect);
       var containerpixels = this.viewer.viewport.getContainerSize();
