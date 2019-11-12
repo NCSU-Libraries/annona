@@ -15,9 +15,9 @@ export default {
   },
   // get and parse settings from styling or config. This will check the config element in the page and the inline styling.
   //For inline styling it will split out the values, change boolean and int strings into correct values and remove whitespace.
-  getsettings: function(styling) {
+  getsettings: function(styling, ismulti=false) {
     var settings = {};
-    if (document.getElementById("config") !== null && document.getElementById("config").innerHTML != ''){
+    if (!ismulti && document.getElementById("config") !== null && document.getElementById("config").innerHTML != ''){
       settings = JSON.parse(document.getElementById("config").innerHTML);
     }
     if (styling) {

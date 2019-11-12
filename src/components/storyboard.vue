@@ -189,7 +189,7 @@ export default {
       this.fullscreenChange(this.$parent.isfullscreen);
     }
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
-    this.settings = shared.getsettings(this.styling);
+    this.settings = shared.getsettings(this.styling, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
