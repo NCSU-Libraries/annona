@@ -697,11 +697,7 @@ figcaption {
 
 .bottom_menu_container {
   display:flex;
-  flex-direction: column-reverse;
-}
-
-.bottom_menu_container {
-  display:flex;
+  flex:1 0 auto;
   flex-direction: column-reverse;
 }
 
@@ -715,4 +711,12 @@ figcaption {
 
 #multistoryboard.bottom_menu_container #header_toolbar {
   margin-top: -5px;
+}
+
+.multifullpage:not(.bottom_menu_container) .openseadragon-container {
+  height: calc(100% - #{$toolbarfontsize} - #{$borderwidthnumber*7}px)!important;
+}
+
+.bottom_menu_container .seadragonbox {
+  height: calc(100vh - #{$toolbarfontsize} - #{$borderwidthnumber*7}px)!important;
 }

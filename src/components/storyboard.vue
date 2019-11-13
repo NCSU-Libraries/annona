@@ -1003,7 +1003,6 @@ export default {
       var textposition = isinverse ? inverse : this.settings.textposition;
       var positions = positioning[textposition];
       var overlayrect = new openseadragon.Point(positions['x'],positions['y']);
-      var existingoverlay = this.viewer.getOverlayById(`${this.seadragonid}_annotation`);
       var overlaypixels = this.viewer.viewport.pixelFromPoint(overlayrect);
       var containerpixels = this.viewer.viewport.getContainerSize();
       var maxwidth = textposition == 'right' ?  containerpixels['x'] - overlaypixels['x'] : overlaypixels['x'];
