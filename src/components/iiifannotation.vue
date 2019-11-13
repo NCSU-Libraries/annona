@@ -1,7 +1,7 @@
 <template>
-  <div class="iiifannotation"  v-if="rendered === true">
+  <div class="iiifannotation" v-bind:id="annotationid" v-if="rendered === true">
     <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
-    <div v-for="item in annotation_items" :key="item.id" :id="item.id">
+    <div v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
       <span v-for="image in item.image" :key="image">
       <span v-html="image" id="annoimage"></span>
       </span>
@@ -52,12 +52,12 @@ export default {
       rendered: '',
       annotation_json: '',
       languages: [],
-      counts: {}
+      counts: {},
+      annotationid: ''
       }
   },
   created() {
     this.settings = shared.getsettings(this.styling); //get settings
-
     //CSS custom height/width settings
     if (this.settings.height){
       var width = this.settings.width ? `${this.settings.width}px` : 'auto';
@@ -84,6 +84,7 @@ export default {
       this.anno = annotation_data.resources ? annotation_data.resources : annotation_data.items ? annotation_data.items : annotation_data;
       this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], annotation_data);
+      this.annotationid = this.annotation_json.split("/").slice(-1).pop().replace(".json", "");
       if (this.manifestlink && !this.settings.text_only) {
         this.getManifestData()
       } else {
