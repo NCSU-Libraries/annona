@@ -1,5 +1,5 @@
 <template>
-  <div class="iiifannotation" v-bind:id="annotationid" v-if="rendered === true">
+  <div class="iiifannotation" v-bind:id="annotationid + '_imageview'" v-if="rendered === true">
     <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <div v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
       <span v-for="image in item.image" :key="image">
