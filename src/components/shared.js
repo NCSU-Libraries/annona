@@ -92,13 +92,18 @@ export default {
       canvasRegion = canvasRegion.split("=").slice(-1)[0]
     }
     if (typeof canvasId !== 'string'){
+      if (canvasId.selector){
+        if (canvasId.selector){
+          var selectors = canvasId.selector.filter(element => element.value.indexOf('xywh') > -1);
+          canvasRegion = selectors[0].value.split(",").map(element => element.replace(/[^0-9]/g, '')).join(",");
+        } else {
+          canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
+        }
+      }
       if (canvasId['source']){
         canvasId = canvasId.source;
       } else {
         canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
-      }
-      if (canvasId.selector){
-        canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
       }
     }
     if (canvasId.indexOf("#xywh") > -1){
@@ -213,6 +218,24 @@ export default {
         tilesource = { type: 'image', url:  `${tilesource}` }
     }
     return tilesource;
+  },
+  isURL: function(annotationurl, settings) {
+    var parseString = this.parseInput(annotationurl);
+    var isURL = parseString.constructor === String ? true : false;
+    var id = settings.customid ? settings.customid : annotationurl
+    if (!isURL) {
+      id = settings.customid ? settings.customid : parseString['@id'] ? parseString['@id'] : parseString['id'] ? parseString['id'] : parseString[0]['id'];
+    }
+    id = id.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","")
+    return {'isURL': isURL, 'json': parseString, 'id': id};
+  },
+  parseInput: function(annotation) {
+    try {
+      return JSON.parse(document.getElementById(annotation).innerHTML)
+    }
+    catch(err) {
+      return annotation;
+    }
   },
   flatten: function(array, element) {
     if (element) {

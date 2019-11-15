@@ -193,16 +193,32 @@ export default {
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
-    this.seadragonid = this.settings.customid ? this.settings.customid : annotationurl.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","");
+    var isURL = shared.isURL(annotationurl, this.settings);
+    this.seadragonid = isURL['id'];
     this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
     this.settings.annoview == 'collapse' ? this.buttons.hide_button = '<i class="fas fa-caret-left"></i>' : '';
-    axios.get(annotationurl).then(response => {
-      var anno = response.data.resources ? response.data.resources : response.data.items ? response.data.items : response.data;
+    if(isURL['isURL']){
+      axios.get(annotationurl).then(response => {
+        this.parseAnnoData(response.data, annotationurl)
+      });
+    }
+  },
+  mounted () {
+    this.newSocket();
+    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
+    var isURL = shared.isURL(annotationurl, '');
+    if (!isURL['isURL']) {
+      this.parseAnnoData(isURL['json'], annotationurl)
+    }
+  },
+  methods: {
+    parseAnnoData: function(annotation, annotationurl){
+      var anno = annotation.resources ? annotation.resources : annotation.items ? annotation.items : annotation;
       anno = [].concat(anno);
       //Get basic annotation information
       this.annoinfo.text += `<div class="listinfo"><b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a>
       <br><b>Number of Annotations:</b> ${anno.length}</div>`
-      var manifestlink = shared.manifestlink(this.manifesturl, anno[0], response.data);
+      var manifestlink = shared.manifestlink(this.manifesturl, anno[0], annotation);
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
@@ -255,12 +271,7 @@ export default {
       if (this.$parent.multi) {
         tags.length > 0 ? this.$parent.tags = true : '';
       }
-  });
-  },
-  mounted () {
-    this.newSocket();
-  },
-  methods: {
+    },
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;

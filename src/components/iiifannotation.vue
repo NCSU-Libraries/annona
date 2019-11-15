@@ -50,7 +50,6 @@ export default {
       manifestlink: '',
       annotation_items: [],
       rendered: '',
-      annotation_json: '',
       languages: [],
       counts: {},
       annotationid: ''
@@ -67,16 +66,15 @@ export default {
     }
 
     //get annotation URL and get annotation data
-    var annotation_json = this.annotationlist ? this.annotationlist : this.annotationurl;
-    this.annotation_json = this.parseInput(annotation_json);
-    if (this.annotation_json.constructor === String){
-      axios.get(this.annotation_json).then(response => {
+    var annoprop = this.annotationlist ? this.annotationlist : this.annotationurl;
+    var isURL = shared.isURL(annoprop, this.settings);
+    this.annotationid = isURL['id'];
+    if (isURL['isURL']){
+      axios.get(annoprop).then(response => {
         this.parseAnnoManifest(response.data)
       }).catch((error) => {this.rendered = false;console.log(error);})
     } else {
-      var annotation_data = this.annotation_json;
-      this.annotation_json = this.annotation_json['@id'] ? this.annotation_json['@id'] : this.annotation_json['id'];
-      this.parseAnnoManifest(annotation_data);
+      this.parseAnnoManifest(isURL['json']);
     }
   },
   methods: {
@@ -84,19 +82,10 @@ export default {
       this.anno = annotation_data.resources ? annotation_data.resources : annotation_data.items ? annotation_data.items : annotation_data;
       this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], annotation_data);
-      this.annotationid = this.annotation_json.split("/").slice(-1).pop().replace(".json", "");
       if (this.manifestlink && !this.settings.text_only) {
         this.getManifestData()
       } else {
         this.annoloop(false)
-      }
-    },
-    parseInput: function(annotation) {
-      try {
-        return JSON.parse(document.getElementById(annotation).innerHTML)
-      }
-      catch(err) {
-        return annotation;
       }
     },
     //toggle hide/view full image
@@ -137,7 +126,7 @@ export default {
     // Loop through annotations
     annoloop: function(hasmanifest) {
       for (var i =0; i < this.anno.length; i++){
-        var dictionary = this.getImageData(this.anno[i], this.annotation_json, i); //get image data for annotation
+        var dictionary = this.getImageData(i); //get image data for annotation
         var ondict = shared.on_structure(this.anno[i]);
         var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : shared.flatten(ondict);
         canvasId = [].concat(canvasId);
@@ -154,7 +143,7 @@ export default {
         } else if (!this.settings.text_only) {
           //If image does not have a manifest go through canvases, get image urls and create HTML img or svg element
           for (var cn = 0; cn < canvasId.length; cn++){
-            var canvasItem = canvasId[cn]
+            var canvasItem = canvasId[cn];
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
             var imagedict = this.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
             var imageurl = imagedict['imageurl'];
@@ -263,7 +252,8 @@ export default {
       return {'fullImage': fullImage, 'image': images}
     },
     //get all image data
-    getImageData: function(anno, annotation_json, i){
+    getImageData: function(i){
+      var anno = this.anno[i];
       var dictionary = {'image':[]};
       if (this.settings.image_only !== true){
         var dict = shared.chars(anno);
@@ -274,13 +264,13 @@ export default {
         this.currentlang = langs.length > 0 ? langs[0] : this.currentlang ? this.currentlang : dict['textual_body'][0] && dict['textual_body'][0]['language'];
         dictionary['rendered_content'] = shared.createContent(dict, this.currentlang);
         dictionary['content'] = dict;
-        dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
+        dictionary['id'] = this.annotationid + i;
         dictionary['altText'] = dict['ocr'].length > 0 ? dict['ocr'][0] : dict['label'] !== undefined ? dict['label'] : `Image section of "${this.manifest['label']}"`;
         dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
         dictionary['tags'] = dict['tags'].length > 0 ? dict['tags'] : "";
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
-        dictionary['id'] = annotation_json.split("/").slice(-1).pop().replace(".json", "") + i;
+        dictionary['id'] = this.annotationid + i;
         this.settings.hide_viewlarger = true;
       }
       return dictionary;
