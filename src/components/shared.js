@@ -93,10 +93,12 @@ export default {
     }
     if (typeof canvasId !== 'string'){
       if (canvasId['source']){
-        canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
         canvasId = canvasId.source;
       } else {
         canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
+      }
+      if (canvasId.selector){
+        canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
       }
     }
     if (canvasId.indexOf("#xywh") > -1){
