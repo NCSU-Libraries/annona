@@ -102,9 +102,8 @@ export default {
       }
       if (canvasId['source']){
         canvasId = canvasId.source;
-      } else {
-        canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'];
       }
+      canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'] ? canvasId['@id'] : canvasId ;
     }
     if (canvasId.indexOf("#xywh") > -1){
       canvasRegion = canvasId.split("#")[1].split("=")[1];
@@ -224,7 +223,7 @@ export default {
     var isURL = parseString.constructor === String ? true : false;
     var id = settings.customid ? settings.customid : annotationurl
     if (!isURL) {
-      id = settings.customid ? settings.customid : parseString['@id'] ? parseString['@id'] : parseString['id'] ? parseString['id'] : parseString[0]['id'];
+      id = settings.customid ? settings.customid : parseString['@id'] ? parseString['@id'] : parseString['id'] ? parseString['id'] : Math.random().toString(36).substring(7);
     }
     id = id.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","")
     return {'isURL': isURL, 'json': parseString, 'id': id};
