@@ -43,6 +43,7 @@ export default {
     var ocr = [];
     var shapetype;
     var langs;
+    var authors = [];
     var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
     for (var i=0; i < res.length; i++){
@@ -50,6 +51,7 @@ export default {
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
       var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
+      var author = res_data.creator ? res_data.creator : res_data['annotatedBy'] ? res_data['annotatedBy'] : res_data['oa:annotatedBy'] ? res_data['oa:annotatedBy'] : '';
       purpose = purpose.toLowerCase()
       if (res_data[type] === 'TextualBody'){
         if (purpose === 'tagging'){
@@ -74,11 +76,14 @@ export default {
       } else if (value) {
         textual_body.push(`<div class="${purpose}">${value}</div>`);
       }
+      if (author){
+        authors.push(author);
+      }
       if (res_data.selector){
         shapetype = res_data.selector.value;
       }
     }
-    var authors = this.getAuthor(anno);
+    authors = authors.length < 0 ? this.getAuthor(anno) : [... new Set(authors)].join(", ");
     return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
   },
   //get canvas information and section of image annotated.
@@ -158,7 +163,7 @@ export default {
       var author_string = author['name'] ? author['name'] : author['label'] ? author['label'] : author;
       authors.push(author_string)
     }
-    return authors.join(', ');
+    return [... new Set(authors)].join(', ');
   },
   getTagDict: function(alltags, settings, checked) {
     var tagdict = {}
