@@ -52,7 +52,6 @@ export default {
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
       var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
-      var author = res_data.creator ? res_data.creator : res_data['annotatedBy'] ? res_data['annotatedBy'] : res_data['oa:annotatedBy'] ? res_data['oa:annotatedBy'] : '';
       purpose = purpose.toLowerCase()
       if (res_data[type] === 'TextualBody'){
         if (purpose === 'tagging'){
@@ -77,8 +76,8 @@ export default {
       } else if (value) {
         textual_body.push(`<div class="${purpose}">${value}</div>`);
       }
-      if (author){
-        authors.push(author);
+      if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
+        authors = authors.concat(this.getAuthor(res_data).split(", "));
       }
       if (res_data.selector){
         shapetype = res_data.selector.value;
