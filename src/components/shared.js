@@ -37,7 +37,7 @@ export default {
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
   //Looks at type in resource field to define which item the resource belongs to.
   chars: function(anno) {
-    var res = anno.body ? anno.body : anno.resource;
+    var res = anno.body ? anno.body : anno.resource ? anno.resource : '';
     var textual_body = [];
     var tags = [];
     var ocr = [];
@@ -46,6 +46,7 @@ export default {
     var authors = [];
     var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
+    anno.bodyValue ? textual_body.push(anno.bodyValue) : '';
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
