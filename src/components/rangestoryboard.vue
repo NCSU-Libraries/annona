@@ -67,16 +67,27 @@ export default {
     created(){
       // get annotation urls in list
       this.rangeid = this.$props.rangeurl.split("/").slice(-1)[0];
-      axios.get(this.$props.rangeurl).then(response => {
-        var annos = response.data.contentLayer.otherContent;
-        var canvases = response.data.canvases ? response.data.canvases : [];
-        var viewingDirection = response.data.viewingDirection;
+      var isURL = shared.isURL(this.$props.rangeurl, this.settings);
+      this.settings = shared.getsettings(this.styling);
+      if (isURL['isURL']){
+        axios.get(this.$props.rangeurl).then(response => {
+          this.getRangeData(response.data);
+        })
+      } else {
+        this.getRangeData(isURL['json'])
+      }
+    },
+    methods: {
+      getRangeData: function(rangelist) {
+        var annos = rangelist.contentLayer.otherContent;
+        var canvases = rangelist.canvases ? rangelist.canvases : [];
+        var viewingDirection = rangelist.viewingDirection;
         if(viewingDirection === 'right-to-left'){
           this.viewingDirection = 'rtl';
           this.buttons.prev = this.buttons.next;
           this.buttons.next = '<i class="fas fa-chevron-left"></i>';
         }
-        this.rangetitle = response.data.label;
+        this.rangetitle = rangelist.label;
         for (var ca=0; ca<annos.length; ca++){
           var canvas = canvases[ca];
           var anno = annos[ca];
@@ -95,7 +106,6 @@ export default {
         }
         this.annotationurl = this.rangelist[0];
         // Get settings and create styling string
-        this.settings = shared.getsettings(this.styling);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.getTitle();
         this.$props.ws ? this.isws = this.$props.ws : '';
@@ -103,9 +113,7 @@ export default {
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
         this.rangelist.length == 1 ? this.nextPageInactive = true : ''
-      })
-    },
-    methods: {
+      },
       nextItemRange: function(prevornext){
         if (prevornext == 'prev') {
           this.position -= 1;
