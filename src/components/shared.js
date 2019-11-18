@@ -93,9 +93,9 @@ export default {
     }
     if (typeof canvasId !== 'string'){
       if (canvasId.selector){
-        if (canvasId.selector){
+        if (canvasId.selector.constructor === Array){
           var selectors = canvasId.selector.filter(element => element.value.indexOf('xywh') > -1);
-          canvasRegion = selectors[0].value.split(",").map(element => element.replace(/[^0-9]/g, '')).join(",");
+          canvasRegion = selectors[0].value.split("=").slice(-1)[0];
         } else {
           canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
         }
@@ -109,8 +109,9 @@ export default {
       canvasRegion = canvasId.split("#")[1].split("=")[1];
       canvasId = canvasId.split("#")[0];
     } else if (!canvasRegion) {
-        canvasRegion = "full";
+      canvasRegion = "full";
     }
+    canvasRegion != 'full' ? canvasRegion = canvasRegion.split(",").map(element => element.replace(/[^0-9]/g, '')).join(",") : "";
     return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion};
   },
   //get the manifest link from annotation;
