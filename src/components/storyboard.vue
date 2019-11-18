@@ -568,6 +568,7 @@ export default {
           this.tagslist[tag].checked = false;
         } else {
           elem[j].style.display = 'block';
+          elem[j].style.zIndex = 1;
           this.tagslist[tag].checked = true;
         }
       }
