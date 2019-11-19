@@ -4,8 +4,6 @@ title: Range Storyboard
 permalink: /range/
 ---
 
-# Currently only available in latest version. This viewer is still in development.
-
 <style>
 code {
   word-wrap: break-word;
