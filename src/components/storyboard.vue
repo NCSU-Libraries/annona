@@ -3,23 +3,23 @@
   <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar" v-bind:class="[settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu' : 'default_menu']">
-        <button v-if="!annotationurl" v-hotkey="['b', '1']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+        <button v-if="!annotationurl && !settings.hide_autorunbutton" v-hotkey="['b', '1']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-hotkey="['i', '2']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});" v-if="imageinfo || annoinfo.text || settings.additionalinfo"  id="infoButton" class="toolbarButton">
+        <button v-hotkey="['i', '2']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});" v-if="(imageinfo || annoinfo.text || settings.additionalinfo) && !settings.hide_infobutton"  id="infoButton" class="toolbarButton">
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
-        <button v-hotkey="['t', '3']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="toolbarButton">
+        <button v-hotkey="['t', '3']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tagsbutton" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
-        <button v-hotkey="['o', '4']" v-if="!annotationurl" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
+        <button v-hotkey="['o', '4']" v-if="!annotationurl && !settings.hide_overlaybutton" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
         </button>
-        <button v-hotkey="['l', '5']" v-if="layerslist.length > 1" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
+        <button v-hotkey="['l', '5']" v-if="layerslist.length > 1 && !settings.hide_layersbutton" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
           <span v-html="buttons.layer"></span>
           <span class="toolbartext">View layers</span>
         </button>
@@ -35,15 +35,15 @@
           <i class="fas fa-home"></i>
           <span class="toolbartext">View full image</span>
         </button>
-        <button v-hotkey="['p', ',', 'shift+left']" v-if="!annotationurl" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+        <button v-hotkey="['p', ',', 'shift+left']" v-if="!annotationurl && !settings.hide_nextbuttons" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-left"></i>
           <span class="toolbartext">Previous Annotation</span>
         </button>
-        <button v-hotkey="['n', '.', 'shift+right']" v-if="!annotationurl" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+        <button v-hotkey="['n', '.', 'shift+right']" v-if="!annotationurl && !settings.hide_nextbuttons" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
-        <button v-hotkey="['alt+f', ';']" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
+        <button v-hotkey="['alt+f', ';']" v-if="!settings.hide_fullscreenbutton" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
@@ -54,8 +54,8 @@
       <button class="annocontrols_button" id="close_button"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="['x', '6']"></i></button>
       <button v-html="buttons.hide_button" v-hotkey="['c', '7']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></button>
       <button v-html="buttons.playpause" id="playpause_button" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></button>
-      <button v-html="buttons.tags" id="tags_button" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></button>
-      <button v-html="buttons.info" id="info_button" v-if="imageinfo || annoinfo.text" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></button>
+      <button v-html="buttons.tags" id="tags_button" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tagsbutton" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></button>
+      <button v-html="buttons.info" id="info_button" v-if="(imageinfo || annoinfo.text) && !settings.hide_infobutton" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></button>
       <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="layers" v-if="shown == 'layer'" class="content">

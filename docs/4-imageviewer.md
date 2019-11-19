@@ -36,6 +36,8 @@ In order to create any of the viewers listed on the website the following code n
 
 Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many image viewers are loaded. Multiple image viewers can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotations](https://dnoneill.github.io/annotate/annotations).
 
+## Building views
+From there any of the tags built through the [Tag Builder]({{site.baseurl}}/tag-builder/) or manually can be entered into a webpage. The Tag Builder provides a user interface for creating much of the code documented below. It also has all settings built into the interface.
 
 # Single Annotation
 

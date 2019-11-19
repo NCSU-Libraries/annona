@@ -32,10 +32,17 @@ In order to create any of the viewers listed on the website the following code n
 
 ```
 <script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
+
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
 ```
 
 Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many storyboards are loaded. Multiple storyboards can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotation storyboards](https://dnoneill.github.io/annotate/storyboard). Be aware that the last annotation in a list of annotations will be the color to display on top. The colors for the annotation tag types will be randomly generated. To override these colors see [the CSS styling in the single annotation setting example](#single-annotation-setting).
+
+
+## Building views
+From there any of the tags built through the [Tag Builder]({{site.baseurl}}/tag-builder/) or manually can be entered into a webpage. The Tag Builder provides a user interface for creating much of the code documented below. It also has all settings built into the interface.
+
+
 
 
 # Default AnnotationList or AnnotationPage Storyboard example
@@ -108,7 +115,6 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | toggleoverlay | **true** or **false**. By default this is **false** and the overlay is hidden unless toggled. This setting shows the overlays on load. |
 | textposition | **top**, **bottom**, **right**, **left**. Will position to the left, right, bottom, or top of annotated area. By default this option is not instantiated and the annotation text appears in the top left hand corner of the viewer. Additional positioning can be done with CSS. Each option has a dedicated class based on the option name (.top, .right, etc.)|
 | tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. If the language is set in the individual annotations it will set the language automatically and this can be set to **true** (see [Auto Language TTS example](#auto-language-tts-example)). A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (clicking the Auto Run button) to work in Chrome but should work fine in Safari and Firefox. It does not work with Internet Explorer. |
-| hide_tags | **true** or **false**. By default is **false**; If there are tags in the annotations tags will be available for toggling based on tags. This will remove the icons in both toolbars. |
 | truncate_length | **Any Integer.** By default it is set to **2**; This determines how many words appear when the hide button (<i class="fas fa-caret-up"></i>) is clicked. The hide button will only show words in the annotation and will truncate the annotation and hide the tags. If you are looking for a way to hide the tags listed in the annotation (not the tags button) add to css to `.tags {display: none;}` |
 | additionalinfo | Is the id for an HTML object whose innerHTML will be loaded into the info tab. This HTML object should have a title tag. |
 | startenddisplay | Choices are **'tags'** or **'info'**. By default the first and last items are the full image without a text box. This setting allows for the information or tags tab to be toggled at the first and last item. |
@@ -124,6 +130,14 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | annoview | **sidebyside** or **collapse**. Will change how the annotation and information box style. Collapse positions the box on top of the image viewer and allows for the bar to collapse. Side by side is similar but it is next to the viewer |   
 | overlaynext | **true** or **false**. When the overlays are not toggled it will show the overlay for the active annotation only. **Default** is **false** |
 | toolbarposition | **bottom**. Will move the toolbar to the bottom of the viewer. Default is the top of the viewer |
+| hide_tagsbutton | **true** or **false**. By default is **false**; If there are tags in the annotations tags will be available for toggling based on tags. This will remove the icons in both toolbars. |
+| hide_autorunbutton | **true** or **false**. By default is **false**; Will stop the autorun button from rendering and not allow the shortcuts to render. |
+| hide_infobutton| **true** or **false**. By default is **false**; Will stop the info button from rendering and not allow the shortcuts to render. |
+| hide_overlaybutton| **true** or **false**. By default is **false**; Will stop the overlay button from rendering and not allow the shortcuts to render. |
+| hide_layersbutton | **true** or **false**. By default is **false**; Will stop the layers button from rendering and not allow the shortcuts to render. |
+| hide_nextbuttons | **true** or **false**. By default is **false**; Will stop the previous and next buttons from rendering and not allow the shortcuts to render. |
+| hide_fullscreenbutton | **true** or **false**. By default is **false**; Will stop the fullscreen button from rendering and not allow the shortcuts to render. |
+
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.
@@ -199,9 +213,9 @@ This is an example of the info that is loaded.
 </div>
 <iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
 
-# Icons
+# Icons & Keyboard Shortcuts
 
-| Icon      | Keyboard Shortcut | Purpose |
+| Icon      | Keyboard Shortcut(s) | Purpose |
 | ----------- | ----------- | ----------- |
 | <i class="fas fa-magic"></i> | `b` or `1` | This button will automatically go through all the annotations and the sections associated with the annotation until stopped. When it is running it will be replaced with <i class="fas fa-stop-circle"></i> icon until it is pressed again. |
 |<i class="fas fa-info-circle"></i> | `i` or `2` | This button will display a list of the annotations available. It also displays manifest metadata if a manifest is provided. Also it will show specialized information loaded through the settings. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
@@ -212,8 +226,8 @@ This is an example of the info that is loaded.
 | <i class="fas fa-home"></i> | `h` or `0` | This button shows the full image, if an image is zoomed in, it will resize the image to the view on the original load. |
 | <i class="fa fa-arrow-left"></i><i class="fa fa-arrow-right"></i> | `p` or `,` or <code>shift+<i class="fas fa-arrow-left"></i></code>(previous), `n` or `.` or <code>shift+<i class="fas fa-arrow-right"></i></code> (next)| These buttons allow users to scroll through annotations. They will be red when they have reached the end or beginning of the list. |
 | <i class="fas fa-expand"></i> | `alt+f`(windows)/`option+f`(mac) or `;`| Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen. |
-| <i class="fas fa-times"></i> | 'x', '6'| Will close the content box. Make sure to navigate to the viewer to use keyboard shortcuts.|
-| <i class="fas fa-caret-up"></i> <i class="fas fa-caret-down"></i>| 'c', '7'| Will truncate the length of the annotation. Make sure to navigate to the viewer to use keyboard shortcuts.|
+| <i class="fas fa-times"></i> | `x`, `6` | Will close the content box. Make sure to navigate to the viewer to use keyboard shortcuts.|
+| <i class="fas fa-caret-up"></i> <i class="fas fa-caret-down"></i> (<i class="fas fa-caret-left"></i> <i class="fas fa-caret-right"></i> with collapse setting)| `c`, `7`| Will truncate the length of the annotation. Make sure to navigate to the viewer to use keyboard shortcuts.|
 | OpenSeadragon viewer | [https://openseadragon.github.io/examples/ui-keyboard-navigation/](https://openseadragon.github.io/examples/ui-keyboard-navigation/) | The OpenSeadragon viewer also has keyboard navigation (the image section of the storyboard). See webpage for keyboard navigation like rotate and flip |
 
 
