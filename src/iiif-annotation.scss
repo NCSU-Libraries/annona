@@ -222,15 +222,18 @@ $phonetoolbarfontsize: .79rem;
 .annocontrols_button {
   color: white;
   background: black;
-  padding: 3.5px;
   margin-right: 1.5px;
   font-size: $annocontrolsize;
   text-align: center;
-  width: $annocontrolsize;
+  width: auto;
   height: $annocontrolsize;
   border-radius: 15%;
   vertical-align: middle;
   line-height: 10px;
+  border: none;
+  padding: 3.5px;
+  height: 1.5rem;
+  cursor: pointer;
 }
 
 .pin > *:not(svg) {
@@ -507,7 +510,19 @@ figcaption {
     }
 }
 
-.lang-icon {position:relative;}
+.lang-icon {
+  position:relative;
+  font-size: $annocontrolsize;
+  text-align: center;
+  width: $annocontrolsize;
+  height: $annocontrolsize;
+  vertical-align: middle;
+  cursor: pointer;
+  border-radius: 15%;
+  line-height: 10px;
+  padding: 3.5px;
+}
+
 .lang-icon:before {
     content:"\f0ac";
     font-weight: 900;
@@ -519,6 +534,7 @@ figcaption {
     text-align: center;
     vertical-align: middle;
     display:inline;
+    padding: 3.5px 3.5px 0px 0px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -602,12 +618,23 @@ figcaption {
   font-weight: bold;
 }
 
+.buttonlink {
+  background: none!important;
+  border: none;
+  color: #069;
+  text-decoration: underline;
+  padding: 0px;
+  cursor: pointer;
+  font: inherit;
+}
+
 .infolink {
   padding-bottom: 10px;
   text-align: center;
   font-weight: bold;
   display: block;
   font-size: large;
+  margin:auto;
 }
 
 .storyboard_viewer a {

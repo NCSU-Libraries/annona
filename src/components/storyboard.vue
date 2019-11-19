@@ -49,14 +49,14 @@
         </button>
       </span>
     </div>
-    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', textposition, settings.toolbarposition ? settings.toolbarposition + '_menu_annotation' : '', settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="shown">
+    <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', textposition, settings.toolbarposition ? settings.toolbarposition + '_menu_annotation' : '', settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="shown" tabindex="0">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-      <span class="annocontrols_button" id="close_button"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="['x', '6']"></i></span>
-      <span v-html="buttons.hide_button" v-hotkey="['c', '7']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></span>
-      <span v-html="buttons.playpause" id="playpause_button" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></span>
-      <span v-html="buttons.tags" id="tags_button" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></span>
-      <span v-html="buttons.info" id="info_button" v-if="imageinfo || annoinfo.text" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></span>
-      <span class="lang-icon annocontrols_button" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
+      <button class="annocontrols_button" id="close_button"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="['x', '6']"></i></button>
+      <button v-html="buttons.hide_button" v-hotkey="['c', '7']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></button>
+      <button v-html="buttons.playpause" id="playpause_button" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></button>
+      <button v-html="buttons.tags" id="tags_button" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tags" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></button>
+      <button v-html="buttons.info" id="info_button" v-if="imageinfo || annoinfo.text" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></button>
+      <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="layers" v-if="shown == 'layer'" class="content">
         <div v-for="layer in layerslist" v-bind:key="layer.tile">
@@ -81,29 +81,29 @@
         <span v-if="!booleanitems.isexcerpt">
           <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
 
-          <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</a>
+          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</button>
           <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
 
-          <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 0">{{$parent.toctitle}}</a>
+          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 0">{{$parent.toctitle}}</button>
           <div v-if="booleanitems.tocshown" class="tocinfo">
             <div v-for="toc in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
-              <div class="title"><a v-on:click="$parent.nextItemRange(toc.position);">{{toc.label}}</a></div>
+              <div class="title"><button class="buttonlink" v-on:click="$parent.nextItemRange(toc.position);">{{toc.label}}</button></div>
               <div class="additionaltext" v-html="toc.description" v-if="toc.description"></div>
             </div>
           </div>
 
-          <a class="infolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</a>
+          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</button>
           <div v-if="booleanitems.annoinfoshown" class="annoinfo">
             <span v-html="annoinfo.text"></span>
             <div class="annotationslist">
               <div v-for="annoinfo in annoinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
-                <div class="title"><a v-on:click="sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</a></div>
+                <div class="title"><button class="buttonlink" v-on:click="sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</button></div>
                 <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
               </div>
             </div>
           </div>
 
-          <a class="infolink" v-if="imageinfo.text" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{imageinfo.label}}</a>
+          <button class="infolink buttonlink" v-if="imageinfo.text" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{imageinfo.label}}</button>
           <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
         </span>
       </div>
