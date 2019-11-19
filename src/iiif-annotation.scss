@@ -135,7 +135,7 @@ $phonetoolbarfontsize: .79rem;
   width: 20%;
   resize: both;
   border: $borderwidth solid black;
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
   position: absolute;
   left: 0px;
   z-index: 99999;
