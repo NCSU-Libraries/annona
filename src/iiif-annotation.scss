@@ -691,6 +691,12 @@ figcaption {
   position: fixed;
 }
 
+.content {
+  position: relative;
+  display: inline-block;
+  overflow: auto;
+}
+
 .content > * {
   word-break: break-word;
 }
