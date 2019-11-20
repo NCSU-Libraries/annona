@@ -546,7 +546,7 @@ export default {
       this.buttons.info = '<i class="fas fa-info-circle"></i>';
       this.buttons.layer = '<i class="fas fa-layer-group"></i>';
       this.buttons.tags = '<i class="fas fa-tag"></i>';
-      if (button){
+      if (button && this.buttons[button]){
         if (this.position == -1 || this.position >= this.zoomsections.length) {
           this.buttons[button] = '<i class="fas fa-window-close"></i>'
         } else {
@@ -554,8 +554,8 @@ export default {
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
-          this.shown = this.settings.startenddisplay && this.shown != this.settings.startenddisplay ? this.settings.startenddisplay : false;
-          this.settings.startenddisplay ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
+          this.shown = this.settings.startenddisplay && (this.shown != this.settings.startenddisplay || !this.buttons[this.settings.startenddisplay]) ? this.settings.startenddisplay : false;
+          this.settings.startenddisplay && this.buttons[this.settings.startenddisplay] ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
           this.shown = this.currentanno != '' && !this.settings.transcription ? 'anno' : this.settings.transcription ? 'transcription' : false;
         }
