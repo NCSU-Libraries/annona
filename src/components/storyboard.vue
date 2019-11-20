@@ -107,6 +107,13 @@
           <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
         </span>
       </div>
+      <div id="transcription" v-if="shown == 'transcription'" class="content">
+          <button v-for="(item, index) in annotations" v-if="!booleanitems.isexcerpt" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
+            <span v-html="item.ocr.join(' ') + '&nbsp;'" class="ocrtranscription" v-bind:id="'line' + index"></span>
+          </button>
+        </span>
+        <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+      </div>
       <div id="annotation_text" v-if="shown == 'anno'" class="content">
         <span v-html="currentanno" v-if="!booleanitems.isexcerpt"></span>
         <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
@@ -550,7 +557,7 @@ export default {
           this.shown = this.settings.startenddisplay && this.shown != this.settings.startenddisplay ? this.settings.startenddisplay : false;
           this.settings.startenddisplay ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
-          this.shown = this.currentanno != '' ? 'anno' : false;
+          this.shown = this.currentanno != '' && !this.settings.transcription ? 'anno' : this.settings.transcription ? 'transcription' : false;
         }
       }
     },
@@ -962,6 +969,14 @@ export default {
       }
       if (this.$parent.multi && this.isautorunning) {
        this.$parent.autoRunImages()
+      }
+      if (this.settings.transcription) {
+        this.$nextTick(() => {
+          var elmnt = document.getElementsByClassName("activeword")[0];
+          if (elmnt){
+            elmnt.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+          }
+        })
       }
     },
     //For annotation box position, will position box in specified location is set;
