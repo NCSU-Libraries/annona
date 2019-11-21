@@ -200,7 +200,7 @@ export default {
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
     var isURL = shared.isURL(annotationurl, this.settings);
-    this.seadragonid = isURL['id'];
+    this.seadragonid = isURL['id'] + '_storyboard';
     this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
     this.settings.annoview == 'collapse' ? this.buttons.hide_button = '<i class="fas fa-caret-left"></i>' : '';
     if(isURL['isURL']){
