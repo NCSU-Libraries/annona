@@ -108,10 +108,9 @@
         </span>
       </div>
       <div id="transcription" v-if="shown == 'transcription'" class="content">
-          <button v-for="(item, index) in annotations" v-if="!booleanitems.isexcerpt" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
-            <span v-html="item.ocr.join(' ') + '&nbsp;'" class="ocrtranscription" v-bind:id="'line' + index"></span>
-          </button>
-        </span>
+        <button v-for="(item, index) in annotations" v-bind:key="index" v-if="!booleanitems.isexcerpt" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
+          <span v-html="item.ocr.join(' ') + '&nbsp;'" class="ocrtranscription" v-bind:id="'line' + index"></span>
+        </button>
         <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
       </div>
       <div id="annotation_text" v-if="shown == 'anno'" class="content">
@@ -554,7 +553,7 @@ export default {
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
-          this.shown = this.settings.startenddisplay && (this.shown != this.settings.startenddisplay || !this.buttons[this.settings.startenddisplay]) ? this.settings.startenddisplay : false;
+          this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
           this.settings.startenddisplay && this.buttons[this.settings.startenddisplay] ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
           this.shown = this.currentanno != '' && !this.settings.transcription ? 'anno' : this.settings.transcription ? 'transcription' : false;
