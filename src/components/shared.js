@@ -266,14 +266,10 @@ export default {
       'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts', 'shortcut': ['s', '8']}
     }
     if ((type == 'storyboard' && Object.keys(vueinfo.tagslist).length > 0) || (type=='multistoryboard' && vueinfo.tags)){
-      if (!vueinfo.settings.hide_tagsbutton){
-        shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Tags', 'shortcut': ['t', '3']};
-      }
+      shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Tags', 'shortcut': ['t', '3']};
     }
     if ((type == 'storyboard' && vueinfo.layerslist.length > 0) || (type=='multistoryboard' && vueinfo.layerslist)){
-      if (!vueinfo.settings.hide_layersbutton){
-        shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 'shortcut': ['l', '5']};
-      }
+      shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 'shortcut': ['l', '5']};
     }
     if (vueinfo.settings.tts){
       shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause', 'shortcut': ['s', '8']}

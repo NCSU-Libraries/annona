@@ -3,51 +3,51 @@
   <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar" v-bind:class="[settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu' : 'default_menu']">
-        <button v-if="!annotationurl && !settings.hide_autorunbutton" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+        <button v-if="!annotationurl && shortcuts['autorun']" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
-        <button v-hotkey="shortcuts['info']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});" v-if="(imageinfo || annoinfo.text || settings.additionalinfo) && !settings.hide_infobutton"  id="infoButton" class="toolbarButton">
+        <button v-hotkey="shortcuts['info']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});" v-if="(imageinfo || annoinfo.text || settings.additionalinfo) && shortcuts['info']"  id="infoButton" class="toolbarButton">
           <span v-html="buttons.info"></span>
           <span class="toolbartext">View source image information</span>
         </button>
-        <button v-hotkey="shortcuts['tags']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tagsbutton" class="toolbarButton">
+        <button v-hotkey="shortcuts['tags']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="shortcuts['tags']" class="toolbarButton">
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
-        <button v-hotkey="shortcuts['overlay']['shortcut']" v-if="!annotationurl && !settings.hide_overlaybutton" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
+        <button v-hotkey="shortcuts['overlay']['shortcut']" v-if="!annotationurl && shortcuts['overlay']" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
         </button>
-        <button v-hotkey="shortcuts['layers']['shortcut']" v-if="layerslist.length > 1 && !settings.hide_layersbutton" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
+        <button v-hotkey="shortcuts['layers']['shortcut']" v-if="layerslist.length > 1 && shortcuts['layers']" id="layerButton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
           <span v-html="buttons.layer"></span>
           <span class="toolbartext">View layers</span>
         </button>
-        <button v-hotkey="shortcuts['zoomin']['shortcut']" v-on:click="sendMessage({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
+        <button v-hotkey="shortcuts['zoomin']['shortcut']" v-if="shortcuts['zoomin']" v-on:click="sendMessage({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
           <i class="fas fa-search-plus"></i>
           <span class="toolbartext">Zoom in</span>
         </button>
-        <button v-hotkey="shortcuts['zoomout']['shortcut']" v-on:click="sendMessage({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
+        <button v-hotkey="shortcuts['zoomout']['shortcut']" v-if="shortcuts['zoomout']" v-on:click="sendMessage({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
           <i class="fas fa-search-minus"></i>
           <span class="toolbartext">Zoom out</span>
         </button>
-        <button v-hotkey="shortcuts['home']['shortcut']" v-on:click="sendMessage({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
+        <button v-hotkey="shortcuts['home']['shortcut']" v-if="shortcuts['home']" v-on:click="sendMessage({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
           <i class="fas fa-home"></i>
           <span class="toolbartext">View full image</span>
         </button>
-        <button v-hotkey="shortcuts['prev']['shortcut']" v-if="!annotationurl && !settings.hide_nextbuttons" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+        <button v-hotkey="shortcuts['prev']['shortcut']" v-if="!annotationurl && shortcuts['prev']" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-left"></i>
           <span class="toolbartext">Previous Annotation</span>
         </button>
-        <button v-hotkey="shortcuts['next']['shortcut']" v-if="!annotationurl && !settings.hide_nextbuttons" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+        <button v-hotkey="shortcuts['next']['shortcut']" v-if="!annotationurl && shortcuts['next']" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
-        <button v-hotkey="shortcuts['shortcut']['shortcut']" v-if="!settings.hide_shortcutsbutton" v-on:click="sendMessage({'function': 'clickButton', 'args': 'keyboard'});"  id="keyboardShortcutsButton" class="toolbarButton">
+        <button v-hotkey="shortcuts['shortcut']['shortcut']" v-if="shortcuts['shortcuts']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'keyboard'});"  id="keyboardShortcutsButton" class="toolbarButton">
           <span v-html="buttons.keyboard"></span>
           <span class="toolbartext">Toggle keyboard shortcuts</span>
         </button>
-        <button v-hotkey="shortcuts['fullscreen']['shortcut']" v-if="!settings.hide_fullscreenbutton" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
+        <button v-hotkey="shortcuts['fullscreen']['shortcut']" v-if="shortcuts['fullscreen']" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
           <span v-html="buttons.expandbutton"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
@@ -55,11 +55,11 @@
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', textposition, settings.toolbarposition ? settings.toolbarposition + '_menu_annotation' : '', settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="shown" tabindex="0">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-      <button class="annocontrols_button" id="close_button"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="shortcuts['close']['shortcut']"></i></button>
-      <button v-html="buttons.hide_button" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></button>
-      <button v-html="buttons.playpause" id="playpause_button" v-hotkey="shortcuts['playpause']['shortcut']" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts"></button>
-      <button v-html="buttons.tags" id="tags_button" v-if="Object.keys(tagslist).length > 0 && !settings.hide_tagsbutton" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></button>
-      <button v-html="buttons.info" id="info_button" v-if="(imageinfo || annoinfo.text) && !settings.hide_infobutton" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></button>
+      <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="shortcuts['close']['shortcut']"></i></button>
+      <button v-html="buttons.hide_button" v-if="shortcuts['hide']" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></button>
+      <button v-html="buttons.playpause" id="playpause_button" v-hotkey="shortcuts['playpause']['shortcut']" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts && shortcuts['playpause']"></button>
+      <button v-html="buttons.tags" id="tags_button" v-if="shortcuts['tags']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></button>
+      <button v-html="buttons.info" id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></button>
       <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="layers" v-if="shown == 'layer'" class="content">
@@ -230,7 +230,6 @@ export default {
         this.parseAnnoData(response.data, annotationurl)
       });
     }
-    this.shortcuts = shared.keyboardShortcuts('storyboard', this);
   },
   mounted () {
     this.newSocket();
