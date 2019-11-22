@@ -137,7 +137,7 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | hide_layersbutton | **true** or **false**. By default is **false**; Will stop the layers button from rendering and not allow the shortcuts to render. |
 | hide_nextbuttons | **true** or **false**. By default is **false**; Will stop the previous and next buttons from rendering and not allow the shortcuts to render. |
 | hide_fullscreenbutton | **true** or **false**. By default is **false**; Will stop the fullscreen button from rendering and not allow the shortcuts to render. |
-
+| hide_shortcutsbutton | **true** or **false**. By default is **false**; Will stop the shortcut button from rendering |
 
 ## Web sockets
 Web sockets allow for communication across websites. In order to use this functionality a server will first need to be set up. An example of an easy server can be found here: [https://github.com/dnoneill/sample-websocket](https://github.com/dnoneill/sample-websocket). All this server is doing is receiving a broadcast from the controller and sending it back to all storyboards connected to the server. If you already have your own server the only listener you will need to know is below.
@@ -228,6 +228,7 @@ This is an example of the info that is loaded.
 | <i class="fas fa-expand"></i> | `alt+f`(windows)/`option+f`(mac) or `;`| Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen. |
 | <i class="fas fa-times"></i> | `x`, `6` | Will close the content box. Make sure to navigate to the viewer to use keyboard shortcuts.|
 | <i class="fas fa-caret-up"></i> <i class="fas fa-caret-down"></i> (<i class="fas fa-caret-left"></i> <i class="fas fa-caret-right"></i> with collapse setting)| `c`, `7`| Will truncate the length of the annotation. Make sure to navigate to the viewer to use keyboard shortcuts.|
+| <i class="fas fa-keyboard"></i> | `s`, `8` | Will show keyboard shortcuts |
 | OpenSeadragon viewer | [https://openseadragon.github.io/examples/ui-keyboard-navigation/](https://openseadragon.github.io/examples/ui-keyboard-navigation/) | The OpenSeadragon viewer also has keyboard navigation (the image section of the storyboard). See webpage for keyboard navigation like rotate and flip |
 
 

@@ -1,11 +1,11 @@
 <template>
 <div v-bind:id="rangeid" class="rangestoryboard" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
   <storyboard :key="position" v-if="annotationurl" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-  <button id="previousPageInactiveButton" v-hotkey="['alt+p', 'alt+,', 'alt+left']" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
+  <button id="previousPageInactiveButton" v-hotkey="prevshortcut" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.prev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
-  <button id="nextPageInactiveButton" v-hotkey="['alt+n', 'alt+.', 'alt+right']" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
+  <button id="nextPageInactiveButton" v-hotkey="nextshortcut" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
     <span v-html="buttons.next"></span>
     <span class="toolbartext">Next Page</span>
   </button>
@@ -61,7 +61,9 @@ export default {
         isfullscreen: false,
         toc: [],
         viewingDirection: 'ltr',
-        rangetitle: ''
+        rangetitle: '',
+        nextshortcut: ['alt+n', 'alt+.', 'alt+right'],
+        prevshortcut: ['alt+p', 'alt+,', 'alt+left']
       }
     },
     created(){
