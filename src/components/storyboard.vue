@@ -43,7 +43,7 @@
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
-        <button v-hotkey="shortcuts['shortcut']['shortcut']" v-if="shortcuts['shortcuts']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'keyboard'});"  id="keyboardShortcutsButton" class="toolbarButton">
+        <button v-hotkey="shortcuts['shortcut']['shortcut']" v-if="shortcuts['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': 'keyboard'});"  id="keyboardShortcutsButton" class="toolbarButton">
           <span v-html="buttons.keyboard"></span>
           <span class="toolbartext">Toggle keyboard shortcuts</span>
         </button>
