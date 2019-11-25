@@ -33,10 +33,10 @@ export default {
       }
     }
     if (vueinfo.annotationurl){
-      !settings.hide_autorunbutton ? settings.hide_autorunbutton = true : '';
-      !settings.hide_nextbuttons ? settings.hide_nextbuttons = true : '';
-      !settings.hide_overlaybutton ? settings.hide_overlaybutton = true : '';
-      !settings.startposition ? settings.startposition = 0 : '';
+      settings.hide_autorunbutton == undefined ? settings.hide_autorunbutton = true : '';
+      settings.hide_nextbuttons == undefined ? settings.hide_nextbuttons = true : '';
+      settings.hide_overlaybutton == undefined ? settings.hide_overlaybutton = true : '';
+      settings.startposition == undefined ? settings.startposition = 0 : '';
     }
     return settings;
   },
