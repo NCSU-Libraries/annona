@@ -311,11 +311,6 @@ export default {
       var tags = shared.flatten(this.annotations, 'tags');
       var checked = this.settings.toggleoverlay ? true : false;
       this.tagslist = shared.getTagDict(tags, this.settings, checked);
-      if (this.$parent.multi) {
-        tags.length > 0 ? this.$parent.tags = true : '';
-        this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent)
-      }
-      this.shortcuts = shared.keyboardShortcuts('storyboard', this);
     },
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
@@ -692,6 +687,11 @@ export default {
       this.anno_elem = document.getElementById(`${this.seadragonid}`);
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
+      if (this.$parent.multi) {
+        tags.length > 0 ? this.$parent.tags = true : '';
+        this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent)
+      }
+      this.shortcuts = shared.keyboardShortcuts('storyboard', this);
     },
     //get any layers in manfiest and get custom layers. This is called for all viewers and will get the tile if there are no layers
     getLayerData: function(images) {
