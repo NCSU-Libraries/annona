@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button class="annocontrols_button" v-if="currentanno && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch});">
+        <button class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch});">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
