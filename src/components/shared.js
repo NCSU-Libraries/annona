@@ -181,7 +181,7 @@ export default {
   },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
-  createContent: function(annotation, currentlang, storyboard) {
+  createContent: function(annotation, currentlang, settings={}, storyboard) {
     var text = ''
     var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];
     if (filter.length > 0){
@@ -203,7 +203,7 @@ export default {
       } else {
         text += `${oldtext.join("")}`;
       }
-      text += `${ocr.length > 0 ? `<div id="ocr">${ocr.map(element => decodeURIComponent(escape(element)))}</div>` : ``}`;
+      text += `${ocr.length > 0 && !settings.transcription ? `<div id="ocr">${ocr.map(element => decodeURIComponent(escape(element)))}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
       if (storyboard){
         text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`

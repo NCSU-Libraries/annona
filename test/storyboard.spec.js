@@ -140,8 +140,8 @@ describe('Component', () => {
       expect(data.annotations[0]['ocr'][0]).toContain('Jim Watson and I have probably made a')
       expect(data.currentanno).toEqual('')
       expect(data.anno_elem).toEqual(null)
-      expect(shared.createContent(data.annotations[0], null, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.</div></span>")
-      expect(shared.createContent(data.annotations[1], null, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
+      expect(shared.createContent(data.annotations[0], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.</div></span>")
+      expect(shared.createContent(data.annotations[1], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
     })
     test('test storyboard with no manifest', async ()  => {
       const wrapper =  shallowMount(storyboard,{
@@ -165,9 +165,32 @@ describe('Component', () => {
       expect(data.annotations[0]['textual_body']).toEqual(['<div class=\"textualbody\">Campo San Maurizio</div>'])
       expect(data.currentanno).toEqual('')
       expect(data.anno_elem).toEqual(null)
-      expect(shared.createContent(data.annotations[0], null, true)).toEqual('<span style="direction: ltr;"><div class="textualbody">Campo San Maurizio</div><div class="tags">Tags: campo</div></span>')
-      expect(shared.createContent(data.annotations[1], null, true)).toEqual('<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>')
+      expect(shared.createContent(data.annotations[0], null, data.settings, true)).toEqual('<span style="direction: ltr;"><div class="textualbody">Campo San Maurizio</div><div class="tags">Tags: campo</div></span>')
+      expect(shared.createContent(data.annotations[1], null, data.settings, true)).toEqual('<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>')
       expect(data.annoinfo.annodata.length).toBe(8)
       expect(data.annoinfo.annodata[0].title).toBe('Annotation 1')
+    })
+    test('test storyboard with settings', async ()  => {
+      const wrapper =  shallowMount(storyboard,{
+        propsData: {
+          annotationurl: 'techocr.json',
+          styling: 'transcription:true;'
+        }
+      })
+      const saveMock = jest.fn()
+      wrapper.vm.createViewer = saveMock;
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      expect(data.seadragontile).toBe("https://d.lib.ncsu.edu/collections/canvas/technician-basketballspecial-1991-11_0001/info.json")
+      expect(data.zoomsections).toEqual([{"section": ["881,247,1764,86"], "svg_path": [], "type": "rect"}, {"section": ["878,396,2236,126"], "svg_path": [], "type": "rect"}, {"section": ["864,684,2330,236"], "svg_path": [], "type": "rect"}, {"section": ["1455,1002,1180,50"], "svg_path": [], "type": "rect"}, {"section": ["2047,1649,1021,150"], "svg_path": [], "type": "rect"}, {"section": ["2044,1928,909,239"], "svg_path": [], "type": "rect"}, {"section": ["2047,2199,572,60"], "svg_path": [], "type": "rect"}])
+      expect(data.seadragonid).toBe('techocr_storyboard')
+      expect(data.annotations[0]['tags'].length).toEqual(0)
+      expect(data.annotations.length).toEqual(7)
+      expect(data.annotations[0]['ocr'][0]).toContain('Meet the Pack One Last Look')
+      expect(data.currentanno).toEqual('')
+      expect(data.anno_elem).toEqual(null)
+      expect(shared.createContent(data.annotations[0], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
+      expect(shared.createContent(data.annotations[1], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
     })
 })

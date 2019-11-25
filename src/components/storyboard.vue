@@ -55,12 +55,25 @@
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', textposition, settings.toolbarposition ? settings.toolbarposition + '_menu_annotation' : '', settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="shown" tabindex="0">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-      <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']"><i class="fas fa-times" v-on:click="shown = false" v-hotkey="shortcuts['close']['shortcut']"></i></button>
-      <button v-html="buttons.hide_button" v-if="shortcuts['hide']" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});"></button>
-      <button v-html="buttons.playpause" id="playpause_button" v-hotkey="shortcuts['playpause']['shortcut']" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts && shortcuts['playpause']"></button>
-      <button v-html="buttons.tags" id="tags_button" v-if="shortcuts['tags']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});"></button>
-      <button v-html="buttons.info" id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});"></button>
-      <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
+        <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']" v-on:click="shown = false" v-hotkey="shortcuts['close']['shortcut']">
+          <i class="fas fa-times"></i>
+        </button>
+        <button v-if="shortcuts['hide']" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});">
+          <span v-html="buttons.hide_button"></span>
+        </button>
+        <button id="playpause_button" v-hotkey="shortcuts['playpause']['shortcut']" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts && shortcuts['playpause']">
+          <span v-html="buttons.playpause"></span>
+        </button>
+        <button id="tags_button" v-if="shortcuts['tags']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});">
+          <span v-html="buttons.tags"></span>
+        </button>
+        <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
+          <span v-html="buttons.info"></span>
+        </button>
+        <button class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch})" v-if="settings.transcription && currentanno">
+          <span v-html="buttons.anno"></span>
+        </button>
+        <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="layers" v-if="shown == 'layer'" class="content">
         <div v-for="layer in layerslist" v-bind:key="layer.tile">
@@ -189,6 +202,7 @@ export default {
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
       isautorunning: '',
+      transcriptionswitch: 'anno',
       buttons: {
         'autorunbutton': '<i class="fas fa-magic"></i>',
         'overlaybutton': '<i class="fas fa-toggle-on"></i>',
@@ -198,7 +212,8 @@ export default {
         'tags': '<i class="fas fa-tag"></i>',
         'info': '<i class="fas fa-info-circle"></i>',
         'layer': '<i class="fas fa-layer-group"></i>',
-        'keyboard': '<i class="fas fa-keyboard"></i>'
+        'keyboard': '<i class="fas fa-keyboard"></i>',
+        'anno': '<i class="fas fa-comment"></i>'
       },
       settings: {},
       currentlang: '',
@@ -431,7 +446,7 @@ export default {
     // Create TOC for each annotation; Gets a list of annotations and corresponding data
     getAnnoInfo: function(content_data, i){
       var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
-      var content = shared.createContent(content_data, this.currentlang, true);
+      var content = shared.createContent(content_data, this.currentlang, this.settings, true);
       var additionaltext = `
         ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
         ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
@@ -443,7 +458,7 @@ export default {
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
-      this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
+      this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true);
       this.annoinfo.annodata = [];
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
@@ -516,7 +531,7 @@ export default {
         synth.resume();
         this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else if (!synth.speaking) {
-        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
+        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true) : '';
         this.tts(content);
         this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else {
@@ -569,19 +584,25 @@ export default {
       this.buttons.info = '<i class="fas fa-info-circle"></i>';
       this.buttons.layer = '<i class="fas fa-layer-group"></i>';
       this.buttons.tags = '<i class="fas fa-tag"></i>';
-      this.buttons.keyboard = '<i class="fas fa-keyboard"></i>'
-      if (button && this.buttons[button]){
+      this.buttons.keyboard = '<i class="fas fa-keyboard"></i>';
+      this.buttons.anno = '<i class="fas fa-comment"></i>';
+      if (button){
         if (this.position == -1 || this.position >= this.zoomsections.length) {
-          this.buttons[button] = '<i class="fas fa-window-close"></i>'
+          this.buttons[button] = '<i class="fas fa-window-close"></i>';
         } else {
-          this.buttons[button] = '<i class="fas fa-file-alt"></i>'
+          this.buttons[button] = '<i class="fas fa-file-alt"></i>';
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
           this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
           this.settings.startenddisplay && this.buttons[this.settings.startenddisplay] ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
-          this.shown = this.currentanno != '' && !this.settings.transcription ? 'anno' : this.settings.transcription ? 'transcription' : false;
+          var transcription = this.settings.transcription && !this.settings.textfirst ? true : false;
+          if (!transcription) {
+            this.transcriptionswitch = 'transcription';
+            this.buttons.anno = '<i class="fas fa-file-alt"></i>';
+          }
+          this.shown = this.currentanno != '' && !transcription ? 'anno' : this.settings.transcription ? 'transcription' : false;
         }
       }
     },
@@ -835,7 +856,7 @@ export default {
           if (matching_sections.length > 1){
             var multipletexts = '<hr>';
             for (var i=0; i<matching_sections.length; i++){
-              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang);
+              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang, this.settings, true);
               multipletexts += '<hr>';
             }
             functions.currentanno = multipletexts;
@@ -921,7 +942,7 @@ export default {
         this.position = this.position;
       }
       if (this.settings.tts){
-        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
+        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true) : '';
         this.tts(content);
       }
       if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
@@ -952,7 +973,7 @@ export default {
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
-        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, true);
+        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true);
         this.currentanno == '' ? this.shown = false : '';
         this.makeactive(this.position);
         if (numbsections <= 1) {
