@@ -447,7 +447,7 @@ export default {
     // Create TOC for each annotation; Gets a list of annotations and corresponding data
     getAnnoInfo: function(content_data, i){
       var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
-      var content = shared.createContent(content_data, this.currentlang, this.settings, true)['anno'];
+      var content = shared.createContent(content_data, this.currentlang, true)['anno'];
       var additionaltext = `
         ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
         ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
@@ -460,7 +460,7 @@ export default {
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
       var annotation = this.annotations[this.position];
-      this.currentanno = shared.createContent(annotation, this.currentlang, this.settings, true)['anno'];
+      this.currentanno = shared.createContent(annotation, this.currentlang, true)['anno'];
       this.annoinfo.annodata = [];
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
@@ -541,7 +541,7 @@ export default {
       }
     },
     ttscontent: function(){
-      var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true) : '';
+      var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
       content ? this.tts(content[this.shown]) : '';
     },
     // call function and send broadcast to WS server if enabled
@@ -865,7 +865,7 @@ export default {
           if (matching_sections.length > 1){
             var multipletexts = '<hr>';
             for (var i=0; i<matching_sections.length; i++){
-              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang, this.settings, true)['anno'];
+              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang, true)['anno'];
               multipletexts += '<hr>';
             }
             functions.currentanno = multipletexts;
@@ -979,7 +979,7 @@ export default {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
         var annotation = this.annotations[this.position];
-        var createdContent = shared.createContent(annotation, this.currentlang, this.settings, true);
+        var createdContent = shared.createContent(annotation, this.currentlang, true);
         this.currentanno = createdContent['anno'];
         this.transcription = createdContent['transcription'];
         this.currentanno == '' ? this.shown = false : '';

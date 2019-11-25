@@ -194,13 +194,12 @@ export default {
   },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
-  createContent: function(annotation, currentlang, settings={}, storyboard) {
+  createContent: function(annotation, currentlang, storyboard) {
     var text = ''
     var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];
     if (filter.length > 0){
       var language = currentlang ? currentlang : annotation['language'];
       var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr';
-      var ocr = ''
       var directiontext = `<span style="direction: ${direction};">`
       text = directiontext
       text += annotation['label'] ? `<div class="title">${annotation['label']}</div>` : ``;
