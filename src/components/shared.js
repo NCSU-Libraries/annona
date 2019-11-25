@@ -58,6 +58,10 @@ export default {
       var res_data = res[i];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
       value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
+      if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
+        var sectionauthor = this.getAuthor(res_data).split(", ");
+        value += `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")} </div>`;
+      }
       var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
       purpose = purpose.toLowerCase()
@@ -65,7 +69,11 @@ export default {
         if (purpose === 'tagging'){
           tags.push(value);
         } else if (value){
-          textual_body.push(`<div class="${purpose}">${value}</div>`);
+          if (purpose == 'transcribing'){
+            ocr.push(value);
+          } else {
+            textual_body.push(`<div class="${purpose}">${value}</div>`);
+          }
         }
       } else if (res_data[type] === 'oa:Tag'){
         tags.push(value);
@@ -84,14 +92,11 @@ export default {
       } else if (value) {
         textual_body.push(`<div class="${purpose}">${value}</div>`);
       }
-      if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
-        authors = authors.concat(this.getAuthor(res_data).split(", "));
-      }
       if (res_data.selector){
         shapetype = res_data.selector.value;
       }
     }
-    authors = authors.length < 0 ? this.getAuthor(anno) : [... new Set(authors)].join(", ");
+    authors = this.getAuthor(anno);
     return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
   },
   //get canvas information and section of image annotated.
@@ -193,9 +198,11 @@ export default {
     var text = ''
     var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];
     if (filter.length > 0){
-      var language = currentlang ? currentlang : annotation['language']
-      var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr'
-      text = `<span style="direction: ${direction};">`
+      var language = currentlang ? currentlang : annotation['language'];
+      var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr';
+      var ocr = ''
+      var directiontext = `<span style="direction: ${direction};">`
+      text = directiontext
       text += annotation['label'] ? `<div class="title">${annotation['label']}</div>` : ``;
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
@@ -211,16 +218,23 @@ export default {
       } else {
         text += `${oldtext.join("")}`;
       }
-      text += `${ocr.length > 0 && !settings.transcription ? `<div id="ocr">${ocr}</div>` : ``}`;
+      text += `${ocr.length > 0 && !storyboard ? `<div id="ocr">${ocr}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
       if (storyboard){
         text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`
       }
       text += '</span>'
+      var ocrtext = `${ocr.length > 0 ? `${directiontext}<div id="ocr">${ocr.join(" ")}</div></span>` : ``}`
+      var isempty = /<span style="direction: (ltr|rtl);"><\/span>/g;
+      if (isempty.test(text)){
+        if (ocr.length > 0 && storyboard){
+          text = ocrtext
+        } else {
+          text = ''
+        }
+      }
     }
-    var isempty = /<span style="direction: (ltr|rtl);"><\/span>/g;
-    text = isempty.test(text) ? '' : text;
-    return text;
+    return {'anno':text, 'transcription': ocrtext};
   },
   getExtension: function (tile) {
     return tile.split('?')[0].split('.').slice(-1)[0].toLowerCase();
@@ -286,7 +300,8 @@ export default {
       shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 'shortcut': vueinfo.$parent.prevshortcut};
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 'shortcut': vueinfo.$parent.nextshortcut};
     }
-    if (vueinfo.settings.transcription){
+    var hasocr = this.flatten(vueinfo.annotations.map(element=>element.ocr));
+    if (hasocr){
       shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation', 'shortcut': ['a', '/']};
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);

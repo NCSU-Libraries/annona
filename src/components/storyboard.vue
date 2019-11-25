@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button class="annocontrols_button" v-if="currentanno && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch})">
+        <button class="annocontrols_button" v-if="currentanno && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch});">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -112,8 +112,6 @@
       <div id="information" style="height: auto;" v-if="shown == 'info'" class="info content">
         <div class="imagetitle"><h1>{{imagetitle}}</h1></div>
         <span v-if="!booleanitems.isexcerpt">
-          <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
-
           <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</button>
           <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
 
@@ -141,10 +139,11 @@
         </span>
       </div>
       <div id="transcription" v-if="shown == 'transcription'" class="content">
-        <button v-for="(item, index) in annotations" v-bind:key="index" v-if="!booleanitems.isexcerpt" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
+        <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="transcription"></span>
+        <button v-for="(item, index) in annotations" v-bind:key="index" v-if="!booleanitems.isexcerpt && settings.transcription" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
           <span v-html="item.ocr.join(' ') + '&nbsp;'" class="ocrtranscription" v-bind:id="'line' + index"></span>
         </button>
-        <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(transcription, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
       </div>
       <div id="annotation_text" v-if="shown == 'anno'" class="content">
         <span v-html="currentanno" v-if="!booleanitems.isexcerpt"></span>
@@ -186,6 +185,7 @@ export default {
       seadragonid: '',
       annotations: [],
       currentanno: '',
+      transcription: '',
       textposition: 'corner',
       prev_inactive: true,
       next_inactive: false,
@@ -447,7 +447,7 @@ export default {
     // Create TOC for each annotation; Gets a list of annotations and corresponding data
     getAnnoInfo: function(content_data, i){
       var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
-      var content = shared.createContent(content_data, this.currentlang, this.settings, true);
+      var content = shared.createContent(content_data, this.currentlang, this.settings, true)['anno'];
       var additionaltext = `
         ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
         ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
@@ -459,14 +459,15 @@ export default {
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
-      this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true);
+      var annotation = this.annotations[this.position];
+      this.currentanno = shared.createContent(annotation, this.currentlang, this.settings, true)['anno'];
       this.annoinfo.annodata = [];
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
       }
       if (this.settings.tts){
         this.settings.tts = lang;
-        this.tts(this.currentanno.split('<div class="tags">')[0]);
+        this.ttscontent();
       }
     },
     //Create overlays on OpenSeadragon viewer
@@ -532,13 +533,16 @@ export default {
         synth.resume();
         this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else if (!synth.speaking) {
-        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true) : '';
-        this.tts(content);
+        this.ttscontent();
         this.buttons.playpause = '<i class="fas fa-pause"></i>';
       } else {
         synth.pause();
         this.buttons.playpause = '<i class="fas fa-play"></i>';
       }
+    },
+    ttscontent: function(){
+      var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true) : '';
+      content ? this.tts(content[this.shown]) : '';
     },
     // call function and send broadcast to WS server if enabled
     sendMessage: function(e) {
@@ -569,11 +573,15 @@ export default {
       if (this.booleanitems.isexcerpt && this.settings.annoview == 'collapse') {
         this.hide();
       }
+      var beforechange = this.shown;
       if(this.shown === field){
         this.switchButtons();
       } else {
         this.shown = field;
-        this.switchButtons(field)
+        this.switchButtons(field);
+      }
+      if (this.settings.tts && (this.shown == 'anno' && beforechange == 'transcription' || beforechange == 'anno' && this.shown == 'transcription')) {
+        this.ttscontent();
       }
     },
     //boolean switch of value shown
@@ -857,7 +865,7 @@ export default {
           if (matching_sections.length > 1){
             var multipletexts = '<hr>';
             for (var i=0; i<matching_sections.length; i++){
-              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang, this.settings, true);
+              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang, this.settings, true)['anno'];
               multipletexts += '<hr>';
             }
             functions.currentanno = multipletexts;
@@ -942,10 +950,6 @@ export default {
       } else {
         this.position = this.position;
       }
-      if (this.settings.tts){
-        var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true) : '';
-        this.tts(content);
-      }
       if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
         var multielements = document.getElementsByClassName("multi");
         for (var we=0; we<multielements.length; we++){
@@ -974,7 +978,10 @@ export default {
       } else {
         var numbsections = this.zoomsections[this.position]['section'].length;
         var xywh = this.zoomsections[this.position]['section'][0].split(",");
-        this.currentanno = shared.createContent(this.annotations[this.position], this.currentlang, this.settings, true);
+        var annotation = this.annotations[this.position];
+        var createdContent = shared.createContent(annotation, this.currentlang, this.settings, true);
+        this.currentanno = createdContent['anno'];
+        this.transcription = createdContent['transcription'];
         this.currentanno == '' ? this.shown = false : '';
         this.makeactive(this.position);
         if (numbsections <= 1) {
@@ -1003,6 +1010,9 @@ export default {
         }
       }
       this.switchButtons();
+      if (this.settings.tts){
+        this.ttscontent();
+      }
       //set button classes based on position
       if (this.position >= this.zoomsections.length){
         this.next_inactive = true;
