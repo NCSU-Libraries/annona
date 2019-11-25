@@ -57,6 +57,7 @@ export default {
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
+      value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
       var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
       purpose = purpose.toLowerCase()
@@ -70,7 +71,7 @@ export default {
         tags.push(value);
       } else if (res_data[type] === 'Choice') {
         langs = res_data['items'].map(element => `<option value="${element['language']}" ${navigator.language.indexOf(element['language']) > -1 ? 'selected' : ''}>${by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
-        var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${element['value']}"}`));
+        var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))))}"}`));
         textual_body = textual_body.concat(values)
       } else if (res_data[type] === 'dctypes:Image') {
           textual_body.push(`<img src="${res_data['@id']}">
@@ -79,7 +80,7 @@ export default {
       } else if (res_data[type] === 'dctypes:Dataset') {
         textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`);
       } else if (res_data[type] === 'cnt:ContentAsText') {
-        ocr.push(`${unescape(encodeURIComponent(value))}`);
+        ocr.push(value);
       } else if (value) {
         textual_body.push(`<div class="${purpose}">${value}</div>`);
       }
@@ -210,7 +211,7 @@ export default {
       } else {
         text += `${oldtext.join("")}`;
       }
-      text += `${ocr.length > 0 && !settings.transcription ? `<div id="ocr">${ocr.map(element => decodeURIComponent(escape(element)))}</div>` : ``}`;
+      text += `${ocr.length > 0 && !settings.transcription ? `<div id="ocr">${ocr}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
       if (storyboard){
         text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`
