@@ -122,7 +122,7 @@ export default {
         return el != null && el != '';
       });
       // Get settings and create styling string
-      this.settings = shared.getsettings(this.styling);
+      this.settings = shared.getsettings(this);
       this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
       this.$props.ws ? this.ws = this.$props.ws : '';
       this.$props.layers ? this.customlayers = this.$props.layers : '';

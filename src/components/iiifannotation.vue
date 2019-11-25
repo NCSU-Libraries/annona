@@ -56,7 +56,7 @@ export default {
       }
   },
   created() {
-    this.settings = shared.getsettings(this.styling); //get settings
+    this.settings = shared.getsettings(this); //get settings
     //CSS custom height/width settings
     if (this.settings.height){
       var width = this.settings.width ? `${this.settings.width}px` : 'auto';

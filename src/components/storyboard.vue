@@ -3,7 +3,7 @@
   <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar" v-bind:class="[settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu' : 'default_menu']">
-        <button v-if="!annotationurl && shortcuts['autorun']" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+        <button v-if="shortcuts['autorun']" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
           <span v-html="buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
         </button>
@@ -15,7 +15,7 @@
           <span v-html="buttons.tags"></span>
           <span class="toolbartext">Toggle Tags</span>
         </button>
-        <button v-hotkey="shortcuts['overlay']['shortcut']" v-if="!annotationurl && shortcuts['overlay']" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
+        <button v-hotkey="shortcuts['overlay']['shortcut']" v-if="shortcuts['overlay']" id="overlayButton" v-on:click="sendMessage({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
           <span v-html="buttons.overlaybutton"></span>
           <span class="toolbartext">Toggle Overlays</span>
         </button>
@@ -35,11 +35,11 @@
           <i class="fas fa-home"></i>
           <span class="toolbartext">View full image</span>
         </button>
-        <button v-hotkey="shortcuts['prev']['shortcut']" v-if="!annotationurl && shortcuts['prev']" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+        <button v-hotkey="shortcuts['prev']['shortcut']" v-if="shortcuts['prev']" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-left"></i>
           <span class="toolbartext">Previous Annotation</span>
         </button>
-        <button v-hotkey="shortcuts['next']['shortcut']" v-if="!annotationurl && shortcuts['next']" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+        <button v-hotkey="shortcuts['next']['shortcut']" v-if="shortcuts['next']" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
           <i class="fa fa-arrow-right"></i>
           <span class="toolbartext">Next Annotation</span>
         </button>
@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch})" v-if="settings.transcription && currentanno">
+        <button class="annocontrols_button" v-if="currentanno" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch})">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -232,7 +232,7 @@ export default {
       this.fullscreenChange(this.$parent.isfullscreen);
     }
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
-    this.settings = shared.getsettings(this.styling, this.$parent.multi);
+    this.settings = shared.getsettings(this, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
@@ -383,8 +383,6 @@ export default {
         // If annotation url (single annotation) show overlays and set position as first annotation
         if (vue.annotationurl){
           vue.createOverlay();
-          vue.position = 0;
-          vue.next();
         }
         // if setting call for toggled and language set to values
         if (vue.settings.toggleoverlay){
@@ -392,6 +390,9 @@ export default {
         }
         if (vue.currentlang) {
           vue.changeLang(vue.currentlang);
+        }
+        if (vue.settings.startposition != undefined) {
+          vue.next(vue.settings.startposition)
         }
       });
     },

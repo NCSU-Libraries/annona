@@ -70,7 +70,7 @@ export default {
       // get annotation urls in list
       this.rangeid = this.$props.rangeurl.split("/").slice(-1)[0];
       var isURL = shared.isURL(this.$props.rangeurl, this.settings);
-      this.settings = shared.getsettings(this.styling);
+      this.settings = shared.getsettings(this);
       if (isURL['isURL']){
         axios.get(this.$props.rangeurl).then(response => {
           this.getRangeData(response.data);

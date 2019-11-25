@@ -15,7 +15,8 @@ export default {
   },
   // get and parse settings from styling or config. This will check the config element in the page and the inline styling.
   //For inline styling it will split out the values, change boolean and int strings into correct values and remove whitespace.
-  getsettings: function(styling, ismulti=false) {
+  getsettings: function(vueinfo, ismulti=false) {
+    var styling = vueinfo.styling;
     var settings = {};
     if (!ismulti && document.getElementById("config") !== null && document.getElementById("config").innerHTML != ''){
       settings = JSON.parse(document.getElementById("config").innerHTML);
@@ -30,6 +31,12 @@ export default {
         value = parseInt(value) && parseInt(value).toString().length == value.length ? parseInt(value) : value;
         settings[keyvalue[0].trim()] = value;
       }
+    }
+    if (vueinfo.annotationurl){
+      !settings.hide_autorunbutton ? settings.hide_autorunbutton = true : '';
+      !settings.hide_nextbuttons ? settings.hide_nextbuttons = true : '';
+      !settings.hide_overlaybutton ? settings.hide_overlaybutton = true : '';
+      !settings.startposition ? settings.startposition = 0 : '';
     }
     return settings;
   },
@@ -272,11 +279,14 @@ export default {
       shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 'shortcut': ['l', '5']};
     }
     if (vueinfo.settings.tts){
-      shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause', 'shortcut': ['s', '8']}
+      shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause', 'shortcut': ['r', '9']}
     }
     if(vueinfo.$parent.range){
       shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 'shortcut': vueinfo.$parent.prevshortcut};
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 'shortcut': vueinfo.$parent.nextshortcut};
+    }
+    if (vueinfo.settings.transcription){
+      shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation', 'shortcut': ['a', '/']};
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
     for (var hd=0; hd<removefields.length; hd++){
