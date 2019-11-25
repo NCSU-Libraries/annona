@@ -300,7 +300,8 @@ export default {
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 'shortcut': vueinfo.$parent.nextshortcut};
     }
     var hasocr = this.flatten(vueinfo.annotations.map(element=>element.ocr));
-    if (hasocr){
+    var hastext = this.flatten(vueinfo.annotations.map(element=>element.textual_body));
+    if (hasocr.length > 0 && hastext.length > 0){
       shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation', 'shortcut': ['a', '/']};
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
