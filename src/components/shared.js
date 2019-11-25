@@ -289,7 +289,7 @@ export default {
     if ((type == 'storyboard' && Object.keys(vueinfo.tagslist).length > 0) || (type=='multistoryboard' && vueinfo.tags)){
       shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Tags', 'shortcut': ['t', '3']};
     }
-    if ((type == 'storyboard' && vueinfo.layerslist.length > 0) || (type=='multistoryboard' && vueinfo.layerslist)){
+    if ((type == 'storyboard' && vueinfo.layerslist.length > 1) || (type=='multistoryboard' && vueinfo.layerslist)){
       shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 'shortcut': ['l', '5']};
     }
     if (vueinfo.settings.tts){
