@@ -141,7 +141,7 @@
       <div id="transcription" v-if="shown == 'transcription'" class="content">
         <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="transcription"></span>
         <button v-for="(item, index) in annotations" v-bind:key="index" v-if="!booleanitems.isexcerpt && settings.transcription" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
-          <span v-html="item.ocr.join(' ') + '&nbsp;'" class="ocrtranscription" v-bind:id="'line' + index"></span>
+          <div v-html="item.ocr.join('')" class="ocrtranscription" v-bind:id="'line' + index"></div>
         </button>
         <span v-html="$options.filters.truncate(transcription, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
       </div>
