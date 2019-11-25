@@ -688,7 +688,7 @@ export default {
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
       if (this.$parent.multi) {
-        tags.length > 0 ? this.$parent.tags = true : '';
+        this.tagslist.length > 0 ? this.$parent.tags = true : '';
         this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent)
       }
       this.shortcuts = shared.keyboardShortcuts('storyboard', this);
