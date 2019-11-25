@@ -140,8 +140,8 @@ describe('Component', () => {
       expect(data.annotations[0]['ocr'][0]).toContain('Jim Watson and I have probably made a')
       expect(data.currentanno).toEqual('')
       expect(data.anno_elem).toEqual(null)
-      expect(shared.createContent(data.annotations[0], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.</div></span>")
-      expect(shared.createContent(data.annotations[1], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
+      expect(shared.createContent(data.annotations[0], null, data.settings, true)['anno'].replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.</div></span>")
+      expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno'].replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
     })
     test('test storyboard with no manifest', async ()  => {
       const wrapper =  shallowMount(storyboard,{
@@ -165,8 +165,8 @@ describe('Component', () => {
       expect(data.annotations[0]['textual_body']).toEqual(['<div class=\"textualbody\">Campo San Maurizio</div>'])
       expect(data.currentanno).toEqual('')
       expect(data.anno_elem).toEqual(null)
-      expect(shared.createContent(data.annotations[0], null, data.settings, true)).toEqual('<span style="direction: ltr;"><div class="textualbody">Campo San Maurizio</div><div class="tags">Tags: campo</div></span>')
-      expect(shared.createContent(data.annotations[1], null, data.settings, true)).toEqual('<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>')
+      expect(shared.createContent(data.annotations[0], null, data.settings, true)).toEqual({"anno": "<span style=\"direction: ltr;\"><div class=\"textualbody\">Campo San Maurizio</div><div class=\"tags\">Tags: campo</div></span>", "transcription": ""})
+      expect(shared.createContent(data.annotations[1], null, data.settings, true)).toEqual({"anno": "<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>", "transcription": ""})
       expect(data.annoinfo.annodata.length).toBe(8)
       expect(data.annoinfo.annodata[0].title).toBe('Annotation 1')
     })
@@ -190,7 +190,9 @@ describe('Component', () => {
       expect(data.annotations[0]['ocr'][0]).toContain('Meet the Pack One Last Look')
       expect(data.currentanno).toEqual('')
       expect(data.anno_elem).toEqual(null)
-      expect(shared.createContent(data.annotations[0], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
-      expect(shared.createContent(data.annotations[1], null, data.settings, true).replace(/(\r\n|\n|\r)/gm, " ")).toEqual("")
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      expect(contentpos1['anno']).toEqual(contentpos1['transcription'])
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Meet the Pack One Last Look</div></span>")
+      expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Player proﬁles of all members of the Remember the exciting ﬁnal year of men’s and women’s basketball teams the “Fire & Ice” backoourt</div></span>")
     })
 })
