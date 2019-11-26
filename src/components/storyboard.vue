@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': shown =='anno' ? 'transcription' : shown =='transcription' ? 'anno' : shown });">
+        <button class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -586,19 +586,23 @@ export default {
     setShownData: function(field){
       this.shown = field;
       this.booleanitems.istranscription = field == 'anno' ? false : field == 'transcription' ? true : this.booleanitems.istranscription;
-      this.buttons.anno = this.shown == 'anno' ? '<i class="fas fa-pen-nib"></i>' : this.shown =='transcription' ?  '<i class="fas fa-file-alt"></i>' : !this.booleanitems.istranscription ? '<i class="fas fa-file-alt"></i>' : '<i class="fas fa-pen-nib"></i>';
+      this.setDefaultButtons();
     },
-    //Set all buttons to correct value, change specified button and shown value
-    switchButtons: function(button=false) {
+    setDefaultButtons: function() {
       this.buttons.info = '<i class="fas fa-info-circle"></i>';
       this.buttons.layer = '<i class="fas fa-layer-group"></i>';
       this.buttons.tags = '<i class="fas fa-tag"></i>';
       this.buttons.keyboard = '<i class="fas fa-keyboard"></i>';
+      this.buttons.anno = !this.booleanitems.istranscription ? '<i class="fas fa-pen-nib"></i>' : '<i class="fas fa-file-alt"></i>';
+    },
+    //Set all buttons to correct value, change specified button and shown value
+    switchButtons: function(button=false) {
+      this.setDefaultButtons();
       if (button){
         if (this.position == -1 || this.position >= this.zoomsections.length) {
           this.buttons[button] = '<i class="fas fa-window-close"></i>';
         } else {
-          this.buttons[button] = this.buttons.anno;
+          this.buttons[button] = !this.booleanitems.istranscription ? '<i class="fas fa-file-alt"></i>' : '<i class="fas fa-pen-nib"></i>';
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
