@@ -1126,6 +1126,7 @@ export default {
   filters: {
     truncate: function(string, words_length) {
       string = string ? string.split('<div class="tags">')[0] : '';
+      string = string ? string.split('<div class="authorship">')[0] : '';
       var tmp = document.createElement("DIV");
       tmp.innerHTML = string;
       var text = tmp.textContent || tmp.innerText || "";

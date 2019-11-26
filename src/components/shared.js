@@ -61,7 +61,7 @@ export default {
         value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
-          value += `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")} </div>`;
+          value += `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>`;
         }
         var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
         var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
