@@ -1,0 +1,125 @@
+[
+  {
+    "@context": "http://iiif.io/api/presentation/2/context.json",
+    "@id": "4f16642c-266e-4a7b-a389-90220475e5cc",
+    "@type": "oa:Annotation",
+    "motivation": [
+      "oa:commenting"
+    ],
+    "on": [
+      {
+        "@type": "oa:SpecificResource",
+        "full": "https://damsssl.llgc.org.uk/iiif/2.0/4665992/canvas/4665993.json",
+        "selector": {
+          "@type": "oa:Choice",
+          "default": {
+            "@type": "oa:FragmentSelector",
+            "value": "xywh=6079,2532,1531,1041"
+          },
+          "item": {
+            "@type": "oa:SvgSelector",
+            "value": "<svg xmlns='http://www.w3.org/2000/svg'><path xmlns=\"http://www.w3.org/2000/svg\" d=\"M6084.19385,3380.49854l1484.08419,-848.79201l41.6585,109.35357l-1452.84032,932.10902l-78.10969,-187.46327z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:1,&quot;editable&quot;:true,&quot;deleteIcon&quot;:null,&quot;annotation&quot;:null}\" id=\"rough_path_6ee6d7ea-64f0-42e0-8392-98b5ec3ab158\" fill-opacity=\"0\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"5.20731\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"/></svg>"
+          }
+        },
+        "within": {
+          "@id": "https://damsssl.llgc.org.uk/iiif/2.0/4665992/manifest.json",
+          "@type": "sc:Manifest"
+        }
+      }
+    ],
+    "resource": [
+      {
+        "@type": "cnt:ContentAsText",
+        "chars": "<p>River Ithon</p>",
+        "format": "text/html"
+      },
+      {
+        "@type": "dctypes:Text",
+        "chars": "<p><a href='https://en.wikipedia.org/wiki/River_Ithon' target='_blank'>River Ithon</a> (Afon Ieithon in Welsh) is a tributary of the River Wye.</p>",
+        "format": "text/html"
+      }
+    ]
+  },
+  {
+    "@context": "http://iiif.io/api/presentation/2/context.json",
+    "@id": "a213ab9f-ec8e-4e25-aee5-91ee3ca8542c",
+    "@type": "oa:Annotation",
+    "motivation": [
+      "oa:commenting"
+    ],
+    "on": [
+      {
+        "@type": "oa:SpecificResource",
+        "full": "https://damsssl.llgc.org.uk/iiif/2.0/4665992/canvas/4665993.json",
+        "selector": {
+          "@type": "oa:Choice",
+          "default": {
+            "@type": "oa:FragmentSelector",
+            "value": "xywh=7460,4339,773,152"
+          },
+          "item": {
+            "@type": "oa:SvgSelector",
+            "value": "<svg xmlns='http://www.w3.org/2000/svg'><path xmlns=\"http://www.w3.org/2000/svg\" d=\"M7488.9987,4385.76608l723.99813,-46.9708l19.43619,77.74477l-772.58861,74.5054z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:1,&quot;editable&quot;:true,&quot;deleteIcon&quot;:null,&quot;annotation&quot;:null}\" id=\"rough_path_f85b17c8-abc0-4039-a800-52589b23e26e\" fill-opacity=\"0\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"1.61968\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"/></svg>"
+          }
+        },
+        "within": {
+          "@id": "https://damsssl.llgc.org.uk/iiif/2.0/4665992/manifest.json",
+          "@type": "sc:Manifest"
+        }
+      }
+    ],
+    "resource": [
+      {
+        "@type": "cnt:ContentAsText",
+        "chars": "<p>Llandrithol Vach</p>",
+        "format": "text/html"
+      },
+      {
+        "@type": "dctypes:Text",
+        "chars": "<p>Possibly <a href='https://en.wikipedia.org/wiki/Llandrindod_Wells'>Llandrindod Wells</a> a town in Powys.</p>",
+        "format": "text/html"
+      }
+    ]
+  },
+  {
+    "@context": "http://iiif.io/api/presentation/2/context.json",
+    "@id": "1d72b701-896d-451f-9d9f-8fb0833b6d43",
+    "@type": "oa:Annotation",
+    "motivation": [
+      "oa:commenting"
+    ],
+    "on": [
+      {
+        "@type": "oa:SpecificResource",
+        "full": "https://damsssl.llgc.org.uk/iiif/2.0/4665992/canvas/4665993.json",
+        "selector": {
+          "@type": "oa:Choice",
+          "default": {
+            "@type": "oa:FragmentSelector",
+            "value": "xywh=10148,3571,545,163"
+          },
+          "item": {
+            "@type": "oa:SvgSelector",
+            "value": "<svg xmlns='http://www.w3.org/2000/svg'><path xmlns=\"http://www.w3.org/2000/svg\" d=\"M10147.58064,3570.66096l272.54827,0l0,0l272.54827,0l0,81.61335l0,81.61335l-272.54827,0l-272.54827,0l0,-81.61335z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:1,&quot;rotation&quot;:0,&quot;deleteIcon&quot;:null,&quot;rotationIcon&quot;:null,&quot;group&quot;:null,&quot;editable&quot;:true,&quot;annotation&quot;:null}\" id=\"rectangle_92afa4b5-8341-49c7-a758-06e5ac0075ed\" fill-opacity=\"0\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"1.00757\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"/></svg>"
+          }
+        },
+        "within": {
+          "@id": "https://damsssl.llgc.org.uk/iiif/2.0/4665992/manifest.json",
+          "@type": "sc:Manifest"
+        }
+      }
+    ],
+    "resource": [
+      {
+        "@type": "cnt:ContentAsText",
+        "chars": "<p>Doleberthog</p>",
+        "format": "text/html"
+      },
+      {
+        "@type": "dctypes:Text",
+        "chars": "<p>Unknown modern day equivalent</p>",
+        "format": "text/html"
+      }
+    ]
+  }
+]
