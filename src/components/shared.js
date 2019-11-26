@@ -56,16 +56,19 @@ export default {
     anno.bodyValue ? textual_body.push(anno.bodyValue) : '';
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
+      var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
+      var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
+      purpose = purpose.toLowerCase();
+      if (res_data.selector){
+        shapetype = res_data.selector.value;
+      }
       if (value) {
         value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
           value += `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>`;
         }
-        var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
-        var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
-        purpose = purpose.toLowerCase()
         if (res_data[type] === 'TextualBody'){
           if (purpose === 'tagging'){
             tags.push(value);
@@ -76,10 +79,6 @@ export default {
           }
         } else if (res_data[type] === 'oa:Tag'){
           tags.push(value);
-        } else if (res_data[type] === 'Choice') {
-          langs = res_data['items'].map(element => `<option value="${element['language']}" ${navigator.language.indexOf(element['language']) > -1 ? 'selected' : ''}>${by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
-          var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))))}"}`));
-          textual_body = textual_body.concat(values)
         } else if (res_data[type] === 'dctypes:Image') {
             textual_body.push(`<img src="${res_data['@id']}">
             <div class="attribution">${res_data['attribution']}</div>
@@ -91,9 +90,10 @@ export default {
         } else {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
-        if (res_data.selector){
-          shapetype = res_data.selector.value;
-        }
+      } else if (res_data[type] === 'Choice') {
+        langs = res_data['items'].map(element => `<option value="${element['language']}" ${navigator.language.indexOf(element['language']) > -1 ? 'selected' : ''}>${by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
+        var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))))}"}`));
+        textual_body = textual_body.concat(values)
       }
     }
     authors = this.getAuthor(anno);
