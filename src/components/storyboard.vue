@@ -83,8 +83,7 @@
         </div>
       </div>
       <div id="shortcuts" v-if="shown == 'keyboard'" class="content">
-        <p>There are multiple possible keyboard shortcuts for each button. They are separated by an 'or'.
-        On Macs 'alt' is the 'option' key</p>
+        <p>There are multiple possible keyboard shortcuts for each button. They are separated by an 'or'. On Macs 'alt' is the 'option' key</p>
         <table v-if="!booleanitems.isexcerpt">
         <tr>
           <th>Icon</th>
@@ -242,7 +241,7 @@ export default {
     this.settings.annoview == 'collapse' ? this.buttons.hide_button = '<i class="fas fa-caret-left"></i>' : '';
     if(isURL['isURL']){
       axios.get(annotationurl).then(response => {
-        this.parseAnnoData(response.data, annotationurl)
+        this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
       });
     }
   },
@@ -251,16 +250,16 @@ export default {
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
     var isURL = shared.isURL(annotationurl, '');
     if (!isURL['isURL']) {
-      this.parseAnnoData(isURL['json'], annotationurl)
+      this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
     }
   },
   methods: {
-    parseAnnoData: function(annotation, annotationurl){
+    parseAnnoData: function(annotation, annotationurl, isURL){
       var anno = annotation.resources ? annotation.resources : annotation.items ? annotation.items : annotation;
       anno = [].concat(anno);
       //Get basic annotation information
-      this.annoinfo.text += `<div class="listinfo"><b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a>
-      <br><b>Number of Annotations:</b> ${anno.length}</div>`
+      this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}
+      <b>Number of Annotations:</b> ${anno.length}</div>`
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], annotation);
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
