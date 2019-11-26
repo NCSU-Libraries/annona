@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': transcriptionswitch});">
+        <button class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'clickButton', 'args': shown =='anno' ? 'transcription' : shown =='transcription' ? 'anno' : shown });">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -195,13 +195,13 @@ export default {
         annoinfoshown: false,
         imageinfoshown: false,
         additionalinfoshown: false,
-        tocshown: false
+        tocshown: false,
+        istranscription: false
       },
       shown: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
       isautorunning: '',
-      transcriptionswitch: 'anno',
       buttons: {
         'autorunbutton': '<i class="fas fa-magic"></i>',
         'overlaybutton': '<i class="fas fa-toggle-on"></i>',
@@ -310,6 +310,7 @@ export default {
       var tags = shared.flatten(this.annotations, 'tags');
       var checked = this.settings.toggleoverlay ? true : false;
       this.tagslist = shared.getTagDict(tags, this.settings, checked);
+      this.booleanitems.istranscription = this.settings.transcription && !this.settings.textfirst ? true : false;
     },
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
@@ -571,7 +572,7 @@ export default {
       if(this.shown === field){
         this.switchButtons();
       } else {
-        this.shown = field;
+        this.setShownData(field)
         this.switchButtons(field);
       }
       if (this.settings.tts && (this.shown == 'anno' && beforechange == 'transcription' || beforechange == 'anno' && this.shown == 'transcription')) {
@@ -582,30 +583,29 @@ export default {
     switchShown: function(item) {
       this.booleanitems[item] = !this.booleanitems[item];
     },
+    setShownData: function(field){
+      this.shown = field;
+      this.booleanitems.istranscription = field == 'anno' ? false : field == 'transcription' ? true : this.booleanitems.istranscription;
+      this.buttons.anno = this.shown == 'anno' ? '<i class="fas fa-file-alt"></i>' : this.shown =='transcription' ?  '<i class="fas fa-comment"></i>' : !this.booleanitems.istranscription ? '<i class="fas fa-comment"></i>' : '<i class="fas fa-file-alt"></i>';
+    },
     //Set all buttons to correct value, change specified button and shown value
     switchButtons: function(button=false) {
       this.buttons.info = '<i class="fas fa-info-circle"></i>';
       this.buttons.layer = '<i class="fas fa-layer-group"></i>';
       this.buttons.tags = '<i class="fas fa-tag"></i>';
       this.buttons.keyboard = '<i class="fas fa-keyboard"></i>';
-      this.buttons.anno = '<i class="fas fa-comment"></i>';
       if (button){
         if (this.position == -1 || this.position >= this.zoomsections.length) {
           this.buttons[button] = '<i class="fas fa-window-close"></i>';
         } else {
-          this.buttons[button] = '<i class="fas fa-file-alt"></i>';
+          this.buttons[button] = this.buttons.anno;
         }
       } else {
         if (this.position == -1 || this.position === this.zoomsections.length){
           this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
           this.settings.startenddisplay && this.buttons[this.settings.startenddisplay] ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
-          var transcription = this.settings.transcription && !this.settings.textfirst ? true : false;
-          if (!transcription) {
-            this.transcriptionswitch = 'transcription';
-            this.buttons.anno = '<i class="fas fa-file-alt"></i>';
-          }
-          this.shown = this.currentanno != '' && !transcription ? 'anno' : this.settings.transcription ? 'transcription' : false;
+          this.currentanno != '' && !this.booleanitems.istranscription ? this.setShownData('anno') : this.booleanitems.istranscription ? this.setShownData('transcription') : this.setShownData(false);
         }
       }
     },
