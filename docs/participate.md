@@ -16,7 +16,9 @@ Because the library uses [W3 Web Annotations](https://www.w3.org/TR/annotation-m
 | Local IIIF Annotation Server | [https://github.com/dnoneill/annotate](https://github.com/dnoneill/annotate) | [https://dnoneill.github.io/annotate/](https://dnoneill.github.io/annotate/) |
 
 # Compatible platforms
+This library should work with any W3 web annotations or OpenAnnotation. Below are some platforms that support W3 web annotations or OpenAnnotation creation.
 
 | Platform | IIIF compatible |
 | [From the Page](https://fromthepage.com) | Yes |
 | [Recogito](https://recogito.pelagios.org) | Yes |
+| [Any IIIF Annotation Server or Client](https://github.com/IIIF/awesome-iiif#annotations) | Yes |
