@@ -212,7 +212,7 @@ export default {
         'info': '<i class="fas fa-info-circle"></i>',
         'layer': '<i class="fas fa-layer-group"></i>',
         'keyboard': '<i class="fas fa-keyboard"></i>',
-        'anno': '<i class="fas fa-comment"></i>'
+        'anno': '<i class="fas fa-file-alt"></i>'
       },
       settings: {},
       currentlang: '',
@@ -586,7 +586,7 @@ export default {
     setShownData: function(field){
       this.shown = field;
       this.booleanitems.istranscription = field == 'anno' ? false : field == 'transcription' ? true : this.booleanitems.istranscription;
-      this.buttons.anno = this.shown == 'anno' ? '<i class="fas fa-file-alt"></i>' : this.shown =='transcription' ?  '<i class="fas fa-comment"></i>' : !this.booleanitems.istranscription ? '<i class="fas fa-comment"></i>' : '<i class="fas fa-file-alt"></i>';
+      this.buttons.anno = this.shown == 'anno' ? '<i class="fas fa-pen-nib"></i>' : this.shown =='transcription' ?  '<i class="fas fa-file-alt"></i>' : !this.booleanitems.istranscription ? '<i class="fas fa-file-alt"></i>' : '<i class="fas fa-pen-nib"></i>';
     },
     //Set all buttons to correct value, change specified button and shown value
     switchButtons: function(button=false) {
