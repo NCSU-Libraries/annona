@@ -1031,9 +1031,10 @@ export default {
       }
       if (this.settings.transcription) {
         this.$nextTick(() => {
-          var elmnt = document.getElementsByClassName("activeword")[0];
-          if (elmnt){
-            elmnt.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+          var activeword = document.getElementsByClassName("activeword")[0];
+          if (activeword){
+            var annotationElement = document.getElementById(`${this.seadragonid}_annotation`);
+            activeword.scrollTop = activeword.offsetTop - annotationElement.offsetTop;
           }
         })
       }
