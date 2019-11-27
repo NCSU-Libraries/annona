@@ -300,8 +300,8 @@ export default {
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 'shortcut': vueinfo.$parent.nextshortcut};
     }
     var annotation = type == 'storyboard' ? vueinfo.annotations : vueinfo.$children.map(board => board.annotations);
-    var hasocr = this.flatten(annotation.map(element=>element.ocr));
-    var hastext = this.flatten(annotation.map(element=>element.textual_body));
+    var hasocr = this.flatten(annotation.filter(element=>element.ocr && element.ocr.length > 0));
+    var hastext = this.flatten(annotation.filter(element=>element.textual_body && element.textual_body.length > 0));
     if (hasocr.length > 0 && hastext.length > 0){
       shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation', 'shortcut': ['a', '/']};
     }
