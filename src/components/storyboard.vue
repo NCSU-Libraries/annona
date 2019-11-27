@@ -896,7 +896,8 @@ export default {
     //go to specified area on OpenSeadragon viewer
     goToArea: function(rect){
       var xywh = this.zoomsections[this.position]['section'][0].split(",");
-      if (xywh.join("") == 'full'){
+      var isFull = xywh.join("") == 'full';
+      if (isFull){
         this.zoom('home');
       } else if (this.settings.panorzoom == 'pan'){
         var x = rect['x']+(rect['width']/2);
@@ -906,7 +907,8 @@ export default {
         this.viewer.viewport.fitBoundsWithConstraints(rect).ensureVisible();
       }
       if (this.settings.textposition) {
-        this.overlayPosition(rect);
+        var position = isFull ? 'full' : rect;
+        this.overlayPosition(position);
       }
     },
     //toggle fullscreen button
@@ -1044,7 +1046,11 @@ export default {
     },
     //For annotation box position, will position box in specified location is set;
     overlayPosition: function(xywh){
-      xywh = xywh == 'full' ? [0,0,0,0] : xywh;
+      if (xywh == 'full'){
+        var bounds = this.viewer.viewport.getBounds();
+        var imagebounds = {'x':0, 'y':0, 'width': .99, 'height': bounds['height']}
+        xywh = bounds['width'] > 1 || bounds['height'] > 1 ? imagebounds : bounds;
+      }
       var elem = document.getElementById(`${this.seadragonid}_annotation`);
       var positioning = {
         right: {'x': xywh['x']+xywh['width'], 'y' : xywh['y'], 'placement': 'TOP_LEFT', 'inverse': 'left'},
