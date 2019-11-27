@@ -314,7 +314,7 @@ export default {
       this.tagslist = shared.getTagDict(tags, this.settings, checked);
       this.booleanitems.istranscription = this.settings.transcription && !this.settings.textfirst ? true : false;
       if (this.$parent.multi) {
-        this.tagslist.length > 0 ? this.$parent.tags = true : '';
+        Object.keys(this.tagslist).length > 0 ? this.$parent.tags = true : '';
         this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent)
       }
       this.shortcuts = shared.keyboardShortcuts('storyboard', this);
