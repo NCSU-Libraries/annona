@@ -1037,7 +1037,7 @@ export default {
           var activeword = document.getElementsByClassName("activeword")[0];
           if (activeword){
             var annotationElement = document.getElementById(`${this.seadragonid}_annotation`);
-            activeword.scrollTop = activeword.offsetTop - annotationElement.offsetTop;
+            annotationElement.scrollTop = activeword.offsetTop - annotationElement.offsetTop;
           }
         })
       }
