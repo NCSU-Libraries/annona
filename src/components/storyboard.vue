@@ -255,6 +255,7 @@ export default {
   },
   methods: {
     parseAnnoData: function(annotation, annotationurl, isURL){
+      this.imagetitle = annotation.label ? annotation.label : this.imagetitle;
       var anno = annotation.resources ? annotation.resources : annotation.items ? annotation.items : annotation;
       anno = [].concat(anno);
       //Get basic annotation information
