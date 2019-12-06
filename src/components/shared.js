@@ -91,13 +91,19 @@ export default {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
       } else if (res_data[type] === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}" ${navigator.language.indexOf(element['language']) > -1 ? 'selected' : ''}>${by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
-        var values = res_data['items'].map(element => JSON.parse(`{"purpose": "${purpose}", "language": "${element['language']}", "value": "${decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))))}"}`));
+        langs = res_data['items'].map(element => `<option value="${element['language']}"${navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${by639_1[element['language']] && by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
+        var values = []
+        res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
       }
     }
     authors = this.getAuthor(anno);
     return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
+  },
+  createItemsDict: function(purpose, element) {
+    var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
+    var dict = {'purpose': purpose, 'language': element['language'], 'value': value}
+    return dict;
   },
   //get canvas information and section of image annotated.
   //Looks at selector field to see if selector exists and portion of the canvas is defined in the field.
