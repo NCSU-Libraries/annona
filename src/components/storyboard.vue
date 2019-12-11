@@ -898,6 +898,7 @@ export default {
     goToArea: function(rect){
       var xywh = this.zoomsections[this.position]['section'][0].split(",");
       var isFull = xywh.join("") == 'full';
+      rect['height'] == 0 && rect['width'] == 0 ? rect['height'] = .001 : '';
       if (isFull){
         this.zoom('home');
       } else if (this.settings.panorzoom == 'pan'){

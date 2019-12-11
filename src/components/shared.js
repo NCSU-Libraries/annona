@@ -67,7 +67,7 @@ export default {
         value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
-          value += `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>`;
+          value += purpose != 'tagging' && res_data[type] !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
         }
         if (res_data[type] === 'TextualBody'){
           if (purpose === 'tagging'){
