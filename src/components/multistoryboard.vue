@@ -52,8 +52,8 @@
   </span>
   <span class="storyboard_containers">
     <div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-      <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
-      <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+      <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
+      <storyboard v-if="$props.annotationlists" v-bind:annotationlist="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
     </div>
     <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
       <div v-bind:id="image.id" class="seadragonbox"></div>
