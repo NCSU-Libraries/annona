@@ -21,4 +21,5 @@ This library should work with any W3 web annotations or OpenAnnotation. Below ar
 | Platform | IIIF compatible |
 | [From the Page](https://fromthepage.com) | Yes |
 | [Recogito](https://recogito.pelagios.org) | Yes |
+| [Goobi Viewer](https://www.intranda.com/en/digiverso/goobi-viewer/goobi-viewer-overview/) | Yes |
 | [Any IIIF Annotation Server or Client](https://github.com/IIIF/awesome-iiif#annotations) | Yes |
