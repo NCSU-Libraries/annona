@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
+        <button id="transcription_button" class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -122,7 +122,7 @@
             </div>
           </div>
 
-          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</button>
+          <button class="infolink buttonlink annoinfolink" v-on:click="sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annoinfo.text">Annotation information</button>
           <div v-if="booleanitems.annoinfoshown" class="annoinfo">
             <span v-html="annoinfo.text"></span>
             <div class="annotationslist">
@@ -133,7 +133,7 @@
             </div>
           </div>
 
-          <button class="infolink buttonlink" v-if="imageinfo.text" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{imageinfo.label}}</button>
+          <button class="infolink buttonlink imageinfolink" v-if="imageinfo.text" v-on:click="sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{imageinfo.label}}</button>
           <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
         </span>
       </div>
