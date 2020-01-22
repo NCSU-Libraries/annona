@@ -8,7 +8,7 @@ module.exports = {
     ]
   },
   configureWebpack: config => {
-        config.output.filename = 'js/iiif-annotation.js';
+        config.output.filename = 'js/annona.js';
 
   },
   chainWebpack:
@@ -16,7 +16,7 @@ module.exports = {
       config.optimization.delete('splitChunks'),
       config.when(process.env.NODE_ENV === 'production', plugin => {
             plugin.plugin('extract-css').tap(([options, ...args]) => [
-                Object.assign({}, options, { filename: 'css/iiif-annotation.css' }),
+                Object.assign({}, options, { filename: 'css/annona.css' }),
                 ...args
             ])
         })

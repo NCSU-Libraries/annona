@@ -5,7 +5,7 @@ layout: default
 ---
 * A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
 {:toc}
-These are some of the CSS styling I believe might be most requested for implementation. This is by no means an extensive list. View [the annotation css](https://github.com/NCSU-Libraries/iiif-annotation/blob/master/src/iiif-annotation.scss) for annotation specifics. Below there is a table with CSS. See [the css examples section](#examples) for examples of implementation.
+These are some of the CSS styling I believe might be most requested for implementation. This is by no means an extensive list. View [the annotation css](https://github.com/NCSU-Libraries/annona/blob/master/src/annona.scss) for annotation specifics. Below there is a table with CSS. See [the css examples section](#examples) for examples of implementation.
 
 # Selected CSS fields
 
