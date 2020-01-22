@@ -20,7 +20,7 @@ This replaces the need for websockets for comparing two or more annotations. It 
 | **annotationurls** | Multiple Single Annotations separated by `;`. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
 | **annotationlists** | Multiple ListAnnotation or PageAnnotation separated by `;`. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
-| styling | string structured styling. See [settings table](/iiif-annotation/storyboard/#settings) and [multistoryboard settings](#multistoryboard-additional-settings) for more options |
+| styling | string structured styling. See [settings table](/annona/storyboard/#settings) and [multistoryboard settings](#multistoryboard-additional-settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 | images | Should be a IIIF info.json URL(s) separated by `;`. Images that can be loaded into the multi storyboard without annotations. This is useful for viewing the same image without having the annotate two or more images. |
 
@@ -31,11 +31,11 @@ This replaces the need for websockets for comparing two or more annotations. It 
  * When clicking on the overlays they will go the same position on each image not the same annotation. This is a conscious choice to allow for comparison at a certain point.
  * Wait for all images to load before using the toolbar.
 
-<script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 
 # Multistoryboard Additional Settings
-These are settings that only apply to multi storyboards. See [settings table](/iiif-annotation/storyboard/#settings) for global storyboard settings.
+These are settings that only apply to multi storyboards. See [settings table](/annona/storyboard/#settings) for global storyboard settings.
 
 | Variable      | Settings |
 | ----------- | ----------- |

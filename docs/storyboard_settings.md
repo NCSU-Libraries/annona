@@ -1,8 +1,8 @@
 ---
 permalink: /storyboard_settings/
 ---
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/annona.css">
 <script id="config" type="application/json">{
   "autorun_onload":true,
   "autorun_interval": 4,

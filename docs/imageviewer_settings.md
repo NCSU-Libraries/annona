@@ -2,8 +2,8 @@
 permalink: /imageviewer_settings
 ---
 
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/annona.css">
 <script id="config" type="application/json">{
   "hide_viewlarger":true,
   "hide_fullobject":true,

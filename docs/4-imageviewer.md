@@ -3,8 +3,8 @@ layout: page
 title: Image Viewer
 permalink: /imageviewer/
 ---
-<script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 <style>
 code {
   word-wrap: break-word;
@@ -30,11 +30,11 @@ In order to create any of the viewers listed on the website the following code n
 
 
 ```
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/annona.css">
 ```
 
-Note: the iiif-annotation.js and iiif-annotation.css need to be loaded only once, no matter how many image viewers are loaded. Multiple image viewers can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotations](https://dnoneill.github.io/annotate/annotations).
+Note: the annona.js and annona.css need to be loaded only once, no matter how many image viewers are loaded. Multiple image viewers can be loaded on one page with the `<iiif-storyboard>` tag. An example of this can be seen here: [annotations](https://dnoneill.github.io/annotate/annotations).
 
 ## Building views
 From there any of the tags built through the [Tag Builder]({{site.baseurl}}/tag-builder/) or manually can be entered into a webpage. The Tag Builder provides a user interface for creating much of the code documented below. It also has all settings built into the interface.
@@ -85,14 +85,14 @@ What areas are shown in the embedded image are customizable either through setti
 | image_only | **true** or **false**. Will only show the annotated image. **Default** is false |
 | text_only |  **true** or **false**. Will only show the text and tags. **Default** is false |
 | hide_tagcount | **true** or **false**. Will hide the count number in the tag. **Default** is **false** |
-| tagscolor	| String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. {'tag name': 'color', 'tag name 2': 'color2'}. See [Storyboard single annotation](https://ncsu-libraries.github.io/iiif-annotation/storyboard/#single-annotation-setting) settings for an example. |
+| tagscolor	| String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. {'tag name': 'color', 'tag name 2': 'color2'}. See [Storyboard single annotation](https://ncsu-libraries.github.io/annona/storyboard/#single-annotation-setting) settings for an example. |
 
 ## Global settings
 Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
 
 ```
-<script src="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/dist/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/dist/annona.css">
 <script id="config" type="application/json">{
   "hide_viewlarger":true,
   "view_full_object":true,

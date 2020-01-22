@@ -14,7 +14,7 @@ code {
 | Props      | Values |
 | ----------- | ----------- |
 | **rangeurl** | URL for the range of annotations that are going to be loaded into the viewer.|
-| styling | string structured styling. See [settings table](/iiif-annotation/storyboard/#settings) for more options |
+| styling | string structured styling. See [settings table](/annona/storyboard/#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 
 # Additional Icons
@@ -26,8 +26,8 @@ See [toolbar icon](/{{site.baseurl}}/storyboard/#toolbar-icons) table for other 
 | <i class="fas fa-chevron-right"></i> | `alt+n`(window)/`option+n`(mac) or `alt+.`(windows)/`option+.`(mac) or  <code>alt+<i class="fas fa-arrow-right"></i></code>(window)/<code>option+<i class="fas fa-arrow-right"></i></code>(mac) | This will go to the previous annotation in the list|
 
 
-<script src="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/iiif-annotation.css">
+<script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 
 ```
 <iiif-rangestoryboard rangeurl="https://tomcrane.github.io/iiif-collector/objects/longer-article.json"></iiif-rangestoryboard>
