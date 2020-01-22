@@ -13,14 +13,14 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: IIIF-Annotation Library
+title: Annona: Annotation Library
 #email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   Documentation for using annotations of IIIF resources. GitHub repository located at https://github.com/ncsu-libraries/iiif-annotation
-baseurl: /iiif-annotation # the subpath of your site, e.g. /blog
+baseurl: /annona # the subpath of your site, e.g. /blog
 url: "https://ncsu-libraries.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
-github_username:  ncsu-libraries/iiif-annotation
+github_username:  ncsu-libraries/annona
 
 # Build settings
 markdown: kramdown
