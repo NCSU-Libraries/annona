@@ -481,7 +481,7 @@ export default {
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         rect = xywh[0] == 'full' ? imagesize : rect;
         // calculate zindex based on coordinates; This allows for boxes that are in other boxes to be clickable.
-        var zindex = parseInt((xywh[0]*xywh[1])/(xywh[2]*xywh[3]));
+        var zindex = parseInt(((xywh[0]*xywh[1])/(xywh[2]*xywh[3]))*1000);
         zindex = xywh[0] == 'full' ? 1 : zindex;
         //create div with section
         var elem = document.createElement('div');

@@ -206,11 +206,12 @@ describe('Component', () => {
     })
     test('test storyboard with transcription', async ()  => {
 
-      const wrapper =  shallowMount(storyboard,{
+      const wrapper =  mount(storyboard,{
         propsData: {
           annotationlist: 'recogito.json',
           styling: 'hide_infobutton: true;startenddisplay:info;'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -239,6 +240,8 @@ describe('Component', () => {
       wrapper.find('#transcription_button').trigger('click')
       expect(data.shown).toEqual('transcription')
       expect(wrapper.find('.content').html()).toEqual("<div id=\"transcription\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div id=\"ocr\">BRITANIA INSVLA<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <!----><!----><!----> <!----></div>")
-
+      wrapper.find('#transcription_button').trigger('click')
+      expect(wrapper.find('.content').html()).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <!----></div>")
+      expect(data.shown).toEqual('anno')
     })
 })
