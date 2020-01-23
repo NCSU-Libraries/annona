@@ -980,7 +980,7 @@ export default {
           var elem = document.getElementById(`${this.seadragonid}_annotation`);
           var bounds = this.viewer.viewport.getBounds();
           var point = new openseadragon.Point(bounds['x'],bounds['y']);
-          this.viewer.updateOverlay(elem, point);
+          this.viewer.updateOverlay(elem, point, 'TOP_RIGHT');
           elem.style.maxHeight = '';
           elem.style.maxWidth = '';
           this.textposition = 'corner';
