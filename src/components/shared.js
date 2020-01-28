@@ -64,7 +64,9 @@ export default {
         shapetype = res_data.selector.value;
       }
       if (value) {
+        var id = res_data['@id'] ? res_data['@id'] : res_data['id'] ? res_data['id'] : '';
         value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
+        id ? value = `<a href="${id}" target="_blank">${value}</a?>` : '';
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
           value += purpose != 'tagging' && res_data[type] !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
