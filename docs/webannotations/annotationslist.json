@@ -67,7 +67,7 @@
         }
       ],
       "target": {
-        "id": "https://repository.duke.edu/iipsrv/iipsrv.fcgi?IIIF=/srv/perkins/repo_deriv/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee#xywh=7068,8160,382,245",
+        "id": "https://repository.duke.edu/fcgi-bin/iipsrv.fcgi?IIIF=/nas/repo_deriv/hydra/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee#xywh=7068,8160,382,245",
         "type": "Image"
       },
       "type": "Annotation",
@@ -129,7 +129,7 @@
         }
       ],
       "target": {
-        "id": "https://repository.duke.edu/iipsrv/iipsrv.fcgi?IIIF=/srv/perkins/repo_deriv/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee#xywh=6609,5718,766,721",
+        "id": "https://repository.duke.edu/fcgi-bin/iipsrv.fcgi?IIIF=/nas/repo_deriv/hydra/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee#xywh=6609,5718,766,721",
         "type": "Image"
       },
       "type": "Annotation",
