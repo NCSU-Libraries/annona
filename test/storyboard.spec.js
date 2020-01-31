@@ -1,5 +1,3 @@
-import Vue from 'vue'
-//import index from 'karma-chai'
 import { mount } from '@vue/test-utils';
 import { shallowMount } from '@vue/test-utils';
 
