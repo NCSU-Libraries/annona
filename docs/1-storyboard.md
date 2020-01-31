@@ -117,7 +117,7 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | hide_nextbuttons | **true** or **false**. By default is **false**; Will stop the previous and next buttons from rendering and not allow the shortcuts to render. |
 | hide_fullscreenbutton | **true** or **false**. By default is **false**; Will stop the fullscreen button from rendering and not allow the shortcuts to render. |
 | hide_shortcutsbutton | **true** or **false**. By default is **false**; Will stop the shortcut button from rendering |
-
+| hide_annotationtext | **true** or **false**. By default is **false**; This will hide the annotation text associated with annotation while still allowing for the box to appear for overlays and tags | 
 
 ## Global Settings
 Item here: [global settings example]({{site.baseurl}}/storyboard_settings)
