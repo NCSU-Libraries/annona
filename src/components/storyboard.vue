@@ -617,7 +617,7 @@ export default {
           this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
           this.settings.startenddisplay && this.buttons[this.settings.startenddisplay] ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
-          this.currentanno != '' && !this.booleanitems.istranscription ? this.setShownData('anno') : this.booleanitems.istranscription ? this.setShownData('transcription') : this.setShownData(false);
+          this.currentanno != '' && !this.settings.hide_annotationtext && !this.booleanitems.istranscription ? this.setShownData('anno') : !this.settings.hide_annotationtext && this.booleanitems.istranscription ? this.setShownData('transcription') : this.setShownData(false);
         }
       }
     },
@@ -992,7 +992,7 @@ export default {
         var createdContent = shared.createContent(annotation, this.currentlang, true);
         this.currentanno = createdContent['anno'];
         this.transcription = createdContent['transcription'];
-        this.currentanno == '' ? this.shown = false : '';
+        this.currentanno == '' || this.settings.hide_annotationtext ? this.shown = false : '';
         this.makeactive(this.position);
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
