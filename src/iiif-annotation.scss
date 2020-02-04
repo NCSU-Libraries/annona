@@ -790,3 +790,21 @@ code {
 table tr {
   background-color: none;
 }
+
+.iiifannotation table, .iiifannotation th, .iiifannotation td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 20px;
+  width: 100%;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+.searchapiview {
+  width: 100%;
+}
+
+.searchapiview .iiifannotation  {
+  margin: 0px;
+  padding: 0px;
+}

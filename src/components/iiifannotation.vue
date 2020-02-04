@@ -1,41 +1,27 @@
 <template>
-  <div class="iiifannotation" v-bind:id="annotationid + '_imageview'" v-if="rendered === true">
-    <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
-    <div v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
-      <span v-for="image in item.image" :key="image">
-      <span v-html="image" id="annoimage"></span>
-      </span>
-      <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
-      <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
-      <div id="tags">
-        <div v-if="!settings.hide_tags && item.tags" v-for="tag in item.tags" v-bind:key="tag" class="tags">
-          <div class="countkey">
-            {{tag}}
-            <span class="tagscount" v-bind:style="[counts[tag] ? {background: counts[tag].color }: {}]">
-              <span v-if="!settings.hide_tagcount && annotation_items.length > 1 && counts[tag]">{{counts[tag].count}}</span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <button v-on:click="toggle($event)" class="togglebutton" v-if="item.fullImage && item.fullImage !== '' && !settings.hide_viewlarger !== false">View Full Image</button>
-      <div id="link_to_object" v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">
-        Full object: <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
-      </div>
+  <div>
+    <defaultimageview v-bind:compdata="this.$data" v-if="rendered && !settings.table_view"></defaultimageview>
+    <tableview v-bind:compdata="this.$data" v-else-if="rendered && settings.table_view"></tableview>
+    <div v-else-if="rendered === false">
+    "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
+    Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
+    Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
     </div>
-  </div>
-  <div v-else-if="rendered === false">
-  "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
-  Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
-  Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import shared from './shared';
+import defaultimageview from './defaultimageview';
+import tableview from './tableview';
 
 export default {
   name: 'iiifannotation',
+  components: {
+    defaultimageview,
+    tableview
+  },
   props: {
     'annotationurl': {type: String, required: false},
     'annotationlist':{type: String, required: false},
@@ -53,7 +39,7 @@ export default {
       languages: [],
       counts: {},
       annotationid: ''
-      }
+    }
   },
   created() {
     this.settings = shared.getsettings(this); //get settings
@@ -86,19 +72,6 @@ export default {
         this.getManifestData()
       } else {
         this.annoloop(false)
-      }
-    },
-    //toggle hide/view full image
-    toggle: function(event){
-      var parent = event.target.parentElement;
-      var fullImage = parent.querySelector("#fullimage");
-      var change_html = event.srcElement !== undefined ?  event.srcElement : event.target;
-      if (fullImage.style.display === 'none'){
-        fullImage.style.display='inline-block';
-        change_html.innerHTML = "Hide Full Image";
-      } else {
-        fullImage.style.display= 'none';
-        change_html.innerHTML = "View Full Image";
       }
     },
     //get full image URL
@@ -273,23 +246,6 @@ export default {
         this.settings.hide_viewlarger = true;
       }
       return dictionary;
-    }
-  },
-  computed: {
-    // get full object URL
-    full_object: function(){
-      var link;
-      var keys = Object.keys(this.manifest);
-      if (keys.indexOf("related") > -1){
-        if (typeof this.manifest.related === 'string'){
-          link = this.manifest.related;
-        } else {
-          link = this.manifest.related['@id'];
-        }
-      } else {
-          link = keys.indexOf("seeAlso") > -1 ? this.manifest.seeAlso['@id'] : '';
-      }
-      return link;
     }
   }
 }
