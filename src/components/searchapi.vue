@@ -18,6 +18,7 @@ export default {
   props: {
     'fields':{type: String, required: false},
     'manifesturl':{type: String, required: true},
+    'searchapi':{type: String, required: false},
     'styling': {type: String, required: false}
   },
   data: function() {
@@ -31,18 +32,19 @@ export default {
   created() {
     this.fielddata = this.fields ? JSON.parse(this.fields.replace(/'/g, '"')) : [{'name': 'Query', 'key': 'q'}];
     this.settings = shared.getsettings(this);
-
-    this.settings.table_view = true;
+    this.settings.table_view != false ? this.settings.table_view = true : '';
     for (var key in this.settings){
-      if (key != 'fullpage'){
-        this.stylingstring += `${key}:${this.settings[key]};`
-      }
+      this.stylingstring += `${key}:${this.settings[key]};`
     }
-    axios.get(this.manifesturl).then(response => {
-      this.manifest = response.data;
-      var servicedata = response.data.service.filter(elem => elem['@context'].indexOf('http://iiif.io/api/search/0/context.json') > -1);
-      this.apiurl = servicedata[0]['@id'];
-    }).catch((error) => {this.rendered = false; console.log(error);})
+    if (!this.searchapi){
+      axios.get(this.manifesturl).then(response => {
+        this.manifest = response.data;
+        var servicedata = response.data.service.filter(elem => elem['@context'].indexOf('http://iiif.io/api/search/0/context.json') > -1);
+        this.apiurl = servicedata[0]['@id'];
+      }).catch((error) => {this.rendered = false; console.log(error);})
+    } else {
+      this.apiurl = this.searchapi;
+    }
   },
   methods: {
     search: function() {
