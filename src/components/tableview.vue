@@ -6,7 +6,7 @@
         <th v-if="!settings.image_only && has_sections">Image Section</th>
         <th v-if="!settings.image_only && !settings.text_only">Annotation Content</th>
         <th v-if="!settings.hide_tags && has_tags">Tags</th>
-        <th v-if="!settings.image_only && !settings.text_only">Full Images</th>
+        <th v-if="!settings.image_only && !settings.text_only">Full Image</th>
         <th v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">Full Object</th>
       </tr>
       <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
