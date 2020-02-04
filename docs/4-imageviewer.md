@@ -86,6 +86,7 @@ What areas are shown in the embedded image are customizable either through setti
 | text_only |  **true** or **false**. Will only show the text and tags. **Default** is false |
 | hide_tagcount | **true** or **false**. Will hide the count number in the tag. **Default** is **false** |
 | tagscolor	| String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. {'tag name': 'color', 'tag name 2': 'color2'}. See [Storyboard single annotation](https://ncsu-libraries.github.io/annona/storyboard/#single-annotation-setting) settings for an example. |
+| table_view | **true** or **false**. In `<iiif-annotation>` default is **false**, in `<iiif-searchapi>` default is **true**. Displays annotations in a table. tagscolor, hide_tagcount do not work with this view |  
 
 ## Global settings
 Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
