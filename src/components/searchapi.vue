@@ -1,7 +1,12 @@
 <template>
   <div class="searchapiview">
-    <input v-for="(item, index) in fielddata" v-on:change="search()" v-bind:key="index" v-model="fielddata[index].param" v-bind:placeholder="item.name"/>
-    <iiifannotation :key="renderurl" v-if="renderurl" v-bind:annotationlist="renderurl" v-bind:styling="stylingstring" v-bind:manifesturl="manifesturl"></iiifannotation>
+    <div class="searchview" v-if="rendered">
+      <input v-for="(item, index) in fielddata" v-on:change="search()" v-bind:key="index" v-model="fielddata[index].param" v-bind:placeholder="item.name"/>
+      <iiifannotation :key="renderurl" v-if="renderurl" v-bind:annotationlist="renderurl" v-bind:styling="stylingstring" v-bind:manifesturl="manifesturl"></iiifannotation>
+    </div>
+    <div v-else>
+      Error with {{manifesturl}}
+    </div>
   </div>
 </template>
 
@@ -26,7 +31,8 @@ export default {
       renderurl: '',
       stylingstring: '',
       apiurl: '',
-      manifest: ''
+      manifest: '',
+      rendered: true
     }
   },
   created() {
@@ -39,8 +45,12 @@ export default {
     if (!this.searchapi){
       axios.get(this.manifesturl).then(response => {
         this.manifest = response.data;
-        var servicedata = response.data.service.filter(elem => elem['@context'].indexOf('http://iiif.io/api/search/0/context.json') > -1);
-        this.apiurl = servicedata[0]['@id'];
+        if (response.data && response.data.service){
+          var servicedata = response.data.service.filter(elem => elem['@context'].indexOf('http://iiif.io/api/search/0/context.json') > -1);
+          this.apiurl = servicedata[0]['@id'];
+        } else {
+          this.rendered = false;
+        }
       }).catch((error) => {this.rendered = false; console.log(error);})
     } else {
       this.apiurl = this.searchapi;

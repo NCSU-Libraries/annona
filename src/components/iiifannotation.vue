@@ -1,12 +1,15 @@
 <template>
   <div class="iiifannotation" v-bind:id="annotationid + '_imageview'">
-    <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
-    <defaultimageview v-bind:compdata="this.$data" v-if="rendered && !settings.table_view"></defaultimageview>
+    <div v-if="annotation_items.length == 0">
+      Could not find any annotations for "{{annotationlist}}{{annotationurl}}"
+    </div>
+    <select v-else-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
+    <defaultimageview v-bind:compdata="this.$data" v-else-if="rendered && !settings.table_view"></defaultimageview>
     <tableview v-bind:compdata="this.$data" v-else-if="rendered && settings.table_view"></tableview>
     <div v-else-if="rendered === false">
-    "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
-    Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
-    Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
+      "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
+      Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
+      Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
     </div>
   </div>
 </template>
