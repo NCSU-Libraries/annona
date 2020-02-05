@@ -170,6 +170,12 @@ $phonetoolbarfontsize: .79rem;
     object-fit: contain;
 }
 
+#content img, #content iframe {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
 .rect:hover {
   background: grey;
   opacity: .4;

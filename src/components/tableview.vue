@@ -1,15 +1,15 @@
 <template>
-  <div class="iiifannotation" v-bind:id="annotationid + '_imageview'">
+  <div>
     <table>
       <tr>
-        <th v-if="!settings.image_only && has_sections">Image Section</th>
+        <th v-if="!settings.image_only && has_sections && !settings.text_only">Image Section</th>
         <th v-if="!settings.image_only && !settings.text_only">Annotation Content</th>
         <th v-if="!settings.hide_tags && has_tags">Tags</th>
-        <th v-if="!settings.image_only && !settings.text_only">Full Image</th>
+        <th v-if="!settings.image_only && !settings.text_only && !settings.hide_viewlarger">Full Image</th>
         <th v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">Full Object</th>
       </tr>
       <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
-        <td>
+        <td v-if="has_sections">
           <span v-for="image in item.image" :key="image">
             <span v-html="image" id="annoimage"></span>
           </span>
@@ -20,7 +20,7 @@
             {{item.tags.join(", ")}}
           </div>
         </td>
-        <td v-if="item.fullImage && !settings.image_only" >
+        <td v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" >
           <img v-bind:src="item.fullImage" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
         </td>
         <td id="link_to_object" v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">
