@@ -1,6 +1,5 @@
 <template>
   <div class="iiifannotation" v-bind:id="annotationid + '_imageview'">
-    <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <table>
       <tr>
         <th v-if="!settings.image_only && has_sections">Image Section</th>
@@ -10,8 +9,10 @@
         <th v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">Full Object</th>
       </tr>
       <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
-        <td v-for="image in item.image" :key="image">
-          <span v-html="image" id="annoimage"></span>
+        <td>
+          <span v-for="image in item.image" :key="image">
+            <span v-html="image" id="annoimage"></span>
+          </span>
         </td>
         <td id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></td>
         <td id="tags" v-if="!settings.hide_tags && item.tags" >

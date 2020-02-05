@@ -1,5 +1,6 @@
 <template>
   <div>
+    <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <defaultimageview v-bind:compdata="this.$data" v-if="rendered && !settings.table_view"></defaultimageview>
     <tableview v-bind:compdata="this.$data" v-else-if="rendered && settings.table_view"></tableview>
     <div v-else-if="rendered === false">
