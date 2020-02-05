@@ -5,7 +5,11 @@
       <span v-html="image" id="annoimage"></span>
       </span>
       <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+      <div class="beforecontent" v-html="item.before" v-if="item.before && !settings.image_only && !settings.hide_beforeafter">
+      </div>
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
+      <div class="aftercontent" v-html="item.after" v-if="item.after && !settings.image_only && !settings.hide_beforeafter">
+      </div>
       <div id="tags">
         <div v-if="!settings.hide_tags && item.tags" v-for="tag in item.tags" v-bind:key="tag" class="tags">
           <div class="countkey">

@@ -71,6 +71,9 @@ export default {
     parseAnnoManifest: function(annotation_data){
       this.anno = annotation_data.resources ? annotation_data.resources : annotation_data.items ? annotation_data.items : annotation_data;
       this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
+      if (annotation_data.hits){
+        this.anno.map(elem => elem['hits'] = annotation_data.hits.filter(hit => hit.annotations.indexOf(elem['@id']) > -1)[0])
+      }
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], annotation_data);
       this.anno.length == 0 ? this.rendered = 'emptylist' : '';
       if (this.manifestlink && !this.settings.text_only) {
@@ -229,6 +232,17 @@ export default {
       }
       return {'fullImage': fullImage, 'image': images}
     },
+    getBeforeAfterText: function(dictionary, anno) {
+      var span = document.createElement('span');
+      span.innerHTML = dictionary['rendered_content'];
+      var text = (span.textContent || span.innerText).trim();
+      var index = anno.hits.match.indexOf(text);
+      var before = anno.hits.match.substring(0, index).trim();
+      var after = anno.hits.match.substring(index+text.length, ).trim();
+      before = anno.hits.before.trim() + " " + before;
+      after += anno.hits.after.trim();
+      return {'after': after, 'before': before};
+    },
     //get all image data
     getImageData: function(i){
       var anno = this.anno[i];
@@ -245,6 +259,11 @@ export default {
         dictionary['altText'] = dict['ocr'].length > 0 ? dict['ocr'][0] : dict['label'] !== undefined ? dict['label'] : `Image section of "${this.manifest['label']}"`;
         dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
         dictionary['tags'] = dict['tags'].length > 0 ? dict['tags'] : "";
+        if (anno.hits && anno.hits.match && !this.settings.hide_beforeafter){
+          var banda = this.getBeforeAfterText(dictionary, anno);
+        }
+        dictionary['before'] = banda && banda['before'] ? banda['before'] : "";
+        dictionary['after'] = banda && banda['after'] ? banda['after'] : "";
       } else {
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         dictionary['id'] = this.annotationid + i;
