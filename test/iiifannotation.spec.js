@@ -110,7 +110,7 @@ describe('Component', () => {
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0]
       expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/,200/0/default.jpg\" alt=\"Annotation 1\" style=\"height: 200px; width: auto;\">"])
-      expect(Object.keys(annotations).length).toBe(7)
+      expect(Object.keys(annotations).length).toBe(9)
       expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/,200/0/default.jpg")
     })
     test('test non-existent urls', async ()  => {
