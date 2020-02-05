@@ -3,7 +3,7 @@
     <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <defaultimageview v-bind:compdata="this.$data" v-if="rendered && !settings.table_view"></defaultimageview>
     <tableview v-bind:compdata="this.$data" v-else-if="rendered && settings.table_view"></tableview>
-    <div v-else-if="rendered === false && annotation_items.length == 0">
+    <div v-else-if="rendered === 'emptylist'">
       Could not find any annotations for "{{annotationlist}}{{annotationurl}}"
     </div>
     <div v-else-if="rendered === false">
@@ -72,7 +72,7 @@ export default {
       this.anno = annotation_data.resources ? annotation_data.resources : annotation_data.items ? annotation_data.items : annotation_data;
       this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
       this.manifestlink = shared.manifestlink(this.manifesturl, this.anno[0], annotation_data);
-      this.anno.length == 0 ? this.rendered = false : '';
+      this.anno.length == 0 ? this.rendered = 'emptylist' : '';
       if (this.manifestlink && !this.settings.text_only) {
         this.getManifestData()
       } else {
