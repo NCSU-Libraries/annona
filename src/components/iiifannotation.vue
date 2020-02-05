@@ -1,6 +1,6 @@
 <template>
   <div class="iiifannotation" v-bind:id="annotationid + '_imageview'">
-    <div v-if="annotation_items.length == 0">
+    <div v-if="rendered && annotation_items.length == 0">
       Could not find any annotations for "{{annotationlist}}{{annotationurl}}"
     </div>
     <select v-else-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
