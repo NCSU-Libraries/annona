@@ -206,7 +206,8 @@ export default {
         var canvasRegion = shared.canvasRegion(canvasItem, ondict[cn]);
         for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
           var existing = this.manifest.sequences[0].canvases[idx];
-          if(existing['@id'].replace("https", "http") === canvasRegion['canvasId'].replace("https", "http")){
+          var cleanexisting = existing['@id'].replace("https", "http").replace('/info.json', '')
+          if(cleanexisting === canvasRegion['canvasId'].replace("https", "http")){
             var canvas = existing;
           }
         }

@@ -659,7 +659,8 @@ export default {
           for (var i = 0; i< canvases.length; i++){
             var cleancanvas = canvas.split('/canvas').slice(-1)[0];
             var canvregex = new RegExp(`${cleancanvas}$`,"g");
-            if (canvases[i]['@id'].replace("https", "http") === canvas.replace("https", "http") || canvregex.test(canvases[i]['@id'].replace("https", "http"))) {
+            var cleanexisting = canvases[i]['@id'].replace("https", "http").replace('/info.json', '')
+            if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
               var images = canvases[i].images;
               if (!this.settings.title){
                 var title = canvases[i].label;
