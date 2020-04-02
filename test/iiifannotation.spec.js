@@ -22,6 +22,22 @@ describe('Component', () => {
       expect(annotation.image).toEqual(['<img src=\"https://dlcs.io/iiif-img/wellcome/1/ce30a1a7-a606-4b5e-b2ad-c13677d3e8f6/310,1250,1850,1180/!1024,1024/0/default.jpg\" alt=\"Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.\">'])
       expect(annotation['content']['ocr']).toEqual(["Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A."])
     })
+    test('test search api', async ()  => {
+      const wrapper =  mount(iiifAnnotation,{
+        propsData: {
+          annotationlist: 'https://ocr.lib.ncsu.edu/search/technician-basketballspecial-1991-11?q=test',
+          manifesturl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
+        }
+      })
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      const annotation = wrapper.vm.$data.annotation_items[0]
+      expect(wrapper.vm.$data.annotation_items).toHaveLength(4)
+      expect(wrapper.vm.$data.manifest.label).toBe("Technician Basketball Special, November 1991")
+      expect(annotation.label).toBe(undefined)
+      expect(annotation.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/883,3544,92,31/1170,/0/default.jpg\" alt=\"test\">"])
+      expect(annotation['content']['ocr']).toEqual(["test"])
+    })
     test('test mirador annotation list', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {

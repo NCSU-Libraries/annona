@@ -32,7 +32,8 @@ export default {
       stylingstring: '',
       apiurl: '',
       manifest: '',
-      rendered: true
+      rendered: true, 
+      fielddata: []
     }
   },
   created() {
