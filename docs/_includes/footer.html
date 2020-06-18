@@ -45,3 +45,14 @@
     word-break: break-word;
   }
 </style>
+
+<script type="text/javascript">
+  if(window.location.href.indexOf('#/display') > -1){
+    const header = document.getElementsByTagName('header')[0];
+    header.setAttribute('style', 'display:none');
+    const ssindex = Array.from(document.styleSheets).findIndex(element => element.href.indexOf("main.css"));
+    document.styleSheets[ssindex].disabled = 'true';
+    const footer = document.getElementsByTagName('footer')[0];
+    footer.setAttribute('style', 'display:none');
+  }
+</script>
