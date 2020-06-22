@@ -325,5 +325,8 @@ export default {
       }
     }
     return shortcuts;
+  },
+  getId: function(iddata) {
+    return iddata['id'] ? iddata['id'] : iddata['@id'] ? iddata['@id'] : iddata;
   }
 }
