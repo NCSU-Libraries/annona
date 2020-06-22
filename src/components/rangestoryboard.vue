@@ -192,8 +192,10 @@ export default {
       },
       getTitle: function() {
         var title = this.rangetitle ? this.rangetitle : '';
-        this.rangetitle && this.annotationurl.title ? title += ': ' : '';
-        title += this.annotationurl.title ? this.annotationurl.title : '';
+        if (this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') {
+          this.rangetitle && this.annotationurl.title ? title += ': ' : '';
+          title += this.annotationurl.title ? this.annotationurl.title : '';
+        }
         this.settings.title = title;
       },
       updateFullScreen: function(fullscreen, expandbutton) {

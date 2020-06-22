@@ -275,11 +275,7 @@ export default {
     if (element) {
       return array.reduce((acc, val) => acc.concat(val[element]), []);
     } else {
-      try{
-        return array.reduce((acc, val) => acc.concat(val), []);
-      } catch {
-        return [].concat.apply([], array);
-      }
+      return array.reduce((acc, val) => acc.concat(val), []);
     }
   },
   keyboardShortcuts: function(type, vueinfo){
