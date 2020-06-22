@@ -273,9 +273,13 @@ export default {
   },
   flatten: function(array, element) {
     if (element) {
-      return array.reduce((acc, val) => acc.concat(val[element]), [])
+      return array.reduce((acc, val) => acc.concat(val[element]), []);
     } else {
-      return array.reduce((acc, val) => acc.concat(val), [])
+      try{
+        return array.reduce((acc, val) => acc.concat(val), []);
+      } catch {
+        return [].concat.apply([], array);
+      }
     }
   },
   keyboardShortcuts: function(type, vueinfo){

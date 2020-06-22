@@ -663,7 +663,7 @@ export default {
             var canvregex = new RegExp(`${cleancanvas}$`,"g");
             var cleanexisting = shared.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
             if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
-              var images = canvases[i].images ? canvases[i].images : [].concat.apply([], canvases[i].items.map(element => element['items']));
+              var images = canvases[i].images ? canvases[i].images : shared.flatten(canvases[i].items.map(element => element['items']));
               if (!this.settings.title){
                 var title = canvases[i].label;
                 title = title && title.constructor.name == 'Object' ? title['@value'] : title;
