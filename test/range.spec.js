@@ -41,6 +41,7 @@ describe('Component', () => {
       expect(data.viewingDirection).toBe('rtl')
       expect(data.rangetitle).toEqual('十二類絵巻')
     })
+
     test('test range list without canvases', async ()  => {
       const wrapper =  shallowMount(rangestoryboard,{
         propsData: {
@@ -70,6 +71,7 @@ describe('Component', () => {
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toEqual('A Profound Warrior For Us All')
     })
+
     test('test range list without canvases and settings', async ()  => {
       const wrapper =  shallowMount(rangestoryboard,{
         propsData: {
@@ -102,4 +104,34 @@ describe('Component', () => {
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("A Profound Warrior For Us All")
     })
+
+    test('test manifesturl range', async ()  => {
+      const wrapper =  shallowMount(rangestoryboard,{
+        propsData: {
+          manifesturl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
+        }
+      });
+      const saveMock = jest.fn()
+      wrapper.vm.createViewer = saveMock;
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      expect(data.tags).toBe(false)
+      expect(data.layerslist).toBe(false)
+      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-right\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-left\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
+      expect(data.range).toBe(true)
+      expect(data.toctitle).toEqual("Range Pages")
+      expect(data.stylingstring).toEqual("autorun_interval:3;title:Technician Basketball Special, November 1991: Text of this page (word level);")
+      expect(data.annotationurl).toEqual({"anno": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-word.json", "canvas": "https://d.lib.ncsu.edu/collections/canvas/technician-basketballspecial-1991-11_0024", "jsonanno": undefined, "manifest": "https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest", "section": undefined, "title": "Text of this page (word level)"})
+      expect(data.position).toEqual(0)
+      expect(data.prevPageInactive).toBe(true)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('manifest')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.toc).toEqual([{"description": "", "label": "Text of this page (word level)", "position": 0}, {"description": "", "label": "Text of this page (line level)", "position": 1}, {"description": "", "label": "Text of this page (paragraph level)", "position": 2}, {"description": "", "label": "Text of this page (word level)", "position": 1}, {"description": "", "label": "Text of this page (line level)", "position": 2}, {"description": "", "label": "Text of this page (paragraph level)", "position": 3}, {"description": "", "label": "Text of this page (word level)", "position": 2}, {"description": "", "label": "Text of this page (line level)", "position": 3}, {"description": "", "label": "Text of this page (paragraph level)", "position": 4}, {"description": "", "label": "Text of this page (word level)", "position": 3}, {"description": "", "label": "Text of this page (line level)", "position": 4}, {"description": "", "label": "Text of this page (paragraph level)", "position": 5}, {"description": "", "label": "Text of this page (word level)", "position": 4}, {"description": "", "label": "Text of this page (line level)", "position": 5}, {"description": "", "label": "Text of this page (paragraph level)", "position": 6}, {"description": "", "label": "Text of this page (word level)", "position": 5}, {"description": "", "label": "Text of this page (line level)", "position": 6}, {"description": "", "label": "Text of this page (paragraph level)", "position": 7}, {"description": "", "label": "Text of this page (word level)", "position": 6}, {"description": "", "label": "Text of this page (line level)", "position": 7}, {"description": "", "label": "Text of this page (paragraph level)", "position": 8}, {"description": "", "label": "Text of this page (word level)", "position": 7}, {"description": "", "label": "Text of this page (line level)", "position": 8}, {"description": "", "label": "Text of this page (paragraph level)", "position": 9}, {"description": "", "label": "Text of this page (word level)", "position": 8}, {"description": "", "label": "Text of this page (line level)", "position": 9}, {"description": "", "label": "Text of this page (paragraph level)", "position": 10}, {"description": "", "label": "Text of this page (word level)", "position": 9}, {"description": "", "label": "Text of this page (line level)", "position": 10}, {"description": "", "label": "Text of this page (paragraph level)", "position": 11}, {"description": "", "label": "Text of this page (word level)", "position": 10}, {"description": "", "label": "Text of this page (line level)", "position": 11}, {"description": "", "label": "Text of this page (paragraph level)", "position": 12}, {"description": "", "label": "Text of this page (word level)", "position": 11}, {"description": "", "label": "Text of this page (line level)", "position": 12}, {"description": "", "label": "Text of this page (paragraph level)", "position": 13}, {"description": "", "label": "Text of this page (word level)", "position": 12}, {"description": "", "label": "Text of this page (line level)", "position": 13}, {"description": "", "label": "Text of this page (paragraph level)", "position": 14}, {"description": "", "label": "Text of this page (word level)", "position": 13}, {"description": "", "label": "Text of this page (line level)", "position": 14}, {"description": "", "label": "Text of this page (paragraph level)", "position": 15}, {"description": "", "label": "Text of this page (word level)", "position": 14}, {"description": "", "label": "Text of this page (line level)", "position": 15}, {"description": "", "label": "Text of this page (paragraph level)", "position": 16}, {"description": "", "label": "Text of this page (word level)", "position": 15}, {"description": "", "label": "Text of this page (line level)", "position": 16}, {"description": "", "label": "Text of this page (paragraph level)", "position": 17}, {"description": "", "label": "Text of this page (word level)", "position": 16}, {"description": "", "label": "Text of this page (line level)", "position": 17}, {"description": "", "label": "Text of this page (paragraph level)", "position": 18}, {"description": "", "label": "Text of this page (word level)", "position": 17}, {"description": "", "label": "Text of this page (line level)", "position": 18}, {"description": "", "label": "Text of this page (paragraph level)", "position": 19}, {"description": "", "label": "Text of this page (word level)", "position": 18}, {"description": "", "label": "Text of this page (line level)", "position": 19}, {"description": "", "label": "Text of this page (paragraph level)", "position": 20}, {"description": "", "label": "Text of this page (word level)", "position": 19}, {"description": "", "label": "Text of this page (line level)", "position": 20}, {"description": "", "label": "Text of this page (paragraph level)", "position": 21}, {"description": "", "label": "Text of this page (word level)", "position": 20}, {"description": "", "label": "Text of this page (line level)", "position": 21}, {"description": "", "label": "Text of this page (paragraph level)", "position": 22}, {"description": "", "label": "Text of this page (word level)", "position": 21}, {"description": "", "label": "Text of this page (line level)", "position": 22}, {"description": "", "label": "Text of this page (paragraph level)", "position": 23}, {"description": "", "label": "Text of this page (word level)", "position": 22}, {"description": "", "label": "Text of this page (line level)", "position": 23}, {"description": "", "label": "Text of this page (paragraph level)", "position": 24}, {"description": "", "label": "Text of this page (word level)", "position": 23}, {"description": "", "label": "Text of this page (line level)", "position": 24}, {"description": "", "label": "Text of this page (paragraph level)", "position": 25}])
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("Technician Basketball Special, November 1991")
+    })
+    
 })
+
