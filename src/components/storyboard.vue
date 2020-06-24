@@ -161,6 +161,7 @@ import Vue from 'vue';
 import shared from './shared';
 import SocketIO from 'socket.io-client';
 import VueSimpleHotkey from 'vue-simple-hotkey';
+
 Vue.use(VueSimpleHotkey);
 
 Vue.use(fullscreen);
@@ -265,11 +266,10 @@ export default {
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
-        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict[0].source ? ondict.map(element => element.source) : shared.flatten(ondict);
-        canvasId = [].concat(canvasId);
+        var canvasId = shared.getCanvasId(anno[i]);
         var sections = [];
         var content_data = shared.chars(anno[i]);
-        var type = content_data['type'];
+        var type = content_data['type'] ? content_data['type'] : 'rect';
         var svg_path = [];
         //get SVG paths for each canvas; add svg path to list for each annotation
         for (var jar=0; jar<canvasId.length; jar++){
@@ -277,13 +277,11 @@ export default {
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
           sections.push(canvasRegion['canvasRegion']);
           var canvas = canvasRegion['canvasId'];
-          var svg_overlay = shared.getSVGoverlay(jarondict);
-          if (svg_overlay) {
-            type = svg_overlay.getAttribute('id').split("_")[0];
-            svg_path.push(svg_overlay);
-          } else if (!type) {
-            type = 'rect';
-          }
+          if (canvasRegion['svg']) {
+            var idtype = canvasRegion['svg'].getAttribute('id');
+            type = idtype ? idtype.split("_")[0] : 'path';
+          } 
+          svg_path.push(canvasRegion['svg']);
         }
         this.annotations.push(content_data);
         this.getAnnoInfo(content_data, i);

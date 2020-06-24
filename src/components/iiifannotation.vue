@@ -108,9 +108,7 @@ export default {
     annoloop: function(hasmanifest) {
       for (var i =0; i < this.anno.length; i++){
         var dictionary = this.getImageData(i); //get image data for annotation
-        var ondict = shared.on_structure(this.anno[i]);
-        var canvasId = this.anno[i].target !== undefined ? this.anno[i].target : ondict[0].full ? ondict.map(element => element.full) : shared.flatten(ondict);
-        canvasId = [].concat(canvasId);
+        var canvasId = shared.getCanvasId(this.anno[i]);
         // Get custom size values
         var size;
         var width = this.settings.width ? this.settings.width : this.manifestlink.indexOf('iiif/2.0') > -1 ? '1200' : '';
@@ -118,7 +116,7 @@ export default {
         size = `${width}${height}` != '' ? `${width},${height}` : 'full';
         // If has manifest take canvas ids and check canvas against manifest to get image
         if (hasmanifest) {
-          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], dictionary, size)
+          var imagedata = this.getManifestCanvas(canvasId, this.anno[i], dictionary, size);
           dictionary['image'] = dictionary['image'].concat(imagedata['image']);
           dictionary['fullImage'] = imagedata['fullImage'];
         } else if (!this.settings.text_only) {
@@ -129,7 +127,7 @@ export default {
             var imagedict = this.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
             var imageurl = imagedict['imageurl'];
             dictionary['fullImage'] = imagedict['fullImage']
-            var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, ondict, cn);
+            var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, cn);
             dictionary['image'].push(imagehtml.outerHTML);
           }
         }
@@ -145,11 +143,11 @@ export default {
       this.counts = shared.getTagDict(alltags, this.settings, '');
     },
     // Create SVG elements and corresponding image
-    createimagehtml: function(imageurl, canvasRegion, dictionary, ondict, cn) {
+    createimagehtml: function(imageurl, canvasRegion, dictionary, cn) {
       var imagehtml;
       var isderivative = imageurl.indexOf('img/derivatives') > -1;
       var extension = shared.getExtension(canvasRegion['canvasId']);
-      var path = shared.getSVGoverlay(ondict[cn]);
+      var path = canvasRegion['svg'];
       isderivative ? imageurl = dictionary['fullImage'] : '';
       if (path && !isderivative) {
         imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
@@ -203,7 +201,8 @@ export default {
       for (var cn = 0; cn < canvasId.length; cn++){
         var canvasItem = canvasId[cn];
         var ondict = shared.on_structure(anno);
-        var canvasRegion = shared.canvasRegion(canvasItem, ondict[cn]);
+        ondict = ondict ? ondict[cn] : ondict;
+        var canvasRegion = shared.canvasRegion(canvasItem, ondict);
         for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
           var existing = this.manifest.sequences[0].canvases[idx];
           var cleanexisting = existing['@id'].replace("https", "http").replace('/info.json', '')
@@ -228,7 +227,7 @@ export default {
         var imageurl = imagedict['imageurl'];
         dictionary['fullImage'] = fullImage;
 
-        var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, ondict, cn);
+        var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, cn);
         images.push(imagehtml.outerHTML)
       }
       return {'fullImage': fullImage, 'image': images}
