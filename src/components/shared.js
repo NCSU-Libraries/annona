@@ -178,6 +178,11 @@ export default {
     }
     return manifestlink;
   },
+  getAnnotations: function(annotation){
+    var anno = annotation.resources ? annotation.resources : annotation.items ? annotation.items : annotation;
+    anno = [].concat(anno);
+    return anno;
+  },
   getCanvasId: function(anno){
     var ondict = this.on_structure(anno);
     var canvasId = '';

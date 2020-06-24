@@ -257,8 +257,7 @@ export default {
   methods: {
     parseAnnoData: function(annotation, annotationurl, isURL){
       this.imagetitle = annotation.label ? annotation.label : this.imagetitle;
-      var anno = annotation.resources ? annotation.resources : annotation.items ? annotation.items : annotation;
-      anno = [].concat(anno);
+      var anno = shared.getAnnotations(annotation);
       //Get basic annotation information
       this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}
       <b>Number of Annotations:</b> ${anno.length}</div>`

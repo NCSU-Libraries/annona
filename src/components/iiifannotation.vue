@@ -69,8 +69,7 @@ export default {
   },
   methods: {
     parseAnnoManifest: function(annotation_data){
-      this.anno = annotation_data.resources ? annotation_data.resources : annotation_data.items ? annotation_data.items : annotation_data;
-      this.anno = Array.isArray(this.anno) ? this.anno : [].concat(this.anno);
+      this.anno = shared.getAnnotations(annotation_data);
       if (annotation_data.hits){
         this.anno.map(elem => elem['hits'] = annotation_data.hits.filter(hit => hit.annotations.indexOf(elem['@id']) > -1)[0])
       }
