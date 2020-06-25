@@ -110,9 +110,7 @@ export default {
             }
           } else{
             this.addToLists(anno, an, this.$props.rangeurl, canvasid);
-          }
-          
-          
+          }  
         }
         this.setDefaults(manifest);
       },
