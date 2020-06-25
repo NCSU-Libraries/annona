@@ -28,8 +28,7 @@ export default {
       'rangeurl':String,
       'styling': String,
       'ws': String,
-      'layers': String,
-      'manifesturl': String
+      'layers': String
     },
     data: function() {
       return {
@@ -69,29 +68,28 @@ export default {
     },
     created(){
       // get annotation urls in list
-      this.rangeid = this.$props.rangeurl ? this.$props.rangeurl.split("/").slice(-1)[0] : this.$props.manifesturl.split("/").slice(-1)[0];
+      this.rangeid = this.$props.rangeurl.split("/").slice(-1)[0];
       this.settings = shared.getsettings(this);
       if (this.$props.rangeurl){
         var isURL = shared.isURL(this.$props.rangeurl, this.settings);
         if (isURL['isURL']){
           axios.get(this.$props.rangeurl).then(response => {
-            this.getRangeData(response.data);
+            this.manifestOrRange(response.data)
           })
         } else {
-          this.getRangeData(isURL['json'])
-        }
-      } else if (this.$props.manifesturl){
-        var isURL = shared.isURL(this.$props.manifesturl, this.settings);
-        if (isURL['isURL']){
-          axios.get(this.$props.manifesturl).then(response => {
-            this.getManifestData(response.data);
-          })
-        } else {
-          this.getManifestData(isURL['json'])
+          this.manifestOrRange(isURL['json'])
         }
       }
     },
     methods: {
+      manifestOrRange: function(contents) {
+        var listtype = contents['@type'] ? contents['@type'] : contents['type'];
+        if (listtype.toLowerCase().indexOf('manifest') > -1){
+          this.getManifestData(contents);
+        } else {
+          this.getRangeData(contents);
+        }
+      },
       getManifestData: function(manifest) {
         var otherContent = [];
         if (manifest['sequences']){
@@ -110,10 +108,10 @@ export default {
           var anno = otherContent[an];
           if (anno.constructor.name == 'Array') { 
             for (var h=0; h<anno.length; h++){
-              this.addToLists(anno[h], an+h, this.$props.manifesturl, canvasid)
+              this.addToLists(anno[h], an+h, this.$props.rangeurl, canvasid)
             }
           } else{
-            this.addToLists(anno, an, this.$props.manifesturl, canvasid)
+            this.addToLists(anno, an, this.$props.rangeurl, canvasid)
           }
           
           
@@ -139,7 +137,7 @@ export default {
           this.buttons.next = '<i class="fas fa-chevron-left"></i>';
         }
         this.annotationurl = this.rangelist[0];
-        this.rangetitle = data.label['@value'] ? data.label['@value'] : data.label;
+        this.rangetitle = shared.parseMetaFields(data.label);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.getTitle();
         this.$props.ws ? this.isws = this.$props.ws : '';

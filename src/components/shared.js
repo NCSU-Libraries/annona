@@ -183,6 +183,20 @@ export default {
     anno = [].concat(anno);
     return anno;
   },
+  getValueField: function(element) {
+    if (element){
+      return element['@value'] ? element['@value'] : element['value'] ? element['value'] : element;
+    }
+  },
+  parseMetaFields: function(value) {
+    var fieldvalue = '';
+    if (value){
+      fieldvalue = Array.isArray(value) ? value.map(element => this.getValueField(element)).join("/") : value;
+      fieldvalue = this.getValueField(fieldvalue);
+      fieldvalue = fieldvalue.constructor.name == 'Object' ? Object.values(fieldvalue).join(" ") : fieldvalue;
+    }
+    return fieldvalue;
+  },
   getCanvasId: function(anno){
     var ondict = this.on_structure(anno);
     var canvasId = '';

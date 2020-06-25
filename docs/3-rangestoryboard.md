@@ -10,10 +10,11 @@ code {
   white-space: normal;
 }
 </style>
-
+<script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
+<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 | Props      | Values |
 | ----------- | ----------- |
-| **rangeurl** | URL for the range of annotations that are going to be loaded into the viewer.|
+| **rangeurl** | URL for the **range** of annotations **or** a **manifest** with at least one annotation link or embedded annotation. In the manifest annotations should be in the OtherContent (v2.0) or items (v3.0) field. that are going to be loaded into the viewer.|
 | styling | string structured styling. See [settings table](/annona/storyboard/#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 
@@ -25,9 +26,26 @@ See [toolbar icon](/{{site.baseurl}}/storyboard/#toolbar-icons) table for other 
 | <i class="fas fa-chevron-left"></i> | `alt+p`(window)/`option+p`(mac) or `alt+,`(windows)/`option+,`(mac) or  <code>alt+<i class="fas fa-arrow-left"></i></code>(window)/<code>option+<i class="fas fa-arrow-left"></i></code>(mac)| This will go to the next annotation in the list|
 | <i class="fas fa-chevron-right"></i> | `alt+n`(window)/`option+n`(mac) or `alt+.`(windows)/`option+.`(mac) or  <code>alt+<i class="fas fa-arrow-right"></i></code>(window)/<code>option+<i class="fas fa-arrow-right"></i></code>(mac) | This will go to the previous annotation in the list|
 
+## Manifest Examples
 
-<script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
-<link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
+```
+<iiif-rangestoryboard rangeurl="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-rangestoryboard>
+```
+**Page 4 has a really cool annotation**
+
+<iiif-rangestoryboard rangeurl="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-rangestoryboard>
+
+
+```
+<iiif-rangestoryboard rangeurl="https://wd-image-positions.toolforge.org/iiif/Q64686074/P18/manifest.json"></iiif-rangestoryboard>
+```
+This manifest has only one annotation so it appears as a regular storyboard.
+
+<iiif-rangestoryboard rangeurl="https://wd-image-positions.toolforge.org/iiif/Q64686074/P18/manifest.json"></iiif-rangestoryboard>
+
+
+
+## Range Examples
 
 ```
 <iiif-rangestoryboard rangeurl="https://tomcrane.github.io/iiif-collector/objects/longer-article.json"></iiif-rangestoryboard>

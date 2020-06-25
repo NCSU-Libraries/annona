@@ -432,16 +432,12 @@ export default {
       metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
       canvas_data.data.sequences && canvas_data.data.sequences[0].canvases.length == 1 ? this.imageinfo.label = 'Image information' : '';
       for (var j=0; j<metadata.length; j++){
-        var label = Array.isArray(metadata[j]['label']) ? metadata[j]['label'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['label'];
-        label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
-        label = label.constructor.name == 'Object' ? Object.values(label).join(" ") : label;
-        var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
-        value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
-        value = value && value.constructor.name == 'Object' ? Object.values(value).join(" ") : value;
+        var label = shared.parseMetaFields(metadata[j]['label']);
+        var value = shared.parseMetaFields(metadata[j]['value']);
         if (label === 'title' && j == 1 && !this.settings.title){
           this.imagetitle = value;
         }
-        if (value){
+        if (value && value !== ''){
           this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
         }
       }
@@ -663,7 +659,7 @@ export default {
               var images = canvases[i].images ? canvases[i].images : shared.flatten(canvases[i].items.map(element => element['items']));
               if (!this.settings.title){
                 var title = canvases[i].label;
-                title = title && title.constructor.name == 'Object' ? title['@value'] : title;
+                title = shared.getValueField(title);
                 this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
               }
             }
