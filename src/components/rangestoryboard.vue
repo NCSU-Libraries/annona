@@ -73,10 +73,10 @@ export default {
       var isURL = shared.isURL(this.$props.rangeurl, this.settings);
       if (isURL['isURL']){
         axios.get(this.$props.rangeurl).then(response => {
-          this.manifestOrRange(response.data)
+          this.manifestOrRange(response.data);
         })
       } else {
-        this.manifestOrRange(isURL['json'])
+        this.manifestOrRange(isURL['json']);
       }
     },
     methods: {
@@ -96,7 +96,7 @@ export default {
             var canvas = canvases[cv];
             var canvasid = shared.getId(canvas);
             if (canvas['otherContent']){
-              otherContent.push(canvas['otherContent'])
+              otherContent.push(canvas['otherContent']);
             }            
           }
         } else {
@@ -106,15 +106,15 @@ export default {
           var anno = otherContent[an];
           if (anno.constructor.name == 'Array') { 
             for (var h=0; h<anno.length; h++){
-              this.addToLists(anno[h], an+h, this.$props.rangeurl, canvasid)
+              this.addToLists(anno[h], an+h, this.$props.rangeurl, canvasid);
             }
           } else{
-            this.addToLists(anno, an, this.$props.rangeurl, canvasid)
+            this.addToLists(anno, an, this.$props.rangeurl, canvasid);
           }
           
           
         }
-        this.setDefaults(manifest)
+        this.setDefaults(manifest);
       },
       addToLists: function(anno, an, manifesturl, canvasid, xywh) {
         if(anno.resources || anno.items){
@@ -122,10 +122,10 @@ export default {
         } else {
           var annourl = shared.getId(anno);
         }
-        var toclabel = anno['label'] ? anno['label'] : `Page ${an + 1}`
+        var toclabel = anno['label'] ? anno['label'] : `Page ${an + 1}`;
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :an, 'label' : toclabel, 'description': description});
-        this.rangelist.push({'canvas': canvasid, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel})
+        this.rangelist.push({'canvas': canvasid, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
       },
       setDefaults: function(data) {
         var viewingDirection = data.viewingDirection;
@@ -157,7 +157,7 @@ export default {
             var canvasid = shared.getId(canvas);
             xywh = canvasid.constructor.name === 'String' && canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
           }
-          this.addToLists(anno, ca, manifest, canvasid, xywh)
+          this.addToLists(anno, ca, manifest, canvasid, xywh);
         }
         this.setDefaults(rangelist);
       },
@@ -183,7 +183,7 @@ export default {
       },
       getStylingString: function(){
         for (var key in this.settings){
-          this.stylingstring += `${key}:${this.settings[key]};`
+          this.stylingstring += `${key}:${this.settings[key]};`;
         }
       },
       getTitle: function() {
