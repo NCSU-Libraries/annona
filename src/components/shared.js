@@ -150,7 +150,8 @@ export default {
     if (canvasId && canvasId.indexOf("#xywh") > -1){
       canvasRegion = canvasId.split("#")[1].split("=")[1];
       canvasId = canvasId.split("#")[0];
-    } else if (!canvasRegion) {
+    } 
+    if (!canvasRegion || canvasRegion.trim() === '') {
       canvasRegion = "full";
     }
     canvasRegion != 'full' ? canvasRegion = canvasRegion.split(",").map(element => element.replace(/[^0-9.]/g, '')).join(",") : "";
@@ -329,9 +330,9 @@ export default {
   },
   flatten: function(array, element) {
     if (element) {
-      return array.reduce((acc, val) => acc.concat(val[element]), []);
+      return array.reduce((acc, val) => acc.concat(val[element]), []).filter(Boolean);
     } else {
-      return array.reduce((acc, val) => acc.concat(val), []);
+      return array.reduce((acc, val) => acc.concat(val), []).filter(Boolean);
     }
   },
   keyboardShortcuts: function(type, vueinfo){
