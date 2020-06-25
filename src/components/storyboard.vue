@@ -113,8 +113,7 @@
         <span v-if="!booleanitems.isexcerpt">
           <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</button>
           <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
-
-          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 0">{{$parent.toctitle}}</button>
+          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 1">{{$parent.toctitle}}</button>
           <div v-if="booleanitems.tocshown" class="tocinfo">
             <div v-for="toc in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
               <div class="title"><button class="buttonlink" v-on:click="$parent.nextItemRange(toc.position);">{{toc.label}}</button></div>
@@ -162,6 +161,7 @@ import Vue from 'vue';
 import shared from './shared';
 import SocketIO from 'socket.io-client';
 import VueSimpleHotkey from 'vue-simple-hotkey';
+
 Vue.use(VueSimpleHotkey);
 
 Vue.use(fullscreen);
@@ -172,6 +172,7 @@ export default {
     'annotationlist':String,
     'manifesturl':String,
     'annotationurl': String,
+    'jsonannotation': Object,
     'styling': String,
     'ws': String,
     'layers': String
@@ -230,7 +231,7 @@ export default {
     if(this.$parent.range) {
       this.fullscreenChange(this.$parent.isfullscreen);
     }
-    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
+    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl ? this.annotationurl : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
@@ -247,7 +248,7 @@ export default {
   },
   mounted () {
     this.newSocket();
-    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl;
+    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl ? this.annotationurl : this.jsonannotation;
     var isURL = shared.isURL(annotationurl, '');
     if (!isURL['isURL']) {
       this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
@@ -256,8 +257,7 @@ export default {
   methods: {
     parseAnnoData: function(annotation, annotationurl, isURL){
       this.imagetitle = annotation.label ? annotation.label : this.imagetitle;
-      var anno = annotation.resources ? annotation.resources : annotation.items ? annotation.items : annotation;
-      anno = [].concat(anno);
+      var anno = shared.getAnnotations(annotation);
       //Get basic annotation information
       this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}
       <b>Number of Annotations:</b> ${anno.length}</div>`
@@ -265,11 +265,10 @@ export default {
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
         var ondict = shared.on_structure(anno[i]);
-        var canvasId = anno[i].target !== undefined ? anno[i].target : ondict[0].full ? ondict.map(element => element.full) : ondict[0].source ? ondict.map(element => element.source) : shared.flatten(ondict);
-        canvasId = [].concat(canvasId);
+        var canvasId = shared.getCanvasId(anno[i]);
         var sections = [];
         var content_data = shared.chars(anno[i]);
-        var type = content_data['type'];
+        var type = content_data['type'] ? content_data['type'] : 'rect';
         var svg_path = [];
         //get SVG paths for each canvas; add svg path to list for each annotation
         for (var jar=0; jar<canvasId.length; jar++){
@@ -277,13 +276,11 @@ export default {
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
           sections.push(canvasRegion['canvasRegion']);
           var canvas = canvasRegion['canvasId'];
-          var svg_overlay = shared.getSVGoverlay(jarondict);
-          if (svg_overlay) {
-            type = svg_overlay.getAttribute('id').split("_")[0];
-            svg_path.push(svg_overlay);
-          } else if (!type) {
-            type = 'rect';
-          }
+          if (canvasRegion['svg']) {
+            var idtype = canvasRegion['svg'].getAttribute('id');
+            type = idtype ? idtype.split("_")[0] : 'path';
+          } 
+          svg_path.push(canvasRegion['svg']);
         }
         this.annotations.push(content_data);
         this.getAnnoInfo(content_data, i);
@@ -433,16 +430,14 @@ export default {
       var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
       {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
       metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
-      canvas_data.data.sequences[0].canvases.length == 1 ? this.imageinfo.label = 'Image information' : '';
+      canvas_data.data.sequences && canvas_data.data.sequences[0].canvases.length == 1 ? this.imageinfo.label = 'Image information' : '';
       for (var j=0; j<metadata.length; j++){
-        var label = Array.isArray(metadata[j]['label']) ? metadata[j]['label'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['label'];
-        label = Array.isArray(label) ? label.join("/") : label['@value'] ? label['@value'] : label;
-        var value = Array.isArray(metadata[j]['value']) ? metadata[j]['value'].map(element => element['@value'] ? element['@value'] : element['value'] ? element['value'] : element) : metadata[j]['value'] ;
-        value = Array.isArray(value) ? value.join("<br>") : value && value['@value'] ? value['@value'] : value;
+        var label = shared.parseMetaFields(metadata[j]['label']);
+        var value = shared.parseMetaFields(metadata[j]['value']);
         if (label === 'title' && j == 1 && !this.settings.title){
           this.imagetitle = value;
         }
-        if (value){
+        if (value && value !== ''){
           this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
         }
       }
@@ -655,16 +650,16 @@ export default {
     getManifestData: function(manifestlink, canvas, canvasId){
         axios.get(manifestlink).then(canvas_data => {
           this.getImageInfo(canvas_data, manifestlink)
-          var canvases = canvas_data.data.sequences[0].canvases;
+          var canvases = canvas_data.data.sequences ? canvas_data.data.sequences[0].canvases : canvas_data.data.items;
           for (var i = 0; i< canvases.length; i++){
             var cleancanvas = canvas.split('/canvas').slice(-1)[0];
             var canvregex = new RegExp(`${cleancanvas}$`,"g");
-            var cleanexisting = canvases[i]['@id'].replace("https", "http").replace('/info.json', '')
+            var cleanexisting = shared.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
             if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
-              var images = canvases[i].images;
+              var images = canvases[i].images ? canvases[i].images : shared.flatten(canvases[i].items.map(element => element['items']));
               if (!this.settings.title){
                 var title = canvases[i].label;
-                title = title && title.constructor.name == 'Object' ? title['@value'] : title;
+                title = shared.getValueField(title);
                 this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
               }
             }
@@ -705,12 +700,12 @@ export default {
     getLayerData: function(images) {
       images = images ? images : [];
       for (var i=0; i<images.length; i++){
-        var imgResource = images[i].resource;
-        var canvas_tile = imgResource.service ? imgResource.service['@id'].split("/full/")[0] : imgResource['@id'];
+        var imgResource = images[i].resource ? images[i].resource : images[i].body;
+        var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ?shared.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? shared.getId(imgResource.service).split("/full/")[0] :shared.getId(imgResource);
         canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
         canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
         var xywh = images[i].on ? images[i].on.split("xywh=").slice(-1)[0].split(",") : '';
-        var label = images[i].resource.label ? images[i].resource.label : `Layer ${i + 1}`;
+        var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         canvas_tile += 'info.json';
         var checked = this.settings.togglelayers || i == 0 ? true : false;
         var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;

@@ -1,13 +1,14 @@
 import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
+import Raphael from 'raphael';
 
 export default {
   imageextensions: ['jpg', 'jpeg', 'png', 'svg'],
   //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.
   on_structure: function(anno){
-    if (typeof anno['on'] === 'undefined'){
-      return 'undefined';
-    } else if (typeof anno['on'][0] !== 'undefined' && typeof anno['on'][0] !== 'string'){
+    if (!anno['on'] || typeof anno['on'] === 'undefined'){
+      return undefined;
+    } else if (anno['on'].constructor.name === 'Array'){
       return anno['on'];
     } else {
       return [anno['on']];
@@ -107,38 +108,54 @@ export default {
     var dict = {'purpose': purpose, 'language': element['language'], 'value': value}
     return dict;
   },
+  selectorParser: function(selector) {
+    var item = selector.item ? selector.item.value : selector.default ? selector.default.value : selector.value;
+    var svg_overlay = this.getSVGoverlay(item);
+    if (svg_overlay){
+      var bounds = Raphael.pathBBox(svg_overlay.getAttribute('d'));
+      return {'bounds':`${parseInt(bounds['x'])},${parseInt(bounds['y'])},${parseInt(bounds['width'])},${parseInt(bounds['height'])}`, 'svg': svg_overlay}
+    } else {
+      return {'bounds': item.split("=").slice(-1)[0], 'svg': undefined}
+    }
+  },
   //get canvas information and section of image annotated.
   //Looks at selector field to see if selector exists and portion of the canvas is defined in the field.
   //Tries to find the canvas defined in the annotation.
   //Looks at canvasId to see if section of image is defined in the canvasId
   canvasRegion: function(canvasId, ondict){
     var canvasRegion;
-    if (ondict && typeof ondict.selector !== 'undefined') {
-      canvasRegion = ondict.selector.value ? ondict.selector.value : ondict.selector.default.value;
-      canvasRegion = canvasRegion.split("=").slice(-1)[0]
+    var svg;
+    if (ondict && ondict.selector) {
+       var parser = this.selectorParser(ondict.selector);
+       canvasRegion = parser['bounds'];
+       svg = parser['svg'];
     }
-    if (typeof canvasId !== 'string'){
+    if (canvasId && typeof canvasId !== 'string'){
       if (canvasId.selector){
+        var canvasSelector = canvasId.selector;
         if (canvasId.selector.constructor === Array){
-          var selectors = canvasId.selector.filter(element => element.value.indexOf('xywh') > -1);
-          canvasRegion = selectors[0].value.split("=").slice(-1)[0];
-        } else {
-          canvasRegion = canvasId.selector.value.split("=").slice(-1)[0];
+          var selectors = canvasId.selector.filter(element => element.value.indexOf('svg') > -1);
+          selectors = selectors.length > 0 ? selectors : canvasId.selector.filter(element => element.value.indexOf('xywh') > -1);
+          canvasSelector = selectors[0];
         }
+        var parser = this.selectorParser(canvasSelector);
+        canvasRegion = parser['bounds'];
+        svg = parser['svg'];
       }
       if (canvasId['source']){
         canvasId = canvasId.source;
       }
-      canvasId = canvasId['id'] ? canvasId['id'] : canvasId['@id'] ? canvasId['@id'] : canvasId ;
+      canvasId = this.getId(canvasId);
     }
-    if (canvasId.indexOf("#xywh") > -1){
+    if (canvasId && canvasId.indexOf("#xywh") > -1){
       canvasRegion = canvasId.split("#")[1].split("=")[1];
       canvasId = canvasId.split("#")[0];
-    } else if (!canvasRegion) {
+    } 
+    if (!canvasRegion || canvasRegion.trim() === '') {
       canvasRegion = "full";
     }
-    canvasRegion != 'full' ? canvasRegion = canvasRegion.split(",").map(element => element.replace(/[^0-9]/g, '')).join(",") : "";
-    return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion};
+    canvasRegion != 'full' ? canvasRegion = canvasRegion.split(",").map(element => element.replace(/[^0-9.]/g, '')).join(",") : "";
+    return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion, 'svg': svg};
   },
   //get the manifest link from annotation;
   //looks at specific fields for the manifest associated with the annotation.
@@ -147,10 +164,14 @@ export default {
   manifestlink: function(manifesturl, anno, responsedata) {
     var manifestlink;
     if (manifesturl === undefined || manifesturl === ''){
-      var target_dict = anno['target'] ? anno['target'] : this.on_structure(anno)[0];
-      var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))];
-      var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))];
-      var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : this.on_structure(anno)[0]['within'];
+      var on_structure = this.on_structure(anno);
+      on_structure = on_structure ? on_structure[0] : on_structure;
+      var target_dict = anno['target'] ? anno['target'] : on_structure;
+      if (target_dict){
+        var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))];
+        var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))];
+      }
+      var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : on_structure ? on_structure['within']: undefined;
       manifest_dict = manifest_dict ? manifest_dict : responsedata['within'] ? responsedata['within']['within'] : '';
       manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'] ?  manifest_dict['@id'] : manifest_dict;
     } else {
@@ -158,12 +179,48 @@ export default {
     }
     return manifestlink;
   },
+  getAnnotations: function(annotation){
+    var anno = annotation.resources ? annotation.resources : annotation.items ? annotation.items : annotation;
+    anno = [].concat(anno);
+    return anno;
+  },
+  getValueField: function(element) {
+    if (element){
+      return element['@value'] ? element['@value'] : element['value'] ? element['value'] : element;
+    }
+  },
+  parseMetaFields: function(value) {
+    var fieldvalue = '';
+    if (value){
+      fieldvalue = Array.isArray(value) ? value.map(element => this.getValueField(element)).join("/") : value;
+      fieldvalue = this.getValueField(fieldvalue);
+      fieldvalue = fieldvalue.constructor.name == 'Object' ? Object.values(fieldvalue).join(" ") : fieldvalue;
+    }
+    return fieldvalue;
+  },
+  getCanvasId: function(anno){
+    var ondict = this.on_structure(anno);
+    var canvasId = '';
+    if (anno.target) {
+      canvasId = anno.target;
+    } else if(ondict) {
+      if (ondict[0] && ondict[0].full) {
+        canvasId = ondict.map(element => element.full);
+      } else if (ondict[0] && ondict[0].source) {
+        canvasId = ondict.map(element => element.source);
+      } else {
+        canvasId = this.flatten(ondict);
+      }
+    }
+    canvasId = [].concat(canvasId);
+    return canvasId;
+  },
   //get SVG path from annotation; looks at specific fields and gets the path without the SVG container from a field in the annotation.
-  getSVGoverlay: function(ondict){
+  getSVGoverlay: function(selectoritem){
     var svg_path;
-    if (ondict && ondict.selector && ondict.selector.item !== undefined){
+    if (selectoritem){
       var svg_elem = document.createElement( 'html' );
-      svg_elem.innerHTML = ondict.selector.item.value;
+      svg_elem.innerHTML = selectoritem;
       var path = svg_elem.getElementsByTagName('path')[0];
       svg_path = path;
     }
@@ -273,9 +330,9 @@ export default {
   },
   flatten: function(array, element) {
     if (element) {
-      return array.reduce((acc, val) => acc.concat(val[element]), [])
+      return array.reduce((acc, val) => acc.concat(val[element]), []).filter(Boolean);
     } else {
-      return array.reduce((acc, val) => acc.concat(val), [])
+      return array.reduce((acc, val) => acc.concat(val), []).filter(Boolean);
     }
   },
   keyboardShortcuts: function(type, vueinfo){
@@ -325,5 +382,8 @@ export default {
       }
     }
     return shortcuts;
+  },
+  getId: function(iddata) {
+    return iddata['id'] ? iddata['id'] : iddata['@id'] ? iddata['@id'] : iddata;
   }
 }

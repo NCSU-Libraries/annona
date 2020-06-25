@@ -1,6 +1,6 @@
 <template>
 <div v-bind:id="rangeid" class="rangestoryboard" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
-  <storyboard :key="position" v-if="annotationurl" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+  <storyboard :key="position" v-if="annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   <button id="previousPageInactiveButton" v-hotkey="prevshortcut" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.prev"></span>
     <span class="toolbartext">Previous page</span>
@@ -69,45 +69,71 @@ export default {
     created(){
       // get annotation urls in list
       this.rangeid = this.$props.rangeurl.split("/").slice(-1)[0];
-      var isURL = shared.isURL(this.$props.rangeurl, this.settings);
       this.settings = shared.getsettings(this);
+      var isURL = shared.isURL(this.$props.rangeurl, this.settings);
       if (isURL['isURL']){
         axios.get(this.$props.rangeurl).then(response => {
-          this.getRangeData(response.data);
+          this.manifestOrRange(response.data);
         })
       } else {
-        this.getRangeData(isURL['json'])
+        this.manifestOrRange(isURL['json']);
       }
     },
     methods: {
-      getRangeData: function(rangelist) {
-        var annos = rangelist.contentLayer.otherContent;
-        var canvases = rangelist.canvases ? rangelist.canvases : [];
-        var viewingDirection = rangelist.viewingDirection;
+      manifestOrRange: function(contents) {
+        var listtype = contents['@type'] ? contents['@type'] : contents['type'];
+        if (listtype.toLowerCase().indexOf('manifest') > -1){
+          this.getManifestData(contents);
+        } else {
+          this.getRangeData(contents);
+        }
+      },
+      getManifestData: function(manifest) {
+        var otherContent = [];
+        if (manifest['sequences']){
+          var canvases = shared.flatten(manifest['sequences'].map(element => element['canvases']));
+          for (var cv=0; cv<canvases.length; cv++){
+            var canvas = canvases[cv];
+            var canvasid = shared.getId(canvas);
+            if (canvas['otherContent']){
+              otherContent.push(canvas['otherContent']);
+            }            
+          }
+        } else {
+          otherContent = shared.flatten(manifest['items'].map(element => element['annotations']));
+        }
+        for (var an=0; an<otherContent.length; an++){
+          var anno = otherContent[an];
+          if (anno.constructor.name == 'Array') { 
+            for (var h=0; h<anno.length; h++){
+              this.addToLists(anno[h], an+h, this.$props.rangeurl, canvasid);
+            }
+          } else{
+            this.addToLists(anno, an, this.$props.rangeurl, canvasid);
+          }  
+        }
+        this.setDefaults(manifest);
+      },
+      addToLists: function(anno, an, manifesturl, canvasid, xywh) {
+        if(anno.resources || anno.items){
+          var jsonanno = anno; 
+        } else {
+          var annourl = shared.getId(anno);
+        }
+        var toclabel = anno['label'] ? anno['label'] : `Page ${an + 1}`;
+        var description = anno['description'] ?  anno['description'] : '';
+        this.toc.push({ 'position' :an, 'label' : toclabel, 'description': description});
+        this.rangelist.push({'canvas': canvasid, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
+      },
+      setDefaults: function(data) {
+        var viewingDirection = data.viewingDirection;
         if(viewingDirection === 'right-to-left'){
           this.viewingDirection = 'rtl';
           this.buttons.prev = this.buttons.next;
           this.buttons.next = '<i class="fas fa-chevron-left"></i>';
         }
-        this.rangetitle = rangelist.label;
-        for (var ca=0; ca<annos.length; ca++){
-          var canvas = canvases[ca];
-          var anno = annos[ca];
-          var xywh = '';
-          var manifest = canvas ? canvas['within'] : '';
-          manifest = manifest['@id'] ? manifest['@id'] : manifest['id'] ? manifest['id'] : manifest;
-          if (canvas){
-            var canvasid = canvas['@id'] ? canvas['@id'] : canvas['id'] ? canvas['id'] : canvas;
-            xywh = canvasid.constructor.name === 'String' && canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
-          }
-          var annostring = anno['@id'] ? anno['@id'] : anno['id'] ? anno['id'] : anno;
-          var toclabel = anno['label'] ? anno['label'] : `Page ${ca + 1}`
-          var description = anno['description'] ?  anno['description'] : '';
-          this.toc.push({ 'position' :ca, 'label' : toclabel, 'description': description});
-          this.rangelist.push({'canvas': canvas, 'anno': annostring,  'manifest': manifest, section: xywh, title: anno['label']})
-        }
         this.annotationurl = this.rangelist[0];
-        // Get settings and create styling string
+        this.rangetitle = shared.parseMetaFields(data.label);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.getTitle();
         this.$props.ws ? this.isws = this.$props.ws : '';
@@ -115,6 +141,23 @@ export default {
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
         this.rangelist.length == 1 ? this.nextPageInactive = true : ''
+      },
+      getRangeData: function(rangelist) {
+        var annos = rangelist.contentLayer.otherContent;
+        var canvases = rangelist.canvases ? rangelist.canvases : [];
+        for (var ca=0; ca<annos.length; ca++){
+          var canvas = canvases[ca];
+          var anno = annos[ca];
+          var xywh = '';
+          var manifest = canvas ? canvas['within'] : '';
+          manifest = shared.getId(manifest);
+          if (canvas){
+            var canvasid = shared.getId(canvas);
+            xywh = canvasid.constructor.name === 'String' && canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
+          }
+          this.addToLists(anno, ca, manifest, canvasid, xywh);
+        }
+        this.setDefaults(rangelist);
       },
       nextItemRange: function(prevornext){
         if (prevornext == 'prev') {
@@ -138,13 +181,15 @@ export default {
       },
       getStylingString: function(){
         for (var key in this.settings){
-          this.stylingstring += `${key}:${this.settings[key]};`
+          this.stylingstring += `${key}:${this.settings[key]};`;
         }
       },
       getTitle: function() {
         var title = this.rangetitle ? this.rangetitle : '';
-        this.rangetitle && this.annotationurl.title ? title += ': ' : '';
-        title += this.annotationurl.title ? this.annotationurl.title : '';
+        if (this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') {
+          this.rangetitle && this.annotationurl.title ? title += ': ' : '';
+          title += this.annotationurl.title ? this.annotationurl.title : '';
+        }
         this.settings.title = title;
       },
       updateFullScreen: function(fullscreen, expandbutton) {
