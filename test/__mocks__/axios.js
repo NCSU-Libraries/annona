@@ -45,7 +45,7 @@ module.exports = {
   if (url === 'annopagemanifest.json'){
     return Promise.resolve({data:{"sequences":[{"@id":"https://d.lib.ncsu.edu/collections/canvas/mc00084-001-te0159-000-001_0001","canvases":[{"@id":"https://d.lib.ncsu.edu/collections/canvas/mc00084-001-te0159-000-001_0001","images":[{"@id":"https://d.lib.ncsu.edu/collections/canvas/mc00084-001-te0159-000-001_0001","resource":{"service":{"@id":"https://iiif.lib.ncsu.edu/iiif/mc00084-001-te0159-000-001_0001"}}}]}]}]}})
   }
-  if (url === 'oa.json') {
+  if (url === 'oa.json' || url == 'https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-word.json') {
     return Promise.resolve({data:{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"oawithoutmanifest.json","@type":"sc:AnnotationList","resources":[{"@type":"oa:Annotation","motivation":"sc:painting","resource":{"@type":"cnt:ContentAsText","format":"text/plain","chars":"Annotation 1"},"on":"https://iiif.lib.ncsu.edu/iiif/segIns_023/info.json#xywh=6270,3903,2250,2250"},{"@type":"oa:Annotation","motivation":"sc:painting","resource":{"@type":"cnt:ContentAsText","format":"text/plain","chars":"Annotation 2"},"on":"https://iiif.lib.ncsu.edu/iiif/segIns_023/318,499,2891,3339/1200,/0/default.jpg#xywh=12288,16567,2250,2250"}]}})
   }
 
@@ -61,9 +61,311 @@ module.exports = {
     return Promise.resolve({data:{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://tomcrane.github.io/iiif-collector/objects/longer-article.json","@type":"sc:Range","contentLayer":{"@id":"https://tomcrane.github.io/iiif-collector/objects/longer-article-contentlayer","@type":"sc:Layer","label":"Content of 'A Profound Warrior For Us All' article","otherContent":["https://tomcrane.github.io/iiif-collector/objects/longer-article-annos1.json"]},"description":"<p><a href='https://d.lib.ncsu.edu/collections/catalog/nubian-message-1995-04-01#?c=0&m=0&s=0&cv=0&z=749.6929%2C3307.2622%2C4049.5239%2C3514.5534'>See this in place across two pages</a></p>","label":"A Profound Warrior For Us All"}})
   }
 
-  if (url == 'recogito.json') {
+  if (url == 'recogito.json' || url == 'https://tomcrane.github.io/iiif-collector/objects/longer-article-annos1.json') {
     return Promise.resolve({data:[ { "@context" : "http://www.w3.org/ns/anno.jsonld", "id" : "https://recogito.pelagios.org/annotation/5350510e-65a9-46e9-b29c-e889695528f1", "type" : "Annotation", "generator" : { "id" : "https://recogito.pelagios.org/", "type" : "Software", "name" : "Recogito", "homepage" : "https://recogito.pelagios.org/" }, "generated" : "2019-11-15T16:44:23+00:00", "body" : [ { "type" : "TextualBody", "value" : "Lodinv", "creator" : "https://recogito.pelagios.org/rainer", "modified" : "2019-09-19T13:00:14+00:00", "purpose" : "transcribing" }, { "type" : "SpecificResource", "value" : "http://pleiades.stoa.org/places/79574", "creator" : "https://recogito.pelagios.org/rainer", "modified" : "2019-09-19T13:00:14+00:00", "purpose" : "identifying" } ], "target" : { "source" : "https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7", "type" : "Image", "selector" : [ { "type" : "FragmentSelector", "conformsTo" : "http://www.w3.org/TR/media-frags/", "value" : "xywh=pixel:1958,1907,113,51" } ] } }, { "@context" : "http://www.w3.org/ns/anno.jsonld", "id" : "https://recogito.pelagios.org/annotation/5fbb23a4-db57-41bc-bec2-92a52454e4c7", "type" : "Annotation", "generator" : { "id" : "https://recogito.pelagios.org/", "type" : "Software", "name" : "Recogito", "homepage" : "https://recogito.pelagios.org/" }, "generated" : "2019-11-15T16:44:23+00:00", "body" : [ { "type" : "TextualBody", "value" : "MARE HIBERNICVM", "creator" : "https://recogito.pelagios.org/rainer", "modified" : "2019-11-15T08:08:45+00:00", "purpose" : "transcribing" } ], "target" : { "source" : "https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7", "type" : "Image", "selector" : [ { "type" : "FragmentSelector", "conformsTo" : "http://www.w3.org/TR/media-frags/", "value" : "xywh=pixel:1537,579,382,352" } ] } }, { "@context" : "http://www.w3.org/ns/anno.jsonld", "id" : "https://recogito.pelagios.org/annotation/338c2d75-47d5-49d1-bccb-ce68966346cd", "type" : "Annotation", "generator" : { "id" : "https://recogito.pelagios.org/", "type" : "Software", "name" : "Recogito", "homepage" : "https://recogito.pelagios.org/" }, "generated" : "2019-11-15T16:44:23+00:00", "body" : [ { "type" : "TextualBody", "value" : "BRITANIA INSVLA", "creator" : "https://recogito.pelagios.org/rainer", "modified" : "2019-11-15T08:09:03+00:00", "purpose" : "transcribing" }, { "type" : "TextualBody", "value" : "The British Isles", "creator" : "https://recogito.pelagios.org/rainer", "modified" : "2019-11-15T08:09:03+00:00", "purpose" : "commenting" } ], "target" : { "source" : "https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7", "type" : "Image", "selector" : [ { "type" : "FragmentSelector", "conformsTo" : "http://www.w3.org/TR/media-frags/", "value" : "xywh=pixel:1704,1509,319,123" } ] } } ]});
   }
+
+  if (url === 'https://storiiies.cogapp.com/holbein/manifest.json') {
+    return Promise.resolve({data: {
+        "@context": "http://iiif.io/api/presentation/2/context.json",
+        "@id": "https://storiiies.cogapp.com/holbein/manifest.json",
+        "@type": "sc:Manifest",
+        "label": {
+          "@value": "Holbein's 'The Ambassadors'",
+          "@language": "en"
+        },
+        "description": {
+          "@value": "Let's explore some of the symbolism and features in this iconic painting",
+          "@language": "en"
+        },
+        "viewingHint": "paged",
+        "viewingDirection": "left-to-right",
+        "attribution": "Copyright National Gallery, London; used under license.",
+        "sequences": [
+          {
+            "@id": "https://storiiies.cogapp.com/holbein/sequence",
+            "@type": "sc:Sequence",
+            "canvases": [
+              {
+                "@context": "http://iiif.io/api/presentation/2/context.json",
+                "@type": "sc:Canvas",
+                "width": 30000,
+                "height": 29560,
+                "@id": "https://storiies.cogapp.com/holbein/canvas/c0",
+                "label": {
+                  "@value": "The Ambassadors",
+                  "@language": "en"
+                },
+                "description": {
+                  "@value": "The Ambassadors by Hans Holbein the Younger (National Gallery, London) was created in 1533, the year that Elizabeth I was born. A striking life-scale double portrait, it also depicts numerous meticulously rendered objects and includes a rare and much-cited example of anamorphosis. The meaning of the painting and the objects it depicts has been the cause of much debate.",
+                  "@language": "en"
+                },
+                "images": [
+                  {
+                    "@type": "oa:Annotation",
+                    "@id": "https://storiies.cogapp.com/holbein/image/i0",
+                    "motivation": "sc:painting",
+                    "on": "https://storiies.cogapp.com/holbein/canvas/c0",
+                    "resource": {
+                      "@id": "https://images.cogapp.com/iiif/holbein_big_p.tif/full/full/0/default.jpg",
+                      "@type": "dctypes:Image",
+                      "format": "image/jpeg",
+                      "width": 30000,
+                      "height": 29560,
+                      "service": {
+                        "@context": "http://iiif.io/api/image/2/context.json",
+                        "profile": "http://iiif.io/api/image/1/level2.json",
+                        "@id": "https://images.cogapp.com/iiif/holbein_big_p.tif"
+                      }
+                    }
+                  }
+                ],
+                "otherContent": [
+                  {
+                    "@id": "https://storiiies.cogapp.com/holbein/annotations/list.json",
+                    "@type": "sc:AnnotationList"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      
+      
+      }
+      })
+  }
+
+  if (url === 'https://storiiies.cogapp.com/holbein/annotations/list.json') {
+    return Promise.resolve({data: {
+        "@context": "http://iiif.io/api/presentation/2/context.json",
+        "@id": "https://storiiies.cogapp.com/holbein/annotations/list.json",
+        "@type": "sc:AnnotationList",
+        "resources": [
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=6270,3903,2250,2250"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The globe (bottom shelf) marks Dinteville's château at Polisy."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=12288,16567,2250,2250"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "His dagger sheath is inscribed in Latin 'aet. svae/29' (meaning aged 29)."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=5310,14872,2250,2250"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "Georges de Selve, Bishop of Lavaur, visited Dinteville in London in spring 1533."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=24266,4312,2250,2250"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "He leans on a book inscribed in Latin 'aet. svae/25' (meaning aged 25)."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=19106,8865,2250,2250"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@id": "https://storiiies.cogapp.com/holbein/annotations/arms_of_death.jpg",
+              "@type": "dctypes:Image",
+              "format": "image/jpeg",
+              "description": "Various elements in the picture are 'vanitas', reminders of mortality. Holbein also explored this theme in his woodcut series 'The Dance of Death'.",
+              "attribution": "Courtesy National Gallery of Art, Washington"
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=19106,8865,2250,2250"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The hat badge, skull and the broken lute string are all possibly vanitas elements. The crucifix may be a reminder of the Christian promise of resurrection."
+            },
+            "on": [
+              "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=7188,2021,2250,2250",
+              "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=7132,22158,14625,7500",
+              "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=14805,18945,2250,2250"
+            ]
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "Scholarship and luxury: The floor is based on the famous (and mystically symbolic) Cosmati pavement in front of the main altar in Westminster Abbey."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The objects on the two shelves relate to heaven and earth respectively."
+            },
+            "on": [
+              "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=10987,4312,11250,7125",
+              "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=11737,15937,11250,5250"
+            ]
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The celestial globe shows a map of the heavens. Constellations are shown as signs of the zodiac."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=11587,5325,3562,3562"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "This sundial is an instrument for telling the time and date from the position of the sun."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=14175,8062,937,2325"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "Expensive oriental rugs like this one were displayed on tables rather than floors."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=14625,10125,9375,4500"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The quadrant determines the user's geographical position."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=15187,6937,3000,3375"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "This is a sundial in the form of a ten-sided polyhedron. There is a compass inset on the top face."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=17700,8625,2250,2250"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "This complex instrument, a torquetum, is for measuring the position of stars and planets."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=18937,4312,2250,4125"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The globe shows Dinteville's chateau at Polisy."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=12000,16125,3000,3000"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "A printed mathematical text book illustrating techniques for calculation with decimal numbers. The use of an explicit zero, shown in this example, was an important technical innovation."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=12375,19200,2625,1500"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "A hymn book with German text by Martin Luther, the founder of the Reformation. "
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=16275,18562,4762,2062"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The leather case has a lock and key. It contains flutes. One flute appears to be missing."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=19500,18750,3000,3000"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "One of the lute strings is broken."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=14531,19050,3000,3000"
+          },
+          {
+            "@type": "oa:Annotation",
+            "motivation": "sc:painting",
+            "resource": {
+              "@type": "cnt:ContentAsText",
+              "format": "text/plain",
+              "chars": "The distorted image - or anamorphosis - of the skull comes into focus from a point to the right of the picture."
+            },
+            "on": "https://images.cogapp.com/iiif/holbein_big_p.tif#xywh=7132,22158,14625,7500"
+          }
+        ]
+      }      
+      })
+  }
+
   if (url === 'bees2.json'){
     return Promise.reject()
   }
