@@ -100,8 +100,8 @@ Additionally each storyboard viewer has CSS that can be individually customized.
 | controller | **true** or **false**. Should only be instantiated if property of `ws` is also used. Default is **false**. Sets the storyboard as being able to control other storyboards connected to the web socket server. |
 | togglelayers |**true** or **false**. By default is **false**; shows all layers on load when set to true. |
 | customid | **String**. If for some reason you would like to customize the identifier which gets automatically generated from the annotation filename use this setting. An example can be seen in the second storyboard in [add custom layers](#add-custom-layers). This setting is necessary if two storyboards with the same annotation get added to the same page. |
-| imagecrop | **String**. X,Y,W,H coordinates on the image in the following format "x,y,w,h", e.g. "200,300,600,400". This will crop the image in the viewer. Make sure not to crop out any annotations you have created. **Only available in latest release** |
-| title | **String**. Allows for a custom title to be placed in the info box. **Only available in latest release** |
+| imagecrop | **String**. X,Y,W,H coordinates on the image in the following format "x,y,w,h", e.g. "200,300,600,400". This will crop the image in the viewer. Make sure not to crop out any annotations you have created. |
+| title | **String**. Allows for a custom title to be placed in the info box.|
 | tagscolor | String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. `{'tag name': 'color', 'tag name 2': 'color2'}`. See [single annotation settings](#single-annotation-setting) for an example. |
 |overlaycolor | change the overlay color; default is `#00bfff`. See [single annotation settings](#single-annotation-setting) for an example.|
 | activecolor | change active color; default is `lightgreen`. See [single annotation settings](#single-annotation-setting) for an example. |
