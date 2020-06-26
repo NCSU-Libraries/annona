@@ -81,14 +81,6 @@ export default {
         this.annoloop(false)
       }
     },
-    //get full image URL
-    getImages: function(baseImageUrl, canvasRegion, size, jpgformat='default.jpg'){
-      baseImageUrl = baseImageUrl.indexOf('upload.wikimedia.org') > -1 ? `https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=${baseImageUrl.split('/').slice(-1)[0]}` : baseImageUrl;
-      var extension = shared.getExtension(baseImageUrl);
-      var imageurl = shared.imageextensions.includes(extension) ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
-      var fullImage = shared.imageextensions.includes(extension) ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
-      return {'fullImage':fullImage, 'imageurl': imageurl};
-    },
     //get manifest data from URL
     getManifestData: function(){
       axios.get(this.manifestlink).then(response => {
@@ -123,7 +115,7 @@ export default {
           for (var cn = 0; cn < canvasId.length; cn++){
             var canvasItem = canvasId[cn];
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
-            var imagedict = this.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
+            var imagedict = shared.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
             var imageurl = imagedict['imageurl'];
             dictionary['fullImage'] = imagedict['fullImage']
             var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, cn);
@@ -202,25 +194,21 @@ export default {
         var ondict = shared.on_structure(anno);
         ondict = ondict ? ondict[cn] : ondict;
         var canvasRegion = shared.canvasRegion(canvasItem, ondict);
-        for(var idx = 0; idx < this.manifest.sequences[0].canvases.length; idx++){
-          var existing = this.manifest.sequences[0].canvases[idx];
-          var cleanexisting = existing['@id'].replace("https", "http").replace('/info.json', '')
-          if(cleanexisting === canvasRegion['canvasId'].replace("https", "http")){
-            var canvas = existing;
-          }
-        }
+        var canvas = shared.matchCanvas(this.manifest, canvasRegion['canvasId'])['images'];
         var regionCanvas = canvasRegion['canvasRegion'];
         var baseImageUrl;
         if (canvas === undefined) {
           baseImageUrl = canvasItem.split("#")[0];
         } else {
-          baseImageUrl = canvas.images[0].resource.service ? canvas.images[0].resource.service['@id'] : canvas.images[0].resource['@id'];
+          var canvas_tile = shared.getCanvasTile(canvas[0])
+          baseImageUrl = canvas_tile['canvas_tile'];
+          var imgResource = canvas_tile['img_resource'];
         }
         //get jpg format
-        var resourceid = canvas.images[0].resource['@id'] && canvas.images[0].resource['@id'].includes('/full') ? canvas.images[0].resource['@id'] : '';
+        var resourceid = imgResource['@id'] && shared.getId(imgResource).includes('/full') ? shared.getId(imgResource) : '';
         var jpgformat = resourceid ? resourceid.split("/").slice(-1)[0] : 'default.jpg';
         size = size != 'full' ? size : resourceid ? resourceid.split("/").slice(-3)[0] : 'full';
-        var imagedict = this.getImages(baseImageUrl, regionCanvas, size, jpgformat);
+        var imagedict = shared.getImages(baseImageUrl, regionCanvas, size, jpgformat);
         fullImage = imagedict['fullImage'];
         //construct image URL
         var imageurl = imagedict['imageurl'];

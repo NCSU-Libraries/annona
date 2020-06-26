@@ -31,7 +31,7 @@ See [toolbar icon](/{{site.baseurl}}/storyboard/#toolbar-icons) table for other 
 ```
 <iiif-rangestoryboard rangeurl="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-rangestoryboard>
 ```
-**Page 4 has a really cool annotation**
+**fols. 2b and 3a & fols. 32b and 33a are particularly cool**
 
 <iiif-rangestoryboard rangeurl="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-rangestoryboard>
 

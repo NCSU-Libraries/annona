@@ -116,7 +116,12 @@
           <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 1">{{$parent.toctitle}}</button>
           <div v-if="booleanitems.tocshown" class="tocinfo">
             <div v-for="toc in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
-              <div class="title"><button class="buttonlink" v-on:click="$parent.nextItemRange(toc.position);">{{toc.label}}</button></div>
+              
+              <div class="title">
+                <button class="buttonlink" v-on:click="$parent.nextItemRange(toc.position);">
+                  <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail">{{toc.label}}
+                </button>
+              </div>
               <div class="additionaltext" v-html="toc.description" v-if="toc.description"></div>
             </div>
           </div>
@@ -256,7 +261,7 @@ export default {
   },
   methods: {
     parseAnnoData: function(annotation, annotationurl, isURL){
-      this.imagetitle = annotation.label ? annotation.label : this.imagetitle;
+      this.imagetitle = this.settings.title ? this.imagetitle : annotation.label;
       var anno = shared.getAnnotations(annotation);
       //Get basic annotation information
       this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}
@@ -650,20 +655,9 @@ export default {
     getManifestData: function(manifestlink, canvas, canvasId){
         axios.get(manifestlink).then(canvas_data => {
           this.getImageInfo(canvas_data, manifestlink)
-          var canvases = canvas_data.data.sequences ? canvas_data.data.sequences[0].canvases : canvas_data.data.items;
-          for (var i = 0; i< canvases.length; i++){
-            var cleancanvas = canvas.split('/canvas').slice(-1)[0];
-            var canvregex = new RegExp(`${cleancanvas}$`,"g");
-            var cleanexisting = shared.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
-            if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
-              var images = canvases[i].images ? canvases[i].images : shared.flatten(canvases[i].items.map(element => element['items']));
-              if (!this.settings.title){
-                var title = canvases[i].label;
-                title = shared.getValueField(title);
-                this.imagetitle = title && title !== this.imagetitle && canvases.length !== 1  ? this.imagetitle += ': ' + title : this.imagetitle;
-              }
-            }
-          }
+          var get_canvas = shared.matchCanvas(canvas_data.data, canvas, this.imagetitle);
+          this.imagetitle = get_canvas['title'];
+          var images = get_canvas['images'];
           this.getLayerData(images);
           this.buildseadragon(canvasId);
       });
@@ -700,10 +694,9 @@ export default {
     getLayerData: function(images) {
       images = images ? images : [];
       for (var i=0; i<images.length; i++){
-        var imgResource = images[i].resource ? images[i].resource : images[i].body;
-        var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ?shared.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? shared.getId(imgResource.service).split("/full/")[0] :shared.getId(imgResource);
-        canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
-        canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
+        var get_ct = shared.getCanvasTile(images[i]);
+        var canvas_tile = get_ct['canvas_tile'];
+        var imgResource = get_ct['img_resource'];
         var xywh = images[i].on ? images[i].on.split("xywh=").slice(-1)[0].split(",") : '';
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         canvas_tile += 'info.json';

@@ -138,9 +138,9 @@ export default {
           selectors = selectors.length > 0 ? selectors : canvasId.selector.filter(element => element.value.indexOf('xywh') > -1);
           canvasSelector = selectors[0];
         }
-        var parser = this.selectorParser(canvasSelector);
-        canvasRegion = parser['bounds'];
-        svg = parser['svg'];
+        var ciparser = this.selectorParser(canvasSelector);
+        canvasRegion = ciparser['bounds'];
+        svg = ciparser['svg'];
       }
       if (canvasId['source']){
         canvasId = canvasId.source;
@@ -334,6 +334,42 @@ export default {
     } else {
       return array.reduce((acc, val) => acc.concat(val), []).filter(Boolean);
     }
+  },
+  getCanvasTile: function(image) {
+    var imgResource = image.resource ? image.resource : image.body;
+    var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ? this.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? this.getId(imgResource.service).split("/full/")[0] :this.getId(imgResource);
+    canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
+    canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
+    return {'canvas_tile': canvas_tile, 'img_resource': imgResource};
+  },
+  matchCanvas: function(manifest, canvas, imagetitle) {
+    var canvases = manifest.sequences ? manifest.sequences[0].canvases : manifest.items;
+    var title = imagetitle;
+    var images = '';
+    for (var i = 0; i< canvases.length; i++){
+      var cleancanvas = canvas.split('/canvas').slice(-1)[0];
+      var canvregex = new RegExp(`${cleancanvas}$`,"g");
+      var cleanexisting = this.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
+      if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
+        images = canvases[i].images ? canvases[i].images : this.flatten(canvases[i].items.map(element => element['items']));
+        if (!imagetitle){
+          title = canvases[i].label;
+          title = this.getValueField(title);
+          title = title && title !== imagetitle && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
+        }
+        return {'images': images, 'title': title}
+      }
+    }
+    return {'images': images, 'title': title}
+  },
+  //get full image URL
+  getImages: function(baseImageUrl, canvasRegion, size, jpgformat='default.jpg'){
+    var regExp = new RegExp("/+$");
+    baseImageUrl = baseImageUrl.replace(regExp, "")
+    var extension = this.getExtension(baseImageUrl);
+    var imageurl = this.imageextensions.includes(extension) ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
+    var fullImage = this.imageextensions.includes(extension) ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
+    return {'fullImage':fullImage, 'imageurl': imageurl};
   },
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
