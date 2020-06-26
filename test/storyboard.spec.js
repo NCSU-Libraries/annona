@@ -242,4 +242,30 @@ describe('Component', () => {
       expect(wrapper.find('.content').html()).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <!----></div>")
       expect(data.shown).toEqual('anno')
     })
+
+    test('test storyboard with regular image', async ()  => {
+
+      const wrapper =  mount(storyboard,{
+        propsData: {
+          annotationlist: 'regular.json'
+        },
+        attachToDocument: true
+      })
+      const saveMock = jest.fn()
+      wrapper.vm.createViewer = saveMock;
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      data.booleanitems.annoinfoshown = true;
+      expect(data.seadragontile).toBe("/annotate/assets/images/custom/spencer-davis-7ZpvOE2psxM-unsplash.jpg")
+      expect(data.zoomsections).toEqual([{"section": ["650,1525,1044,997"], "svg_path": [undefined], "type": "rect"}])
+      expect(data.seadragonid).toBe('regular_storyboard')
+      expect(data.annotations[0]['tags'].length).toEqual(2)
+      expect(data.annotations.length).toEqual(1)
+      expect(data.currentanno).toEqual('')
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"authorship\">Written by: mary</div><div class=\"tags\">Tags: Dome, cathedral</div></span>")
+      expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "tags": {"icon": "<i class=\"fas fa-tag\"></i>", "label": "Tags", "shortcut": ["t", "3"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
+    })
 })

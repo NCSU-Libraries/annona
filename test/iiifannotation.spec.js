@@ -140,4 +140,18 @@ describe('Component', () => {
       expect(wrapper.html()).toContain('"bees2.json" did not render. Please ensure your annotation link is correct.')
     })
 
+    test('test with regular image', async ()  => {
+      const wrapper =  mount(iiifAnnotation,{
+        propsData: {
+          annotationlist: 'regular.json'
+        }
+      })
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      const annotations = wrapper.vm.$data.annotation_items[0]
+      expect(annotations.image).toEqual(["<div id=\"regular0_canvas_img0\"></div>"])
+      expect(Object.keys(annotations).length).toBe(9)
+      expect(annotations.fullImage).toEqual("/annotate/assets/images/custom/spencer-davis-7ZpvOE2psxM-unsplash.jpg")
+    })
+
 })
