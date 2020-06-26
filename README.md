@@ -2,7 +2,7 @@
 
 ## Use JavaScript library
 
-View https://ncsu-libraries.github.io/iiif-annotation/ for options and documentation on how to use the IIIF-Annotation library.
+View https://ncsu-libraries.github.io/annona/ for options and documentation on how to use the IIIF-Annotation library.
 
 ## Contribute
 ### Project setup
