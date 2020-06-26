@@ -690,6 +690,10 @@ module.exports = {
     }})
   }
 
+  if (url === 'regular.json') {
+    return Promise.resolve({data: {"@type": "AnnotationPage", "resources": [{"created": "2019-08-27T22:46:51.967Z", "creator": ["mary"], "type": "Annotation", "body": [{"type": "TextualBody", "value": "", "format": "text/html", "selector": {"type": "FragmentSelector", "value": "rect"}}, {"type": "TextualBody", "purpose": "tagging", "value": "Dome", "format": "text/plain"}, {"type": "TextualBody", "purpose": "tagging", "value": "cathedral", "format": "text/plain"}], "@id": "https://dnoneill.github.io/annotate/annotations/9472d2d2-c91c-11e9-bda2-5ad66088c379.json", "target": {"type": "Image", "id": "/annotate/assets/images/custom/spencer-davis-7ZpvOE2psxM-unsplash.jpg#xywh=650,1525,1044,997"}, "@context": "http://www.w3.org/ns/anno.jsonld"}], "created": "2019-08-27T22:46:51.967Z", "@context": "http://www.w3.org/ns/anno.jsonld", "id": "https://dnoneill.github.io/annotate/annotations/9472d2d2-c91c-11e9-bda2-5ad66088c379.json-list.json"}})
+  }
+
   if (url === 'bees2.json'){
     return Promise.reject()
   }

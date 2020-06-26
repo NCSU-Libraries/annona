@@ -633,6 +633,12 @@ figcaption {
   padding: 0px;
   cursor: pointer;
   font: inherit;
+  display: flex;
+  align-items:center;
+}
+
+.buttonlink img{
+  padding-right: 10px;
 }
 
 .infolink {

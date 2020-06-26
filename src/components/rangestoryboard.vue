@@ -1,6 +1,6 @@
 <template>
 <div v-bind:id="rangeid" class="rangestoryboard" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
-  <storyboard :key="position" v-if="annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+  <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationlist="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   <button id="previousPageInactiveButton" v-hotkey="prevshortcut" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.prev"></span>
     <span class="toolbartext">Previous page</span>
@@ -63,7 +63,8 @@ export default {
         viewingDirection: 'ltr',
         rangetitle: '',
         nextshortcut: ['alt+n', 'alt+.', 'alt+right'],
-        prevshortcut: ['alt+p', 'alt+,', 'alt+left']
+        prevshortcut: ['alt+p', 'alt+,', 'alt+left'],
+        ready: false
       }
     },
     created(){
@@ -90,39 +91,49 @@ export default {
       },
       getManifestData: function(manifest) {
         var otherContent = [];
-        if (manifest['sequences']){
-          var canvases = shared.flatten(manifest['sequences'].map(element => element['canvases']));
+        if (manifest['sequences'] || manifest['items']){
+          var canvases = manifest['items'] ? shared.flatten(manifest['items']) : shared.flatten(manifest['sequences'].map(element => element['canvases']));
           for (var cv=0; cv<canvases.length; cv++){
             var canvas = canvases[cv];
-            var canvasid = shared.getId(canvas);
-            if (canvas['otherContent']){
-              otherContent.push(canvas['otherContent']);
+            var annotationfield = canvas['otherContent'] ? canvas['otherContent'] : canvas['annotations'];
+            if (annotationfield){
+              otherContent.push({'oc': annotationfield, 'canvas': canvas});
             }            
           }
-        } else {
-          otherContent = shared.flatten(manifest['items'].map(element => element['annotations']));
         }
         for (var an=0; an<otherContent.length; an++){
-          var anno = otherContent[an];
+          var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
             for (var h=0; h<anno.length; h++){
-              this.addToLists(anno[h], an+h, this.$props.rangeurl, canvasid);
+              this.addToLists(anno[h], an+h, this.$props.rangeurl, otherContent[an]['canvas']);
             }
           } else{
-            this.addToLists(anno, an, this.$props.rangeurl, canvasid);
+            this.addToLists(anno, an, this.$props.rangeurl, otherContent[an]['canvas']);
           }  
         }
         this.setDefaults(manifest);
       },
-      addToLists: function(anno, an, manifesturl, canvasid, xywh) {
+      addToLists: function(anno, an, manifesturl, canvas) {
         if(anno.resources || anno.items){
           var jsonanno = anno; 
         } else {
           var annourl = shared.getId(anno);
         }
-        var toclabel = anno['label'] ? anno['label'] : `Page ${an + 1}`;
+        
+        if (canvas){
+          var canvasid = shared.getId(canvas);
+          if (canvasid.constructor.name === 'String' && canvasid.indexOf('#xywh') > -1){
+            var xywh = canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
+          } 
+          var firstcanvas = canvas.images ? canvas.images[0] : canvas.items ? canvas.items[0].items[0] : undefined;
+          if (firstcanvas){
+            var thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
+          }
+        }
+        var toclabel = anno['label'] ? anno['label'] : canvas && canvas['label'] ? canvas['label'] : `Page ${an + 1}`;
+        toclabel = shared.parseMetaFields(toclabel);
         var description = anno['description'] ?  anno['description'] : '';
-        this.toc.push({ 'position' :an, 'label' : toclabel, 'description': description});
+        this.toc.push({ 'position' :an, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
         this.rangelist.push({'canvas': canvasid, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
       },
       setDefaults: function(data) {
@@ -140,7 +151,8 @@ export default {
         this.$props.layers ? this.customlayers = this.$props.layers : '';
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
-        this.rangelist.length == 1 ? this.nextPageInactive = true : ''
+        this.rangelist.length == 1 ? this.nextPageInactive = true : '';
+        this.ready = true;
       },
       getRangeData: function(rangelist) {
         var annos = rangelist.contentLayer.otherContent;
@@ -148,14 +160,9 @@ export default {
         for (var ca=0; ca<annos.length; ca++){
           var canvas = canvases[ca];
           var anno = annos[ca];
-          var xywh = '';
           var manifest = canvas ? canvas['within'] : '';
           manifest = shared.getId(manifest);
-          if (canvas){
-            var canvasid = shared.getId(canvas);
-            xywh = canvasid.constructor.name === 'String' && canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
-          }
-          this.addToLists(anno, ca, manifest, canvasid, xywh);
+          this.addToLists(anno, ca, manifest, canvas);
         }
         this.setDefaults(rangelist);
       },
