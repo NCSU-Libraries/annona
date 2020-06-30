@@ -186,17 +186,19 @@ $phonetoolbarfontsize: .79rem;
   opacity: .4;
 }
 
-.overlay > svg path:hover {
+.overlay > svg > *:hover {
   fill: grey;
   fill-opacity: .4;
 }
 
-.overlay > svg path {
+.overlay > svg > * {
   stroke-width: 3px;
+  stroke:$overlay_color;
+  fill: none;
   vector-effect: non-scaling-stroke;
 }
 
-.active > svg path {
+.active > svg > * {
   stroke-width: 3px!important;
 }
 .svgactive {
@@ -209,7 +211,7 @@ $phonetoolbarfontsize: .79rem;
   transform: scale(.994);
 }
 
-.overlay > svg path {
+.overlay > svg > * {
   stroke-width: 3px;
 }
 

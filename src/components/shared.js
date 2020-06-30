@@ -1,6 +1,5 @@
 import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
-import Raphael from 'raphael';
 
 export default {
   imageextensions: ['jpg', 'jpeg', 'png', 'svg'],
@@ -112,7 +111,14 @@ export default {
     var item = selector.item ? selector.item.value : selector.default ? selector.default.value : selector.value;
     var svg_overlay = this.getSVGoverlay(item);
     if (svg_overlay){
-      var bounds = Raphael.pathBBox(svg_overlay.getAttribute('d'));
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.id = 'getBounds';
+      svg.appendChild(svg_overlay)
+      var element = document.getElementById('storyboard_viewer')
+      element = element ? element : document.getElementById('annonaimageview');
+      element.appendChild(svg);
+      var bounds = document.getElementById('getBounds').getBBox();
+      element.removeChild(svg)
       return {'bounds':`${parseInt(bounds['x'])},${parseInt(bounds['y'])},${parseInt(bounds['width'])},${parseInt(bounds['height'])}`, 'svg': svg_overlay}
     } else {
       return {'bounds': item.split("=").slice(-1)[0], 'svg': undefined}
@@ -222,6 +228,10 @@ export default {
       var svg_elem = document.createElement( 'html' );
       svg_elem.innerHTML = selectoritem;
       var path = svg_elem.getElementsByTagName('path')[0];
+      var svgitem = svg_elem.getElementsByTagName('svg')[0];  
+      if (svgitem){
+        path = svgitem.children[0];
+      }
       svg_path = path;
     }
     return svg_path;

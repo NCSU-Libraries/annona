@@ -505,8 +505,11 @@ export default {
           var path = zoomsections['svg_path'][jt];
           path.style.stroke = color;
           //path2 is for in the inner line when active
-          var path2 = document.createElement("path");
-          path2.setAttribute('d', path.getAttribute('d'));
+          var path2 = document.createElement(path.tagName);
+          for (var att=0; att<path.attributes.length; att++){
+            var attribute = path.attributes[att];
+            path2.setAttribute(attribute.name, attribute.value);
+          }
           path2.classList.add('svgactive');
           this.settings.activecolor ? path2.style.stroke = this.settings.activecolor : '';
           var origin = `${parseInt(xywh[0])+(parseInt(xywh[2])/2)}px ${parseInt(xywh[1])+(parseInt(xywh[3])/2)}px`;
