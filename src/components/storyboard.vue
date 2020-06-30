@@ -1,5 +1,5 @@
 <template>
-<div id="storyboard_viewer" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
+<div id="storyboard_viewer" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar" v-bind:class="[settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu' : 'default_menu']">

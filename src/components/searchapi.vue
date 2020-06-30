@@ -1,5 +1,5 @@
 <template>
-  <div class="searchapiview">
+  <div class="searchapiview annonaview">
     <div class="searchview" v-if="rendered">
       <input v-for="(item, index) in fielddata" v-on:change="search()" v-bind:key="index" v-model="fielddata[index].param" v-bind:placeholder="item.name"/>
       <iiifannotation :key="renderurl" v-if="renderurl" v-bind:annotationlist="renderurl" v-bind:styling="stylingstring" v-bind:manifesturl="manifesturl"></iiifannotation>

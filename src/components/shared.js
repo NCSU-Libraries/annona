@@ -114,9 +114,10 @@ export default {
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.id = 'getBounds';
       svg.appendChild(svg_overlay)
-      var element = document.getElementsByTagName('div')[0];
+      var element = document.getElementsByClassName('annonaview')[0];
       element.appendChild(svg);
-      var bounds = document.getElementById('getBounds').getBBox();
+      const bounds = document.getElementById('getBounds').getBBox();
+      console.log(bounds)
       element.removeChild(svg)
       return {'bounds':`${parseInt(bounds['x'])},${parseInt(bounds['y'])},${parseInt(bounds['width'])},${parseInt(bounds['height'])}`, 'svg': svg_overlay}
     } else {
