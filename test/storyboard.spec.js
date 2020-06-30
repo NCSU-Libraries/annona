@@ -7,6 +7,15 @@ import shared from '../src/components/shared.js'
 import flushPromises from 'flush-promises';
 let consoleSpy;
 describe('Component', () => {
+  beforeEach(() => {
+    window.SVGElement.prototype.getBBox = () => ({
+      x: 740,
+      y: 566, 
+      width: 3997,
+      height: 4586
+      // whatever other props you need
+    });
+  })
     test('test storyboard with mirador list', async ()  => {
       const wrapper =  mount(storyboard,{
         propsData: {
@@ -20,7 +29,7 @@ describe('Component', () => {
       var data = wrapper.vm.$data
       expect(data.seadragontile).toBe("https://iiif.lib.ncsu.edu/iiif/mc00240-001-ff0093-001-001_0010/info.json")
       expect(data.zoomsections.length).toEqual(3)
-      expect(data.zoomsections[0]['section']).toEqual(["740,566,3997,4586", "2735,588,14,14"])
+      expect(data.zoomsections[0]['section']).toEqual(["740,566,3997,4586", "740,566,3997,4586"])
       expect(data.zoomsections[0]['type']).toEqual("rectangle")
       expect(data.zoomsections[0]['svg_path'][0].outerHTML).toEqual("<path xmlns=\"http://www.w3.org/2000/svg\" d=\"M740.00502,566.97616l1998.77039,0l0,0l1998.77039,0l0,2293.02384l0,2293.02384l-1998.77039,0l-1998.77039,0l0,-2293.02384z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:5,&quot;rotation&quot;:0,&quot;annotation&quot;:null,&quot;editable&quot;:true}\" id=\"rectangle_dcc88375-b2ff-4b41-b061-6d9b5f6b81fc\" fill-opacity=\"0.00001\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"17.94228\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"></path>")
       expect(data.zoomsections[0]['svg_path'].length).toEqual(2)
@@ -50,7 +59,8 @@ describe('Component', () => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
           annotationlist: 'mc00240.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -58,7 +68,7 @@ describe('Component', () => {
       await flushPromises()
       var data = wrapper.vm.$data
       expect(data.seadragontile).toBe("https://iiif.lib.ncsu.edu/iiif/mc00240-001-ff0093-001-001_0010/info.json")
-      expect(data.zoomsections[1]['section']).toEqual(["4206,2375,1970,2379"])
+      expect(data.zoomsections[1]['section']).toEqual(["740,566,3997,4586"])
       expect(data.zoomsections[1]['type']).toEqual("rectangle")
       expect(data.zoomsections[1]['svg_path'][0].outerHTML).toEqual("<path xmlns=\"http://www.w3.org/2000/svg\" d=\"M4206.4542,2375.55834l985.03137,0l0,0l985.03137,0l0,1189.5734l0,1189.5734l-985.03137,0l-985.03137,0l0,-1189.5734z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:1,&quot;rotation&quot;:0,&quot;deleteIcon&quot;:null,&quot;rotationIcon&quot;:null,&quot;group&quot;:null,&quot;editable&quot;:true,&quot;annotation&quot;:null}\" id=\"rectangle_97e17d4a-e919-467d-836b-17722e9fee6a\" fill-opacity=\"0\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"3.58846\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"></path>")
       expect(data.zoomsections[1]['svg_path'].length).toEqual(1)
@@ -74,7 +84,8 @@ describe('Component', () => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
           annotationlist: 'page.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -94,7 +105,8 @@ describe('Component', () => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
           annotationurl: 'paragraph.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -113,7 +125,8 @@ describe('Component', () => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
           annotationurl: 'bees.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -132,7 +145,8 @@ describe('Component', () => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
           annotationurl: 'paragraph.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -154,7 +168,8 @@ describe('Component', () => {
         propsData: {
           annotationlist: '4058a628-c593-463e-9736-8a821e178fee-list.json',
           styling: 'toggleoverlay: true;startenddisplay:keyboard;'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -181,7 +196,8 @@ describe('Component', () => {
         propsData: {
           annotationurl: 'techocr.json',
           styling: 'transcription:true;startenddisplay:transcription;'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;

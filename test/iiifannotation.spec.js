@@ -7,11 +7,21 @@ import iiifAnnotation from '../src/components/iiifannotation.vue'
 import flushPromises from 'flush-promises'
 
 describe('Component', () => {
+  beforeEach(() => {
+    window.SVGElement.prototype.getBBox = () => ({
+      x: 740,
+      y: 566, 
+      width: 3997,
+      height: 4586
+      // whatever other props you need
+    });
+  })
     test('test open annotation', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationurl: 'paragraph.json'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -27,7 +37,8 @@ describe('Component', () => {
         propsData: {
           annotationlist: 'https://ocr.lib.ncsu.edu/search/technician-basketballspecial-1991-11?q=test',
           manifesturl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -42,7 +53,8 @@ describe('Component', () => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationlist: 'mc00240.json'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -60,7 +72,8 @@ describe('Component', () => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationurl: 'bees.json'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -77,7 +90,8 @@ describe('Component', () => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationlist: 'page.json'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -92,7 +106,8 @@ describe('Component', () => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationlist: 'oa.json'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -105,7 +120,8 @@ describe('Component', () => {
         propsData: {
           annotationlist: 'oa.json',
           styling: 'image_only:true; width: 200',
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -120,7 +136,8 @@ describe('Component', () => {
         propsData: {
           annotationlist: 'oa.json',
           styling: 'height: 200',
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -133,7 +150,8 @@ describe('Component', () => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationurl: 'bees2.json'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -144,7 +162,8 @@ describe('Component', () => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
           annotationlist: 'regular.json'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()

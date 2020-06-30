@@ -11,11 +11,21 @@ let consoleSpy;
 
 
 describe('Component', () => {
+  beforeEach(() => {
+    window.SVGElement.prototype.getBBox = () => ({
+      x: 740,
+      y: 566, 
+      width: 3997,
+      height: 4586
+      // whatever other props you need
+    });
+  })
     test('test range list', async ()  => {
       const wrapper =  shallowMount(rangestoryboard,{
         propsData: {
           rangeurl: 'range.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -46,7 +56,8 @@ describe('Component', () => {
       const wrapper =  shallowMount(rangestoryboard,{
         propsData: {
           rangeurl: 'range2.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
