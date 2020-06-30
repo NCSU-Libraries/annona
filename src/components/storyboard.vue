@@ -508,7 +508,9 @@ export default {
           var path2 = document.createElement(path.tagName);
           for (var att=0; att<path.attributes.length; att++){
             var attribute = path.attributes[att];
-            path2.setAttribute(attribute.name, attribute.value);
+            if (attribute.name != 'style'){
+              path2.setAttribute(attribute.name, attribute.value);
+            }
           }
           path2.classList.add('svgactive');
           this.settings.activecolor ? path2.style.stroke = this.settings.activecolor : '';
