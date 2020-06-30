@@ -1,5 +1,5 @@
 <template>
-  <div id="annonaimageview" class="iiifannotation" v-bind:id="annotationid + '_imageview'">
+  <div class="iiifannotation" v-bind:id="annotationid + '_imageview'">
     <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <div v-if="rendered === 'emptylist'">
       Could not find any annotations for "{{annotationlist}}{{annotationurl}}"
