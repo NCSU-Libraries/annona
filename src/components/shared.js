@@ -117,7 +117,6 @@ export default {
       var element = document.getElementsByClassName('annonaview')[0];
       element.appendChild(svg);
       const bounds = document.getElementById('getBounds').getBBox();
-      console.log(bounds)
       element.removeChild(svg)
       return {'bounds':`${parseInt(bounds['x'])},${parseInt(bounds['y'])},${parseInt(bounds['width'])},${parseInt(bounds['height'])}`, 'svg': svg_overlay}
     } else {
