@@ -114,8 +114,7 @@ export default {
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.id = 'getBounds';
       svg.appendChild(svg_overlay)
-      var element = document.getElementById('storyboard_viewer')
-      element = element ? element : document.getElementById('annonaimageview');
+      var element = document.getElementsByTagName('div')[0];
       element.appendChild(svg);
       var bounds = document.getElementById('getBounds').getBBox();
       element.removeChild(svg)
