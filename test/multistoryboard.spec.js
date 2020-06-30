@@ -10,11 +10,21 @@ import flushPromises from 'flush-promises';
 let consoleSpy;
 
 describe('Component', () => {
+  beforeEach(() => {
+    window.SVGElement.prototype.getBBox = () => ({
+      x: 740,
+      y: 566, 
+      width: 3997,
+      height: 4586
+      // whatever other props you need
+    });
+  })
     test('test multistoryboard with mirador and page list', async ()  => {
       const wrapper =  mount(multistoryboard,{
         propsData: {
           annotationlists: 'mc00240.json;page.json'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       var children = wrapper.vm.$children;
@@ -40,7 +50,8 @@ describe('Component', () => {
         propsData: {
           annotationlists: '4058a628-c593-463e-9736-8a821e178fee-list.json;page.json;paragraph.json',
           styling: 'startenddisplay: keyboard'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       var children = wrapper.vm.$children;
@@ -64,7 +75,8 @@ describe('Component', () => {
         propsData: {
           annotationlists: '4058a628-c593-463e-9736-8a821e178fee-list.json;page.json;paragraph.json',
           styling: 'startenddisplay: keyboard'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       var children = wrapper.vm.$children;
@@ -88,7 +100,8 @@ describe('Component', () => {
         propsData: {
           annotationlists: 'paragraph.json;techocr.json',
           styling: 'transcription: true;'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       var children = wrapper.vm.$children;
@@ -112,7 +125,8 @@ describe('Component', () => {
         propsData: {
           annotationlists: 'recogito.json;techocr.json',
           styling: 'transcription: true;'
-        }
+        },
+        attachToDocument: true
       })
       const saveMock = jest.fn()
       var children = wrapper.vm.$children;

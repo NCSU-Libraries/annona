@@ -7,11 +7,21 @@ import searchapi from '../src/components/searchapi.vue'
 import flushPromises from 'flush-promises'
 
 describe('Component', () => {
+  beforeEach(() => {
+    window.SVGElement.prototype.getBBox = () => ({
+      x: 740,
+      y: 566, 
+      width: 3997,
+      height: 4586
+      // whatever other props you need
+    });
+  })
     test('test open annotation', async ()  => {
       const wrapper =  mount(searchapi,{
         propsData: {
           manifesturl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
-        }
+        },
+        attachToDocument: true
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
