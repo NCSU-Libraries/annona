@@ -15,6 +15,8 @@ Because the library uses [W3 Web Annotations](https://www.w3.org/TR/annotation-m
 |Project | GitHub repo | Website |
 | Local IIIF Annotation Server | [https://github.com/dnoneill/annotate](https://github.com/dnoneill/annotate) | [https://dnoneill.github.io/annotate/](https://dnoneill.github.io/annotate/) |
 | Princeton Art Museum Liao Dynasty Coffin Panels | | [https://static.artmuseum.princeton.edu/asian-art/china/viewers/coffin-panel-viewer/](https://static.artmuseum.princeton.edu/asian-art/china/viewers/coffin-panel-viewer/)|
+| Selections from John James Audubon's Birds of America at the Lilly Library | | https://ericayhayes.github.io/audubon/exhibits/ |
+
 
 # Compatible platforms
 This library should work with any W3 web annotations or OpenAnnotation. Below are some platforms that support W3 web annotations or OpenAnnotation creation.
