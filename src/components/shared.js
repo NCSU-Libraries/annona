@@ -118,7 +118,7 @@ export default {
       element.appendChild(svg);
       const bounds = document.getElementById('getBounds').getBBox();
       element.removeChild(svg)
-      return {'bounds':`${parseInt(bounds['x'])},${parseInt(bounds['y'])},${parseInt(bounds['width'])},${parseInt(bounds['height'])}`, 'svg': svg_overlay}
+      return {'bounds':`${bounds['x']},${bounds['y']},${bounds['width']},${bounds['height']}`, 'svg': svg_overlay}
     } else {
       return {'bounds': item.split("=").slice(-1)[0], 'svg': undefined}
     }
@@ -239,6 +239,7 @@ export default {
   getAuthor: function(annotation) {
     var authors = [];
     var authorfield = annotation.creator ? annotation.creator : annotation['annotatedBy'] ? annotation['annotatedBy'] : annotation['oa:annotatedBy'] ? annotation['oa:annotatedBy'] : '';
+    authorfield = authorfield['name'] ? authorfield['name'] : authorfield['id'] ? authorfield['id'] : authorfield;
     if (!Array.isArray(authorfield)) {
       authorfield = [authorfield];
     }
@@ -376,6 +377,9 @@ export default {
     var regExp = new RegExp("/+$");
     baseImageUrl = baseImageUrl.replace(regExp, "")
     var extension = this.getExtension(baseImageUrl);
+    if (canvasRegion.split(',').length > 1){
+      canvasRegion = canvasRegion.split(',').map(elem => parseInt(elem)).join(",")
+    }
     var imageurl = this.imageextensions.includes(extension) ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
     var fullImage = this.imageextensions.includes(extension) ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
     return {'fullImage':fullImage, 'imageurl': imageurl};
