@@ -358,7 +358,7 @@ export default {
     var images = '';
     for (var i = 0; i< canvases.length; i++){
       var cleancanvas = canvas.split('/canvas').slice(-1)[0];
-      var canvregex = new RegExp(`${cleancanvas}$`,"g");
+      var canvregex = cleancanvas ? new RegExp(`${cleancanvas}$`,"g") : new RegExp(`${canvas}$`,"g");
       var cleanexisting = this.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
       if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
         images = canvases[i].images ? canvases[i].images : this.flatten(canvases[i].items.map(element => element['items']));
