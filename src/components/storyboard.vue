@@ -702,7 +702,8 @@ export default {
         var get_ct = shared.getCanvasTile(images[i]);
         var canvas_tile = get_ct['canvas_tile'];
         var imgResource = get_ct['img_resource'];
-        var xywh = images[i].on ? images[i].on.split("xywh=").slice(-1)[0].split(",") : '';
+        const resourceid = shared.getId(images[i].resource);
+        var xywh = resourceid ? resourceid.split("xywh=").slice(-1)[0].split(",") : '';
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         canvas_tile += 'info.json';
         var checked = this.settings.togglelayers || i == 0 ? true : false;
