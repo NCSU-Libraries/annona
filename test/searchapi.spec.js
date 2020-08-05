@@ -15,13 +15,16 @@ describe('Component', () => {
       height: 4586
       // whatever other props you need
     });
+    const div = document.createElement('div');
+    div.id = 'root';
+    document.body.appendChild(div);
   })
     test('test open annotation', async ()  => {
       const wrapper =  mount(searchapi,{
         propsData: {
           manifesturl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
         },
-        attachToDocument: true
+        attachTo: '#root'
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -34,5 +37,6 @@ describe('Component', () => {
       wrapper.vm.search()
       expect(wrapper.vm.$data.fielddata).toEqual([{'name': 'Query', 'key': 'q', 'param': 'test'}])
       expect(wrapper.vm.$data.renderurl).toBe('https://ocr.lib.ncsu.edu/search/technician-basketballspecial-1991-11?q=test')
+      wrapper.destroy();
     })
 })

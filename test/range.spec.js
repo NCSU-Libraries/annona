@@ -19,13 +19,16 @@ describe('Component', () => {
       height: 4586
       // whatever other props you need
     });
+    const div = document.createElement('div')
+    div.id = 'root';
+    document.body.appendChild(div)
   })
     test('test range list', async ()  => {
       const wrapper =  shallowMount(rangestoryboard,{
         propsData: {
           rangeurl: 'range.json'
         },
-        attachToDocument: true
+        attachTo: '#root'
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -50,6 +53,7 @@ describe('Component', () => {
       expect(data.toc).toEqual([{"description": "", "label": "1", "position": 0}, {"description": "", "label": "4", "position": 1}, {"description": "", "label": "5", "position": 2}, {"description": "", "label": "6", "position": 3}, {"description": "", "label": "7", "position": 4}, {"description": "", "label": "8", "position": 5}, {"description": "", "label": "9", "position": 6}, {"description": "", "label": "10", "position": 7}, {"description": "", "label": "11", "position": 8}, {"description": "", "label": "12", "position": 9}, {"description": "", "label": "13", "position": 10}, {"description": "", "label": "14", "position": 11}, {"description": "", "label": "15", "position": 12}, {"description": "", "label": "16", "position": 13}, {"description": "", "label": "17", "position": 14}, {"description": "", "label": "18", "position": 15}, {"description": "", "label": "20", "position": 16}, {"description": "", "label": "21", "position": 17}, {"description": "", "label": "22", "position": 18}, {"description": "", "label": "23", "position": 19}, {"description": "", "label": "24", "position": 20}, {"description": "", "label": "25", "position": 21}, {"description": "", "label": "26", "position": 22}, {"description": "", "label": "27", "position": 23}, {"description": "", "label": "28", "position": 24}, {"description": "", "label": "29", "position": 25}, {"description": "", "label": "30", "position": 26}, {"description": "", "label": "31", "position": 27}])
       expect(data.viewingDirection).toBe('rtl')
       expect(data.rangetitle).toEqual('十二類絵巻')
+      wrapper.destroy()
     })
 
     test('test range list without canvases', async ()  => {
@@ -57,7 +61,7 @@ describe('Component', () => {
         propsData: {
           rangeurl: 'range2.json'
         },
-        attachToDocument: true
+        attachTo: '#root'
       })
       const saveMock = jest.fn()
       wrapper.vm.createViewer = saveMock;
@@ -81,6 +85,7 @@ describe('Component', () => {
       expect(data.toc).toEqual([{"description": "", "label": "Page 1", "position": 0}])
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toEqual('A Profound Warrior For Us All')
+      wrapper.destroy()
     })
 
     test('test range list without canvases and settings', async ()  => {
@@ -91,7 +96,7 @@ describe('Component', () => {
           ws: "wss://echo",
           styling: "autorun_interval:4; panorzoom: pan"
         },
-        attachToDocument: true
+        attachTo: '#root'
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
@@ -139,6 +144,7 @@ describe('Component', () => {
       expect(sbd.imagetitle).toBe("A Profound Warrior For Us All");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7/info.json"}, {"checked": false, "label": "View from Arles", "opacity": 0, "rotation": 0, "section": "", "tile": "https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json", "xywh": ["200", "200", "4750", "6513"]}]);
       expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "layers": {"icon": "<i class=\"fas fa-layer-group\"></i>", "label": "Layers", "shortcut": ["l", "5"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "transcription": {"icon": "<i class=\"fas fa-file-alt\"></i>", "label": "Toggle between transcription/annotation", "shortcut": ["a", "/"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      wrapper.destroy()
     })
 
     test('test manifesturl range', async ()  => {
@@ -146,7 +152,7 @@ describe('Component', () => {
         propsData: {
           rangeurl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
         },
-        attachToDocument: true
+        attachTo: '#root'
       });
       
       await wrapper.vm.$nextTick()
@@ -193,6 +199,7 @@ describe('Component', () => {
       expect(sbd.imagetitle).toBe("Technician Basketball Special, November 1991: Text of this page (word level)");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://iiif.lib.ncsu.edu/iiif/segIns_023/318,499,2891,3339/1200,/0/default.jpg"}]);
       expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      wrapper.destroy()
     })
 
     test('test single list manifesturl', async ()  => {
@@ -200,7 +207,7 @@ describe('Component', () => {
         propsData: {
           rangeurl: 'https://storiiies.cogapp.com/holbein/manifest.json'
         },
-        attachToDocument: true
+        attachTo: '#root'
       });
       
       await wrapper.vm.$nextTick()
@@ -249,6 +256,7 @@ describe('Component', () => {
       expect(sbd.imagetitle).toBe("Holbein's 'The Ambassadors': The Ambassadors");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://images.cogapp.com/iiif/holbein_big_p.tif/info.json"}]);
       expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      wrapper.destroy()
     })
     
     test('test v3 manifest with embedded annotations', async ()  => {
@@ -256,7 +264,7 @@ describe('Component', () => {
         propsData: {
           rangeurl: 'https://stephenwf.github.io/ocean-liners.json'
         },
-        attachToDocument: true
+        attachTo: '#root'
       });
       
       await wrapper.vm.$nextTick()
@@ -302,6 +310,7 @@ describe('Component', () => {
       expect(sbd.imagetitle).toBe("Cunard Line - to all parts of the world: Object image 0");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://framemark.vam.ac.uk/collections/2013GU2911/info.json", "xywh": ""}]);
       expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      wrapper.destroy()
     })
 })
 
