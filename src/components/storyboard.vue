@@ -702,7 +702,7 @@ export default {
         var canvas_tile = get_ct['canvas_tile'];
         var imgResource = get_ct['img_resource'];
         const resourceid = images[i].resource ? shared.getId(images[i].resource) : '';
-        var xywh = shared.on_structure(images[i]) && shared.on_structure(images[i])[0].constructor.name === 'String' ? shared.on_structure(images[i])[0] : resourceid && resourceid.constructor.name === 'String' ? resourceid : '';
+        var xywh = resourceid && resourceid.constructor.name === 'String' && resourceid.indexOf('xywh') > -1 ? resourceid : shared.on_structure(images[i]) && shared.on_structure(images[i])[0].constructor.name === 'String' ? shared.on_structure(images[i])[0] : '';
         xywh = xywh ? xywh.split("xywh=").slice(-1)[0].split(",") : xywh;
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         canvas_tile += 'info.json';
