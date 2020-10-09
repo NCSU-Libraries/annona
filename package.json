@@ -10,17 +10,17 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
+    "@babel/polyfill": "^7.11.5",
     "axios": "^0.18.0",
     "axios-mock-adapter": "^1.16.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.6",
     "babel-preset-env": "^1.7.0",
     "core-js": "^3.1.4",
-    "document-register-element": "^1.13.2",
+    "document-register-element": "^1.14.10",
     "es6-promise": "^4.2.8",
     "flush-promises": "^1.0.2",
-    "iso-639-1": "^2.0.5",
+    "iso-639-1": "^2.1.4",
     "iso-language-codes": "^1.0.4",
     "jest-canvas-mock": "^1.1.0",
     "jquery": "^3.4.1",
@@ -28,24 +28,24 @@
     "openseadragon": "^2.4.0",
     "rtl-detect": "^1.0.2",
     "sass-loader": "^7.1.0",
-    "socket.io-client": "^2.2.0",
+    "socket.io-client": "^2.3.1",
     "truncate-html": "^1.0.2",
-    "vue": "^2.6.10",
+    "vue": "^2.6.12",
     "vue-custom-element": "^3.2.7",
     "vue-fullscreen": "^2.1.5",
     "vue-simple-hotkey": "^0.1.5",
-    "webpack": "^4.32.2"
+    "webpack": "^4.44.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
-    "@vue/test-utils": "^1.0.0-beta.29",
+    "@vue/test-utils": "^1.1.0",
     "babel-jest": "^23.6.0",
     "eslint": "^5.16.0",
     "jest": "^23.6.0",
-    "vue-jest": "^3.0.4",
-    "vue-template-compiler": "^2.6.10"
+    "vue-jest": "^3.0.7",
+    "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
     "root": true,

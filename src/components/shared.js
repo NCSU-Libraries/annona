@@ -148,7 +148,8 @@ export default {
         svg = ciparser['svg'];
       }
       if (canvasId['source']){
-        canvasId = canvasId.source;
+        var hasId = canvasId.source.constructor.name == 'String' ? canvasId.source : this.getId(canvasId.source);
+        canvasId = hasId.constructor.name == 'String' ? canvasId.source : canvasId;
       }
       canvasId = this.getId(canvasId);
     }
