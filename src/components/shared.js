@@ -51,6 +51,7 @@ export default {
     var shapetype;
     var langs;
     var authors = [];
+    var highlight;
     var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
     anno.bodyValue ? textual_body.push(anno.bodyValue) : '';
@@ -69,13 +70,15 @@ export default {
         id ? value = `<a href="${id}" target="_blank">${value}</a?>` : '';
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
-          value += purpose != 'tagging' && res_data[type] !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
+          value += purpose != 'tagging' && purpose != 'highlighting' && res_data[type] !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
         }
         if (res_data[type] === 'TextualBody'){
           if (purpose === 'tagging'){
             tags.push(value);
           } else if (purpose == 'transcribing'){
             ocr.push(value);
+          } else if (purpose == 'highlighting'){
+            highlight = value;
           } else {
             textual_body.push(`<div class="${purpose}">${value}</div>`);
           }
@@ -100,7 +103,8 @@ export default {
       }
     }
     authors = this.getAuthor(anno);
-    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
+    shapetype = shapetype ? shapetype : 'rect';
+    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors, highlight: highlight};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -148,7 +152,8 @@ export default {
         svg = ciparser['svg'];
       }
       if (canvasId['source']){
-        canvasId = canvasId.source;
+        var hasId = canvasId.source.constructor.name == 'String' ? canvasId.source : this.getId(canvasId.source);
+        canvasId = hasId.constructor.name == 'String' ? canvasId.source : canvasId;
       }
       canvasId = this.getId(canvasId);
     }
@@ -218,7 +223,27 @@ export default {
       }
     }
     canvasId = [].concat(canvasId);
+
     return canvasId;
+  },
+  getSectionData: function(anno, type){
+    var svg_path = [];
+    var sections = [];
+    var ondict = this.on_structure(anno);
+    var canvasId = this.getCanvasId(anno);
+    //get SVG paths for each canvas; add svg path to list for each annotation
+    for (var jar=0; jar<canvasId.length; jar++){
+      var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
+      var canvasRegion = this.canvasRegion(canvasId[jar], jarondict);
+      sections.push(canvasRegion['canvasRegion']);
+      var canvas = canvasRegion['canvasId'];
+      if (canvasRegion['svg']) {
+        var idtype = canvasRegion['svg'].getAttribute('id');
+        type = idtype ? idtype.split("_")[0] : 'path';
+      } 
+      svg_path.push(canvasRegion['svg']);
+    }
+    return {'sectiondata': {'svg_path': svg_path, 'type': type, 'section': sections}, canvasdata: {'canvas': canvas, 'canvasId': canvasId} };
   },
   //get SVG path from annotation; looks at specific fields and gets the path without the SVG container from a field in the annotation.
   getSVGoverlay: function(selectoritem){

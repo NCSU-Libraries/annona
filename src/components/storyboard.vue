@@ -143,10 +143,10 @@
       </div>
       <div id="transcription" v-if="shown == 'transcription'" class="content">
         <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="transcription"></span>
-        <button v-for="(item, index) in annotations" v-bind:key="index" v-if="!booleanitems.isexcerpt && settings.transcription" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
+        <button v-for="(item, index) in annotations" v-bind:key="index" v-else-if="!booleanitems.isexcerpt && settings.transcription" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
           <div v-html="item.ocr.join('')" class="ocrtranscription" v-bind:id="'line' + index"></div>
         </button>
-        <span v-html="$options.filters.truncate(transcription, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(transcription, settings.truncate_length)" v-else-if="booleanitems.isexcerpt"></span>
       </div>
       <div id="annotation_text" v-if="shown == 'anno'" class="content">
         <span v-html="currentanno" v-if="!booleanitems.isexcerpt"></span>
@@ -184,7 +184,6 @@ export default {
   },
   data: function() {
     return {
-      zoomsections: [],
       seadragontile: '',
       position: -1,
       seadragonid: '',
@@ -229,7 +228,8 @@ export default {
       imageinfo: {'text': '', 'label': 'Manifest information'},
       imagetitle: '',
       layerslist: [],
-      shortcuts: {}
+      shortcuts: {},
+      canvaslist: []
     }
   },
   created() {
@@ -269,27 +269,12 @@ export default {
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], annotation);
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
-        var ondict = shared.on_structure(anno[i]);
-        var canvasId = shared.getCanvasId(anno[i]);
-        var sections = [];
         var content_data = shared.chars(anno[i]);
-        var type = content_data['type'] ? content_data['type'] : 'rect';
-        var svg_path = [];
-        //get SVG paths for each canvas; add svg path to list for each annotation
-        for (var jar=0; jar<canvasId.length; jar++){
-          var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
-          var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
-          sections.push(canvasRegion['canvasRegion']);
-          var canvas = canvasRegion['canvasId'];
-          if (canvasRegion['svg']) {
-            var idtype = canvasRegion['svg'].getAttribute('id');
-            type = idtype ? idtype.split("_")[0] : 'path';
-          } 
-          svg_path.push(canvasRegion['svg']);
-        }
+        var sections = shared.getSectionData(anno[i], content_data['type']);
+        content_data = Object.assign({}, content_data, sections['sectiondata'])
+        this.canvaslist.push(sections['canvasdata'])
         this.annotations.push(content_data);
         this.getAnnoInfo(content_data, i);
-        this.zoomsections.push({'section':sections, 'type':type, svg_path: svg_path});
       }
       //Looks at all language options (if existing)
       //gets all languages, sees if browser language is option for languages; otherwise sets language to first in list.
@@ -305,9 +290,9 @@ export default {
       //If manifest link avaliable use getManifestData() function to match canvas to image.
       //Else use image link listed in the annotation.
       if (manifestlink) {
-        this.getManifestData(manifestlink, canvas, canvasId);
+        this.getManifestData(manifestlink);
       } else {
-        this.buildseadragon(canvas);
+        this.buildseadragon(this.canvaslist[0]['canvas']);
       }
     },
     tagslistShortcuts: function() {
@@ -341,7 +326,7 @@ export default {
       };
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
-      var zoomsections = this.zoomsections;
+      var annotations = this.annotations;
       var vue = this;
       // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){
@@ -376,13 +361,13 @@ export default {
           vue.autoRun(vue.settings.autorun_interval);
         }
         // create overlays for each annotation
-        for (var i=0; i<zoomsections.length; i++){
+        for (var i=0; i<annotations.length; i++){
           if (vue.annotations[i]['tags'].length > 0){
             for (var jl=0; jl<vue.annotations[i]['tags'].length; jl++){
-              vue.createOverlayElement(i, vue.annotations[i]['tags'][jl], zoomsections[i]);
+              vue.createOverlayElement(i, vue.annotations[i]['tags'][jl]);
             }
           } else {
-            vue.createOverlayElement(i, vue.annotations[i]['tags'], zoomsections[i]);
+            vue.createOverlayElement(i, vue.annotations[i]['tags']);
           }
         }
         // If annotation url (single annotation) show overlays and set position as first annotation
@@ -474,9 +459,11 @@ export default {
       }
     },
     //Create overlays on OpenSeadragon viewer
-    createOverlayElement: function(position, tags, zoomsections) {
-      for (var jt=0; jt<zoomsections['section'].length; jt++){
-        var xywh = zoomsections['section'][jt].split(",");
+    createOverlayElement: function(position, tags) {
+      var annotations = this.annotations[position];
+      var highlight = annotations['highlight'];
+      for (var jt=0; jt<annotations['section'].length; jt++){
+        var xywh = annotations['section'][jt].split(",");
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         rect = xywh[0] == 'full' ? imagesize : rect;
@@ -487,22 +474,22 @@ export default {
         var elem = document.createElement('div');
         elem.style.display = 'none';
         elem.id = `position${position}`;
-        var multi = zoomsections['section'].length > 1 ? 'multi' : '';
+        var multi = annotations['section'].length > 1 ? 'multi' : '';
         //set class as overlay and tags and multi if multiple sections for one annotation
         var classes = `overlay ${tags} ${multi}`.trim();
-        elem.className = `${zoomsections['type']} ${classes}`;
+        elem.className = `${annotations['type']} ${classes}`;
         //set color for overlay based on tag color
-        var color = this.tagslist[tags] ? this.tagslist[tags].color : this.settings.overlaycolor ? this.settings.overlaycolor : '';
+        var color = highlight ? highlight : this.tagslist[tags] ? this.tagslist[tags].color : this.settings.overlaycolor ? this.settings.overlaycolor : '';
         // If type is 'pin' use mapmarker icon
-        if (zoomsections['type'] === 'pin'){
+        if (annotations['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
           elem.style.fill = color;
-        } else if (zoomsections['svg_path'][jt]){
+        } else if (annotations['svg_path'][jt]){
           var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
           //set viewBox based on section. SVG will not show up without this.
           svg.setAttribute('viewBox', xywh.join(" "));
           svg.setAttribute('style', 'position: absolute');
-          var path = zoomsections['svg_path'][jt];
+          var path = annotations['svg_path'][jt];
           path.style.stroke = color;
           //path2 is for in the inner line when active
           var path2 = document.createElement(path.tagName);
@@ -612,13 +599,13 @@ export default {
     switchButtons: function(button=false) {
       this.setDefaultButtons();
       if (button){
-        if (this.position == -1 || this.position >= this.zoomsections.length) {
+        if (this.position == -1 || this.position >= this.annotations.length) {
           this.buttons[button] = '<i class="fas fa-window-close"></i>';
         } else {
           this.buttons[button] = !this.booleanitems.istranscription ? '<i class="fas fa-file-alt"></i>' : '<i class="fas fa-pen-nib"></i>';
         }
       } else {
-        if (this.position == -1 || this.position === this.zoomsections.length){
+        if (this.position == -1 || this.position === this.annotations.length){
           this.shown = this.settings.startenddisplay ? this.settings.startenddisplay : false;
           this.settings.startenddisplay && this.buttons[this.settings.startenddisplay] ? this.buttons[this.settings.startenddisplay] = '<i class="fas fa-window-close"></i>' : '';
         } else {
@@ -657,14 +644,15 @@ export default {
       this.shown = 'tags';
     },
     //get Manifest data from manifest and get layerdata
-    getManifestData: function(manifestlink, canvas, canvasId){
+    getManifestData: function(manifestlink){
         axios.get(manifestlink).then(canvas_data => {
           this.getImageInfo(canvas_data, manifestlink)
+          var canvas = this.canvaslist[0]['canvas'];
           var get_canvas = shared.matchCanvas(canvas_data.data, canvas, this.imagetitle);
           this.imagetitle = get_canvas['title'];
           var images = get_canvas['images'];
           this.getLayerData(images);
-          this.buildseadragon(canvasId);
+          this.buildseadragon(this.canvaslist[0]['canvasId']);
       });
     },
     //set defaults before creating viewer and then create viewer
@@ -817,7 +805,7 @@ export default {
         var this_functions = this;
         var interval = this.settings.autorun_interval*1000;
         this_functions.isautorunning = setTimeout(function(){
-          if (this_functions.position === this_functions.zoomsections.length){
+          if (this_functions.position === this_functions.annotations.length){
             this_functions.position = -1;
           }
           this_functions.next('next');
@@ -861,7 +849,7 @@ export default {
           functions.makeactive(position);
           functions.sendMessage({'function':'next', 'args': functions.position});
           //Check to see if multiple annotations on same section.
-          var matching_sections = functions.zoomsections.map((section, i) => section.section.map(sect => functions.zoomsections[position].section.indexOf(sect) > -1).some(x => x === true) ? i : -1)
+          var matching_sections = functions.annotations.map((section, i) => section.section.map(sect => functions.annotations[position].section.indexOf(sect) > -1).some(x => x === true) ? i : -1)
           matching_sections = matching_sections.filter(index => index != -1);
           //If there is multiple annotations for the same section, add all the text to the box with horizontal lines seperating.
           if (matching_sections.length > 1){
@@ -891,7 +879,7 @@ export default {
     },
     //go to specified area on OpenSeadragon viewer
     goToArea: function(rect){
-      var xywh = this.zoomsections[this.position]['section'][0].split(",");
+      var xywh = this.annotations[this.position]['section'][0].split(",");
       var isFull = xywh.join("") == 'full';
       rect['height'] == 0 && rect['width'] == 0 ? rect['height'] = .001 : '';
       if (isFull){
@@ -948,7 +936,7 @@ export default {
       element.style.removeProperty("height");
       if (nextorprev === 'prev' && this.position > -1){
         this.position -= 1;
-      } else if (nextorprev === 'next' && this.position < this.zoomsections.length) {
+      } else if (nextorprev === 'next' && this.position < this.annotations.length) {
         this.position += 1;
       } else if(!isNaN(nextorprev)) {
         this.position = nextorprev;
@@ -967,7 +955,7 @@ export default {
           overlays[ov].style.display = "none";
         }
       }
-      if (this.zoomsections[this.position] === undefined){
+      if (this.annotations[this.position] === undefined){
         this.zoom('home');
         this.currentanno = '';
         this.makeactive(undefined);
@@ -981,8 +969,8 @@ export default {
           this.textposition = 'corner';
         }
       } else {
-        var numbsections = this.zoomsections[this.position]['section'].length;
-        var xywh = this.zoomsections[this.position]['section'][0].split(",");
+        var numbsections = this.annotations[this.position]['section'].length;
+        var xywh = this.annotations[this.position]['section'][0].split(",");
         var annotation = this.annotations[this.position];
         var createdContent = shared.createContent(annotation, this.currentlang, true);
         this.currentanno = createdContent['anno'];
@@ -998,7 +986,7 @@ export default {
           }
         } else {
           //If more than one section try to fit sections to screen with zoom
-          var sections = this.zoomsections[this.position]['section'];
+          var sections = this.annotations[this.position]['section'];
           var xs = sections.map(element => element.split(",")[0]);
           var lowx = Math.min(...xs);
           var ys = sections.map(element => element.split(",")[1]);
@@ -1019,7 +1007,7 @@ export default {
         this.ttscontent();
       }
       //set button classes based on position
-      if (this.position >= this.zoomsections.length){
+      if (this.position >= this.annotations.length){
         this.next_inactive = true;
       } else {
         this.next_inactive = false;
@@ -1111,7 +1099,7 @@ export default {
     //Autorun through annotations
     autoRun: function(interval){
       interval = interval * 1000;
-      var length = this.zoomsections.length;
+      var length = this.annotations.length;
       if (this.isautorunning === ''){
         var this_functions = this;
         if (this.settings.tts) {
