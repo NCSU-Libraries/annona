@@ -270,9 +270,21 @@ export default {
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
         var content_data = shared.chars(anno[i]);
-        var sections = shared.getSectionData(anno[i], content_data['type']);
-        content_data = Object.assign({}, content_data, sections['sectiondata'])
-        this.canvaslist.push(sections['canvasdata'])
+        var type = content_data['type'] ? content_data['type'] : 'rect';
+        var svg_path = [];
+        //get SVG paths for each canvas; add svg path to list for each annotation
+        for (var jar=0; jar<canvasId.length; jar++){
+          var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
+          var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
+          sections.push(canvasRegion['canvasRegion']);
+          var canvas = canvasRegion['canvasId'];
+          if (canvasRegion['svg']) {
+            var idtype = canvasRegion['svg'].getAttribute('id');
+            type = idtype ? idtype.split("_")[0] : 'path';
+          } 
+          svg_path.push(canvasRegion['svg']);
+        }
+        content_data = Object.assign({}, content_data, {'section':sections, 'type':type, svg_path: svg_path})
         this.annotations.push(content_data);
         this.getAnnoInfo(content_data, i);
       }
@@ -326,7 +338,6 @@ export default {
       };
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
-      var annotations = this.annotations;
       var vue = this;
       // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){
@@ -361,7 +372,7 @@ export default {
           vue.autoRun(vue.settings.autorun_interval);
         }
         // create overlays for each annotation
-        for (var i=0; i<annotations.length; i++){
+        for (var i=0; i<vue.annotations.length; i++){
           if (vue.annotations[i]['tags'].length > 0){
             for (var jl=0; jl<vue.annotations[i]['tags'].length; jl++){
               vue.createOverlayElement(i, vue.annotations[i]['tags'][jl]);
@@ -691,7 +702,8 @@ export default {
         var canvas_tile = get_ct['canvas_tile'];
         var imgResource = get_ct['img_resource'];
         const resourceid = images[i].resource ? shared.getId(images[i].resource) : '';
-        var xywh = resourceid && resourceid.constructor.name === String ? resourceid.split("xywh=").slice(-1)[0].split(",") : '';
+        var xywh = resourceid && resourceid.constructor.name === 'String' && resourceid.indexOf('xywh') > -1 ? resourceid : shared.on_structure(images[i]) && shared.on_structure(images[i])[0].constructor.name === 'String' ? shared.on_structure(images[i])[0] : '';
+        xywh = xywh ? xywh.split("xywh=").slice(-1)[0].split(",") : xywh;
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         canvas_tile += 'info.json';
         var checked = this.settings.togglelayers || i == 0 ? true : false;

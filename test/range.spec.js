@@ -309,4 +309,3 @@ describe('Component', () => {
       wrapper.destroy()
     })
 })
-
