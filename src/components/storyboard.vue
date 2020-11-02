@@ -678,13 +678,7 @@ export default {
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
         tile = tile.split("#")[0];
-        var extension = shared.getExtension(tile);
-        if (shared.imageextensions.includes(extension)){
-          this.seadragontile = tile;
-        } else {
-          tile += tile.slice(-1) !== '/' ? "/" : '';
-          this.seadragontile = tile + "info.json";
-        }
+        this.seadragontile = shared.iiifOrImageCheck(tile, true);
         this.layerslist.push({'tile': this.seadragontile, 'label': 'Layer 1', checked: true, 'opacity': 1});
         this.getLayerData([]);
       }
@@ -698,14 +692,13 @@ export default {
     getLayerData: function(images) {
       images = images ? images : [];
       for (var i=0; i<images.length; i++){
-        var get_ct = shared.getCanvasTile(images[i]);
+        var get_ct = shared.getCanvasTile(images[i], true);
         var canvas_tile = get_ct['canvas_tile'];
         var imgResource = get_ct['img_resource'];
         const resourceid = images[i].resource ? shared.getId(images[i].resource) : '';
         var xywh = resourceid && resourceid.constructor.name === 'String' && resourceid.indexOf('xywh') > -1 ? resourceid : shared.on_structure(images[i]) && shared.on_structure(images[i])[0].constructor.name === 'String' ? shared.on_structure(images[i])[0] : '';
         xywh = xywh ? xywh.split("xywh=").slice(-1)[0].split(",") : xywh;
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
-        canvas_tile += 'info.json';
         var checked = this.settings.togglelayers || i == 0 ? true : false;
         var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;
         this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
