@@ -11,7 +11,7 @@ layout: default
 
 This library provides a number of options. Examples of these options can be seen in the pages below.
 
-The **[Tag Builder]({{site.baseurl}}/tag-builder/)** provides a user interface for creating these views and also provides a number of examples of each view.
+The **[Tag Builder]({{site.baseurl}}/tools/#/tag-builder/)** provides a user interface for creating these views and also provides a number of examples of each view.
 
 [Dist files]({{site.baseurl}}/dist)
 

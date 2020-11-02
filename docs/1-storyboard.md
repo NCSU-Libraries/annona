@@ -40,7 +40,7 @@ Note: the annona.js and annona.css need to be loaded only once, no matter how ma
 
 
 ## Building views
-From there any of the tags built through the [Tag Builder]({{site.baseurl}}/tag-builder/) or manually can be entered into a webpage. The Tag Builder provides a user interface for creating much of the code documented below. It also has all settings built into the interface.
+From there any of the tags built through the [Tag Builder]({{site.baseurl}}/tools/#/tag-builder/) or manually can be entered into a webpage. The Tag Builder provides a user interface for creating much of the code documented below. It also has all settings built into the interface.
 
 
 # Default AnnotationList or AnnotationPage Storyboard example
