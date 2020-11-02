@@ -346,12 +346,20 @@ export default {
       return array.reduce((acc, val) => acc.concat(val), []).filter(Boolean);
     }
   },
-  getCanvasTile: function(image) {
+  getCanvasTile: function(image, addinfo=false) {
     var imgResource = image.resource ? image.resource : image.body;
     var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ? this.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? this.getId(imgResource.service).split("/full/")[0] :this.getId(imgResource);
-    canvas_tile = canvas_tile.indexOf('upload.wikimedia.org') > -1 ? 'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=' + canvas_tile.split("/").slice(-1)[0] : canvas_tile;
-    canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
+    canvas_tile = this.iiifOrImageCheck(canvas_tile, addinfo)
     return {'canvas_tile': canvas_tile, 'img_resource': imgResource};
+  },
+  iiifOrImageCheck: function(canvas_tile, addinfo){
+    if (this.imageextensions.indexOf(this.getExtension(canvas_tile)) < 0){
+      canvas_tile += canvas_tile.slice(-1) !== '/' ? "/" : '';
+      if (addinfo){
+        canvas_tile += 'info.json'
+      }
+    }
+    return canvas_tile
   },
   matchCanvas: function(manifest, canvas, imagetitle) {
     var canvases = manifest.sequences ? manifest.sequences[0].canvases : manifest.items;
@@ -381,8 +389,8 @@ export default {
     if (canvasRegion.split(',').length > 1){
       canvasRegion = canvasRegion.split(',').map(elem => parseInt(elem)).join(",")
     }
-    var imageurl = this.imageextensions.includes(extension) ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
-    var fullImage = this.imageextensions.includes(extension) ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
+    var imageurl = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
+    var fullImage = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
     return {'fullImage':fullImage, 'imageurl': imageurl};
   },
   keyboardShortcuts: function(type, vueinfo){
