@@ -40,6 +40,21 @@ export default {
     }
     return settings;
   },
+  parseCharValue: function(value) {
+    try {
+      const parsevalue = JSON.parse(value)
+      const context = parsevalue['@context'];
+      value = ''
+      for (var key in parsevalue){
+        if (key != '@context'){
+          value += `<div class="${context ? context[key] : key}">${key}: ${parsevalue[key]}</div>`
+        }
+      }
+      return value;
+    } finally {
+      return value;
+    }
+  },
   // Get ocr, text, tags, languages, authors, and type of annotation;
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
   //Looks at type in resource field to define which item the resource belongs to.
@@ -67,6 +82,7 @@ export default {
         var id = res_data['@id'] ? res_data['@id'] : res_data['id'] ? res_data['id'] : '';
         value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
         id ? value = `<a href="${id}" target="_blank">${value}</a?>` : '';
+        value = this.parseCharValue(value);
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
           value += purpose != 'tagging' && res_data[type] !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
@@ -81,11 +97,11 @@ export default {
           }
         } else if (res_data[type] === 'oa:Tag'){
           tags.push(value);
-        } else if (res_data[type] === 'dctypes:Image') {
+        } else if (res_data[type] === 'dctypes:Image' || res_data[type] === 'Image') {
             textual_body.push(`<img src="${res_data['@id']}">
             <div class="attribution">${res_data['attribution']}</div>
             <div class="caption">${res_data['description']}</div>`);
-        } else if (res_data[type] === 'dctypes:Dataset') {
+        } else if ((res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') && res_data['@id']) {
           textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`);
         } else if (res_data[type] === 'cnt:ContentAsText') {
           ocr.push(value);

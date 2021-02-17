@@ -155,7 +155,7 @@ export default {
         this.ready = true;
       },
       getRangeData: function(rangelist) {
-        var annos = rangelist.contentLayer.otherContent;
+        var annos = rangelist.contentLayer ? rangelist.contentLayer.otherContent: rangelist.items;
         var canvases = rangelist.canvases ? rangelist.canvases : [];
         for (var ca=0; ca<annos.length; ca++){
           var canvas = canvases[ca];
