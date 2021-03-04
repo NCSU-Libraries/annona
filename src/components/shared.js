@@ -42,18 +42,35 @@ export default {
   },
   parseCharValue: function(value) {
     try {
-      const parsevalue = JSON.parse(value)
+      const parsevalue = JSON.parse(value);
       const context = parsevalue['@context'];
-      value = ''
+      newvalue = ''
       for (var key in parsevalue){
         if (key != '@context'){
-          value += `<div class="${context ? context[key] : key}">${key}: ${parsevalue[key]}</div>`
+          newvalue += `<div class="${context ? context[key] : key}">${key}: ${parsevalue[key]}</div>`
         }
       }
-      return value;
+      return newvalue;
     } finally {
       return value;
     }
+  },
+  colorDict: function (styleContent) {
+    var doc = document.implementation.createHTMLDocument(""),
+    styleElement = document.createElement("style");
+    styleElement.textContent = styleContent;
+    // the style will only be parsed once it is added to a document
+    doc.body.appendChild(styleElement);
+    var rules = styleElement.sheet.cssRules;
+    var colordict = {}
+    for (var r=0; r<rules.length; r++){
+      colordict[rules[r].selectorText.replace('.', '')] = rules[r].style.color
+    }
+    return colordict;
+  },
+  tagsToClass: function(tag) {
+    var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*"
+    return [...`tags-${tag.toLowerCase()}`.matchAll(regex)].join("")
   },
   // Get ocr, text, tags, languages, authors, and type of annotation;
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
@@ -66,6 +83,10 @@ export default {
     var shapetype;
     var langs;
     var authors = [];
+    var styles = anno.stylesheet ? anno.stylesheet.value : '';
+    if (styles && anno.stylesheet.type.toLowerCase() == 'cssstylesheet') {
+      styles = this.colorDict(styles)
+    } 
     var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
     anno.bodyValue ? textual_body.push(anno.bodyValue) : '';
@@ -101,8 +122,10 @@ export default {
             textual_body.push(`<img src="${res_data['@id']}">
             <div class="attribution">${res_data['attribution']}</div>
             <div class="caption">${res_data['description']}</div>`);
-        } else if ((res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') && res_data['@id']) {
-          textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`);
+        } else if (res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') {
+          if (res_data['@id']){
+            textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`)
+          }
         } else if (res_data[type] === 'cnt:ContentAsText') {
           ocr.push(value);
         } else {
@@ -116,7 +139,7 @@ export default {
       }
     }
     authors = this.getAuthor(anno);
-    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
+    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors, 'styles': styles};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -274,14 +297,22 @@ export default {
     var tagdict = {}
     var tags = Array.from(new Set(alltags)).sort();
     for (var tc=0; tc<tags.length; tc++){
-      if (tags[tc] != '' && tags[tc]){
-        var jsonparse = settings.tagscolor ? JSON.parse(settings.tagscolor.replace(/'/g, '"')) : '';
-        var set_color = jsonparse && jsonparse[tags[tc]] ? jsonparse[tags[tc]] : '';
+      if (tags[tc] != '' && tags[tc]){        
+        var jsonparse = settings.tagscolor && settings.tagscolor.constructor.name != 'Object' ? JSON.parse(settings.tagscolor.replace(/'/g, '"')) : settings.tagscolor;
+        var set_color;
+        if (jsonparse) {
+          if (jsonparse[tags[tc]]){
+            set_color = jsonparse[tags[tc]];
+          } else if (jsonparse[this.tagsToClass(tags[tc])]) {
+            set_color = jsonparse[this.tagsToClass(tags[tc])];
+          }
+        }
         var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
         var count = alltags.filter(i => i === tags[tc]).length;
-        tagdict[tags[tc]] = {'color':randomcolor, 'checked': checked, 'count': count};
+        tagdict[this.tagsToClass(tags[tc])] = {'color':randomcolor, 'checked': checked, 'count': count, 'label': tags[tc].split("_").join(" ")};
       }
     }
+
     return tagdict;
   },
   //Create HTML element using chars data; This uses the data from the chars() function up above.

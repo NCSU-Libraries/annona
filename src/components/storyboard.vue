@@ -101,7 +101,7 @@
         <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key" class="tags">
           <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
           <div class="countkey">
-           {{key.split("_").join(" ")}}
+           {{value.label}}
           <span v-bind:style="'background: ' + value.color" class="tagscount">
             <span v-if="!settings.hide_tagcount">{{value.count}}</span>
           </span>
@@ -278,16 +278,23 @@ export default {
         for (var jar=0; jar<canvasId.length; jar++){
           var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
-          sections.push(canvasRegion['canvasRegion']);
+          const regions = canvasRegion['canvasRegion'];
+          sections.push(regions);
           var canvas = canvasRegion['canvasId'];
           if (canvasRegion['svg']) {
             var idtype = canvasRegion['svg'].getAttribute('id');
             type = idtype ? idtype.split("_")[0] : 'path';
           } 
+          if ((regions.split(',')[0] != 0 || regions.split(',')[1] != 0) && regions.split(',')[2] == 0 || regions.split(',')[3] == 0){
+            type = 'pin';
+          }
           svg_path.push(canvasRegion['svg']);
         }
         content_data = Object.assign({}, content_data, {'section':sections, 'type':type, svg_path: svg_path})
         this.annotations.push(content_data);
+        if (content_data['styles']) {
+          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(this.settings.tagscolor, content_data['styles']) : content_data['styles'];
+        }
         this.getAnnoInfo(content_data, i);
       }
       //Looks at all language options (if existing)
@@ -474,6 +481,7 @@ export default {
     //Create overlays on OpenSeadragon viewer
     createOverlayElement: function(position, tags) {
       var annotation = this.annotations[position];
+      tags = shared.tagsToClass(tags)
       for (var jt=0; jt<annotation['section'].length; jt++){
         var xywh = annotation['section'][jt].split(",");
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
@@ -627,6 +635,7 @@ export default {
     },
     //for specified tag toggle overlays with that tag
     hideshowalltags: function(tag){
+      console.log(tag)
       var elem = this.anno_elem.getElementsByClassName(tag);
       var checked = this.tagslist[tag].checked;
       for (var j=0; j<elem.length; j++){
