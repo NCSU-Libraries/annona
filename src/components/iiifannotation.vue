@@ -41,7 +41,6 @@ export default {
       annotation_items: [],
       rendered: '',
       languages: [],
-      counts: {},
       annotationid: ''
     }
   },
@@ -130,8 +129,17 @@ export default {
         }
         this.annotation_items.push(dictionary);
       }
-      var alltags = shared.flatten(this.annotation_items.map(element=>element['tags']));
-      this.counts = shared.getTagDict(alltags, this.settings, '');
+      var alltags = shared.flatten(this.annotation_items.map(element=>Object.values(element['tags']))); 
+      var vue = this;
+      if (alltags.length > 0){
+        const counts = shared.getTagDict(alltags, vue.settings, '');
+        for (var i=0; i<vue.annotation_items.length; i++){
+          if (vue.annotation_items[i].tags){
+            vue.annotation_items[i].tags.map(elem =>  counts[shared.tagsToClass(elem)])
+            vue.annotation_items[i]['tags'] = vue.annotation_items[i].tags.map(elem =>  counts[shared.tagsToClass(elem)]);
+          }
+        }
+      }
     },
     // Create SVG elements and corresponding image
     createimagehtml: function(imageurl, canvasRegion, dictionary, cn) {
@@ -150,7 +158,7 @@ export default {
       if (shared.imageextensions.includes(extension) || isderivative) {
        var canv = document.createElement('canvas');
        canv.id = `${dictionary['id']}_canvas_img${cn}`
-       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
+       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id);
        imagehtml = canv;
       }
       for (var key in this.settings.imagesettings){
@@ -171,7 +179,7 @@ export default {
       </pattern></defs>`
       path.setAttribute("fill", `url(#${id})`);
       path.setAttribute("fill-opacity", "1");
-      path.setAttribute("stroke", "none")
+      path.setAttribute("stroke", "none");
       svg.innerHTML = inner + path.outerHTML;
       return svg;
     },
@@ -246,6 +254,9 @@ export default {
         dictionary['altText'] = dict['ocr'].length > 0 ? dict['ocr'][0] : dict['label'] !== undefined ? dict['label'] : `Image section of "${this.manifest['label']}"`;
         dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
         dictionary['tags'] = dict['tags'].length > 0 ? dict['tags'] : "";
+        if (dict['styles']) {
+          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(this.settings.tagscolor, dict['styles']) : dict['styles'];
+        }
         if (anno.hits && anno.hits.match && !this.settings.hide_beforeafter){
           var banda = this.getBeforeAfterText(dictionary, anno);
         }

@@ -11,11 +11,11 @@
       <div class="aftercontent" v-html="item.after" v-if="item.after && !settings.image_only && !settings.hide_beforeafter">
       </div>
       <div id="tags">
-        <div v-if="!settings.hide_tags && item.tags" v-for="tag in item.tags" v-bind:key="tag" class="tags">
+        <div v-if="!settings.hide_tags && item.tags" v-for="tag in item.tags" v-bind:key="tag.key" class="tags">
           <div class="countkey">
-            {{tag}}
-            <span class="tagscount" v-bind:style="[counts[tag] ? {background: counts[tag].color }: {}]">
-              <span v-if="!settings.hide_tagcount && annotation_items.length > 1 && counts[tag]">{{counts[tag].count}}</span>
+            {{tag.label}}
+            <span class="tagscount" v-bind:style="[tag.color ? {background: tag.color }: {}]">
+              <span v-if="!settings.hide_tagcount && annotation_items.length > 1 && tag.count">{{tag.count}}</span>
             </span>
           </div>
         </div>

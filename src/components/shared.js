@@ -69,8 +69,13 @@ export default {
     return colordict;
   },
   tagsToClass: function(tag) {
-    var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*"
-    return [...`tags-${tag.toLowerCase()}`.matchAll(regex)].join("")
+    var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
+    tag = tag && tag.value ? tag.value : tag;
+    if (tag.length > 0){
+      return [...`tags-${tag.toLowerCase()}`.matchAll(regex)].join("");
+    } else {
+      return ''
+    }
   },
   // Get ocr, text, tags, languages, authors, and type of annotation;
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
@@ -110,7 +115,7 @@ export default {
         }
         if (res_data[type] === 'TextualBody'){
           if (purpose === 'tagging'){
-            tags.push(value);
+            tags.push({'value': value, 'group': ''});
           } else if (purpose == 'transcribing'){
             ocr.push(value);
           } else {
@@ -125,6 +130,8 @@ export default {
         } else if (res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') {
           if (res_data['@id']){
             textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`)
+          } else if (purpose == 'tagging') {
+            tags.push({'value': res_data['value'], 'group': res_data['group']})
           }
         } else if (res_data[type] === 'cnt:ContentAsText') {
           ocr.push(value);
@@ -293,27 +300,45 @@ export default {
     }
     return [... new Set(authors)].join(', ');
   },
-  getTagDict: function(alltags, settings, checked) {
+  getTagDict: function(tags, settings, checked) {
     var tagdict = {}
-    var tags = Array.from(new Set(alltags)).sort();
     for (var tc=0; tc<tags.length; tc++){
-      if (tags[tc] != '' && tags[tc]){        
+      var tagvalue = tags[tc].value ? tags[tc].value : tags[tc];
+      if (tagvalue != '' && tagvalue){
         var jsonparse = settings.tagscolor && settings.tagscolor.constructor.name != 'Object' ? JSON.parse(settings.tagscolor.replace(/'/g, '"')) : settings.tagscolor;
         var set_color;
         if (jsonparse) {
-          if (jsonparse[tags[tc]]){
-            set_color = jsonparse[tags[tc]];
-          } else if (jsonparse[this.tagsToClass(tags[tc])]) {
-            set_color = jsonparse[this.tagsToClass(tags[tc])];
+          if (jsonparse[tagvalue]){
+            set_color = jsonparse[tagvalue];
+          } else if (jsonparse[this.tagsToClass(tagvalue)]) {
+            set_color = jsonparse[this.tagsToClass(tagvalue)];
           }
         }
         var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
-        var count = alltags.filter(i => i === tags[tc]).length;
-        tagdict[this.tagsToClass(tags[tc])] = {'color':randomcolor, 'checked': checked, 'count': count, 'label': tags[tc].split("_").join(" ")};
+        var count = tags.filter(i => i['value'] === tagvalue || i == tagvalue).length;
+        tagdict[this.tagsToClass(tagvalue)] = {'color':randomcolor, 'checked': checked, 'group': tags[tc]['group'] ,'count': count, 'key': this.tagsToClass(tagvalue), 'label': tagvalue.split("_").join(" ")};
       }
     }
-
     return tagdict;
+  },
+
+  groupBy: function(dict, f){
+    return Object.values(dict).reduce((out, val) => {
+      let getby = typeof f === 'function' ? '' + f(val) : val[f];
+      let by = getby ? getby : ''
+      let dict = out[by] = out[by] || {'count': 0, 'tags': [], 'checked': val.checked}
+      dict['tags'].push(val);
+      dict['tags'] = this.sortBy(dict['tags'], 'key')
+      if (val.checked == false){
+        dict['checked'] = false;
+      }
+      dict['color'] = val.color;
+      dict['count'] += val['count'];
+      return out;
+    }, {});
+  },
+  sortBy: function(arry, field){
+    return arry.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
   },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
@@ -343,7 +368,7 @@ export default {
       text += `${ocr.length > 0 && !storyboard ? `<div id="ocr">${ocr}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
       if (storyboard){
-        text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`
+        text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].map(tag => tag['value'] ? tag['value'] : tag).join(", ")}</div>` : ``}`
       }
       text += '</span>'
       var ocrtext = `${ocr.length > 0 ? `${directiontext}<div id="ocr">${ocr.join(" ")}</div></span>` : ``}`

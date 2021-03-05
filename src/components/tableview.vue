@@ -23,7 +23,7 @@
         </td>
         <td id="tags" v-if="!settings.hide_tags && item.tags" >
           <div class="table_tags">
-            {{item.tags.join(", ")}}
+            {{item.tags.map(tag => tag.label).join(", ")}}
           </div>
         </td>
         <td v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" >
@@ -51,7 +51,6 @@ export default {
       annotation_items: [],
       rendered: '',
       languages: [],
-      counts: {},
       fielddata: [],
       annotationid: '',
       full_object: '',

@@ -98,13 +98,24 @@
         </table>
       </div>
       <div id="tags" v-if="shown == 'tags'" class="content">
-        <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key" class="tags">
-          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
-          <div class="countkey">
-           {{value.label}}
-          <span v-bind:style="'background: ' + value.color" class="tagscount">
-            <span v-if="!settings.hide_tagcount">{{value.count}}</span>
-          </span>
+        <div v-for="(groupval, groupkey) in groupTagDict" v-bind:key="groupkey" class="tags">
+          <div class="taggroup" v-if="groupkey" v-bind:id="groupkey + '_tags'" >
+            <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'checksubgrouptags', 'args': groupkey });" v-model="groupval.checked">
+            <div class="countkey">
+            {{groupkey}}
+            <span v-bind:style="'background: ' + groupval.color" class="tagscount">
+              <span v-if="!settings.hide_tagcount">{{groupval.count}}</span>
+            </span>
+            </div>
+          </div>
+          <div v-bind:class="{ 'subtags' : groupkey }" v-for="tagdict in groupval.tags" v-bind:id="tagdict.key + '_tags'" v-bind:key="tagdict.key" >
+            <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': tagdict.key });" v-model="tagdict.checked">
+            <div class="countkey">
+            {{tagdict.label}}
+            <span v-bind:style="'background: ' + tagdict.color" class="tagscount">
+              <span v-if="!settings.hide_tagcount">{{tagdict.count}}</span>
+            </span>
+            </div>
           </div>
         </div>
       </div>
@@ -259,6 +270,15 @@ export default {
     }
   },
   methods: {
+    checksubgrouptags: function(key) {
+      const groupdict = this.groupTagDict[key];
+      const tagstotoggle = groupdict.tags;
+      for (var st=0; st<tagstotoggle.length; st++){
+        if (groupdict.checked == tagstotoggle[st].checked){
+          this.sendMessage({'function': 'hideshowalltags', 'args': tagstotoggle[st]['key']})
+        }
+      }
+    },
     parseAnnoData: function(annotation, annotationurl, isURL){
       this.imagetitle = this.settings.title ? this.imagetitle : annotation.label;
       var anno = shared.getAnnotations(annotation);
@@ -481,7 +501,7 @@ export default {
     //Create overlays on OpenSeadragon viewer
     createOverlayElement: function(position, tags) {
       var annotation = this.annotations[position];
-      tags = shared.tagsToClass(tags)
+      tags = tags ? shared.tagsToClass(tags) : '';
       for (var jt=0; jt<annotation['section'].length; jt++){
         var xywh = annotation['section'][jt].split(",");
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
@@ -635,7 +655,6 @@ export default {
     },
     //for specified tag toggle overlays with that tag
     hideshowalltags: function(tag){
-      console.log(tag)
       var elem = this.anno_elem.getElementsByClassName(tag);
       var checked = this.tagslist[tag].checked;
       for (var j=0; j<elem.length; j++){
@@ -1135,6 +1154,12 @@ export default {
       }
     }
   },
+  computed: {
+    groupTagDict: function(){
+      const grouplist = shared.groupBy(this.tagslist, 'group');
+      return grouplist;
+    }
+  },
   //truncate item in annotation box
   filters: {
     truncate: function(string, words_length) {
@@ -1150,5 +1175,12 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../iiif-annotation.scss'
+@import '../iiif-annotation.scss';
+.content .tags {
+  display: inline flow-root list-item!important;
+}
+.subtags {
+  display: block!important;
+  padding-left: 10px;
+}
 </style>
