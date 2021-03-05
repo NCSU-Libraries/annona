@@ -313,7 +313,7 @@ export default {
         content_data = Object.assign({}, content_data, {'section':sections, 'type':type, svg_path: svg_path})
         this.annotations.push(content_data);
         if (content_data['styles']) {
-          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(this.settings.tagscolor, content_data['styles']) : content_data['styles'];
+          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(content_data['styles'], this.settings.tagscolor) : content_data['styles'];
         }
         this.getAnnoInfo(content_data, i);
       }
@@ -480,7 +480,7 @@ export default {
         ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
         ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
         ${content_data['rights'] ? `<b>Rights:</b> ${content_data['rights']}<br>` : ``}
-        ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].join(", ")}<br>` : ``}`
+        ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].map(tag => tag['value']).join(", ")}<br>` : ``}`
       this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
     },
     // On language change, change annotation language; update annotation in viewer and update information language;
@@ -1177,7 +1177,7 @@ export default {
 <style lang="scss">
 @import '../iiif-annotation.scss';
 .content .tags {
-  display: inline flow-root list-item!important;
+  display: grid!important;
 }
 .subtags {
   display: block!important;

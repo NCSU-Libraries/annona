@@ -255,7 +255,7 @@ export default {
         dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
         dictionary['tags'] = dict['tags'].length > 0 ? dict['tags'] : "";
         if (dict['styles']) {
-          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(this.settings.tagscolor, dict['styles']) : dict['styles'];
+          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(dict['styles'], this.settings.tagscolor) : dict['styles'];
         }
         if (anno.hits && anno.hits.match && !this.settings.hide_beforeafter){
           var banda = this.getBeforeAfterText(dictionary, anno);

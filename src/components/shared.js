@@ -29,6 +29,7 @@ export default {
         value = value == 'false' ? false : value;
         value = value == 'true' ? true : value;
         value = parseInt(value) && parseInt(value).toString().length == value.length ? parseInt(value) : value;
+        value = value && value.constructor.name == 'String' ? this.tryJsonParse(value) : value;
         settings[keyvalue[0].trim()] = value;
       }
     }
@@ -37,6 +38,12 @@ export default {
       settings.hide_nextbuttons == undefined ? settings.hide_nextbuttons = true : '';
       settings.hide_overlaybutton == undefined ? settings.hide_overlaybutton = true : '';
       settings.startposition == undefined ? settings.startposition = 0 : '';
+    }
+    if (settings.tagscolor) {
+      settings.tagscolor = Object.keys(settings.tagscolor).reduce((out, key) => {
+        out[this.tagsToClass(key)] = settings.tagscolor[key]
+        return out;
+      }, {});
     }
     return settings;
   },
@@ -55,7 +62,7 @@ export default {
       return value;
     }
   },
-  colorDict: function (styleContent) {
+  colorDict: function (styleContent, styleclass) {
     var doc = document.implementation.createHTMLDocument(""),
     styleElement = document.createElement("style");
     styleElement.textContent = styleContent;
@@ -64,18 +71,24 @@ export default {
     var rules = styleElement.sheet.cssRules;
     var colordict = {}
     for (var r=0; r<rules.length; r++){
-      colordict[rules[r].selectorText.replace('.', '')] = rules[r].style.color
+      const tag = rules[r].selectorText.replaceAll('.', '').replace(styleclass, "").trim();
+      colordict[tag] = rules[r].style.color;
     }
     return colordict;
   },
   tagsToClass: function(tag) {
     var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
+    var group = tag && tag.group ? tag.group : '';
     tag = tag && tag.value ? tag.value : tag;
     if (tag.length > 0){
-      return [...`tags-${tag.toLowerCase()}`.matchAll(regex)].join("");
+      return [...`${group ? group.toLowerCase() : group}${tag.toLowerCase()}`.matchAll(regex)].join("");
     } else {
       return ''
     }
+  },
+  groupToClass: function(group) {
+    var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
+    return [...`${group ? group.toLowerCase() : group}`.matchAll(regex)].join("");
   },
   // Get ocr, text, tags, languages, authors, and type of annotation;
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
@@ -90,7 +103,7 @@ export default {
     var authors = [];
     var styles = anno.stylesheet ? anno.stylesheet.value : '';
     if (styles && anno.stylesheet.type.toLowerCase() == 'cssstylesheet') {
-      styles = this.colorDict(styles)
+      styles = this.colorDict(styles, anno.target.styleClass)
     } 
     var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
@@ -122,7 +135,7 @@ export default {
             textual_body.push(`<div class="${purpose}">${value}</div>`);
           }
         } else if (res_data[type] === 'oa:Tag'){
-          tags.push(value);
+          tags.push({'value': value, 'group': ''});
         } else if (res_data[type] === 'dctypes:Image' || res_data[type] === 'Image') {
             textual_body.push(`<img src="${res_data['@id']}">
             <div class="attribution">${res_data['attribution']}</div>
@@ -131,7 +144,7 @@ export default {
           if (res_data['@id']){
             textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`)
           } else if (purpose == 'tagging') {
-            tags.push({'value': res_data['value'], 'group': res_data['group']})
+            tags.push(res_data['value'])
           }
         } else if (res_data[type] === 'cnt:ContentAsText') {
           ocr.push(value);
@@ -304,19 +317,16 @@ export default {
     var tagdict = {}
     for (var tc=0; tc<tags.length; tc++){
       var tagvalue = tags[tc].value ? tags[tc].value : tags[tc];
+      var group = tags[tc].group ? this.groupToClass(tags[tc].group) : '';
       if (tagvalue != '' && tagvalue){
-        var jsonparse = settings.tagscolor && settings.tagscolor.constructor.name != 'Object' ? JSON.parse(settings.tagscolor.replace(/'/g, '"')) : settings.tagscolor;
-        var set_color;
-        if (jsonparse) {
-          if (jsonparse[tagvalue]){
-            set_color = jsonparse[tagvalue];
-          } else if (jsonparse[this.tagsToClass(tagvalue)]) {
-            set_color = jsonparse[this.tagsToClass(tagvalue)];
-          }
+        var tagclassvalue = this.tagsToClass(tags[tc]);
+        if (settings.tagscolor) {
+          var set_color = settings.tagscolor[tagclassvalue];
+          set_color = set_color ? set_color : settings.tagscolor[group];
         }
         var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
-        var count = tags.filter(i => i['value'] === tagvalue || i == tagvalue).length;
-        tagdict[this.tagsToClass(tagvalue)] = {'color':randomcolor, 'checked': checked, 'group': tags[tc]['group'] ,'count': count, 'key': this.tagsToClass(tagvalue), 'label': tagvalue.split("_").join(" ")};
+        var count = tags.filter(i => this.tagsToClass(i) === tagclassvalue).length;
+        tagdict[tagclassvalue] = {'color':randomcolor, 'checked': checked, 'group': tags[tc]['group'] ,'count': count, 'key': tagclassvalue, 'label': tagvalue.split("_").join(" ")};
       }
     }
     return tagdict;
@@ -409,6 +419,14 @@ export default {
     }
     catch(err) {
       return annotation;
+    }
+  },
+  tryJsonParse: function(input) {
+    try {
+      return JSON.parse(input.replace(/'/g, '"'))
+    }
+    catch(err) {
+      return input;
     }
   },
   flatten: function(array, element) {
