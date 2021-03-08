@@ -55,7 +55,7 @@
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', textposition, settings.toolbarposition ? settings.toolbarposition + '_menu_annotation' : '', settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="shown" tabindex="0">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-        <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']" v-on:click="shown = false" v-hotkey="shortcuts['close']['shortcut']">
+        <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']" v-on:click="shown = false; setDefaultButtons();" v-hotkey="shortcuts['close']['shortcut']">
           <i class="fas fa-times"></i>
         </button>
         <button v-if="shortcuts['hide']" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});">
@@ -1176,11 +1176,4 @@ export default {
 
 <style lang="scss">
 @import '../iiif-annotation.scss';
-.content .tags {
-  display: grid!important;
-}
-.subtags {
-  display: block!important;
-  padding-left: 10px;
-}
 </style>

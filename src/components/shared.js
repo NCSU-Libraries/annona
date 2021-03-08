@@ -325,6 +325,9 @@ export default {
           set_color = set_color ? set_color : settings.tagscolor[group];
         }
         var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
+        if (group && !settings.tagscolor[group]) {
+          settings.tagscolor[group] = randomcolor;
+        }
         var count = tags.filter(i => this.tagsToClass(i) === tagclassvalue).length;
         tagdict[tagclassvalue] = {'color':randomcolor, 'checked': checked, 'group': tags[tc]['group'] ,'count': count, 'key': tagclassvalue, 'label': tagvalue.split("_").join(" ")};
       }
