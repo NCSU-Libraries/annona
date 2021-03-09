@@ -185,7 +185,6 @@ Vue.use(fullscreen);
 export default {
   name: 'storyboard',
   props: {
-    'annotationlist':String,
     'manifesturl':String,
     'annotationurl': String,
     'jsonannotation': Object,
@@ -246,7 +245,7 @@ export default {
     if(this.$parent.range) {
       this.fullscreenChange(this.$parent.isfullscreen);
     }
-    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl ? this.annotationurl : this.jsonannotation;
+    var annotationurl = this.annotationurl ? this.annotationurl : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
@@ -269,7 +268,7 @@ export default {
   },
   mounted () {
     this.newSocket();
-    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl ? this.annotationurl : this.jsonannotation;
+    var annotationurl = this.annotationurl ? this.annotationurl : this.jsonannotation;
     var isURL = shared.isURL(annotationurl, '');
     if (!isURL['isURL']) {
       this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
@@ -422,10 +421,6 @@ export default {
             vue.createOverlayElement(i, vue.annotations[i]['tags']);
           }
         }
-        // If annotation url (single annotation) show overlays and set position as first annotation
-        if (vue.annotationurl){
-          vue.createOverlay();
-        }
         // if setting call for toggled and language set to values
         if (vue.settings.toggleoverlay){
           vue.createOverlay();
@@ -434,7 +429,7 @@ export default {
           vue.changeLang(vue.currentlang);
         }
         if (vue.settings.startposition != undefined) {
-          vue.next(vue.settings.startposition)
+          vue.next(vue.settings.startposition -1)
         }
       });
     },

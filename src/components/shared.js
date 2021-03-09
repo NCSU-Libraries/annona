@@ -33,12 +33,6 @@ export default {
         settings[keyvalue[0].trim()] = value;
       }
     }
-    if (vueinfo.annotationurl){
-      settings.hide_autorunbutton == undefined ? settings.hide_autorunbutton = true : '';
-      settings.hide_nextbuttons == undefined ? settings.hide_nextbuttons = true : '';
-      settings.hide_overlaybutton == undefined ? settings.hide_overlaybutton = true : '';
-      settings.startposition == undefined ? settings.startposition = 0 : '';
-    }
     if (settings.tagscolor) {
       settings.tagscolor = Object.keys(settings.tagscolor).reduce((out, key) => {
         out[this.tagsToClass(key)] = settings.tagscolor[key]

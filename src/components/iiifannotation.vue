@@ -2,14 +2,13 @@
   <div class="iiifannotation annonaview" v-bind:id="annotationid + '_imageview'">
     <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <div v-if="rendered === 'emptylist'">
-      Could not find any annotations for "{{annotationlist}}{{annotationurl}}"
+      Could not find any annotations for "{{annotationurl}}"
     </div>
     <defaultimageview v-bind:compdata="this.$data" v-else-if="rendered && !settings.table_view"></defaultimageview>
     <tableview v-bind:compdata="this.$data" v-else-if="rendered && settings.table_view"></tableview>
     <div v-else-if="rendered === false">
-      "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
+      "{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
       Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
-      Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
     </div>
   </div>
 </template>
@@ -28,7 +27,6 @@ export default {
   },
   props: {
     'annotationurl': {type: String, required: false},
-    'annotationlist':{type: String, required: false},
     'manifesturl':{type: String, required: false},
     'styling': {type: String, required: false}
   },
@@ -55,11 +53,10 @@ export default {
     }
 
     //get annotation URL and get annotation data
-    var annoprop = this.annotationlist ? this.annotationlist : this.annotationurl;
-    var isURL = shared.isURL(annoprop, this.settings);
+    var isURL = shared.isURL(this.annotationurl, this.settings);
     this.annotationid = isURL['id'];
     if (isURL['isURL']){
-      axios.get(annoprop).then(response => {
+      axios.get(this.annotationurl).then(response => {
         this.parseAnnoManifest(response.data)
       }).catch((error) => {this.rendered = false;console.log(error);})
     } else {
