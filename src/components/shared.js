@@ -51,14 +51,14 @@ export default {
     try {
       const parsevalue = JSON.parse(value);
       const context = parsevalue['@context'];
-      newvalue = ''
+      var newvalue = ''
       for (var key in parsevalue){
         if (key != '@context'){
           newvalue += `<div class="${context ? context[key] : key}">${key}: ${parsevalue[key]}</div>`
         }
       }
       return newvalue;
-    } finally {
+    } catch(err) {
       return value;
     }
   },
@@ -70,11 +70,17 @@ export default {
     doc.body.appendChild(styleElement);
     var rules = styleElement.sheet.cssRules;
     var colordict = {}
+    var stylesheet = ''
     for (var r=0; r<rules.length; r++){
-      const tag = rules[r].selectorText.replaceAll('.', '').replace(styleclass, "").trim();
-      colordict[tag] = rules[r].style.color;
+      var reg="." + styleclass + "[. {]";
+      var regextest = new RegExp(reg);
+      if (regextest.test(rules[r].cssText)){
+        const tag = rules[r].selectorText.replaceAll('.', '').replace(styleclass, "").trim();
+        colordict[tag] = rules[r].style.color;
+        stylesheet += rules[r].cssText;
+      }
     }
-    return colordict;
+    return {'colordict': colordict, 'stylesheet': stylesheet};
   },
   tagsToClass: function(tag) {
     var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
@@ -101,9 +107,13 @@ export default {
     var shapetype;
     var langs;
     var authors = [];
+    var stylesheet;
     var styles = anno.stylesheet ? anno.stylesheet.value : '';
+    var charclass = anno.target && anno.target.styleClass ? anno.target.styleClass : '';
     if (styles && anno.stylesheet.type.toLowerCase() == 'cssstylesheet') {
-      styles = this.colorDict(styles, anno.target.styleClass)
+      var colordict = this.colorDict(styles, anno.target.styleClass)
+      styles = colordict['colordict'];
+      stylesheet = colordict['stylesheet'];
     } 
     var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
@@ -159,7 +169,7 @@ export default {
       }
     }
     authors = this.getAuthor(anno);
-    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors, 'styles': styles};
+    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,'itemclass': charclass};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));

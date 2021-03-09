@@ -694,6 +694,128 @@ module.exports = {
     return Promise.resolve({data: {"@type": "AnnotationPage", "resources": [{"created": "2019-08-27T22:46:51.967Z", "creator": ["mary"], "type": "Annotation", "body": [{"type": "TextualBody", "value": "", "format": "text/html", "selector": {"type": "FragmentSelector", "value": "rect"}}, {"type": "TextualBody", "purpose": "tagging", "value": "Dome", "format": "text/plain"}, {"type": "TextualBody", "purpose": "tagging", "value": "cathedral", "format": "text/plain"}], "@id": "https://dnoneill.github.io/annotate/annotations/9472d2d2-c91c-11e9-bda2-5ad66088c379.json", "target": {"type": "Image", "id": "/annotate/assets/images/custom/spencer-davis-7ZpvOE2psxM-unsplash.jpg#xywh=650,1525,1044,997"}, "@context": "http://www.w3.org/ns/anno.jsonld"}], "created": "2019-08-27T22:46:51.967Z", "@context": "http://www.w3.org/ns/anno.jsonld", "id": "https://dnoneill.github.io/annotate/annotations/9472d2d2-c91c-11e9-bda2-5ad66088c379.json-list.json"}})
   }
 
+  if (url === 'cssnestedtags.json'){
+    return Promise.resolve({data: {"@context": "http://www.w3.org/ns/anno.jsonld",
+    "items": [
+      {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "body": [
+          {
+            "created": "2020-09-11T19:20:20.932Z",
+            "creator": "testuser",
+            "modified": "2020-09-11T19:20:20.932Z",
+            "purpose": "tagging",
+            "type": "Dataset",
+            "value": {
+              "group": "Points",
+              "value": "3"
+            }
+          }
+        ],
+        "stylesheet": {
+          "type": "CssStylesheet",
+          "value": ".tag .points {color: blue;}"
+        },
+        "target": {
+          "id": "/image/",
+          "selector": {
+            "conformsTo": "http://www.w3.org/TR/SVG/",
+            "type": "SvgSelector",
+            "value": "<svg><polygon points=\"2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5\"></polygon></svg>"
+          },
+          "styleClass": "tag"
+        },
+        "type": "Annotation"
+      },
+      {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "body": [
+          {
+            "created": "2020-09-11T19:20:20.932Z",
+            "creator": "testuser",
+            "modified": "2020-09-11T19:20:20.932Z",
+            "purpose": "tagging",
+            "type": "Dataset",
+            "value": {
+              "group": "Points",
+              "value": "5"
+            }
+          }
+        ],
+        "stylesheet": {
+          "type": "CssStylesheet",
+          "value": ".tag .points {color: blue;}"
+        },
+        "target": {
+          "id": "/image/",
+          "selector": {
+            "conformsTo": "http://www.w3.org/TR/SVG/",
+            "type": "SvgSelector",
+            "value": "<svg><polygon points=\"2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5\"></polygon></svg>"
+          },
+          "styleClass": "tag"
+        },
+        "type": "Annotation"
+      }]}})
+  }
+
+  if (url === 'cssnestedandnonested.json'){
+    return Promise.resolve({data: {"@context": "http://www.w3.org/ns/anno.jsonld",
+    "items": [
+      {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "body": [
+          {
+            "created": "2020-09-11T19:20:20.932Z",
+            "creator": "testuser",
+            "modified": "2020-09-11T19:20:20.932Z",
+            "purpose": "tagging",
+            "type": "Dataset",
+            "value": {
+              "group": "Points",
+              "value": "3"
+            }
+          }
+        ],
+        "stylesheet": {
+          "type": "CssStylesheet",
+          "value": ".tag .points {color: blue;}"
+        },
+        "target": {
+          "id": "/image/",
+          "selector": {
+            "conformsTo": "http://www.w3.org/TR/SVG/",
+            "type": "SvgSelector",
+            "value": "<svg><polygon points=\"2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5\"></polygon></svg>"
+          },
+          "styleClass": "tag"
+        },
+        "type": "Annotation"
+      },
+      {
+        "@context": "http://www.w3.org/ns/anno.jsonld",
+        "body": [
+          {
+            "created": "2020-09-11T19:20:20.932Z",
+            "creator": "testuser",
+            "modified": "2020-09-11T19:20:20.932Z",
+            "purpose": "tagging",
+            "type": "TextualBody",
+            "value": "test variable"
+          }
+        ],
+        "target": {
+          "id": "/image/",
+          "selector": {
+            "conformsTo": "http://www.w3.org/TR/SVG/",
+            "type": "SvgSelector",
+            "value": "<svg><polygon points=\"2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5\"></polygon></svg>"
+          },
+          "styleClass": "tag"
+        },
+        "type": "Annotation"
+      }]}})
+  }
   if (url === 'bees2.json'){
     return Promise.reject()
   }

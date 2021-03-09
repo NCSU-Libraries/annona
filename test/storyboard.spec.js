@@ -268,10 +268,9 @@ describe('Component', () => {
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "transcription": {"icon": "<i class=\"fas fa-pen-nib\"></i>", "label": "Toggle between transcription/annotation", "shortcut": ["a", "/"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
-      var content = shared.createContent(data.annotations[2], data.currentlang, true);
-      wrapper.setData({'position': 2, 'currentanno': content['anno'], 'shown': 'anno', 'transcription': content['transcription']});
+      wrapper.setData({'position': 2, 'currentanno': data.annotations[2], 'shown': 'anno'});
       await wrapper.vm.$nextTick()
-      expect(data.currentanno).toEqual("<span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
+      expect(wrapper.vm._computedWatchers.annoContent.value).toEqual("<span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       expect(wrapper.find('.content').html().replace(/(\r\n|\n|\r)/gm, "")).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span>  <!----></div>")
       wrapper.find('#transcription_button').trigger('click')
       await wrapper.vm.$nextTick()
@@ -308,6 +307,95 @@ describe('Component', () => {
       var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"authorship\">Written by: mary</div><div class=\"tags\">Tags: Dome, cathedral</div></span>")
+      expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "tags": {"icon": "<i class=\"fas fa-tag\"></i>", "label": "Tags", "shortcut": ["t", "3"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
+    })
+
+    test('test storyboard with nested tags and css styling', async ()  => {
+
+      const wrapper =  mount(storyboard,{
+        propsData: {
+          annotationlist: 'cssnestedtags.json'
+        },
+        attachTo: document.getElementById('root')
+      })
+      const saveMock = jest.fn()
+      wrapper.vm.createViewer = saveMock;
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      data.booleanitems.annoinfoshown = true;
+      expect(data.seadragontile).toBe("/image/info.json")
+      expect(data.annotations[0]['section']).toEqual(["740,566,3997,4586"])
+      expect(data.annotations[0]['svg_path'][0].outerHTML.toString()).toEqual('<polygon points="2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5"></polygon>')
+      expect(data.annotations[0]['type']).toEqual("path")
+      expect(data.seadragonid).toBe('cssnestedtags_storyboard')
+      expect(data.annotations[0]['tags'].length).toEqual(1)
+      expect(data.annotations.length).toEqual(2)
+      expect(data.currentanno).toEqual('')
+      expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span>")
+      expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "tags": {"icon": "<i class=\"fas fa-tag\"></i>", "label": "Tags", "shortcut": ["t", "3"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
+    })
+
+    test('test storyboard with nested tags and css styling and styling override', async ()  => {
+
+      const wrapper =  mount(storyboard,{
+        propsData: {
+          annotationlist: 'cssnestedtags.json',
+          styling: 'tagscolor: {"points":"white", "points3": "red"}'
+        },
+        attachTo: document.getElementById('root')
+      })
+      const saveMock = jest.fn()
+      wrapper.vm.createViewer = saveMock;
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      data.booleanitems.annoinfoshown = true;
+      expect(data.seadragontile).toBe("/image/info.json")
+      expect(data.annotations[0]['section']).toEqual(["740,566,3997,4586"])
+      expect(data.annotations[0]['svg_path'][0].outerHTML.toString()).toEqual('<polygon points="2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5"></polygon>')
+      expect(data.annotations[0]['type']).toEqual("path")
+      expect(data.seadragonid).toBe('cssnestedtags_storyboard')
+      expect(data.annotations[0]['tags'].length).toEqual(1)
+      expect(data.annotations.length).toEqual(2)
+      expect(data.currentanno).toEqual('')
+      expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "red", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "white", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span>")
+      expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "tags": {"icon": "<i class=\"fas fa-tag\"></i>", "label": "Tags", "shortcut": ["t", "3"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
+    })
+
+    test('test storyboard with nested tags and css styling and non nested tags', async ()  => {
+
+      const wrapper =  mount(storyboard,{
+        propsData: {
+          annotationlist: 'cssnestedandnonested.json',
+          styling: 'tagscolor: {"testvariable":"green"}'
+        },
+        attachTo: document.getElementById('root')
+      })
+      const saveMock = jest.fn()
+      wrapper.vm.createViewer = saveMock;
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      data.booleanitems.annoinfoshown = true;
+      expect(data.seadragontile).toBe("/image/info.json")
+      expect(data.annotations[0]['section']).toEqual(["740,566,3997,4586"])
+      expect(data.annotations[0]['svg_path'][0].outerHTML.toString()).toEqual('<polygon points="2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5"></polygon>')
+      expect(data.annotations[0]['type']).toEqual("path")
+      expect(data.seadragonid).toBe('cssnestedandnonested_storyboard')
+      expect(data.annotations[0]['tags'].length).toEqual(1)
+      expect(data.annotations.length).toEqual(2)
+      expect(data.currentanno).toEqual('')
+      expect(data.tagslist).toEqual({"testvariable": {"checked": false, "color": "green", "count": 1, "group": "", "key": "testvariable", "label": "test variable"}, "points3": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points3", "label": "3"}})
+      var contentpos1 = shared.createContent(data.annotations[1], null, data.settings, true);
+      expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: test variable</div></span>")
       expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "tags": {"icon": "<i class=\"fas fa-tag\"></i>", "label": "Tags", "shortcut": ["t", "3"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
     })
 })

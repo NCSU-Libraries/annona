@@ -61,8 +61,8 @@ export default {
     }
   },
   created() {
-    for (var key in this.compdata) {
-      this[key] = this.compdata[key]
+    for (var compkey in this.compdata) {
+      this[compkey] = this.compdata[compkey]
     }
     var keys = {'tags': 'has_tags', 'image': 'has_sections', 'before': 'has_before', 'after': 'has_after'}
     for (var ai=0; ai<this.annotation_items.length; ai++){

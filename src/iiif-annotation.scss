@@ -303,7 +303,7 @@ $phonetoolbarfontsize: .79rem;
   border-color: transparent transparent black transparent;
 }
 
-.tags, .authorship, .attribution {
+.content .tags, .content .authorship, .content .attribution {
   font-size: small;
   font-style: italic;
   padding: 2.5px 0px;
@@ -398,7 +398,7 @@ figcaption {
 .tagscheck {
   vertical-align: middle;
 }
-.iiifannotation.tags div, .tags div div{
+.iiifannotation.tags > div, .tags > div{
   height: auto;
   font-size: 20px;
   line-height: auto;

@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button id="transcription_button" class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
+        <button id="transcription_button" class="annocontrols_button" v-if="annoContent && transcription && annoContent != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -152,16 +152,16 @@
           <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
         </span>
       </div>
-      <div id="transcription" v-if="shown == 'transcription'" class="content">
+      <div id="transcription" v-if="shown == 'transcription'" class="content" v-bind:class="currentanno.itemclass">
         <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="transcription"></span>
         <button v-for="(item, index) in annotations" v-bind:key="index" v-else-if="!booleanitems.isexcerpt && settings.transcription" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
           <div v-html="item.ocr.join('')" class="ocrtranscription" v-bind:id="'line' + index"></div>
         </button>
         <span v-html="$options.filters.truncate(transcription, settings.truncate_length)" v-else-if="booleanitems.isexcerpt"></span>
       </div>
-      <div id="annotation_text" v-if="shown == 'anno'" class="content">
-        <span v-html="currentanno" v-if="!booleanitems.isexcerpt"></span>
-        <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+      <div id="annotation_text" v-if="shown == 'anno'" class="content" v-bind:class="currentanno.itemclass">
+        <span v-html="annoContent" v-if="!booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(annoContent, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
       </div>
     </div>
   </div>
@@ -261,6 +261,11 @@ export default {
       });
     }
   },
+  watch: {
+    annoContent: function(newVal) {
+      newVal == '' || this.settings.hide_annotationtext ? this.shown = false : '';
+    }
+  },
   mounted () {
     this.newSocket();
     var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl ? this.annotationurl : this.jsonannotation;
@@ -313,6 +318,12 @@ export default {
         content_data = Object.assign({}, content_data, {'section':sections, 'type':type, svg_path: svg_path})
         this.annotations.push(content_data);
         if (content_data['styles']) {
+          if (content_data['styles']['overlay'] && !this.settings.overlaycolor){
+            this.settings.overlaycolor = content_data['styles']['overlay'];
+          }
+          if (content_data['styles']['activecolor'] && !this.settings.activecolor){
+            this.settings.activecolor = content_data['styles']['activecolor'];
+          }
           this.settings.tagscolor = this.settings.tagscolor ? Object.assign(content_data['styles'], this.settings.tagscolor) : content_data['styles'];
         }
         this.getAnnoInfo(content_data, i);
@@ -488,7 +499,7 @@ export default {
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
       var annotation = this.annotations[this.position];
-      this.currentanno = shared.createContent(annotation, this.currentlang, true)['anno'];
+      this.currentanno = annotation;
       this.annoinfo.annodata = [];
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
@@ -524,6 +535,13 @@ export default {
         if (annotation['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
           elem.style.fill = color;
+          for (var ec=0; ec<elem.children.length; ec++){
+            if (elem.children[ec].nodeName == 'svg') {
+              for (var c=0; c<elem.children[ec].children.length; c++){
+                elem.children[ec].children[c].style.stroke = color;
+              }
+            }
+          }
         } else if (annotation['svg_path'][jt]){
           var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
           //set viewBox based on section. SVG will not show up without this.
@@ -886,12 +904,7 @@ export default {
           matching_sections = matching_sections.filter(index => index != -1);
           //If there is multiple annotations for the same section, add all the text to the box with horizontal lines seperating.
           if (matching_sections.length > 1){
-            var multipletexts = '<hr>';
-            for (var i=0; i<matching_sections.length; i++){
-              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang, true)['anno'];
-              multipletexts += '<hr>';
-            }
-            functions.currentanno = multipletexts;
+            functions.currentanno = matching_sections.map(section => functions.annotations[section]);
           }
           functions.goToArea(rect);
           functions.reposition(rect);
@@ -1005,10 +1018,7 @@ export default {
         var numbsections = this.annotations[this.position]['section'].length;
         var xywh = this.annotations[this.position]['section'][0].split(",");
         var annotation = this.annotations[this.position];
-        var createdContent = shared.createContent(annotation, this.currentlang, true);
-        this.currentanno = createdContent['anno'];
-        this.transcription = createdContent['transcription'];
-        this.currentanno == '' || this.settings.hide_annotationtext ? this.shown = false : '';
+        this.currentanno = annotation;
         this.makeactive(this.position);
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
@@ -1158,6 +1168,26 @@ export default {
     groupTagDict: function(){
       const grouplist = shared.groupBy(this.tagslist, 'group');
       return grouplist;
+    },
+    annoContent: function() {
+      var annocontent = ''
+      var transcriptcontent = ''
+      if (this.currentanno.constructor.name == Array) {
+        for (var i=0; i<this.currentanno.length; i++){
+          var multicreateContent = shared.createContent(this.currentanno[i], this.currentlang, true);
+          annocontent += multicreateContent['anno'];
+          annocontent += '<hr>';
+          transcriptcontent += multicreateContent['transcription'];
+          transcriptcontent += '<hr>';
+        }
+        this.transcription = transcriptcontent;
+      } else {
+        var createContent = shared.createContent(this.currentanno, this.currentlang, true);
+        this.transcription = createContent['transcription'];
+        annocontent = createContent['anno'];
+      }
+      annocontent += this.currentanno.stylesheet && annocontent ? `<style>${this.currentanno.stylesheet}</style>` : '';
+      return annocontent;
     }
   },
   //truncate item in annotation box
