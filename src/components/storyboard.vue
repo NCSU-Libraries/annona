@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button id="transcription_button" class="annocontrols_button" v-if="annoContent && transcription && annoContent != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
+        <button id="transcription_button" class="annocontrols_button" v-if="hastranscription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -153,15 +153,15 @@
         </span>
       </div>
       <div id="transcription" v-if="shown == 'transcription'" class="content" v-bind:class="currentanno.itemclass">
-        <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="transcription"></span>
+        <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="annoContent['transcription']"></span>
         <button v-for="(item, index) in annotations" v-bind:key="index" v-else-if="!booleanitems.isexcerpt && settings.transcription" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
           <div v-html="item.ocr.join('')" class="ocrtranscription" v-bind:id="'line' + index"></div>
         </button>
-        <span v-html="$options.filters.truncate(transcription, settings.truncate_length)" v-else-if="booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(annoContent['transcription'], settings.truncate_length)" v-else-if="booleanitems.isexcerpt"></span>
       </div>
       <div id="annotation_text" v-if="shown == 'anno'" class="content" v-bind:class="currentanno.itemclass">
-        <span v-html="annoContent" v-if="!booleanitems.isexcerpt"></span>
-        <span v-html="$options.filters.truncate(annoContent, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+        <span v-html="annoContent['anno']" v-if="!booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(annoContent['anno'], settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
       </div>
     </div>
   </div>
@@ -200,7 +200,7 @@ export default {
       seadragonid: '',
       annotations: [],
       currentanno: '',
-      transcription: '',
+      hastranscription: false,
       textposition: 'corner',
       prev_inactive: true,
       next_inactive: false,
@@ -263,6 +263,7 @@ export default {
   },
   watch: {
     annoContent: function(newVal) {
+      this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
       newVal == '' || this.settings.hide_annotationtext ? this.shown = false : '';
     }
   },
@@ -494,12 +495,10 @@ export default {
         ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].map(tag => tag['value']).join(", ")}<br>` : ``}`
       this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
     },
-    // On language change, change annotation language; update annotation in viewer and update information language;
+    // On language change, change annotation language; update information language;
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
-      var annotation = this.annotations[this.position];
-      this.currentanno = annotation;
       this.annoinfo.annodata = [];
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
@@ -830,7 +829,7 @@ export default {
       div.innerHTML = text;
       var speak = div.textContent;
       var speech = new SpeechSynthesisUtterance(speak);
-      var lang = this.annotations[this.position] ? this.annotations[this.position]['language'] : '';
+      var lang = this.currentanno ? this.currentanno['language'] : '';
       speech.lang = lang ? lang : this.settings.tts;
       var voice = synth.getVoices().filter(function(voice) {
         var currentlang = speech.lang;
@@ -925,7 +924,7 @@ export default {
     },
     //go to specified area on OpenSeadragon viewer
     goToArea: function(rect){
-      var xywh = this.annotations[this.position]['section'][0].split(",");
+      var xywh = this.currentanno['section'][0].split(",");
       var isFull = xywh.join("") == 'full';
       rect['height'] == 0 && rect['width'] == 0 ? rect['height'] = .001 : '';
       if (isFull){
@@ -1001,7 +1000,8 @@ export default {
           overlays[ov].style.display = "none";
         }
       }
-      if (this.annotations[this.position] === undefined){
+      this.currentanno = this.annotations[this.position];
+      if (this.currentanno === undefined){
         this.zoom('home');
         this.currentanno = '';
         this.makeactive(undefined);
@@ -1015,10 +1015,8 @@ export default {
           this.textposition = 'corner';
         }
       } else {
-        var numbsections = this.annotations[this.position]['section'].length;
-        var xywh = this.annotations[this.position]['section'][0].split(",");
-        var annotation = this.annotations[this.position];
-        this.currentanno = annotation;
+        var numbsections = this.currentanno['section'].length;
+        var xywh = this.currentanno['section'][0].split(",");
         this.makeactive(this.position);
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
@@ -1029,7 +1027,7 @@ export default {
           }
         } else {
           //If more than one section try to fit sections to screen with zoom
-          var sections = this.annotations[this.position]['section'];
+          var sections = this.currentanno['section'];
           var xs = sections.map(element => element.split(",")[0]);
           var lowx = Math.min(...xs);
           var ys = sections.map(element => element.split(",")[1]);
@@ -1180,14 +1178,14 @@ export default {
           transcriptcontent += multicreateContent['transcription'];
           transcriptcontent += '<hr>';
         }
-        this.transcription = transcriptcontent;
       } else {
         var createContent = shared.createContent(this.currentanno, this.currentlang, true);
-        this.transcription = createContent['transcription'];
+        transcriptcontent = createContent['transcription'];
         annocontent = createContent['anno'];
       }
+      annocontent = annocontent ? annocontent : transcriptcontent;
       annocontent += this.currentanno.stylesheet && annocontent ? `<style>${this.currentanno.stylesheet}</style>` : '';
-      return annocontent;
+      return {'anno': annocontent, 'transcription': transcriptcontent };
     }
   },
   //truncate item in annotation box
