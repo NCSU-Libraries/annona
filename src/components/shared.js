@@ -404,6 +404,8 @@ export default {
         }
       }
     }
+    text += annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
+    ocrtext += annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';
     return {'anno':text, 'transcription': ocrtext};
   },
   getExtension: function (tile) {

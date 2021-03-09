@@ -1184,7 +1184,6 @@ export default {
         annocontent = createContent['anno'];
       }
       annocontent = annocontent ? annocontent : transcriptcontent;
-      annocontent += this.currentanno.stylesheet && annocontent ? `<style>${this.currentanno.stylesheet}</style>` : '';
       return {'anno': annocontent, 'transcription': transcriptcontent };
     }
   },

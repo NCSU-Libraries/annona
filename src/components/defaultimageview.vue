@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
+    <div v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container" :class="item.content.itemclass">
       <span v-for="image in item.image" :key="image">
       <span v-html="image" id="annoimage"></span>
       </span>
@@ -42,7 +42,6 @@ export default {
       annotation_items: [],
       rendered: '',
       languages: [],
-      counts: {},
       fielddata: [],
       annotationid: '',
       full_object: ''

@@ -10,7 +10,7 @@
         <th v-if="!settings.image_only && !settings.text_only && !settings.hide_viewlarger">Full Image</th>
         <th v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">Full Object</th>
       </tr>
-      <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
+      <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container" v-bind:class="item.content.itemclass">
         <td v-if="has_sections">
           <span v-for="image in item.image" :key="image">
             <span v-html="image" id="annoimage"></span>
