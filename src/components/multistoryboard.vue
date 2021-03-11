@@ -75,6 +75,7 @@ export default {
     props: {
       'manifesturl':String,
       'annotationurls': String,
+      'annotationlists': String,
       'styling': String,
       'ws': String,
       'layers': String,
@@ -115,6 +116,7 @@ export default {
     },
     created(){
       // get annotation urls
+      this.$props.annotationurls = this.$props.annotationurls ? this.$props.annotationurls : this.$props.annotationlists;
       var annotations = this.$props.annotationurls.split(";");
       this.anno_data = annotations.filter(function (el) {
         return el != null && el != '';

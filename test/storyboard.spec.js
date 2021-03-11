@@ -22,7 +22,7 @@ describe('Component', () => {
     test('test storyboard with mirador list', async ()  => {
       const wrapper =  mount(storyboard,{
         propsData: {
-          annotationlist: 'mc00240.json',
+          annotationurl: 'mc00240.json',
           styling: 'tagscolor: {"balcony":"white", "railing": "green", "partition": "red"}'
         },
         attachTo: document.getElementById('root')
@@ -68,7 +68,7 @@ describe('Component', () => {
     test('test storyboard with openannotation list', async ()  => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
-          annotationlist: 'mc00240.json'
+          annotationurl: 'mc00240.json'
         },
         attachTo: document.getElementById('root')
       })
@@ -94,7 +94,7 @@ describe('Component', () => {
     test('test storyboard with w3 annotations page', async ()  => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
-          annotationlist: 'page.json'
+          annotationurl: 'page.json'
         },
         attachTo: document.getElementById('root')
       })
@@ -183,7 +183,7 @@ describe('Component', () => {
     test('test storyboard with no manifest', async ()  => {
       const wrapper =  shallowMount(storyboard,{
         propsData: {
-          annotationlist: '4058a628-c593-463e-9736-8a821e178fee-list.json',
+          annotationurl: '4058a628-c593-463e-9736-8a821e178fee-list.json',
           styling: 'toggleoverlay: true;startenddisplay:keyboard;'
         },
         attachTo: document.getElementById('root')
@@ -236,14 +236,14 @@ describe('Component', () => {
       expect(contentpos1['anno']).toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Meet the Pack One Last Look</div></span>")
       expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Player proﬁles of all members of the Remember the exciting ﬁnal year of men’s and women’s basketball teams the “Fire & Ice” backoourt</div></span>")
-      expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
+      expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
       wrapper.destroy()
     })
     test('test storyboard with transcription', async ()  => {
 
       const wrapper =  mount(storyboard,{
         propsData: {
-          annotationlist: 'recogito.json',
+          annotationurl: 'recogito.json',
           styling: 'hide_infobutton: true;startenddisplay:info;'
         },
         attachTo: document.getElementById('root')
@@ -287,7 +287,7 @@ describe('Component', () => {
 
       const wrapper =  mount(storyboard,{
         propsData: {
-          annotationlist: 'regular.json'
+          annotationurl: 'regular.json'
         },
         attachTo: document.getElementById('root')
       })
@@ -315,7 +315,7 @@ describe('Component', () => {
 
       const wrapper =  mount(storyboard,{
         propsData: {
-          annotationlist: 'cssnestedtags.json'
+          annotationurl: 'cssnestedtags.json'
         },
         attachTo: document.getElementById('root')
       })
@@ -336,7 +336,7 @@ describe('Component', () => {
       expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
       var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
-      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span>")
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
       expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "tags": {"icon": "<i class=\"fas fa-tag\"></i>", "label": "Tags", "shortcut": ["t", "3"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
     })
 
@@ -344,7 +344,7 @@ describe('Component', () => {
 
       const wrapper =  mount(storyboard,{
         propsData: {
-          annotationlist: 'cssnestedtags.json',
+          annotationurl: 'cssnestedtags.json',
           styling: 'tagscolor: {"points":"white", "points3": "red"}'
         },
         attachTo: document.getElementById('root')
@@ -366,7 +366,7 @@ describe('Component', () => {
       expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "red", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "white", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
       var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
-      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span>")
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
       expect(shared.keyboardShortcuts('storyboard', wrapper.vm)).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "tags": {"icon": "<i class=\"fas fa-tag\"></i>", "label": "Tags", "shortcut": ["t", "3"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}})
     })
 
@@ -374,7 +374,7 @@ describe('Component', () => {
 
       const wrapper =  mount(storyboard,{
         propsData: {
-          annotationlist: 'cssnestedandnonested.json',
+          annotationurl: 'cssnestedandnonested.json',
           styling: 'tagscolor: {"testvariable":"green"}'
         },
         attachTo: document.getElementById('root')

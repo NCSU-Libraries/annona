@@ -10,14 +10,14 @@ The text in the purple box is how the full text gets rendered in the page. This 
 <div id="fulltext"></div>
 <script>
 for (var i=1; i<9; i++){
-  document.getElementById("fulltext").innerHTML += (`<iiif-annotation annotationlist="https://ocr.lib.ncsu.edu/ocr/nu/nubian-message-2002-04-25_000${i}/nubian-message-2002-04-25_000${i}-annotation-list-paragraph.json" styling="text_only: true;"></iiif-annotation>`)
+  document.getElementById("fulltext").innerHTML += (`<iiif-annotation annotationurl="https://ocr.lib.ncsu.edu/ocr/nu/nubian-message-2002-04-25_000${i}/nubian-message-2002-04-25_000${i}-annotation-list-paragraph.json" styling="text_only: true;"></iiif-annotation>`)
 }
 </script>
 ```
 <div id="fulltext"></div>
-<iiifannotation annotationlist="https://annotations.libcrowds.com/annotations/playbills-results/?page=0"></iiifannotation>
+<iiifannotation annotationurl="https://annotations.libcrowds.com/annotations/playbills-results/?page=0"></iiifannotation>
 <script>
 for (var i=1; i<9; i++){
-  document.getElementById("fulltext").innerHTML += (`<iiif-annotation annotationlist="https://ocr.lib.ncsu.edu/ocr/nu/nubian-message-2002-04-25_000${i}/nubian-message-2002-04-25_000${i}-annotation-list-paragraph.json" styling="text_only: true;"></iiif-annotation>`)
+  document.getElementById("fulltext").innerHTML += (`<iiif-annotation annotationurl="https://ocr.lib.ncsu.edu/ocr/nu/nubian-message-2002-04-25_000${i}/nubian-message-2002-04-25_000${i}-annotation-list-paragraph.json" styling="text_only: true;"></iiif-annotation>`)
 }
 </script>

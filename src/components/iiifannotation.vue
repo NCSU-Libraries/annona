@@ -27,6 +27,7 @@ export default {
   },
   props: {
     'annotationurl': {type: String, required: false},
+    'annotationlist': {type: String, required: false},
     'manifesturl':{type: String, required: false},
     'styling': {type: String, required: false}
   },
@@ -53,6 +54,7 @@ export default {
     }
 
     //get annotation URL and get annotation data
+    this.annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist;
     var isURL = shared.isURL(this.annotationurl, this.settings);
     this.annotationid = isURL['id'];
     if (isURL['isURL']){

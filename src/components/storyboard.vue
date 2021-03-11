@@ -187,6 +187,7 @@ export default {
   props: {
     'manifesturl':String,
     'annotationurl': String,
+    'annotationlist': String,
     'jsonannotation': Object,
     'styling': String,
     'ws': String,
@@ -245,7 +246,7 @@ export default {
     if(this.$parent.range) {
       this.fullscreenChange(this.$parent.isfullscreen);
     }
-    var annotationurl = this.annotationurl ? this.annotationurl : this.jsonannotation;
+    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
@@ -263,12 +264,14 @@ export default {
   watch: {
     annoContent: function(newVal) {
       this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
-      newVal == '' || this.settings.hide_annotationtext ? this.shown = false : '';
+      if ((newVal['anno'] == '' && newVal['transcription'] == '') || (this.settings.hide_annotationtext)){
+        this.shown = false;
+      }
     }
   },
   mounted () {
     this.newSocket();
-    var annotationurl = this.annotationurl ? this.annotationurl : this.jsonannotation;
+    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     var isURL = shared.isURL(annotationurl, '');
     if (!isURL['isURL']) {
       this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])

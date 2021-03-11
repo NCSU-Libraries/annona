@@ -39,7 +39,7 @@ describe('Component', () => {
     test('test search api', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
-          annotationlist: 'https://ocr.lib.ncsu.edu/search/technician-basketballspecial-1991-11?q=test',
+          annotationurl: 'https://ocr.lib.ncsu.edu/search/technician-basketballspecial-1991-11?q=test',
           manifesturl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
         },
         attachTo: '#root'
@@ -57,7 +57,7 @@ describe('Component', () => {
     test('test mirador annotation list', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
-          annotationlist: 'mc00240.json'
+          annotationurl: 'mc00240.json'
         },
         attachTo: '#root'
       })
@@ -98,7 +98,7 @@ describe('Component', () => {
     test('test w3 annotations list', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
-          annotationlist: 'page.json'
+          annotationurl: 'page.json'
         },
         attachTo: '#root'
       })
@@ -115,7 +115,7 @@ describe('Component', () => {
     test('test oa list', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
-          annotationlist: 'oa.json'
+          annotationurl: 'oa.json'
         },
         attachTo: '#root'
       })
@@ -129,7 +129,7 @@ describe('Component', () => {
     test('test settings', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
-          annotationlist: 'oa.json',
+          annotationurl: 'oa.json',
           styling: 'image_only:true; width: 200',
         },
         attachTo: '#root'
@@ -146,7 +146,7 @@ describe('Component', () => {
     test('test settings height', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
-          annotationlist: 'oa.json',
+          annotationurl: 'oa.json',
           styling: 'height: 200',
         },
         attachTo: '#root'
@@ -174,7 +174,7 @@ describe('Component', () => {
     test('test with regular image', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
         propsData: {
-          annotationlist: 'regular.json'
+          annotationurl: 'regular.json'
         },
         attachTo: '#root'
       })

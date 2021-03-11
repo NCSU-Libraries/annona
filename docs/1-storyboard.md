@@ -20,8 +20,8 @@ code {
 
 | Props      | Values |
 | ----------- | ----------- |
-| annotationurl | Single Annotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
-| annotationlist | ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
+| annotationurl | URl to the annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
+| annotationlist | **This has been moved to annotationurl. If you want to recreate the previous look of annotationurl that is now doable with the settings.** ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
 | styling | string structured styling. See [settings table](#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
@@ -45,15 +45,15 @@ From there any of the tags built through the [Tag Builder]({{site.baseurl}}/tool
 
 # Default AnnotationList or AnnotationPage Storyboard example
 
-The code below makes use of default without any overrides or CSS styling. <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fdnoneill.github.io%2Fannotate%2Fannotations%2Fwh234bz9013-0001-list.json&viewtype=iiif-storyboard&listtype=annotationlist&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
+The code below makes use of default without any overrides or CSS styling. <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fdnoneill.github.io%2Fannotate%2Fannotations%2Fwh234bz9013-0001-list.json&viewtype=iiif-storyboard&listtype=annotationurl&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
 View example below in Tag Builder</a>
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
 ```
 
 <div id="example">
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
 </div>
 
 # Icons & Keyboard Shortcuts
@@ -139,60 +139,60 @@ Item here: [global settings example]({{site.baseurl}}/storyboard_settings)
   "tts": "en",
   "hide_tags":true
 }</script>
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/4058a628-c593-463e-9736-8a821e178fee-list.json"></iiif-storyboard>
 ```
 ## Single annotation setting
-Annotation settings can be set inline. Additionally colors can be changed using CSS styling. The code below makes use of default without any overrides or CSS styling. <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fncsu-libraries.github.io%2Fannona%2Fwebannotations%2Fmc00084-001-te0159-000-001-0001-list.json&viewtype=iiif-storyboard&listtype=annotationlist&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22standing%22,%22color%22%3A%22green%22%7D,%7B%22tagvalue%22%3A%22demolished%22,%22color%22%3A%22red%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22orange%22,%22activecolor%22%3A%22yellow%22,%22fit%22%3A%22fill%22,%22panorzoom%22%3A%22pan%22,%22toggleoverlay%22%3Atrue,%22textposition%22%3A%22left%22,%22mapmarker%22%3A%22%3Csvg%20width%3D%5C%2220%5C%22%20height%3D%5C%2220%5C%22%3E%3Ccircle%20cx%3D%5C%2210%5C%22%20cy%3D%5C%2210%5C%22%20r%3D%5C%228%5C%22stroke%3D%5C%22black%5C%22%20stroke-width%3D%5C%223%5C%22%20%2F%3E%3C%2Fsvg%3E%22,%22tts%22%3A%22it-IT%22,%22truncate_length%22%3A%225%22,%22startenddisplay%22%3A%22info%22,%22title%22%3A%22Example%20custom%20title%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
+Annotation settings can be set inline. Additionally colors can be changed using CSS styling. The code below makes use of default without any overrides or CSS styling. <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fncsu-libraries.github.io%2Fannona%2Fwebannotations%2Fmc00084-001-te0159-000-001-0001-list.json&viewtype=iiif-storyboard&listtype=annotationurl&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22standing%22,%22color%22%3A%22green%22%7D,%7B%22tagvalue%22%3A%22demolished%22,%22color%22%3A%22red%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22orange%22,%22activecolor%22%3A%22yellow%22,%22fit%22%3A%22fill%22,%22panorzoom%22%3A%22pan%22,%22toggleoverlay%22%3Atrue,%22textposition%22%3A%22left%22,%22mapmarker%22%3A%22%3Csvg%20width%3D%5C%2220%5C%22%20height%3D%5C%2220%5C%22%3E%3Ccircle%20cx%3D%5C%2210%5C%22%20cy%3D%5C%2210%5C%22%20r%3D%5C%228%5C%22stroke%3D%5C%22black%5C%22%20stroke-width%3D%5C%223%5C%22%20%2F%3E%3C%2Fsvg%3E%22,%22tts%22%3A%22it-IT%22,%22truncate_length%22%3A%225%22,%22startenddisplay%22%3A%22info%22,%22title%22%3A%22Example%20custom%20title%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
 View example below in Tag Builder</a>
 
 ```
 <div id="anno1" title="example info">
 This is an example of the info that is loaded.
 </div>
-<iiif-storyboard annotationlist="https://ncsu-libraries.github.io/annona/webannotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://ncsu-libraries.github.io/annona/webannotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
 ```
 <div id="anno1" title="example info">
 This is an example of the info that is loaded.
 </div>
-<iiif-storyboard annotationlist="https://ncsu-libraries.github.io/annona/webannotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://ncsu-libraries.github.io/annona/webannotations/mc00084-001-te0159-000-001-0001-list.json" styling="fit: fill; panorzoom: pan; toggleoverlay: true; textposition: left; mapmarker: <svg width='20' height='20'><circle cx='10' cy='10' r='8' stroke='black' stroke-width='3' /></svg>; tts:it-IT; truncate_length: 5; additionalinfo: anno1; startenddisplay: info; title: Example custom title; tagscolor: {'standing': 'green', 'reactor': 'blue', 'demolished': 'red'}; overlaycolor: orange; activecolor: yellow;"></iiif-storyboard>
 
 # AnnotationList or AnnotationPage Storyboard with Multiple languages
-W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only one body is used at a time. This library supports this model. The assumption this library makes is that the changes are between different languages which are defined in ISO standard in the annotation. An example of this can be seen in the storyboard below. <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fncsu-libraries.github.io%2Fannona%2Fwebannotations%2Fannotationslist.json&viewtype=iiif-storyboard&listtype=annotationlist&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
+W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only one body is used at a time. This library supports this model. The assumption this library makes is that the changes are between different languages which are defined in ISO standard in the annotation. An example of this can be seen in the storyboard below. <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fncsu-libraries.github.io%2Fannona%2Fwebannotations%2Fannotationslist.json&viewtype=iiif-storyboard&listtype=annotationurl&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
 View example below in Tag Builder</a>
 
-<iiif-storyboard annotationlist="/annona/webannotations/annotationslist.json" styling="tts:true"></iiif-storyboard>
+<iiif-storyboard annotationurl="/annona/webannotations/annotationslist.json" styling="tts:true"></iiif-storyboard>
 
 
 # Manifests with layers
 Some manifests define multiple images for a "canvas" allowing for images to be placed on top of each other. Three examples of annotations created on manifests with layers can be seen below. The layers can be toggled using the <i class="fas fa-layer-group"></i> button.
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json"></iiif-storyboard>
 ```
-<a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json&viewtype=iiif-storyboard&listtype=annotationlist&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
+<a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json&viewtype=iiif-storyboard&listtype=annotationurl&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
 View example below in Tag Builder</a>
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/ba-obj-722-conservation-list.json"></iiif-storyboard>
 
 
  ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json"></iiif-storyboard>
  ```
 
- <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json&viewtype=iiif-storyboard&listtype=annotationlist&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
+ <a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json&viewtype=iiif-storyboard&listtype=annotationurl&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
  View example below in Tag Builder</a>
 
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/cdm17272contentdmoclcorg-14057-list.json"></iiif-storyboard>
 
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
 ```
-<a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json&viewtype=iiif-storyboard&listtype=annotationlist&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
+<a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json&viewtype=iiif-storyboard&listtype=annotationurl&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%22,%22xywh%22%3A%22%22,%22image%22%3A%22%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">
 View example below in Tag Builder</a>
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/4490-canvas-981394-list.json"></iiif-storyboard>
 
 # Add custom layers
 This allows for layers to be created without having to define the layers in a manifest. In order to add custom layers (no limit to number) a JSON object has to be set for the `layers` property. For ease of use I would suggest replacing fields in the example below. The `label` fields defines what will show up in the layer controller. This can be HTML as in the example below. The `image` field should be a IIIF image in info.json format. See [https://iiif.io/api/image/2.1/#image-information-request-uri-syntax](https://iiif.io/api/image/2.1/#image-information-request-uri-syntax) for more information on this format. The `xywh` field defines how the image gets layered on top of the top image. It should be four numbers separated with commas and no whitespace. In order they are x coordinate, y coordinate, width and height. Width is the measurement used to calculate the height, so figuring out the height is not necessary. In the example below the overlaid image is larger than the annotated image so xywh is set to 185,180,4750,6513. This means the image is moved down by 180 and to the right by 185 and the width of the image is set to 4750. `rotation` is the rotation of the overlaid image, the rotation is clockwise. `section` allows for a section of the image you have inputed.
@@ -200,39 +200,39 @@ This allows for layers to be created without having to define the layers in a ma
 **Note: In order to determine the `xywh` and `section` fields try using any of the cropping tools listed on the [Awesome IIIF list.](https://github.com/IIIF/awesome-iiif#image-tools)**
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=Van_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg/info.json'}]"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=Van_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg/info.json'}]"></iiif-storyboard>
 ```
 
-<a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fdnoneill.github.io%2Fannotate%2Fannotations%2F131424-list.json&viewtype=iiif-storyboard&listtype=annotationlist&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22,%22transcription%22%3Afalse%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%3Ca%20href%3D%5C%22https%3A%2F%2Fwww.wikidata.org%2Fwiki%2FQ4792194%5C%22%3EView%20from%20Arles%3C%2Fa%3E%22,%22xywh%22%3A%22200,200,4750,6513%22,%22image%22%3A%22https%3A%2F%2Ftools.wmflabs.org%2Fzoomviewer%2Fproxy.php%3Fiiif%3DVan_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg%2Finfo.json%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">View example below in Tag Builder</a>
+<a href="https://ncsu-libraries.github.io/annona/tools/#/tag-builder/?url=https%3A%2F%2Fdnoneill.github.io%2Fannotate%2Fannotations%2F131424-list.json&viewtype=iiif-storyboard&listtype=annotationurl&manifesturl=&settings=%7B%22tagscolor%22%3A%5B%7B%22tagvalue%22%3A%22%22,%22color%22%3A%22%23add8e6%22%7D%5D,%22additionalinfo%22%3A%22%22,%22overlaycolor%22%3A%22%23add8e6%22,%22activecolor%22%3A%22%2390ee90%22,%22transcription%22%3Afalse%7D&props=%7B%22layers%22%3A%5B%7B%22label%22%3A%22%3Ca%20href%3D%5C%22https%3A%2F%2Fwww.wikidata.org%2Fwiki%2FQ4792194%5C%22%3EView%20from%20Arles%3C%2Fa%3E%22,%22xywh%22%3A%22200,200,4750,6513%22,%22image%22%3A%22https%3A%2F%2Ftools.wmflabs.org%2Fzoomviewer%2Fproxy.php%3Fiiif%3DVan_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg%2Finfo.json%22,%22section%22%3A%22%22,%22rotation%22%3A%22%22%7D%5D,%22images%22%3A%5B%5D%7D&css=%7B%22.content%22%3A%7B%22font-size%22%3A%22%22%7D,%22.annotation%22%3A%7B%22width%22%3A%22%22,%22height%22%3A%22%22,%22margin%22%3A%22%22%7D%7D" target="_blank">View example below in Tag Builder</a>
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=Van_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg/info.json'}]"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/131424-list.json" layers="[{'label':'<a href=\'https://www.wikidata.org/wiki/Q4792194\'>View from Arles</a>', 'xywh': '200,200,4750,6513', 'image':'https://tools.wmflabs.org/zoomviewer/proxy.php?iiif=Van_Gogh_-_Weizenfeld_mit_Blick_auf_Arles.jpeg/info.json'}]"></iiif-storyboard>
 
 ```
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>
 ```
 
-<iiif-storyboard annotationlist="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/mc00084-001-te0159-000-001-0001-list.json" layers="[{'label':'Harrelson Hall', 'xywh': '4400,1300,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,2952,2500,1696'}, {'label':'D.H. Hill Jr. Library', 'xywh': '3700,400,3000,3000', 'image':'https://iiif.lib.ncsu.edu/iiif/0003310/info.json', 'section':'0,384,6430,2500', 'rotation': 352}]" styling="togglelayers: true; customid: customlayers"></iiif-storyboard>
 
 # Transcription
 
 ## No settings enabled
 ```
-<iiif-storyboard annotationlist="{{site.url}}{{site.baseurl}}/webannotations/4665993.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="{{site.url}}{{site.baseurl}}/webannotations/4665993.json"></iiif-storyboard>
 ```
-<iiif-storyboard annotationlist="{{site.url}}{{site.baseurl}}/webannotations/4665993.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="{{site.url}}{{site.baseurl}}/webannotations/4665993.json"></iiif-storyboard>
 
 
 ## Transcription setting only
 ```
-<iiif-storyboard annotationlist="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;customid:transcriptionsetting"></iiif-storyboard>
+<iiif-storyboard annotationurl="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;customid:transcriptionsetting"></iiif-storyboard>
 ```
-<iiif-storyboard annotationlist="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;customid:transcriptionsetting"></iiif-storyboard>
+<iiif-storyboard annotationurl="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;customid:transcriptionsetting"></iiif-storyboard>
 
 ## Transcription with text first
 ```
-<iiif-storyboard annotationlist="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;textfirst: true; customid:textfirstsetting"></iiif-storyboard>
+<iiif-storyboard annotationurl="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;textfirst: true; customid:textfirstsetting"></iiif-storyboard>
 ```
-<iiif-storyboard annotationlist="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;textfirst: true; customid:textfirstsetting"></iiif-storyboard>
+<iiif-storyboard annotationurl="{{site.url}}{{site.baseurl}}/webannotations/4665993.json" styling="transcription: true;textfirst: true; customid:textfirstsetting"></iiif-storyboard>
 
 
 # Web sockets
@@ -246,12 +246,12 @@ Web sockets allow for communication across websites. In order to use this functi
 In order to instantiate a controller the server url should be loaded into the storyboard. See the example below on how to instantiate the controller.
 
 ```
-<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json" styling="controller: true;"></iiif-storyboard>
+<iiif-storyboard ws="wss://websocketserver" annotationurl="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json" styling="controller: true;"></iiif-storyboard>
 ```
 
 Another instance can be loaded in another webpage if a "receiver" is needed. This is not required. If you open the controller in multiple webpages they will mirror each other across devices. The reason for adding a receiver is to be able to customize the look and stop actions from being reflected back to all other pages.
 ```
-<iiif-storyboard ws="wss://websocketserver" annotationlist="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
+<iiif-storyboard ws="wss://websocketserver" annotationurl="https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json"></iiif-storyboard>
 ```
 An example of the web sockets in use can be seen in the video below. The window on the far left has an instantiated item on a server and is a receiver (controller has not been set in settings). The two windows next to it are the same URL and are the controllers. As you should be able to see from the video, the receiver can still navigate through the annotations but it will not affect the controllers. Additionally, on reload of the receiver the toolbar disappears. Like all aspects of the library elements can be hidden with the CSS functionality.
 
@@ -269,17 +269,16 @@ The instantiated storyboards do not have to be the same object, however they sho
 This annotation has the language set for each of the annotations in the annotation list. This allows for the language to be set for TTS using the annotation data instead defining the language in the settings.
 
 ```
-<iiif-storyboard annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json" styling="tts:true"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json" styling="tts:true"></iiif-storyboard>
 ```
 
-<iiif-storyboard annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json" styling="tts:true"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json" styling="tts:true"></iiif-storyboard>
 
 # Single Annotation Storyboard
-
-This application also allows for a single annotation to be loaded in an OpenSeadragon viewer. In order to embed an storyboard viewer for a single annotation the code is below:
+**This functionality has been depracated but can be recreated by the use the settings below**
 
 ```
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json" styling="startposition: 1; toggleoverlay: true; hidenext:true;"></iiif-storyboard>
 ```
 
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json" styling="startposition: 1; toggleoverlay: true;hidenext:true;"></iiif-storyboard>
