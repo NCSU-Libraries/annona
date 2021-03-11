@@ -29,31 +29,66 @@ export default {
         value = value == 'false' ? false : value;
         value = value == 'true' ? true : value;
         value = parseInt(value) && parseInt(value).toString().length == value.length ? parseInt(value) : value;
+        value = value && value.constructor.name == 'String' ? this.tryJsonParse(value) : value;
         settings[keyvalue[0].trim()] = value;
       }
     }
-    if (vueinfo.annotationurl){
-      settings.hide_autorunbutton == undefined ? settings.hide_autorunbutton = true : '';
-      settings.hide_nextbuttons == undefined ? settings.hide_nextbuttons = true : '';
-      settings.hide_overlaybutton == undefined ? settings.hide_overlaybutton = true : '';
-      settings.startposition == undefined ? settings.startposition = 0 : '';
+    if (settings.tagscolor) {
+      settings.tagscolor = Object.keys(settings.tagscolor).reduce((out, key) => {
+        out[this.tagsToClass(key)] = settings.tagscolor[key]
+        return out;
+      }, {});
     }
     return settings;
   },
   parseCharValue: function(value) {
     try {
-      const parsevalue = JSON.parse(value)
+      const parsevalue = JSON.parse(value);
       const context = parsevalue['@context'];
-      value = ''
+      var newvalue = ''
       for (var key in parsevalue){
         if (key != '@context'){
-          value += `<div class="${context ? context[key] : key}">${key}: ${parsevalue[key]}</div>`
+          newvalue += `<div class="${context ? context[key] : key}">${key}: ${parsevalue[key]}</div>`
         }
       }
-      return value;
-    } finally {
+      return newvalue;
+    } catch(err) {
       return value;
     }
+  },
+  colorDict: function (styleContent, styleclass) {
+    var doc = document.implementation.createHTMLDocument(""),
+    styleElement = document.createElement("style");
+    styleElement.textContent = styleContent;
+    // the style will only be parsed once it is added to a document
+    doc.body.appendChild(styleElement);
+    var rules = styleElement.sheet.cssRules;
+    var colordict = {}
+    var stylesheet = ''
+    for (var r=0; r<rules.length; r++){
+      var reg="." + styleclass + "[. {]";
+      var regextest = new RegExp(reg);
+      if (regextest.test(rules[r].cssText)){
+        const tag = rules[r].selectorText.replaceAll('.', '').replace(styleclass, "").trim();
+        colordict[tag] = rules[r].style.color;
+        stylesheet += rules[r].cssText;
+      }
+    }
+    return {'colordict': colordict, 'stylesheet': stylesheet};
+  },
+  tagsToClass: function(tag) {
+    var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
+    var group = tag && tag.group ? tag.group : '';
+    tag = tag && tag.value ? tag.value : tag;
+    if (tag.length > 0){
+      return [...`${group ? group.toLowerCase() : group}${tag.toLowerCase()}`.matchAll(regex)].join("");
+    } else {
+      return ''
+    }
+  },
+  groupToClass: function(group) {
+    var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
+    return [...`${group ? group.toLowerCase() : group}`.matchAll(regex)].join("");
   },
   // Get ocr, text, tags, languages, authors, and type of annotation;
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
@@ -66,6 +101,14 @@ export default {
     var shapetype;
     var langs;
     var authors = [];
+    var stylesheet;
+    var styles = anno.stylesheet ? anno.stylesheet.value : '';
+    var charclass = anno.target && anno.target.styleClass ? anno.target.styleClass : '';
+    if (styles && anno.stylesheet.type.toLowerCase() == 'cssstylesheet') {
+      var colordict = this.colorDict(styles, anno.target.styleClass)
+      styles = colordict['colordict'];
+      stylesheet = colordict['stylesheet'];
+    } 
     var label = anno.label ? anno.label : anno.resource && anno.resource.label ? anno.resource.label : undefined;
     res = [].concat(res);
     anno.bodyValue ? textual_body.push(anno.bodyValue) : '';
@@ -89,20 +132,24 @@ export default {
         }
         if (res_data[type] === 'TextualBody'){
           if (purpose === 'tagging'){
-            tags.push(value);
+            tags.push({'value': value, 'group': ''});
           } else if (purpose == 'transcribing'){
             ocr.push(value);
           } else {
             textual_body.push(`<div class="${purpose}">${value}</div>`);
           }
         } else if (res_data[type] === 'oa:Tag'){
-          tags.push(value);
+          tags.push({'value': value, 'group': ''});
         } else if (res_data[type] === 'dctypes:Image' || res_data[type] === 'Image') {
             textual_body.push(`<img src="${res_data['@id']}">
             <div class="attribution">${res_data['attribution']}</div>
             <div class="caption">${res_data['description']}</div>`);
-        } else if ((res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') && res_data['@id']) {
-          textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`);
+        } else if (res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') {
+          if (res_data['@id']){
+            textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`)
+          } else if (purpose == 'tagging') {
+            tags.push(res_data['value'])
+          }
         } else if (res_data[type] === 'cnt:ContentAsText') {
           ocr.push(value);
         } else {
@@ -116,7 +163,7 @@ export default {
       }
     }
     authors = this.getAuthor(anno);
-    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors};
+    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,'itemclass': charclass};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -270,19 +317,45 @@ export default {
     }
     return [... new Set(authors)].join(', ');
   },
-  getTagDict: function(alltags, settings, checked) {
+  getTagDict: function(tags, settings, checked) {
     var tagdict = {}
-    var tags = Array.from(new Set(alltags)).sort();
     for (var tc=0; tc<tags.length; tc++){
-      if (tags[tc] != '' && tags[tc]){
-        var jsonparse = settings.tagscolor ? JSON.parse(settings.tagscolor.replace(/'/g, '"')) : '';
-        var set_color = jsonparse && jsonparse[tags[tc]] ? jsonparse[tags[tc]] : '';
+      var tagvalue = tags[tc].value ? tags[tc].value : tags[tc];
+      var group = tags[tc].group ? this.groupToClass(tags[tc].group) : '';
+      if (tagvalue != '' && tagvalue){
+        var tagclassvalue = this.tagsToClass(tags[tc]);
+        if (settings.tagscolor) {
+          var set_color = settings.tagscolor[tagclassvalue];
+          set_color = set_color ? set_color : settings.tagscolor[group];
+        }
         var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
-        var count = alltags.filter(i => i === tags[tc]).length;
-        tagdict[tags[tc]] = {'color':randomcolor, 'checked': checked, 'count': count};
+        if (group && !settings.tagscolor[group]) {
+          settings.tagscolor[group] = randomcolor;
+        }
+        var count = tags.filter(i => this.tagsToClass(i) === tagclassvalue).length;
+        tagdict[tagclassvalue] = {'color':randomcolor, 'checked': checked, 'group': tags[tc]['group'] ,'count': count, 'key': tagclassvalue, 'label': tagvalue.split("_").join(" ")};
       }
     }
     return tagdict;
+  },
+
+  groupBy: function(dict, f){
+    return Object.values(dict).reduce((out, val) => {
+      let getby = typeof f === 'function' ? '' + f(val) : val[f];
+      let by = getby ? getby : ''
+      let dict = out[by] = out[by] || {'count': 0, 'tags': [], 'checked': val.checked}
+      dict['tags'].push(val);
+      dict['tags'] = this.sortBy(dict['tags'], 'key')
+      if (val.checked == false){
+        dict['checked'] = false;
+      }
+      dict['color'] = val.color;
+      dict['count'] += val['count'];
+      return out;
+    }, {});
+  },
+  sortBy: function(arry, field){
+    return arry.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
   },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
@@ -312,7 +385,7 @@ export default {
       text += `${ocr.length > 0 && !storyboard ? `<div id="ocr">${ocr}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
       if (storyboard){
-        text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].join(", ")}</div>` : ``}`
+        text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].map(tag => tag['value'] ? tag['value'] : tag).join(", ")}</div>` : ``}`
       }
       text += '</span>'
       var ocrtext = `${ocr.length > 0 ? `${directiontext}<div id="ocr">${ocr.join(" ")}</div></span>` : ``}`
@@ -325,6 +398,8 @@ export default {
         }
       }
     }
+    text += annotation && annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
+    ocrtext += annotation && annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';
     return {'anno':text, 'transcription': ocrtext};
   },
   getExtension: function (tile) {
@@ -353,6 +428,14 @@ export default {
     }
     catch(err) {
       return annotation;
+    }
+  },
+  tryJsonParse: function(input) {
+    try {
+      return JSON.parse(input.replace(/'/g, '"'))
+    }
+    catch(err) {
+      return input;
     }
   },
   flatten: function(array, element) {

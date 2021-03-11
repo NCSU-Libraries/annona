@@ -2,7 +2,7 @@
   <div class="searchapiview annonaview">
     <div class="searchview" v-if="rendered">
       <input v-for="(item, index) in fielddata" v-on:change="search()" v-bind:key="index" v-model="fielddata[index].param" v-bind:placeholder="item.name"/>
-      <iiifannotation :key="renderurl" v-if="renderurl" v-bind:annotationlist="renderurl" v-bind:styling="stylingstring" v-bind:manifesturl="manifesturl"></iiifannotation>
+      <iiifannotation :key="renderurl" v-if="renderurl" v-bind:annotationurl="renderurl" v-bind:styling="stylingstring" v-bind:manifesturl="manifesturl"></iiifannotation>
     </div>
     <div v-else>
       Error with {{manifesturl}}

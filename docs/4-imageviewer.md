@@ -19,8 +19,8 @@ code {
 
 | Props      | Values |
 | ----------- | ----------- |
-| annotationurl | Single Annotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
-| annotationlist | ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
+| annotationurl | Annotation url.|
+| annotationlist | **This has been moved to annotationurl.** ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
 | styling | string structured styling. See [settings table](#settings) for more options |
 
@@ -41,8 +41,6 @@ From there any of the tags built through the [Tag Builder]({{site.baseurl}}/tool
 
 # Single Annotation
 
-Below is an example of annotation url. This is a single annotation. In the JSON they will have a type of annotation or oa:annotation. An annotation list will have a type of AnnotationList.
-
 ```
 <iiif-annotation annotationurl="{{site.url}}{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>
 
@@ -50,26 +48,25 @@ Below is an example of annotation url. This is a single annotation. In the JSON 
 
 <iiif-annotation annotationurl="{{site.baseurl}}/webannotations/annotation1.json"></iiif-annotation>
 
-# Annotation Lists
-These are normally denoted in the annotation json as AnnotationList, they will consist of multiple annotations on one image.
+# Annotation example
 ```
-<iiif-annotation annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-annotation>
+<iiif-annotation annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-annotation>
 ```
 
-<iiif-annotation annotationlist="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-annotation>
+<iiif-annotation annotationurl="https://dnoneill.github.io/annotate/annotations/segins-004-list.json"></iiif-annotation>
 
 # Annotations without Manifests listed in annotation
 The following example is a annotation list. The annotation list does not have a manifest in the annotation. The manifest is added manually into to the tag.
 ```
-<iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
+<iiif-annotation annotationurl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
 ```
 
-<iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
+<iiif-annotation annotationurl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
 
 # Annotations with Multiple languages
 W3 standards allow for transitions between multiple bodies [https://www.w3.org/TR/annotation-model/#choice-between-bodies](https://www.w3.org/TR/annotation-model/#choice-between-bodies). The assumption is only body is used at a time. This library supports this model. The assumption this library uses is that the changes are between different languages which are defined in ISO standard in the annotation. An example of this can be seen in the annotation below.
 
-<iiif-annotation annotationurl="{{site.baseurl}}/webannotations/annotationslist.json"></iiif-annotation>
+<iiif-annotation annotationurl="{{site.url}}{{site.baseurl}}/webannotations/annotationslist.json"></iiif-annotation>
 
 # Settings
 
@@ -101,25 +98,25 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
   "hide_tags": true,
   "height": "200"
 }</script>
-<iiif-annotation annotationlist="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
+<iiif-annotation annotationurl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json" manifesturl="https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json"></iiif-annotation>
 ```
 
 ## Single annotation settings
 
 ### Image Only
 ```
-<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='image_only:true; width:200'></iiif-annotation>
+<iiif-annotation annotationurl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='image_only:true; width:200'></iiif-annotation>
 ```
 
-<iiif-annotation annotationlist='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='image_only:true; width:200'></iiif-annotation>
+<iiif-annotation annotationurl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/list/p0001-0025.json' manifesturl='https://dzkimgs.l.u-tokyo.ac.jp/iiif/zuzoubu/12b02/manifest.json' styling='image_only:true; width:200'></iiif-annotation>
 
 ### Text only
 
 ```
-<iiif-annotation annotationlist='https://wellcomelibrary.org/iiif/b18020446/contentAsText/10' styling='text_only:true'></iiif-annotation>
+<iiif-annotation annotationurl='https://wellcomelibrary.org/iiif/b18020446/contentAsText/10' styling='text_only:true'></iiif-annotation>
 ```
 
-<iiif-annotation annotationlist='https://wellcomelibrary.org/iiif/b18020446/contentAsText/10' styling='text_only:true'></iiif-annotation>
+<iiif-annotation annotationurl='https://wellcomelibrary.org/iiif/b18020446/contentAsText/10' styling='text_only:true'></iiif-annotation>
 
 ### Rendering multiple annotations
 The example show on the [multitext page]({{site.baseurl}}/multipage) can be done with any set of annotations and any set of settings. This is a simple JavaScript application. The reason we are showing an application with text only is it is a good example of one of the many ways this application can be used.

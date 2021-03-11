@@ -25,7 +25,7 @@ describe('Component', () => {
     test('test multistoryboard with mirador and page list', async ()  => {
       const wrapper =  mount(multistoryboard,{
         propsData: {
-          annotationlists: 'mc00240.json;page.json'
+          annotationurls: 'mc00240.json;page.json'
         },
         attachTo: '#root'
       })
@@ -51,7 +51,7 @@ describe('Component', () => {
     test('test multistoryboard 2', async ()  => {
       const wrapper =  mount(multistoryboard,{
         propsData: {
-          annotationlists: '4058a628-c593-463e-9736-8a821e178fee-list.json;page.json;paragraph.json',
+          annotationurls: '4058a628-c593-463e-9736-8a821e178fee-list.json;page.json;paragraph.json',
           styling: 'startenddisplay: keyboard'
         },
         attachTo: '#root'
@@ -77,7 +77,7 @@ describe('Component', () => {
     test('test multistoryboard 2', async ()  => {
       const wrapper =  mount(multistoryboard,{
         propsData: {
-          annotationlists: '4058a628-c593-463e-9736-8a821e178fee-list.json;page.json;paragraph.json',
+          annotationurls: '4058a628-c593-463e-9736-8a821e178fee-list.json;page.json;paragraph.json',
           styling: 'startenddisplay: keyboard'
         },
         attachTo: '#root'
@@ -103,7 +103,7 @@ describe('Component', () => {
     test('test multistoryboard 3', async ()  => {
       const wrapper =  mount(multistoryboard,{
         propsData: {
-          annotationlists: 'paragraph.json;techocr.json',
+          annotationurls: 'paragraph.json;techocr.json',
           styling: 'transcription: true;'
         },
         attachTo: '#root'
@@ -129,7 +129,7 @@ describe('Component', () => {
     test('test multistoryboard 4', async ()  => {
       const wrapper =  mount(multistoryboard,{
         propsData: {
-          annotationlists: 'recogito.json;techocr.json',
+          annotationurls: 'recogito.json;techocr.json',
           styling: 'transcription: true;'
         },
         attachTo: '#root'

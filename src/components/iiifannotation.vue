@@ -2,14 +2,13 @@
   <div class="iiifannotation annonaview" v-bind:id="annotationid + '_imageview'">
     <select v-if="languages.length > 0" class="lang_drop" v-on:change="changeLang($event)" v-html="languages.join('')"></select>
     <div v-if="rendered === 'emptylist'">
-      Could not find any annotations for "{{annotationlist}}{{annotationurl}}"
+      Could not find any annotations for "{{annotationurl}}"
     </div>
     <defaultimageview v-bind:compdata="this.$data" v-else-if="rendered && !settings.table_view"></defaultimageview>
     <tableview v-bind:compdata="this.$data" v-else-if="rendered && settings.table_view"></tableview>
     <div v-else-if="rendered === false">
-      "{{annotationlist}}{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
+      "{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
       Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
-      Also ensure you did not sure the wrong property for your annotation (annotationlist for lists of annotations and annotationurl for single annotations)
     </div>
   </div>
 </template>
@@ -28,7 +27,7 @@ export default {
   },
   props: {
     'annotationurl': {type: String, required: false},
-    'annotationlist':{type: String, required: false},
+    'annotationlist': {type: String, required: false},
     'manifesturl':{type: String, required: false},
     'styling': {type: String, required: false}
   },
@@ -41,7 +40,6 @@ export default {
       annotation_items: [],
       rendered: '',
       languages: [],
-      counts: {},
       annotationid: ''
     }
   },
@@ -56,11 +54,11 @@ export default {
     }
 
     //get annotation URL and get annotation data
-    var annoprop = this.annotationlist ? this.annotationlist : this.annotationurl;
-    var isURL = shared.isURL(annoprop, this.settings);
+    this.annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist;
+    var isURL = shared.isURL(this.annotationurl, this.settings);
     this.annotationid = isURL['id'];
     if (isURL['isURL']){
-      axios.get(annoprop).then(response => {
+      axios.get(this.annotationurl).then(response => {
         this.parseAnnoManifest(response.data)
       }).catch((error) => {this.rendered = false;console.log(error);})
     } else {
@@ -130,8 +128,17 @@ export default {
         }
         this.annotation_items.push(dictionary);
       }
-      var alltags = shared.flatten(this.annotation_items.map(element=>element['tags']));
-      this.counts = shared.getTagDict(alltags, this.settings, '');
+      var alltags = shared.flatten(this.annotation_items.map(element=>Object.values(element['tags'])));
+      var vue = this;
+      if (alltags.length > 0){
+        const counts = shared.getTagDict(alltags, vue.settings, '');
+        for (var ai=0; ai<vue.annotation_items.length; ai++){
+          if (vue.annotation_items[ai].tags){
+            vue.annotation_items[ai].tags.map(elem =>  counts[shared.tagsToClass(elem)])
+            vue.annotation_items[ai]['tags'] = vue.annotation_items[ai].tags.map(elem =>  counts[shared.tagsToClass(elem)]);
+          }
+        }
+      }
     },
     // Create SVG elements and corresponding image
     createimagehtml: function(imageurl, canvasRegion, dictionary, cn) {
@@ -150,7 +157,7 @@ export default {
       if (shared.imageextensions.includes(extension) || isderivative) {
        var canv = document.createElement('canvas');
        canv.id = `${dictionary['id']}_canvas_img${cn}`
-       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
+       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id);
        imagehtml = canv;
       }
       for (var key in this.settings.imagesettings){
@@ -171,7 +178,7 @@ export default {
       </pattern></defs>`
       path.setAttribute("fill", `url(#${id})`);
       path.setAttribute("fill-opacity", "1");
-      path.setAttribute("stroke", "none")
+      path.setAttribute("stroke", "none");
       svg.innerHTML = inner + path.outerHTML;
       return svg;
     },
@@ -246,6 +253,9 @@ export default {
         dictionary['altText'] = dict['ocr'].length > 0 ? dict['ocr'][0] : dict['label'] !== undefined ? dict['label'] : `Image section of "${this.manifest['label']}"`;
         dictionary['altText'] = dictionary['altText'].replace(/(\r\n|\n|\r)/gm, " ");
         dictionary['tags'] = dict['tags'].length > 0 ? dict['tags'] : "";
+        if (dict['styles']) {
+          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(dict['styles'], this.settings.tagscolor) : dict['styles'];
+        }
         if (anno.hits && anno.hits.match && !this.settings.hide_beforeafter){
           var banda = this.getBeforeAfterText(dictionary, anno);
         }

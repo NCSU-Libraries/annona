@@ -303,7 +303,7 @@ $phonetoolbarfontsize: .79rem;
   border-color: transparent transparent black transparent;
 }
 
-.tags, .authorship, .attribution {
+.content .tags, .content .authorship, .content .attribution {
   font-size: small;
   font-style: italic;
   padding: 2.5px 0px;
@@ -375,7 +375,7 @@ figcaption {
 .tags {
   margin-top: 1px;
   margin-bottom: 7px;
-  width: calc(100% - 30px);
+  width: calc(100% - 40px);
   text-align: left;
   display: inline-flex;
 }
@@ -398,8 +398,7 @@ figcaption {
 .tagscheck {
   vertical-align: middle;
 }
-
-.tags div {
+.iiifannotation.tags > div, .tags div div{
   height: auto;
   font-size: 20px;
   line-height: auto;
@@ -821,4 +820,12 @@ table tr {
 .searchapiview .iiifannotation  {
   margin: 0px;
   padding: 0px;
+}
+
+.content .tags {
+  display: grid!important;
+}
+.subtags {
+  display: block!important;
+  padding-left: 10px;
 }

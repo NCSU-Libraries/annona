@@ -10,7 +10,7 @@
         <th v-if="!settings.image_only && !settings.text_only && !settings.hide_viewlarger">Full Image</th>
         <th v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">Full Object</th>
       </tr>
-      <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container">
+      <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container" v-bind:class="item.content.itemclass">
         <td v-if="has_sections">
           <span v-for="image in item.image" :key="image">
             <span v-html="image" id="annoimage"></span>
@@ -23,7 +23,7 @@
         </td>
         <td id="tags" v-if="!settings.hide_tags && item.tags" >
           <div class="table_tags">
-            {{item.tags.join(", ")}}
+            {{item.tags.map(tag => tag.label).join(", ")}}
           </div>
         </td>
         <td v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" >
@@ -51,7 +51,6 @@ export default {
       annotation_items: [],
       rendered: '',
       languages: [],
-      counts: {},
       fielddata: [],
       annotationid: '',
       full_object: '',
@@ -62,8 +61,8 @@ export default {
     }
   },
   created() {
-    for (var key in this.compdata) {
-      this[key] = this.compdata[key]
+    for (var compkey in this.compdata) {
+      this[compkey] = this.compdata[compkey]
     }
     var keys = {'tags': 'has_tags', 'image': 'has_sections', 'before': 'has_before', 'after': 'has_after'}
     for (var ai=0; ai<this.annotation_items.length; ai++){

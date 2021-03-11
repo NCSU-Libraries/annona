@@ -55,7 +55,7 @@
     </div>
     <div v-bind:id="seadragonid + '_annotation'" class="annotation" v-bind:class="[booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', textposition, settings.toolbarposition ? settings.toolbarposition + '_menu_annotation' : '', settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="shown" tabindex="0">
       <span v-if="!settings.hide_annocontrols && settings.hide_annocontrols !== true" id="annotation_controls">
-        <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']" v-on:click="shown = false" v-hotkey="shortcuts['close']['shortcut']">
+        <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']" v-on:click="shown = false; setDefaultButtons();" v-hotkey="shortcuts['close']['shortcut']">
           <i class="fas fa-times"></i>
         </button>
         <button v-if="shortcuts['hide']" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});">
@@ -70,7 +70,7 @@
         <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
           <span v-html="buttons.info"></span>
         </button>
-        <button id="transcription_button" class="annocontrols_button" v-if="currentanno && transcription && currentanno != transcription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
+        <button id="transcription_button" class="annocontrols_button" v-if="hastranscription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
           <span v-html="buttons.anno"></span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
@@ -98,13 +98,24 @@
         </table>
       </div>
       <div id="tags" v-if="shown == 'tags'" class="content">
-        <div v-for="(value, key) in tagslist" v-bind:id="key + '_tags'" v-bind:key="key" class="tags">
-          <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': key });" v-model="value.checked">
-          <div class="countkey">
-           {{key.split("_").join(" ")}}
-          <span v-bind:style="'background: ' + value.color" class="tagscount">
-            <span v-if="!settings.hide_tagcount">{{value.count}}</span>
-          </span>
+        <div v-for="(groupval, groupkey) in groupTagDict" v-bind:key="groupkey" class="tags">
+          <div class="taggroup" v-if="groupkey" v-bind:id="groupkey + '_tags'" >
+            <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'checksubgrouptags', 'args': groupkey });" v-model="groupval.checked">
+            <div class="countkey">
+            {{groupkey}}
+            <span v-bind:style="'background: ' + groupval.color" class="tagscount">
+              <span v-if="!settings.hide_tagcount">{{groupval.count}}</span>
+            </span>
+            </div>
+          </div>
+          <div v-bind:class="{ 'subtags' : groupkey }" v-for="tagdict in groupval.tags" v-bind:id="tagdict.key + '_tags'" v-bind:key="tagdict.key" >
+            <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': tagdict.key });" v-model="tagdict.checked">
+            <div class="countkey">
+            {{tagdict.label}}
+            <span v-bind:style="'background: ' + tagdict.color" class="tagscount">
+              <span v-if="!settings.hide_tagcount">{{tagdict.count}}</span>
+            </span>
+            </div>
           </div>
         </div>
       </div>
@@ -141,16 +152,16 @@
           <div v-if="booleanitems.imageinfoshown" v-html="imageinfo.text" class="imageinfo"></div>
         </span>
       </div>
-      <div id="transcription" v-if="shown == 'transcription'" class="content">
-        <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="transcription"></span>
+      <div id="transcription" v-if="shown == 'transcription'" class="content" v-bind:class="currentanno.itemclass">
+        <span v-if="!booleanitems.isexcerpt && !settings.transcription" v-html="annoContent['transcription']"></span>
         <button v-for="(item, index) in annotations" v-bind:key="index" v-else-if="!booleanitems.isexcerpt && settings.transcription" v-on:click="sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == position ? 'activeword' : '']">
           <div v-html="item.ocr.join('')" class="ocrtranscription" v-bind:id="'line' + index"></div>
         </button>
-        <span v-html="$options.filters.truncate(transcription, settings.truncate_length)" v-else-if="booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(annoContent['transcription'], settings.truncate_length)" v-else-if="booleanitems.isexcerpt"></span>
       </div>
-      <div id="annotation_text" v-if="shown == 'anno'" class="content">
-        <span v-html="currentanno" v-if="!booleanitems.isexcerpt"></span>
-        <span v-html="$options.filters.truncate(currentanno, settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
+      <div id="annotation_text" v-if="shown == 'anno'" class="content" v-bind:class="currentanno.itemclass">
+        <span v-html="annoContent['anno']" v-if="!booleanitems.isexcerpt"></span>
+        <span v-html="$options.filters.truncate(annoContent['anno'], settings.truncate_length)" v-if="booleanitems.isexcerpt"></span>
       </div>
     </div>
   </div>
@@ -174,9 +185,9 @@ Vue.use(fullscreen);
 export default {
   name: 'storyboard',
   props: {
-    'annotationlist':String,
     'manifesturl':String,
     'annotationurl': String,
+    'annotationlist': String,
     'jsonannotation': Object,
     'styling': String,
     'ws': String,
@@ -189,7 +200,7 @@ export default {
       seadragonid: '',
       annotations: [],
       currentanno: '',
-      transcription: '',
+      hastranscription: false,
       textposition: 'corner',
       prev_inactive: true,
       next_inactive: false,
@@ -235,7 +246,7 @@ export default {
     if(this.$parent.range) {
       this.fullscreenChange(this.$parent.isfullscreen);
     }
-    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl ? this.annotationurl : this.jsonannotation;
+    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
@@ -250,15 +261,32 @@ export default {
       });
     }
   },
+  watch: {
+    annoContent: function(newVal) {
+      this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
+      if ((newVal['anno'] == '' && newVal['transcription'] == '') || (this.settings.hide_annotationtext)){
+        this.shown = false;
+      }
+    }
+  },
   mounted () {
     this.newSocket();
-    var annotationurl = this.annotationlist ? this.annotationlist : this.annotationurl ? this.annotationurl : this.jsonannotation;
+    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     var isURL = shared.isURL(annotationurl, '');
     if (!isURL['isURL']) {
       this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
     }
   },
   methods: {
+    checksubgrouptags: function(key) {
+      const groupdict = this.groupTagDict[key];
+      const tagstotoggle = groupdict.tags;
+      for (var st=0; st<tagstotoggle.length; st++){
+        if (groupdict.checked == tagstotoggle[st].checked){
+          this.sendMessage({'function': 'hideshowalltags', 'args': tagstotoggle[st]['key']})
+        }
+      }
+    },
     parseAnnoData: function(annotation, annotationurl, isURL){
       this.imagetitle = this.settings.title ? this.imagetitle : annotation.label;
       var anno = shared.getAnnotations(annotation);
@@ -278,16 +306,29 @@ export default {
         for (var jar=0; jar<canvasId.length; jar++){
           var jarondict = ondict && ondict[jar] ? ondict[jar] : ondict;
           var canvasRegion = shared.canvasRegion(canvasId[jar], jarondict);
-          sections.push(canvasRegion['canvasRegion']);
+          const regions = canvasRegion['canvasRegion'];
+          sections.push(regions);
           var canvas = canvasRegion['canvasId'];
           if (canvasRegion['svg']) {
             var idtype = canvasRegion['svg'].getAttribute('id');
             type = idtype ? idtype.split("_")[0] : 'path';
           } 
+          if ((regions.split(',')[0] != 0 || regions.split(',')[1] != 0) && regions.split(',')[2] == 0 || regions.split(',')[3] == 0){
+            type = 'pin';
+          }
           svg_path.push(canvasRegion['svg']);
         }
         content_data = Object.assign({}, content_data, {'section':sections, 'type':type, svg_path: svg_path})
         this.annotations.push(content_data);
+        if (content_data['styles']) {
+          if (content_data['styles']['overlay'] && !this.settings.overlaycolor){
+            this.settings.overlaycolor = content_data['styles']['overlay'];
+          }
+          if (content_data['styles']['activecolor'] && !this.settings.activecolor){
+            this.settings.activecolor = content_data['styles']['activecolor'];
+          }
+          this.settings.tagscolor = this.settings.tagscolor ? Object.assign(content_data['styles'], this.settings.tagscolor) : content_data['styles'];
+        }
         this.getAnnoInfo(content_data, i);
       }
       //Looks at all language options (if existing)
@@ -383,10 +424,6 @@ export default {
             vue.createOverlayElement(i, vue.annotations[i]['tags']);
           }
         }
-        // If annotation url (single annotation) show overlays and set position as first annotation
-        if (vue.annotationurl){
-          vue.createOverlay();
-        }
         // if setting call for toggled and language set to values
         if (vue.settings.toggleoverlay){
           vue.createOverlay();
@@ -395,7 +432,7 @@ export default {
           vue.changeLang(vue.currentlang);
         }
         if (vue.settings.startposition != undefined) {
-          vue.next(vue.settings.startposition)
+          vue.next(vue.settings.startposition -1)
         }
       });
     },
@@ -453,15 +490,13 @@ export default {
         ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
         ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
         ${content_data['rights'] ? `<b>Rights:</b> ${content_data['rights']}<br>` : ``}
-        ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].join(", ")}<br>` : ``}`
+        ${content_data['tags'].length > 0 ? `<b>Tags:</b> ${content_data['tags'].map(tag => tag['value']).join(", ")}<br>` : ``}`
       this.annoinfo.annodata.push({'title': title, 'position': i, 'additionaltext': additionaltext})
     },
-    // On language change, change annotation language; update annotation in viewer and update information language;
+    // On language change, change annotation language; update information language;
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
-      var annotation = this.annotations[this.position];
-      this.currentanno = shared.createContent(annotation, this.currentlang, true)['anno'];
       this.annoinfo.annodata = [];
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
@@ -474,6 +509,7 @@ export default {
     //Create overlays on OpenSeadragon viewer
     createOverlayElement: function(position, tags) {
       var annotation = this.annotations[position];
+      tags = tags ? shared.tagsToClass(tags) : '';
       for (var jt=0; jt<annotation['section'].length; jt++){
         var xywh = annotation['section'][jt].split(",");
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
@@ -496,6 +532,13 @@ export default {
         if (annotation['type'] === 'pin'){
           elem.innerHTML = this.mapmarker;
           elem.style.fill = color;
+          for (var ec=0; ec<elem.children.length; ec++){
+            if (elem.children[ec].nodeName == 'svg') {
+              for (var c=0; c<elem.children[ec].children.length; c++){
+                elem.children[ec].children[c].style.stroke = color;
+              }
+            }
+          }
         } else if (annotation['svg_path'][jt]){
           var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
           //set viewBox based on section. SVG will not show up without this.
@@ -784,7 +827,7 @@ export default {
       div.innerHTML = text;
       var speak = div.textContent;
       var speech = new SpeechSynthesisUtterance(speak);
-      var lang = this.annotations[this.position] ? this.annotations[this.position]['language'] : '';
+      var lang = this.currentanno ? this.currentanno['language'] : '';
       speech.lang = lang ? lang : this.settings.tts;
       var voice = synth.getVoices().filter(function(voice) {
         var currentlang = speech.lang;
@@ -858,12 +901,7 @@ export default {
           matching_sections = matching_sections.filter(index => index != -1);
           //If there is multiple annotations for the same section, add all the text to the box with horizontal lines seperating.
           if (matching_sections.length > 1){
-            var multipletexts = '<hr>';
-            for (var i=0; i<matching_sections.length; i++){
-              multipletexts += shared.createContent(functions.annotations[matching_sections[i]], functions.currentlang, true)['anno'];
-              multipletexts += '<hr>';
-            }
-            functions.currentanno = multipletexts;
+            functions.currentanno = matching_sections.map(section => functions.annotations[section]);
           }
           functions.goToArea(rect);
           functions.reposition(rect);
@@ -884,7 +922,7 @@ export default {
     },
     //go to specified area on OpenSeadragon viewer
     goToArea: function(rect){
-      var xywh = this.annotations[this.position]['section'][0].split(",");
+      var xywh = this.currentanno['section'][0].split(",");
       var isFull = xywh.join("") == 'full';
       rect['height'] == 0 && rect['width'] == 0 ? rect['height'] = .001 : '';
       if (isFull){
@@ -960,7 +998,8 @@ export default {
           overlays[ov].style.display = "none";
         }
       }
-      if (this.annotations[this.position] === undefined){
+      this.currentanno = this.annotations[this.position];
+      if (this.currentanno === undefined){
         this.zoom('home');
         this.currentanno = '';
         this.makeactive(undefined);
@@ -974,13 +1013,8 @@ export default {
           this.textposition = 'corner';
         }
       } else {
-        var numbsections = this.annotations[this.position]['section'].length;
-        var xywh = this.annotations[this.position]['section'][0].split(",");
-        var annotation = this.annotations[this.position];
-        var createdContent = shared.createContent(annotation, this.currentlang, true);
-        this.currentanno = createdContent['anno'];
-        this.transcription = createdContent['transcription'];
-        this.currentanno == '' || this.settings.hide_annotationtext ? this.shown = false : '';
+        var numbsections = this.currentanno['section'].length;
+        var xywh = this.currentanno['section'][0].split(",");
         this.makeactive(this.position);
         if (numbsections <= 1) {
           var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
@@ -991,7 +1025,7 @@ export default {
           }
         } else {
           //If more than one section try to fit sections to screen with zoom
-          var sections = this.annotations[this.position]['section'];
+          var sections = this.currentanno['section'];
           var xs = sections.map(element => element.split(",")[0]);
           var lowx = Math.min(...xs);
           var ys = sections.map(element => element.split(",")[1]);
@@ -1126,6 +1160,31 @@ export default {
       }
     }
   },
+  computed: {
+    groupTagDict: function(){
+      const grouplist = shared.groupBy(this.tagslist, 'group');
+      return grouplist;
+    },
+    annoContent: function() {
+      var annocontent = ''
+      var transcriptcontent = ''
+      if (this.currentanno.constructor.name == Array) {
+        for (var i=0; i<this.currentanno.length; i++){
+          var multicreateContent = shared.createContent(this.currentanno[i], this.currentlang, true);
+          annocontent += multicreateContent['anno'];
+          annocontent += '<hr>';
+          transcriptcontent += multicreateContent['transcription'];
+          transcriptcontent += '<hr>';
+        }
+      } else {
+        var createContent = shared.createContent(this.currentanno, this.currentlang, true);
+        transcriptcontent = createContent['transcription'];
+        annocontent = createContent['anno'];
+      }
+      annocontent = annocontent ? annocontent : transcriptcontent;
+      return {'anno': annocontent, 'transcription': transcriptcontent };
+    }
+  },
   //truncate item in annotation box
   filters: {
     truncate: function(string, words_length) {
@@ -1141,5 +1200,5 @@ export default {
 </script>
 
 <style lang="scss">
-@import '../iiif-annotation.scss'
+@import '../iiif-annotation.scss';
 </style>
