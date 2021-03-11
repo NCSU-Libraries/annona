@@ -1,7 +1,7 @@
 <template>
 <div id="multistoryboard" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.toolbarposition ? settings.toolbarposition + '_menu_container' : 'top_menu_container']">
   <span id="header_toolbar" v-if="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen" v-bind:class="[settings.toolbarposition ? settings.toolbarposition + '_multi_menu' : 'top_multi_menu']">
-    <button v-if="!annotationurls && shortcuts['autorun']" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
+    <button v-if="shortcuts['autorun']" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
       <span v-html="buttons.autorunbutton"></span>
       <span class="toolbartext">Start/Stop Autorun</span>
     </button>
@@ -13,7 +13,7 @@
       <span v-html="buttons.tags"></span>
       <span class="toolbartext">Toggle Tags</span>
     </button>
-    <button v-hotkey="shortcuts['overlay']['shortcut']" v-if="!annotationurls && shortcuts['overlay']" id="overlayButton" v-on:click="multiButton({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
+    <button v-hotkey="shortcuts['overlay']['shortcut']" v-if="shortcuts['overlay']" id="overlayButton" v-on:click="multiButton({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
       <span v-html="buttons.overlaybutton"></span>
       <span class="toolbartext">Toggle Overlays</span>
     </button>
@@ -33,11 +33,11 @@
       <i class="fas fa-home"></i>
       <span class="toolbartext">View full image</span>
     </button>
-    <button v-hotkey="shortcuts['prev']['shortcut']" v-if="!annotationurls && shortcuts['prev']" id="previousButton" v-on:click="multiButton({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
+    <button v-hotkey="shortcuts['prev']['shortcut']" v-if="shortcuts['prev']" id="previousButton" v-on:click="multiButton({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
       <i class="fa fa-arrow-left"></i>
       <span class="toolbartext">Previous Annotation</span>
     </button>
-    <button v-hotkey="shortcuts['next']['shortcut']" v-if="!annotationurls && shortcuts['next']" id="nextButton" v-on:click="multiButton({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
+    <button v-hotkey="shortcuts['next']['shortcut']" v-if="shortcuts['next']" id="nextButton" v-on:click="multiButton({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
       <i class="fa fa-arrow-right"></i>
       <span class="toolbartext">Next Annotation</span>
     </button>
