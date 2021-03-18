@@ -128,14 +128,16 @@ export default {
         }
         this.annotation_items.push(dictionary);
       }
-      var alltags = shared.flatten(this.annotation_items.map(element=>Object.values(element['tags'])));
-      var vue = this;
-      if (alltags.length > 0){
-        const counts = shared.getTagDict(alltags, vue.settings, '');
-        for (var ai=0; ai<vue.annotation_items.length; ai++){
-          if (vue.annotation_items[ai].tags){
-            vue.annotation_items[ai].tags.map(elem =>  counts[shared.tagsToClass(elem)])
-            vue.annotation_items[ai]['tags'] = vue.annotation_items[ai].tags.map(elem =>  counts[shared.tagsToClass(elem)]);
+      if (!this.settings.image_only && !this.settings.hide_tags){
+        var alltags = shared.flatten(this.annotation_items.map(element=>Object.values(element['tags'])));
+        var vue = this;
+        if (alltags.length > 0){
+          const counts = shared.getTagDict(alltags, vue.settings, '');
+          for (var ai=0; ai<vue.annotation_items.length; ai++){
+            if (vue.annotation_items[ai].tags){
+              vue.annotation_items[ai].tags.map(elem =>  counts[shared.tagsToClass(elem)])
+              vue.annotation_items[ai]['tags'] = vue.annotation_items[ai].tags.map(elem =>  counts[shared.tagsToClass(elem)]);
+            }
           }
         }
       }

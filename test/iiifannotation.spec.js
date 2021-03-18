@@ -34,6 +34,7 @@ describe('Component', () => {
       expect(annotation.label).toBe(undefined)
       expect(annotation.image).toEqual(['<img src=\"https://dlcs.io/iiif-img/wellcome/1/ce30a1a7-a606-4b5e-b2ad-c13677d3e8f6/310,1250,1850,1180/!1024,1024/0/default.jpg\" alt=\"Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.\">'])
       expect(annotation['content']['ocr']).toEqual(["Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A."])
+      expect(wrapper.vm.$data.rendered).toEqual(true);
       wrapper.destroy()
     })
     test('test search api', async ()  => {
@@ -52,6 +53,7 @@ describe('Component', () => {
       expect(annotation.label).toBe(undefined)
       expect(annotation.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/883,3544,92,31/1170,/0/default.jpg\" alt=\"test\">"])
       expect(annotation['content']['ocr']).toEqual(["test"])
+      expect(wrapper.vm.$data.rendered).toEqual(true);
       wrapper.destroy()
     })
     test('test mirador annotation list', async ()  => {
@@ -73,7 +75,8 @@ describe('Component', () => {
       expect(annotations[1].tags[0].label).toEqual("balcony")
       expect(annotations[1].tags.length).toEqual(2)
       expect(annotations.length).toBe(3)
-    wrapper.destroy()
+      expect(wrapper.vm.$data.rendered).toEqual(true);
+      wrapper.destroy()
     })
     test('test w3 annotations', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
@@ -93,7 +96,8 @@ describe('Component', () => {
       expect(annotations['rendered_content']).toBe('<span style=\"direction: ltr;\"><div class=\"title\">The Bees</div></span>')
       expect(annotations.tags).toEqual([{"checked": "", "color": "white", "count": 1, "group": "", "key": "somanybees", "label": "So many bees."}])
       expect(annotations.altText).toBe("The Bees")
-    wrapper.destroy()
+      expect(wrapper.vm.$data.rendered).toEqual(true);
+      wrapper.destroy()
     })
     test('test w3 annotations list', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
@@ -110,7 +114,8 @@ describe('Component', () => {
       expect(annotations.label).toBe(undefined)
       expect(annotations['content']['ocr']).toEqual([])
       expect(annotations['rendered_content']).toEqual(`<span style="direction: ltr;"><div class="textualbody"><iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/0001-1.json'></iiif-annotation></div></span>`)
-        wrapper.destroy()
+      expect(wrapper.vm.$data.rendered).toEqual(true);
+      wrapper.destroy()
     })
     test('test oa list', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
@@ -124,7 +129,8 @@ describe('Component', () => {
       const annotations = wrapper.vm.$data.annotation_items[0]
       expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/full/0/default.jpg\" alt=\"Annotation 1\">"])
       expect(annotations['content']['ocr']).toEqual(["Annotation 1"])
-        wrapper.destroy()
+      expect(wrapper.vm.$data.rendered).toEqual(true);
+      wrapper.destroy()
     })
     test('test settings', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
@@ -136,12 +142,13 @@ describe('Component', () => {
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
-      const annotations = wrapper.vm.$data.annotation_items[0]
+      const annotations = wrapper.vm.$data.annotation_items[0];
       expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/200,/0/default.jpg\" alt=\"Image section of &quot;undefined&quot;\" style=\"width: 200px;\">"])
       expect(Object.keys(annotations).length).toBe(4)
       expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/200,/0/default.jpg")
       expect(Object.keys(annotations)).toEqual(["image", "altText", "id", "fullImage"])
-        wrapper.destroy()
+      expect(wrapper.vm.$data.rendered).toEqual(true);
+      wrapper.destroy()
     })
     test('test settings height', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
@@ -157,7 +164,8 @@ describe('Component', () => {
       expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/,200/0/default.jpg\" alt=\"Annotation 1\" style=\"height: 200px; width: auto;\">"])
       expect(Object.keys(annotations).length).toBe(9)
       expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/,200/0/default.jpg")
-        wrapper.destroy()
+      expect(wrapper.vm.$data.rendered).toEqual(true);
+      wrapper.destroy()
     })
     test('test non-existent urls', async ()  => {
       const wrapper =  mount(iiifAnnotation,{
@@ -168,6 +176,7 @@ describe('Component', () => {
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
+      expect(wrapper.vm.$data.rendered).toEqual(false);
       expect(wrapper.html()).toContain('"bees2.json" did not render. Please ensure your annotation link is correct.')
     })
 
@@ -184,6 +193,7 @@ describe('Component', () => {
       expect(annotations.image).toEqual(["<div id=\"regular0_canvas_img0\"></div>"])
       expect(Object.keys(annotations).length).toBe(9)
       expect(annotations.fullImage).toEqual("/annotate/assets/images/custom/spencer-davis-7ZpvOE2psxM-unsplash.jpg")
+      expect(wrapper.vm.$data.rendered).toEqual(true);
     })
 
 })
