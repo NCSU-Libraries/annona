@@ -124,12 +124,12 @@
         <span v-if="!booleanitems.isexcerpt">
           <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</button>
           <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
-          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 1">{{$parent.toctitle}}</button>
+          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="basecompontent.range && basecompontent.toc.length > 1">{{basecompontent.toctitle}}</button>
           <div v-if="booleanitems.tocshown" class="tocinfo">
-            <div v-for="(toc, index) in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
+            <div v-for="(toc, index) in basecompontent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
               <div class="title">
-                <button class="buttonlink" v-on:click="$parent.nextItemRange(toc.position);">
-                  <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail">{{index+1}}. {{toc.label}}
+                <button class="buttonlink" v-on:click="basecompontent.nextItemRange(toc.position);">
+                  <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail" style="max-width: 30px;">{{index+1}}. {{toc.label}}
                 </button>
               </div>
               <div class="additionaltext" v-html="toc.description" v-if="toc.description"></div>
@@ -238,12 +238,14 @@ export default {
       imageinfo: {'text': '', 'label': 'Manifest information'},
       imagetitle: '',
       layerslist: [],
-      shortcuts: {}
+      shortcuts: {},
+      basecompontent: ''
     }
   },
   created() {
-    if(this.$parent.range) {
-      this.fullscreenChange(this.$parent.isfullscreen);
+    this.basecompontent = this.$parent;
+    if (this.basecompontent && this.basecompontent.range){
+      this.fullscreenChange(this.basecompontent.isfullscreen);
     }
     var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
@@ -940,7 +942,7 @@ export default {
     },
     //toggle fullscreen button
     toggle_fullscreen: function(){
-      var element = this.$parent.range ? this.$parent.$el : this.$el;
+      var element = this.basecompontent.range ? this.basecompontent.$el : this.$el;
       this.$fullscreen.toggle(element, {
         wrap: false,
         callback: this.fullscreenChange
@@ -967,8 +969,8 @@ export default {
         this.buttons.expandbutton = '<i class="fas fa-expand"></i>';
       }
       this.fullscreen = fullscreen;
-      if(this.$parent.range) {
-        this.$parent.updateFullScreen(fullscreen, this.buttons.expandbutton);
+      if(this.basecompontent.range) {
+        this.basecompontent.updateFullScreen(fullscreen, this.buttons.expandbutton);
       }
     },
     // Click of the next button, goes to section and load annotation data.

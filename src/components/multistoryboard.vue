@@ -113,17 +113,15 @@ export default {
     },
     mounted(){
       this.createViewers();
-      if (this.$parent.toc && this.$parent.range){
-        for(var ch=0; ch<this.$children.length; ch++){
-          const child = this.$children[ch];
-          child.$parent.range = true;
-          child.$parent.toctitle = this.$parent.toctitle;
-          child.$parent.toc = this.$parent.toc;
+      if (this.$parent.range){
+        for (var ch=0; ch<this.$children.length; ch++){
+          this.$children[ch].basecompontent = this.$parent;
         }
       }
     },
     created(){
       // get annotation urls
+      
       this.$props.annotationurls = this.$props.annotationurls ? this.$props.annotationurls : this.$props.annotationlists;
       var annotations = this.$props.annotationurls.split(";");
       this.anno_data = annotations.filter(function (el) {
