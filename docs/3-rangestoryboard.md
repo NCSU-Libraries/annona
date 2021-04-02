@@ -10,6 +10,9 @@ code {
   white-space: normal;
 }
 </style>
+
+* A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
+{:toc}
 <script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 | Props      | Values |
@@ -57,6 +60,17 @@ This manifest has only one annotation so it appears as a regular storyboard.
 ```
 
 <iiif-rangestoryboard rangeurl="{{site.baseurl}}/webannotations/range.json" styling="togglelayers: true;"></iiif-rangestoryboard>
+
+
+## Custom List of storyboards
+The range storyboard allows for you to create a list of custom storyboard and multistoryboards in a json. An example can be seen at the following url: [{{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json]({{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json).
+
+The JSON should reflect the example in the link above.
+
+```<iiif-rangestoryboard rangeurl="{{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-rangestoryboard>```
+
+<iiif-rangestoryboard rangeurl="{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-rangestoryboard>
+
 
 ## Notes about creating a range
 - Currently the application expects that if the `canvases` field exists it is the same length as the annotation list.
