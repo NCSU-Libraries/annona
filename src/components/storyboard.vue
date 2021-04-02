@@ -98,8 +98,8 @@
         </table>
       </div>
       <div id="tags" v-if="shown == 'tags'" class="content">
-        <div v-for="(groupval, groupkey) in groupTagDict" v-bind:key="groupkey" class="tags">
-          <div class="taggroup" v-if="groupkey" v-bind:id="groupkey + '_tags'" >
+        <div v-for="(groupval, groupkey) in groupTagDict" v-bind:key="groupkey" class="tagslist">
+          <div class="taggroup tags" v-if="groupkey" v-bind:id="groupkey + '_tags'">
             <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'checksubgrouptags', 'args': groupkey });" v-model="groupval.checked">
             <div class="countkey">
             {{groupkey}}
@@ -108,7 +108,7 @@
             </span>
             </div>
           </div>
-          <div v-bind:class="{ 'subtags' : groupkey }" v-for="tagdict in groupval.tags" v-bind:id="tagdict.key + '_tags'" v-bind:key="tagdict.key" >
+          <div v-bind:class="{ 'subtags' : groupkey }" class="tags" v-for="tagdict in groupval.tags" v-bind:id="tagdict.key + '_tags'" v-bind:key="tagdict.key" >
             <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': tagdict.key });" v-model="tagdict.checked">
             <div class="countkey">
             {{tagdict.label}}
@@ -126,11 +126,10 @@
           <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
           <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 1">{{$parent.toctitle}}</button>
           <div v-if="booleanitems.tocshown" class="tocinfo">
-            <div v-for="toc in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
-              
+            <div v-for="(toc, index) in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
               <div class="title">
                 <button class="buttonlink" v-on:click="$parent.nextItemRange(toc.position);">
-                  <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail">{{toc.label}}
+                  <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail">{{index+1}}. {{toc.label}}
                 </button>
               </div>
               <div class="additionaltext" v-html="toc.description" v-if="toc.description"></div>

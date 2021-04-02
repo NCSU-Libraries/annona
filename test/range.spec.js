@@ -201,6 +201,74 @@ describe('Component', () => {
       expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
       wrapper.destroy()
     })
+    test('test list of storyboardtags', async ()  => {
+      const wrapper =  mount(rangestoryboard,{
+        propsData: {
+          rangeurl: 'storyboardlist.json',
+          styling: 'toggleoverlay:true;'
+        },
+        attachTo: '#root'
+      });
+      
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      expect(data.tags).toBe(false)
+      expect(data.layerslist).toBe(false)
+      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-right\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-left\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
+      expect(data.range).toBe(true)
+      expect(data.toctitle).toEqual("Range Pages")
+      expect(data.stylingstring).toEqual("toggleoverlay:true;autorun_interval:3;title:Bayeux Tapestry test;fit: horizontal;")
+      expect(data.annotationurl).toEqual({"annotationurl": "https://storiiies.cogapp.com/holbein/annotations/list.json", "manifesturl": "https://storiiies.cogapp.com/holbein/manifest.json", "styling": "fit: horizontal;","tag": "iiif-storyboard","title": "Bayeux Tapestry test"})
+      expect(data.position).toEqual(0)
+      expect(data.prevPageInactive).toBe(true)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('storyboardlist.json')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.toc).toEqual([{"description": undefined, "label": "Bayeux Tapestry test", "position": 0, "thumbnail": undefined}, {"description": undefined, "label": "jsonexample", "position": 1, "thumbnail": undefined}, {"description": undefined, "label": "Page 3", "position": 2, "thumbnail": undefined}, {"description": undefined, "label": "multistoryboard test", "position": 3, "thumbnail": undefined}, {"description": undefined, "label": "layers test", "position": 4, "thumbnail": undefined}])
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("");
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var sbd = wrapper.vm.$children[0];
+      expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
+      expect(sbd.position).toBe(-1);
+      expect(sbd.seadragonid).toBe("list_storyboard");
+      expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
+      expect(sbd.currentanno).toBe("");
+      expect(sbd.transcription).toBe(undefined);
+      expect(sbd.textposition).toBe("corner");
+      expect(sbd.prev_inactive).toBe(true);
+      expect(sbd.next_inactive).toBe(false);
+      expect(sbd.toolbar_id).toBe("");
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.shown).toBe(false);
+      expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
+      expect(sbd.isautorunning).toBe("");
+      expect(sbd.buttons).toEqual({"anno": "<i class=\"fas fa-file-alt\"></i>", "autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "keyboard": "<i class=\"fas fa-keyboard\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"});
+      expect(sbd.settings).toEqual({"autorun_interval": 3, "fit": "horizontal", "title": "Bayeux Tapestry test", "toggleoverlay": true, "truncate_length": 2});
+      expect(sbd.currentlang).toBe("");
+      expect(sbd.languages).toEqual([]);
+      expect(sbd.fullscreen).toBe(false);
+      expect(sbd.tagslist).toEqual({});
+      expect(sbd.imageinfo).toEqual({"label": "Image information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div>"});
+      expect(sbd.imagetitle).toBe("Bayeux Tapestry test");
+      expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://images.cogapp.com/iiif/holbein_big_p.tif/info.json"}]);
+      expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      console.log(wrapper.vm.nextItemRange('next'))
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      expect(data.stylingstring).toEqual("toggleoverlay:true;autorun_interval:3;title:jsonexample;toggleoverlay:false;")
+      expect(data.annotationurl).toEqual({"annotationurl": "", "jsonanno": {"on": {"@id": "https://wellcomelibrary.org/iiif/b1948799x/canvas/c0#xywh=310,1250,1850,1180", "@type": "sc:Canvas", "within": {"@id": "https://wellcomelibrary.org/iiif/b1948799x/manifest", "@type": "sc:Manifest"}}, "resource": {"@type": "cnt:ContentAsText", "chars": "Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A.", "format": "text/plain"}}, "styling": "toggleoverlay:false;", "tag": "iiif-storyboard", "title": "jsonexample"})
+      expect(data.position).toEqual(1)
+      expect(data.prevPageInactive).toBe(false)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('storyboardlist.json')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("");
+      wrapper.destroy()
+    })
 
     test('test single list manifesturl', async ()  => {
       const wrapper =  mount(rangestoryboard,{

@@ -1,6 +1,16 @@
 <template>
 <div v-bind:id="rangeid" class="rangestoryboard annonaview" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
-  <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+  <span v-if="listtype == 'storyboardlist'" v-bind:key="position" style="width: 100vw">
+    <span v-if="rangelist[position]['tag'] == 'iiif-storyboard'">
+      <storyboard :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers"></storyboard>
+    </span>
+    <span v-else-if="rangelist[position]['tag'] == 'iiif-multistoryboard'">
+      <multistoryboard :annotationurls="annotationurl.annotationurls" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers" v-bind:images="annotationurl.images"></multistoryboard>
+    </span>
+  </span>
+  <span v-else style="width: 100vw">
+    <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+  </span>
   <button id="previousPageInactiveButton" v-hotkey="prevshortcut" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.prev"></span>
     <span class="toolbartext">Previous page</span>
@@ -18,11 +28,13 @@ import axios from 'axios';
 require("es6-promise").polyfill();
 import Vue from 'vue';
 import VueSimpleHotkey from 'vue-simple-hotkey';
+import multistoryboard from './multistoryboard.vue';
 Vue.use(VueSimpleHotkey);
 
 export default {
     components: {
-        storyboard
+        storyboard,
+        multistoryboard
     },
     props: {
       'rangeurl':String,
@@ -64,7 +76,8 @@ export default {
         rangetitle: '',
         nextshortcut: ['alt+n', 'alt+.', 'alt+right'],
         prevshortcut: ['alt+p', 'alt+,', 'alt+left'],
-        ready: false
+        ready: false,
+        listtype: ''
       }
     },
     created(){
@@ -83,8 +96,30 @@ export default {
     methods: {
       manifestOrRange: function(contents) {
         var listtype = contents['@type'] ? contents['@type'] : contents['type'];
+        this.listtype = listtype;
         if (listtype.toLowerCase().indexOf('manifest') > -1){
           this.getManifestData(contents);
+        } else if (listtype == 'storyboardlist') {
+          for (var rl =0; rl<contents['items'].length; rl++){
+            const content = contents['items'][rl];
+            var el = document.createElement( 'div' );
+            el.innerHTML = content['board'];
+            const dict = {'tag': el.children[0].localName}
+            const attributes = el.children[0].attributes;
+            for (var att=0;att<attributes.length; att++){
+              dict[attributes[att].name] = attributes[att].nodeValue;
+            }
+            if (content['annotation']){
+              dict['jsonanno'] = content['annotation'];
+              dict['annotationurl'] = '';
+            }
+            var toclabel = content['title'] ? content['title'] : `Page ${rl + 1}`;
+            toclabel = shared.parseMetaFields(toclabel);
+            dict['title'] = toclabel;
+            this.rangelist.push(dict)
+            this.toc.push({ 'position': rl, 'label': toclabel, 'thumbnail': content['thumbnail'], 'description': content['description']});
+          }
+          this.setDefaults(contents);
         } else {
           this.getRangeData(contents);
         }
@@ -148,7 +183,7 @@ export default {
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.getTitle();
         this.$props.ws ? this.isws = this.$props.ws : '';
-        this.$props.layers ? this.customlayers = this.$props.layers : '';
+        this.customlayers = this.$props.layers ? this.$props.layers : this.annotationurl.layers ? this.annotationurl.layers : '';
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
         this.rangelist.length == 1 ? this.nextPageInactive = true : '';
@@ -187,8 +222,12 @@ export default {
         this.getStylingString();
       },
       getStylingString: function(){
+        this.stylingstring = '';
         for (var key in this.settings){
           this.stylingstring += `${key}:${this.settings[key]};`;
+        }
+        if (this.annotationurl.styling) {
+          this.stylingstring += this.annotationurl.styling;
         }
       },
       getTitle: function() {
