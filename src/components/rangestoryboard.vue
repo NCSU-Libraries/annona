@@ -7,6 +7,9 @@
     <span v-else-if="rangelist[position]['tag'] == 'iiif-multistoryboard'">
       <multistoryboard :annotationurls="annotationurl.annotationurls" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers" v-bind:images="annotationurl.images"></multistoryboard>
     </span>
+    <span v-else-if="rangelist[position]['tag'] == 'iiif-annotation'">
+      <iiifannotation :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" ></iiifannotation>
+    </span>
   </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
@@ -22,8 +25,9 @@
 </div>
 </template>
 <script>
-import storyboard from './storyboard'
-import shared from './shared'
+import storyboard from './storyboard';
+import iiifannotation from './iiifannotation';
+import shared from './shared';
 import axios from 'axios';
 require("es6-promise").polyfill();
 import Vue from 'vue';
@@ -34,7 +38,8 @@ Vue.use(VueSimpleHotkey);
 export default {
     components: {
         storyboard,
-        multistoryboard
+        multistoryboard,
+        iiifannotation
     },
     props: {
       'rangeurl':String,
@@ -49,18 +54,7 @@ export default {
         isws: '',
         range: true,
         toctitle: 'Range Pages',
-        buttons: {
-          'autorunbutton': '<i class="fas fa-magic"></i>',
-          'overlaybutton': '<i class="fas fa-toggle-on"></i>',
-          'expandbutton' : '<i class="fas fa-expand"></i>',
-          'hide_button' : '<i class="fas fa-caret-up"></i>',
-          'playpause': '<i class="fas fa-play"></i>',
-          'tags': '<i class="fas fa-tag"></i>',
-          'info': '<i class="fas fa-info-circle"></i>',
-          'layer': '<i class="fas fa-layer-group"></i>',
-          'prev' : '<i class="fas fa-chevron-left"></i>',
-          'next': '<i class="fas fa-chevron-right"></i>'
-        },
+        buttons: shared.buttons,
         settings: {},
         stylingstring: "",
         annotationurl: '',
@@ -181,6 +175,7 @@ export default {
         this.annotationurl = this.rangelist[0];
         this.rangetitle = shared.parseMetaFields(data.label);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
+        this.updateFullScreen(this.isfullscreen);
         this.getTitle();
         this.$props.ws ? this.isws = this.$props.ws : '';
         this.customlayers = this.$props.layers ? this.$props.layers : this.annotationurl.layers ? this.annotationurl.layers : '';
@@ -238,10 +233,11 @@ export default {
         }
         this.settings.title = title;
       },
-      updateFullScreen: function(fullscreen, expandbutton) {
-        this.$children[0].buttons.expandbutton = expandbutton;
+      updateFullScreen: function(fullscreen) {
         this.isfullscreen = fullscreen;
-        this.$children[0].fullscreen = fullscreen;
+        for (var fs=0; fs<this.$children.length; fs++){
+          this.$children[fs].fullscreen = fullscreen;
+        }
       }
     }
 }

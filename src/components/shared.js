@@ -2,6 +2,21 @@ import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
 
 export default {
+  buttons: {
+    'autorunbutton': '<i class="fas fa-magic"></i>',
+    'overlaybutton': '<i class="fas fa-toggle-on"></i>',
+    'expand' : '<i class="fas fa-expand"></i>',
+    'compress' : '<i class="fas fa-compress"></i>',
+    'hide_button' : '<i class="fas fa-caret-up"></i>',
+    'playpause': '<i class="fas fa-play"></i>',
+    'tags': '<i class="fas fa-tag"></i>',
+    'info': '<i class="fas fa-info-circle"></i>',
+    'layer': '<i class="fas fa-layer-group"></i>',
+    'keyboard': '<i class="fas fa-keyboard"></i>',
+    'anno': '<i class="fas fa-file-alt"></i>',
+    'prev' : '<i class="fas fa-chevron-left"></i>',
+    'next': '<i class="fas fa-chevron-right"></i>'
+  },
   imageextensions: ['jpg', 'jpeg', 'png', 'svg'],
   //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.
   on_structure: function(anno){
@@ -140,10 +155,6 @@ export default {
           }
         } else if (res_data[type] === 'oa:Tag'){
           tags.push({'value': value, 'group': ''});
-        } else if (res_data[type] === 'dctypes:Image' || res_data[type] === 'Image') {
-            textual_body.push(`<img src="${res_data['@id']}">
-            <div class="attribution">${res_data['attribution']}</div>
-            <div class="caption">${res_data['description']}</div>`);
         } else if (res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') {
           if (res_data['@id']){
             textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`)
@@ -160,6 +171,10 @@ export default {
         var values = []
         res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
+      } else if (res_data[type] === 'dctypes:Image' || res_data[type] === 'Image') {
+        textual_body.push(`<img src="${res_data['@id']}">
+          <div class="attribution">${res_data['attribution']}</div>
+          <div class="caption">${res_data['description']}</div>`);
       }
     }
     authors = this.getAuthor(anno);
@@ -503,7 +518,7 @@ export default {
       'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home', 'shortcut': ['h', '0']},
       'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous', 'shortcut': ['p', ',', 'shift+left']},
       'next' : {'icon': '<i class="fa fa-arrow-right"></i>', 'label': 'Next', 'shortcut': ['n', '.', 'shift+right']},
-      'fullscreen' : {'icon': buttons['expandbutton'], 'label': 'Fullscreen', 'shortcut': ['alt+f', ';']},
+      'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen', 'shortcut': ['alt+f', ';']},
       'close' : {'icon': '<i class="fas fa-times"></i>', 'label': 'Close', 'shortcut': ['x', '6']},
       'hide' : {'icon': buttons['hide_button'], 'label': 'Collapse text', 'shortcut': ['c', '7']},
       'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts', 'shortcut': ['s', '8']}
@@ -517,7 +532,7 @@ export default {
     if (vueinfo.settings.tts){
       shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause', 'shortcut': ['r', '9']}
     }
-    if(vueinfo.$parent.range){
+    if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
       shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 'shortcut': vueinfo.$parent.prevshortcut};
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 'shortcut': vueinfo.$parent.nextshortcut};
     }

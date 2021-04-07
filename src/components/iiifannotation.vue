@@ -206,7 +206,7 @@ export default {
         var canvas = shared.matchCanvas(this.manifest, canvasRegion['canvasId'])['images'];
         var regionCanvas = canvasRegion['canvasRegion'];
         var baseImageUrl;
-        if (canvas === undefined) {
+        if (!canvas) {
           baseImageUrl = canvasItem.split("#")[0];
         } else {
           var canvas_tile = shared.getCanvasTile(canvas[0])
@@ -214,7 +214,7 @@ export default {
           var imgResource = canvas_tile['img_resource'];
         }
         //get jpg format
-        var resourceid = imgResource['@id'] && shared.getId(imgResource).includes('/full') ? shared.getId(imgResource) : '';
+        var resourceid = imgResource && imgResource['@id'] && shared.getId(imgResource).includes('/full') ? shared.getId(imgResource) : '';
         var jpgformat = resourceid ? resourceid.split("/").slice(-1)[0] : 'default.jpg';
         size = size != 'full' ? size : resourceid ? resourceid.split("/").slice(-3)[0] : 'full';
         var imagedict = shared.getImages(baseImageUrl, regionCanvas, size, jpgformat);

@@ -46,7 +46,8 @@
       <span class="toolbartext">Toggle keyboard shortcuts</span>
     </button>
     <button v-hotkey="shortcuts['fullscreen']['shortcut']" v-if="shortcuts['fullscreen']" v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
-      <span v-html="buttons.expandbutton"></span>
+      <span v-if="!fullscreen" v-html="buttons.expand"></span>
+      <span v-else v-html="buttons.compress"></span>
       <span class="toolbartext">Toggle fullscreen</span>
     </button>
   </span>
@@ -90,17 +91,7 @@ export default {
         prev_inactive: true,
         next_inactive: false,
         anno_data: [],
-        buttons: {
-          'autorunbutton': '<i class="fas fa-magic"></i>',
-          'overlaybutton': '<i class="fas fa-toggle-on"></i>',
-          'expandbutton' : '<i class="fas fa-expand"></i>',
-          'hide_button' : '<i class="fas fa-caret-up"></i>',
-          'playpause': '<i class="fas fa-play"></i>',
-          'tags': '<i class="fas fa-tag"></i>',
-          'info': '<i class="fas fa-info-circle"></i>',
-          'layer': '<i class="fas fa-layer-group"></i>',
-          'keyboard': '<i class="fas fa-keyboard"></i>'
-        },
+        buttons: shared.buttons,
         settings: {},
         stylingstring: "",
         widthvar: "",
@@ -121,7 +112,10 @@ export default {
     },
     created(){
       // get annotation urls
-      
+      if(this.$parent.range) {
+        this.fullscreen = this.$parent.isfullscreen;
+        this.$parent.updateFullScreen(this.fullscreen);
+      }
       this.$props.annotationurls = this.$props.annotationurls ? this.$props.annotationurls : this.$props.annotationlists;
       var annotations = this.$props.annotationurls.split(";");
       this.anno_data = annotations.filter(function (el) {
@@ -169,15 +163,14 @@ export default {
       },
       // set fullscreen. See vue-fullscreen for more info
       fullscreenChange (fullscreen) {
-        if(fullscreen){
-          this.buttons.expandbutton = '<i class="fas fa-compress"></i>';
-        } else {
-          this.buttons.expandbutton = '<i class="fas fa-expand"></i>';
-        }
         this.fullscreen = fullscreen;
+        if(this.$parent.range) {
+          this.$parent.updateFullScreen(fullscreen);
+        }
       },
       toggle_fullscreen (){
-        this.$fullscreen.toggle(this.$el, {
+        var element = this.$parent.range ? this.$parent.$el : this.$el;
+        this.$fullscreen.toggle(element, {
           wrap: false,
           callback: this.fullscreenChange
         });
