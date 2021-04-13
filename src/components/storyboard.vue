@@ -218,7 +218,7 @@ export default {
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
       isautorunning: '',
-      buttons: shared.buttons,
+      buttons: JSON.parse(JSON.stringify(shared.buttons)),
       settings: {},
       currentlang: '',
       languages: [],
@@ -257,6 +257,14 @@ export default {
       this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
       if ((newVal['anno'] == '' && newVal['transcription'] == '') || (this.settings.hide_annotationtext)){
         this.shown = false;
+      }
+    },
+    buttons: {
+      deep: true,
+      handler: function(){
+        if (this.$parent.multi){
+          this.$parent.buttons = this.buttons;
+        }
       }
     }
   },

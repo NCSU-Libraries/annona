@@ -54,7 +54,7 @@ export default {
         isws: '',
         range: true,
         toctitle: 'Range Pages',
-        buttons: shared.buttons,
+        buttons: JSON.parse(JSON.stringify(shared.buttons)),
         settings: {},
         stylingstring: "",
         annotationurl: '',

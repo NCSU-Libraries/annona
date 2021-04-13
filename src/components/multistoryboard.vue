@@ -91,7 +91,7 @@ export default {
         prev_inactive: true,
         next_inactive: false,
         anno_data: [],
-        buttons: shared.buttons,
+        buttons: JSON.parse(JSON.stringify(shared.buttons)),
         settings: {},
         stylingstring: "",
         widthvar: "",
