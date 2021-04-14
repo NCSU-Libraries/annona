@@ -65,6 +65,8 @@ This manifest has only one annotation so it appears as a regular storyboard.
 ## Custom List of storyboards
 The range storyboard allows for you to create a list of custom storyboard and multistoryboards in a json. An example can be seen at the following url: [{{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json]({{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json).
 
+An [empty template]({{site.url}}{{site.baseurl}}/webannotations/template.json) is avaliable.
+
 The JSON should reflect the example in the link above.
 
 ```<iiif-rangestoryboard rangeurl="{{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-rangestoryboard>```
