@@ -1,0 +1,89 @@
+{
+    "items": [
+      {
+        "board": "<iiif-storyboard annotationurl='https://storiiies.cogapp.com/holbein/annotations/list.json' manifesturl='https://storiiies.cogapp.com/holbein/manifest.json'></iiif-storyboard>",
+        "description": "Example of a storyboard with manifest url field in the storyboard shown",
+        "title": "Example with a Manifest",
+        "thumbnail": "https://images.cogapp.com/iiif/holbein_big_p.tif/full/250,/0/default.jpg"
+      },
+      {
+        "annotation": {
+          "@context": "http://iiif.io/api/presentation/2/context.json",
+          "@id": "/annotate/annotations/k49ls1azdeo2xk2a3nqe-list.json",
+          "@type": "sc:AnnotationList",
+          "oa:serializedAt": "2019-08-27T22:06:09.667Z",
+          "resources": [
+            {
+              "@context": "http://iiif.io/api/presentation/2/context.json",
+              "@id": "https://dnoneill.github.io/annotate/annotations/k49ls1azdeo2xk2a3nqe.json",
+              "@type": "oa:Annotation",
+              "motivation": [
+                "oa:commenting"
+              ],
+              "oa:annotatedAt": "2019-08-21T20:25:45.422Z",
+              "oa:serializedAt": "2019-08-27T22:06:09.667Z",
+              "on": [
+                {
+                  "@type": "oa:SpecificResource",
+                  "full": "https://manifests.britishart.yale.edu/canvas/ba-obj-722-conservation",
+                  "selector": {
+                    "@type": "oa:Choice",
+                    "default": {
+                      "@type": "oa:FragmentSelector",
+                      "value": "xywh=4272,1147,1168,1579"
+                    },
+                    "item": {
+                      "@type": "oa:SvgSelector",
+                      "value": "<svg xmlns='http://www.w3.org/2000/svg'><path xmlns=\"http://www.w3.org/2000/svg\" d=\"M4272.39181,1146.58811h583.79032v0h583.79032v789.56997v789.56997h-583.79032h-583.79032v-789.56997z\" data-paper-data=\"{&quot;strokeWidth&quot;:1,&quot;rotation&quot;:0,&quot;annotation&quot;:null,&quot;nonHoverStrokeColor&quot;:[&quot;Color&quot;,0,0.74902,1],&quot;editable&quot;:true}\" id=\"rectangle_61f7bf31-8e45-4151-b82f-8d0f2379ea80\" fill-opacity=\"0.00001\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"51.94621\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"/></svg>"
+                    }
+                  },
+                  "within": {
+                    "@id": "https://manifests.britishart.yale.edu/manifest/722",
+                    "@type": "sc:Manifest"
+                  }
+                }
+              ],
+              "resource": [
+                {
+                  "@type": "dctypes:Text",
+                  "chars": "<p><em>The Holy Family with the Infant St. John </em>(1789-9)&nbsp;by Joshua Reynolds</p>",
+                  "format": "text/html"
+                }
+              ]
+            }
+          ]
+        },
+        "board": "<iiif-storyboard annotationurl='0rlhfbs7nxohjotc951ytp'></iiif-storyboard>",
+        "description": "Example where there is no annotation url and the annotation is defined in the list.",
+        "title": "Example without URL"
+      },
+      {
+        "board": "<iiif-annotation annotationurl='https://storiiies.cogapp.com/holbein/annotations/list.json' manifesturl='https://storiiies.cogapp.com/holbein/manifest.json'></iiif-annotation>",
+        "description": "Example of a image view",
+        "title": "Example with image view",
+        "thumbnail": "https://images.cogapp.com/iiif/holbein_big_p.tif/full/250,/0/default.jpg"
+      },
+      {
+        "board": "<iiif-storyboard annotationurl='https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json'styling='toggleoverlay:true;'></iiif-storyboard>",
+        "description": "Example where toggleoverlay is set to true.",
+        "title": "Custom Settings Example"
+      },
+      {
+        "board": "<iiif-multistoryboard annotationurls='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-multistoryboard>",
+        "description": "Example of a multistoryboard where the second item in the storyboard is an image that is set in the tag.",
+        "title": "Multistoryboard Example with custom image"
+      },
+      {
+        "board": "<iiif-storyboard annotationurl='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' layers='[{\"label\":\"x-ray\",\"xywh\":\"\",\"image\":\"https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json\",\"section\":\"\",\"rotation\":\"\"}]' styling='togglelayers: true;'></iiif-storyboard>",
+        "description": "Storyboard where custom layers are set in the storyboard tag.",
+        "title": "Annotation with custom layers"
+      },
+      {
+        "board": "<iiif-multistoryboard annotationurls='https://ncsu-libraries.github.io/annona/webannotations/mc00084-001-te0159-000-001-0001-list.json;https://ncsu-libraries.github.io/annona/webannotations/ua023-015-003-bx0002-004-026-list.json' styling='matchclick: true;'></iiif-multistoryboard>",
+        "description": "Multistoryboard with two annotations where the setting matchclick is enabled.",
+        "title": "Multistoryboard with two annotations"
+      }
+    ],
+    "label": "Example storybord",
+    "type": "storyboardlist"
+  }

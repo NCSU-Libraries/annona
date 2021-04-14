@@ -309,6 +309,9 @@ $phonetoolbarfontsize: .79rem;
   padding: 2.5px 0px;
 }
 
+.content .tagslist {
+  display: grid;
+}
 #fullimage {
   width: 49%;
   vertical-align: middle;
@@ -392,7 +395,7 @@ figcaption {
 .tagscheck {
   vertical-align: middle;
 }
-.iiifannotation .tags div, .tags div div{
+.iiifannotation .tags div, .tags div{
   height: auto;
   font-size: 20px;
   line-height: auto;
@@ -629,7 +632,12 @@ figcaption {
   cursor: pointer;
   font: inherit;
   display: flex;
-  align-items:center;
+  text-align: left;
+  align-items: center;
+}
+
+.title .buttonlink{
+  text-decoration: none;
 }
 
 .buttonlink img{
@@ -823,3 +831,18 @@ table tr {
   display: block!important;
   padding-left: 10px;
 }
+
+.rangefullpage {
+  background-color: black;
+}
+.rangefullpage .iiifannotation {
+  overflow: auto;
+  height: 100%;
+  background-color: white;
+}
+
+.imageview.pageButton {
+  top: 5em;
+  color: black;
+}
+

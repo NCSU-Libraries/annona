@@ -38,7 +38,6 @@ describe('Component', () => {
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
       expect(wrapper.isws).toBe(undefined)
-      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-left\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-right\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
       expect(data.stylingstring).toEqual("autorun_interval:3;title:十二類絵巻: 1;")
@@ -71,7 +70,6 @@ describe('Component', () => {
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
       expect(data.isws).toBe("")
-      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-right\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-left\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
       expect(data.stylingstring).toEqual("autorun_interval:3;title:A Profound Warrior For Us All;")
@@ -104,7 +102,6 @@ describe('Component', () => {
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
       expect(data.isws).toBe("wss://echo")
-      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-right\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-left\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
       expect(data.stylingstring).toEqual("autorun_interval:4;panorzoom:pan;title:A Profound Warrior For Us All;")
@@ -135,7 +132,6 @@ describe('Component', () => {
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.buttons).toEqual({"anno": "<i class=\"fas fa-file-alt\"></i>", "autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "keyboard": "<i class=\"fas fa-keyboard\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"});
       expect(sbd.settings).toEqual({"autorun_interval": 4, "panorzoom": "pan", "title": "A Profound Warrior For Us All", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
@@ -144,7 +140,124 @@ describe('Component', () => {
       expect(sbd.imageinfo).toEqual({"label": "Manifest information", "text": ""});
       expect(sbd.imagetitle).toBe("A Profound Warrior For Us All");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7/info.json"}, {"checked": false, "label": "View from Arles", "opacity": 0, "rotation": 0, "section": "", "tile": "https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json", "xywh": ["200", "200", "4750", "6513"]}]);
-      expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "layers": {"icon": "<i class=\"fas fa-layer-group\"></i>", "label": "Layers", "shortcut": ["l", "5"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "transcription": {"icon": "<i class=\"fas fa-file-alt\"></i>", "label": "Toggle between transcription/annotation", "shortcut": ["a", "/"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      expect(sbd.shortcuts).toEqual({
+        "autorun": {
+          "icon": "<i class=\"fas fa-magic\"></i>",
+          "label": "Auto Run",
+          "shortcut": [
+            "b",
+            "1"
+          ]
+        },
+        "close": {
+          "icon": "<i class=\"fas fa-times\"></i>",
+          "label": "Close",
+          "shortcut": [
+            "x",
+            "6"
+          ]
+        },
+        "fullscreen": {
+          "icon": "<i class=\"fas fa-expand\"></i>",
+          "label": "Fullscreen",
+          "shortcut": [
+            "alt+f",
+            ";"
+          ]
+        },
+        "hide": {
+          "icon": "<i class=\"fas fa-caret-up\"></i>",
+          "label": "Collapse text",
+          "shortcut": [
+            "c",
+            "7"
+          ]
+        },
+        "home": {
+          "icon": "<i class=\"fas fa-home\"></i>",
+          "label": "Home",
+          "shortcut": [
+            "h",
+            "0"
+          ]
+        },
+        "info": {
+          "icon": "<i class=\"fas fa-info-circle\"></i>",
+          "label": "Info Button",
+          "shortcut": [
+            "i",
+            "2"
+          ]
+        },
+        "layers": {
+          "icon": "<i class=\"fas fa-layer-group\"></i>",
+          "label": "Layers",
+          "shortcut": [
+            "l",
+            "5"
+          ]
+        },
+        "next": {
+          "icon": "<i class=\"fa fa-arrow-right\"></i>",
+          "label": "Next",
+          "shortcut": [
+            "n",
+            ".",
+            "shift+right"
+          ]
+        },
+        "overlay": {
+          "icon": "<i class=\"fas fa-toggle-on\"></i>",
+          "label": "Toggle",
+          "shortcut": [
+            "o",
+            "4"
+          ]
+        },
+        "prev": {
+          "icon": "<i class=\"fa fa-arrow-left\"></i>",
+          "label": "Previous",
+          "shortcut": [
+            "p",
+            ",",
+            "shift+left"
+          ]
+        },
+        "shortcut": {
+          "icon": "<i class=\"fas fa-keyboard\"></i>",
+          "label": "Keyboard Shortcuts",
+          "shortcut": [
+            "s",
+            "8"
+          ]
+        },
+        "transcription": {
+          "icon": "<i class=\"fas fa-file-alt\"></i>",
+          "label": "Toggle between transcription/annotation",
+          "shortcut": [
+            "a",
+            "/"
+          ]
+        },
+        "zoomin": {
+          "icon": "<i class=\"fas fa-search-plus\"></i>",
+          "label": "Zoom In",
+          "shortcut": [
+            "z",
+            "+",
+            "shift+up"
+          ]
+        },
+        "zoomout": {
+          "icon": "<i class=\"fas fa-search-minus\"></i>",
+          "label": "Zoom Out",
+          "shortcut": [
+            "m",
+            "-",
+            "shift+down"
+          ]
+        }
+      });
       wrapper.destroy()
     })
 
@@ -161,7 +274,6 @@ describe('Component', () => {
       var data = wrapper.vm.$data
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
-      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-right\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-left\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
       expect(data.stylingstring).toEqual("autorun_interval:3;title:Technician Basketball Special, November 1991: Text of this page (word level);")
@@ -189,7 +301,6 @@ describe('Component', () => {
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.buttons).toEqual({"anno": "<i class=\"fas fa-file-alt\"></i>", "autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "keyboard": "<i class=\"fas fa-keyboard\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"});
       expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Technician Basketball Special, November 1991: Text of this page (word level)", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
@@ -198,7 +309,319 @@ describe('Component', () => {
       expect(sbd.imageinfo).toEqual({"label": "Manifest information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest\" target=\"_blank\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest</a></div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"attribution\"><b>Attribution: </b>Technician (Raleigh, N.C.) (LH1 .N6 T4), Special Collections Research Center at NC State University Libraries</div><div id=\"license\"><b>License: </b>https://d.lib.ncsu.edu/collections/about#rights_and_use</div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"Creator\"><b>Creator: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog?f%5Bnames_facet%5D%5B%5D=Technician+%28Raleigh%2C+N.C.%29\">Technician (Raleigh, N.C.)</a> (Publisher)</span></div><div id=\"Created Date\"><b>Created Date: </b>1991-11</div><div id=\"URL\"><b>URL: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11</a></span></div><div id=\"\"></b><span><a title=\"IIIF drag &amp; drop\" href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11?manifest=https%3A%2F%2Fd.lib.ncsu.edu%2Fcollections%2Fcatalog%2Ftechnician-basketballspecial-1991-11%2Fmanifest.json\">IIIF drag &amp; drop</a> (<a href=\"https://d.lib.ncsu.edu/collections/about-iiif\">About IIIF</a>)</span></div>"});
       expect(sbd.imagetitle).toBe("Technician Basketball Special, November 1991: Text of this page (word level)");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://iiif.lib.ncsu.edu/iiif/segIns_023/318,499,2891,3339/1200,/0/default.jpg"}]);
-      expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      expect(sbd.shortcuts).toEqual({
+        "autorun": {
+          "icon": "<i class=\"fas fa-magic\"></i>",
+          "label": "Auto Run",
+          "shortcut": [
+            "b",
+            "1"
+          ]
+        },
+        "close": {
+          "icon": "<i class=\"fas fa-times\"></i>",
+          "label": "Close",
+          "shortcut": [
+            "x",
+            "6"
+          ]
+        },
+        "fullscreen": {
+          "icon": "<i class=\"fas fa-expand\"></i>",
+          "label": "Fullscreen",
+          "shortcut": [
+            "alt+f",
+            ";"
+          ]
+        },
+        "hide": {
+          "icon": "<i class=\"fas fa-caret-up\"></i>",
+          "label": "Collapse text",
+          "shortcut": [
+            "c",
+            "7"
+          ]
+        },
+        "home": {
+          "icon": "<i class=\"fas fa-home\"></i>",
+          "label": "Home",
+          "shortcut": [
+            "h",
+            "0"
+          ]
+        },
+        "info": {
+          "icon": "<i class=\"fas fa-info-circle\"></i>",
+          "label": "Info Button",
+          "shortcut": [
+            "i",
+            "2"
+          ]
+        },
+        "next": {
+          "icon": "<i class=\"fa fa-arrow-right\"></i>",
+          "label": "Next",
+          "shortcut": [
+            "n",
+            ".",
+            "shift+right"
+          ]
+        },
+        "nextanno": {
+          "icon": "<i class=\"fa fa-chevron-right\"></i>",
+          "label": "Next Annotation",
+          "shortcut": [
+            "alt+n",
+            "alt+.",
+            "alt+right"
+          ]
+        },
+        "overlay": {
+          "icon": "<i class=\"fas fa-toggle-on\"></i>",
+          "label": "Toggle",
+          "shortcut": [
+            "o",
+            "4"
+          ]
+        },
+        "prev": {
+          "icon": "<i class=\"fa fa-arrow-left\"></i>",
+          "label": "Previous",
+          "shortcut": [
+            "p",
+            ",",
+            "shift+left"
+          ]
+        },
+        "prevanno": {
+          "icon": "<i class=\"fa fa-chevron-left\"></i>",
+          "label": "Previous Annotation",
+          "shortcut": [
+            "alt+p",
+            "alt+,",
+            "alt+left"
+          ]
+        },
+        "shortcut": {
+          "icon": "<i class=\"fas fa-keyboard\"></i>",
+          "label": "Keyboard Shortcuts",
+          "shortcut": [
+            "s",
+            "8"
+          ]
+        },
+        "zoomin": {
+          "icon": "<i class=\"fas fa-search-plus\"></i>",
+          "label": "Zoom In",
+          "shortcut": [
+            "z",
+            "+",
+            "shift+up"
+          ]
+        },
+        "zoomout": {
+          "icon": "<i class=\"fas fa-search-minus\"></i>",
+          "label": "Zoom Out",
+          "shortcut": [
+            "m",
+            "-",
+            "shift+down"
+          ]
+        }
+      });
+      wrapper.destroy()
+    })
+    test('test list of storyboardtags', async ()  => {
+      const wrapper =  mount(rangestoryboard,{
+        propsData: {
+          rangeurl: 'storyboardlist.json',
+          styling: 'toggleoverlay:true;'
+        },
+        attachTo: '#root'
+      });
+      
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      expect(data.tags).toBe(false)
+      expect(data.layerslist).toBe(false)
+      expect(data.range).toBe(true)
+      expect(data.toctitle).toEqual("Range Pages")
+      expect(data.stylingstring).toEqual("toggleoverlay:true;autorun_interval:3;title:Bayeux Tapestry test;fit: horizontal;")
+      expect(data.annotationurl).toEqual({"annotationurl": "https://storiiies.cogapp.com/holbein/annotations/list.json", "manifesturl": "https://storiiies.cogapp.com/holbein/manifest.json", "styling": "fit: horizontal;","tag": "iiif-storyboard","title": "Bayeux Tapestry test"})
+      expect(data.position).toEqual(0)
+      expect(data.prevPageInactive).toBe(true)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('storyboardlist.json')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.toc).toEqual([{"description": undefined, "label": "Bayeux Tapestry test", "position": 0, "thumbnail": undefined}, {"description": undefined, "label": "jsonexample", "position": 1, "thumbnail": undefined}, {"description": undefined, "label": "Page 3", "position": 2, "thumbnail": undefined}, {"description": undefined, "label": "multistoryboard test", "position": 3, "thumbnail": undefined}, {"description": undefined, "label": "layers test", "position": 4, "thumbnail": undefined}])
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("");
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var sbd = wrapper.vm.$children[0];
+      expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
+      expect(sbd.position).toBe(-1);
+      expect(sbd.seadragonid).toBe("list_storyboard");
+      expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
+      expect(sbd.currentanno).toBe("");
+      expect(sbd.transcription).toBe(undefined);
+      expect(sbd.textposition).toBe("corner");
+      expect(sbd.prev_inactive).toBe(true);
+      expect(sbd.next_inactive).toBe(false);
+      expect(sbd.toolbar_id).toBe("");
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.shown).toBe(false);
+      expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
+      expect(sbd.isautorunning).toBe("");
+      expect(sbd.settings).toEqual({"autorun_interval": 3, "fit": "horizontal", "title": "Bayeux Tapestry test", "toggleoverlay": true, "truncate_length": 2});
+      expect(sbd.currentlang).toBe("");
+      expect(sbd.languages).toEqual([]);
+      expect(sbd.fullscreen).toBe(false);
+      expect(sbd.tagslist).toEqual({});
+      expect(sbd.imageinfo).toEqual({"label": "Image information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div>"});
+      expect(sbd.imagetitle).toBe("Bayeux Tapestry test");
+      expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://images.cogapp.com/iiif/holbein_big_p.tif/info.json"}]);
+      expect(sbd.shortcuts).toEqual({
+        "autorun": {
+          "icon": "<i class=\"fas fa-magic\"></i>",
+          "label": "Auto Run",
+          "shortcut": [
+            "b",
+            "1"
+          ]
+        },
+        "close": {
+          "icon": "<i class=\"fas fa-times\"></i>",
+          "label": "Close",
+          "shortcut": [
+            "x",
+            "6"
+          ]
+        },
+        "fullscreen": {
+          "icon": "<i class=\"fas fa-expand\"></i>",
+          "label": "Fullscreen",
+          "shortcut": [
+            "alt+f",
+            ";"
+          ]
+        },
+        "hide": {
+          "icon": "<i class=\"fas fa-caret-up\"></i>",
+          "label": "Collapse text",
+          "shortcut": [
+            "c",
+            "7"
+          ]
+        },
+        "home": {
+          "icon": "<i class=\"fas fa-home\"></i>",
+          "label": "Home",
+          "shortcut": [
+            "h",
+            "0"
+          ]
+        },
+        "info": {
+          "icon": "<i class=\"fas fa-info-circle\"></i>",
+          "label": "Info Button",
+          "shortcut": [
+            "i",
+            "2"
+          ]
+        },
+        "next": {
+          "icon": "<i class=\"fa fa-arrow-right\"></i>",
+          "label": "Next",
+          "shortcut": [
+            "n",
+            ".",
+            "shift+right"
+          ]
+        },
+        "nextanno": {
+          "icon": "<i class=\"fa fa-chevron-right\"></i>",
+          "label": "Next Annotation",
+          "shortcut": [
+            "alt+n",
+            "alt+.",
+            "alt+right"
+          ]
+        },
+        "overlay": {
+          "icon": "<i class=\"fas fa-toggle-on\"></i>",
+          "label": "Toggle",
+          "shortcut": [
+            "o",
+            "4"
+          ]
+        },
+        "prev": {
+          "icon": "<i class=\"fa fa-arrow-left\"></i>",
+          "label": "Previous",
+          "shortcut": [
+            "p",
+            ",",
+            "shift+left"
+          ]
+        },
+        "prevanno": {
+          "icon": "<i class=\"fa fa-chevron-left\"></i>",
+          "label": "Previous Annotation",
+          "shortcut": [
+            "alt+p",
+            "alt+,",
+            "alt+left"
+          ]
+        },
+        "shortcut": {
+          "icon": "<i class=\"fas fa-keyboard\"></i>",
+          "label": "Keyboard Shortcuts",
+          "shortcut": [
+            "s",
+            "8"
+          ]
+        },
+        "transcription": {
+          "icon": "<i class=\"fas fa-file-alt\"></i>",
+          "label": "Toggle between transcription/annotation",
+          "shortcut": [
+            "a",
+            "/"
+          ]
+        },
+        "zoomin": {
+          "icon": "<i class=\"fas fa-search-plus\"></i>",
+          "label": "Zoom In",
+          "shortcut": [
+            "z",
+            "+",
+            "shift+up"
+          ]
+        },
+        "zoomout": {
+          "icon": "<i class=\"fas fa-search-minus\"></i>",
+          "label": "Zoom Out",
+          "shortcut": [
+            "m",
+            "-",
+            "shift+down"
+          ]
+        }
+      });
+      wrapper.vm.nextItemRange('next');
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      expect(data.stylingstring).toEqual("toggleoverlay:true;autorun_interval:3;title:jsonexample;toggleoverlay:false;")
+      expect(data.annotationurl).toEqual({"annotationurl": "", "jsonanno": {"on": {"@id": "https://wellcomelibrary.org/iiif/b1948799x/canvas/c0#xywh=310,1250,1850,1180", "@type": "sc:Canvas", "within": {"@id": "https://wellcomelibrary.org/iiif/b1948799x/manifest", "@type": "sc:Manifest"}}, "resource": {"@type": "cnt:ContentAsText", "chars": "Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A.", "format": "text/plain"}}, "styling": "toggleoverlay:false;", "tag": "iiif-storyboard", "title": "jsonexample"})
+      expect(data.position).toEqual(1)
+      expect(data.prevPageInactive).toBe(false)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('storyboardlist.json')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("");
       wrapper.destroy()
     })
 
@@ -215,7 +638,6 @@ describe('Component', () => {
       var data = wrapper.vm.$data
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
-      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-right\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-left\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
       expect(data.stylingstring).toEqual("autorun_interval:3;title:Holbein's 'The Ambassadors': The Ambassadors;")
@@ -245,7 +667,6 @@ describe('Component', () => {
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.buttons).toEqual({"anno": "<i class=\"fas fa-file-alt\"></i>", "autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "keyboard": "<i class=\"fas fa-keyboard\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"});
       expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Holbein's 'The Ambassadors': The Ambassadors", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
@@ -254,7 +675,116 @@ describe('Component', () => {
       expect(sbd.imageinfo).toEqual({"label": "Image information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div>"});
       expect(sbd.imagetitle).toBe("Holbein's 'The Ambassadors': The Ambassadors");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://images.cogapp.com/iiif/holbein_big_p.tif/info.json"}]);
-      expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      expect(sbd.shortcuts).toEqual({
+        "autorun": {
+          "icon": "<i class=\"fas fa-magic\"></i>",
+          "label": "Auto Run",
+          "shortcut": [
+            "b",
+            "1"
+          ]
+        },
+        "close": {
+          "icon": "<i class=\"fas fa-times\"></i>",
+          "label": "Close",
+          "shortcut": [
+            "x",
+            "6"
+          ]
+        },
+        "fullscreen": {
+          "icon": "<i class=\"fas fa-expand\"></i>",
+          "label": "Fullscreen",
+          "shortcut": [
+            "alt+f",
+            ";"
+          ]
+        },
+        "hide": {
+          "icon": "<i class=\"fas fa-caret-up\"></i>",
+          "label": "Collapse text",
+          "shortcut": [
+            "c",
+            "7"
+          ]
+        },
+        "home": {
+          "icon": "<i class=\"fas fa-home\"></i>",
+          "label": "Home",
+          "shortcut": [
+            "h",
+            "0"
+          ]
+        },
+        "info": {
+          "icon": "<i class=\"fas fa-info-circle\"></i>",
+          "label": "Info Button",
+          "shortcut": [
+            "i",
+            "2"
+          ]
+        },
+        "next": {
+          "icon": "<i class=\"fa fa-arrow-right\"></i>",
+          "label": "Next",
+          "shortcut": [
+            "n",
+            ".",
+            "shift+right"
+          ]
+        },
+        "overlay": {
+          "icon": "<i class=\"fas fa-toggle-on\"></i>",
+          "label": "Toggle",
+          "shortcut": [
+            "o",
+            "4"
+          ]
+        },
+        "prev": {
+          "icon": "<i class=\"fa fa-arrow-left\"></i>",
+          "label": "Previous",
+          "shortcut": [
+            "p",
+            ",",
+            "shift+left"
+          ]
+        },
+        "shortcut": {
+          "icon": "<i class=\"fas fa-keyboard\"></i>",
+          "label": "Keyboard Shortcuts",
+          "shortcut": [
+            "s",
+            "8"
+          ]
+        },
+        "transcription": {
+          "icon": "<i class=\"fas fa-file-alt\"></i>",
+          "label": "Toggle between transcription/annotation",
+          "shortcut": [
+            "a",
+            "/"
+          ]
+        },
+        "zoomin": {
+          "icon": "<i class=\"fas fa-search-plus\"></i>",
+          "label": "Zoom In",
+          "shortcut": [
+            "z",
+            "+",
+            "shift+up"
+          ]
+        },
+        "zoomout": {
+          "icon": "<i class=\"fas fa-search-minus\"></i>",
+          "label": "Zoom Out",
+          "shortcut": [
+            "m",
+            "-",
+            "shift+down"
+          ]
+        }
+      });
       wrapper.destroy()
     })
     
@@ -271,7 +801,6 @@ describe('Component', () => {
       var data = wrapper.vm.$data
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
-      expect(data.buttons).toEqual({"autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "next": "<i class=\"fas fa-chevron-right\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "prev": "<i class=\"fas fa-chevron-left\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"})
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
       expect(data.stylingstring).toEqual("autorun_interval:3;title:Cunard Line - to all parts of the world: Object image 0;")
@@ -298,7 +827,6 @@ describe('Component', () => {
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.buttons).toEqual({"anno": "<i class=\"fas fa-file-alt\"></i>", "autorunbutton": "<i class=\"fas fa-magic\"></i>", "expandbutton": "<i class=\"fas fa-expand\"></i>", "hide_button": "<i class=\"fas fa-caret-up\"></i>", "info": "<i class=\"fas fa-info-circle\"></i>", "keyboard": "<i class=\"fas fa-keyboard\"></i>", "layer": "<i class=\"fas fa-layer-group\"></i>", "overlaybutton": "<i class=\"fas fa-toggle-on\"></i>", "playpause": "<i class=\"fas fa-play\"></i>", "tags": "<i class=\"fas fa-tag\"></i>"});
       expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Cunard Line - to all parts of the world: Object image 0", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
@@ -307,7 +835,108 @@ describe('Component', () => {
       expect(sbd.imageinfo).toEqual({"label": "Manifest information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://stephenwf.github.io/ocean-liners.json\" target=\"_blank\">https://stephenwf.github.io/ocean-liners.json</a></div><div id=\"title\"><b>Title: </b>Cunard Line - to all parts of the world</div><div id=\"Museum number\"><b>Museum number: </b>E.1829-2004</div><div id=\"title\"><b>Title: </b>Cunard Line - to all parts of the world</div><div id=\"Descriptive Line\"><b>Descriptive Line: </b>Chromolithograph travel poster for \"Cunard Line - to all parts of the world\", depicting a cross section of the Aquitania at sea, printed by Thos. Forman & Sons, Nottingham, ca. 1920.</div><div id=\"Collection\"><b>Collection: </b>PDP</div><div id=\"Place\"><b>Place: </b>Nottingham (printed)</div><div id=\"Materials & Techniques\"><b>Materials & Techniques: </b>chromolithograph</div><div id=\"Date\"><b>Date: </b>ca. 1920 (made)</div><div id=\"Categories\"><b>Categories: </b>Posters;Boats and ships;Tourism & Travel</div><div id=\"Description\"><b>Description: </b>Chromolithograph travel poster for \"Cunard Line - to all parts of the world\", depicting a cross section of the Aquitania at sea, printed by Thos. Forman & Sons, Nottingham, ca. 1920.</div>"});
       expect(sbd.imagetitle).toBe("Cunard Line - to all parts of the world: Object image 0");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://framemark.vam.ac.uk/collections/2013GU2911/info.json", "xywh": ""}]);
-      expect(sbd.shortcuts).toEqual({"autorun": {"icon": "<i class=\"fas fa-magic\"></i>", "label": "Auto Run", "shortcut": ["b", "1"]}, "close": {"icon": "<i class=\"fas fa-times\"></i>", "label": "Close", "shortcut": ["x", "6"]}, "fullscreen": {"icon": "<i class=\"fas fa-expand\"></i>", "label": "Fullscreen", "shortcut": ["alt+f", ";"]}, "hide": {"icon": "<i class=\"fas fa-caret-up\"></i>", "label": "Collapse text", "shortcut": ["c", "7"]}, "home": {"icon": "<i class=\"fas fa-home\"></i>", "label": "Home", "shortcut": ["h", "0"]}, "info": {"icon": "<i class=\"fas fa-info-circle\"></i>", "label": "Info Button", "shortcut": ["i", "2"]}, "next": {"icon": "<i class=\"fa fa-arrow-right\"></i>", "label": "Next", "shortcut": ["n", ".", "shift+right"]}, "nextanno": {"icon": "<i class=\"fa fa-chevron-right\"></i>", "label": "Next Annotation", "shortcut": ["alt+n", "alt+.", "alt+right"]}, "overlay": {"icon": "<i class=\"fas fa-toggle-on\"></i>", "label": "Toggle", "shortcut": ["o", "4"]}, "prev": {"icon": "<i class=\"fa fa-arrow-left\"></i>", "label": "Previous", "shortcut": ["p", ",", "shift+left"]}, "prevanno": {"icon": "<i class=\"fa fa-chevron-left\"></i>", "label": "Previous Annotation", "shortcut": ["alt+p", "alt+,", "alt+left"]}, "shortcut": {"icon": "<i class=\"fas fa-keyboard\"></i>", "label": "Keyboard Shortcuts", "shortcut": ["s", "8"]}, "zoomin": {"icon": "<i class=\"fas fa-search-plus\"></i>", "label": "Zoom In", "shortcut": ["z", "+", "shift+up"]}, "zoomout": {"icon": "<i class=\"fas fa-search-minus\"></i>", "label": "Zoom Out", "shortcut": ["m", "-", "shift+down"]}});
+      expect(sbd.shortcuts).toEqual({
+        "autorun": {
+          "icon": "<i class=\"fas fa-magic\"></i>",
+          "label": "Auto Run",
+          "shortcut": [
+            "b",
+            "1"
+          ]
+        },
+        "close": {
+          "icon": "<i class=\"fas fa-times\"></i>",
+          "label": "Close",
+          "shortcut": [
+            "x",
+            "6"
+          ]
+        },
+        "fullscreen": {
+          "icon": "<i class=\"fas fa-expand\"></i>",
+          "label": "Fullscreen",
+          "shortcut": [
+            "alt+f",
+            ";"
+          ]
+        },
+        "hide": {
+          "icon": "<i class=\"fas fa-caret-up\"></i>",
+          "label": "Collapse text",
+          "shortcut": [
+            "c",
+            "7"
+          ]
+        },
+        "home": {
+          "icon": "<i class=\"fas fa-home\"></i>",
+          "label": "Home",
+          "shortcut": [
+            "h",
+            "0"
+          ]
+        },
+        "info": {
+          "icon": "<i class=\"fas fa-info-circle\"></i>",
+          "label": "Info Button",
+          "shortcut": [
+            "i",
+            "2"
+          ]
+        },
+        "next": {
+          "icon": "<i class=\"fa fa-arrow-right\"></i>",
+          "label": "Next",
+          "shortcut": [
+            "n",
+            ".",
+            "shift+right"
+          ]
+        },
+        "overlay": {
+          "icon": "<i class=\"fas fa-toggle-on\"></i>",
+          "label": "Toggle",
+          "shortcut": [
+            "o",
+            "4"
+          ]
+        },
+        "prev": {
+          "icon": "<i class=\"fa fa-arrow-left\"></i>",
+          "label": "Previous",
+          "shortcut": [
+            "p",
+            ",",
+            "shift+left"
+          ]
+        },
+        "shortcut": {
+          "icon": "<i class=\"fas fa-keyboard\"></i>",
+          "label": "Keyboard Shortcuts",
+          "shortcut": [
+            "s",
+            "8"
+          ]
+        },
+        "zoomin": {
+          "icon": "<i class=\"fas fa-search-plus\"></i>",
+          "label": "Zoom In",
+          "shortcut": [
+            "z",
+            "+",
+            "shift+up"
+          ]
+        },
+        "zoomout": {
+          "icon": "<i class=\"fas fa-search-minus\"></i>",
+          "label": "Zoom Out",
+          "shortcut": [
+            "m",
+            "-",
+            "shift+down"
+          ]
+        }
+      });
       wrapper.destroy()
     })
 })

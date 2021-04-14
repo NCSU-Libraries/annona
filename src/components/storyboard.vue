@@ -1,6 +1,6 @@
 <template>
 <div id="storyboard_viewer" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
-  <div style="position:relative; display:flex" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
+  <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <span id="header_toolbar" v-if="!$parent.multi && !settings.hide_toolbar" v-bind:class="[settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu' : 'default_menu']">
         <button v-if="shortcuts['autorun']" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="sendMessage({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
@@ -48,7 +48,8 @@
           <span class="toolbartext">Toggle keyboard shortcuts</span>
         </button>
         <button v-hotkey="shortcuts['fullscreen']['shortcut']" v-if="shortcuts['fullscreen']" v-on:click="sendMessage(({'function': 'toggle_fullscreen', 'args': ''}));"  id="fullScreenButton" class="toolbarButton">
-          <span v-html="buttons.expandbutton"></span>
+          <span v-if="!fullscreen" v-html="buttons.expand"></span>
+          <span v-else v-html="buttons.compress"></span>
           <span class="toolbartext">Toggle fullscreen</span>
         </button>
       </span>
@@ -98,8 +99,8 @@
         </table>
       </div>
       <div id="tags" v-if="shown == 'tags'" class="content">
-        <div v-for="(groupval, groupkey) in groupTagDict" v-bind:key="groupkey" class="tags">
-          <div class="taggroup" v-if="groupkey" v-bind:id="groupkey + '_tags'" >
+        <div v-for="(groupval, groupkey) in groupTagDict" v-bind:key="groupkey" class="tagslist">
+          <div class="taggroup tags" v-if="groupkey" v-bind:id="groupkey + '_tags'">
             <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'checksubgrouptags', 'args': groupkey });" v-model="groupval.checked">
             <div class="countkey">
             {{groupkey}}
@@ -108,7 +109,7 @@
             </span>
             </div>
           </div>
-          <div v-bind:class="{ 'subtags' : groupkey }" v-for="tagdict in groupval.tags" v-bind:id="tagdict.key + '_tags'" v-bind:key="tagdict.key" >
+          <div v-bind:class="{ 'subtags' : groupkey }" class="tags" v-for="tagdict in groupval.tags" v-bind:id="tagdict.key + '_tags'" v-bind:key="tagdict.key" >
             <input type="checkbox" class="tagscheck" v-on:click="sendMessage({'function': 'hideshowalltags', 'args': tagdict.key });" v-model="tagdict.checked">
             <div class="countkey">
             {{tagdict.label}}
@@ -124,13 +125,12 @@
         <span v-if="!booleanitems.isexcerpt">
           <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="settings.additionalinfo">{{settings.additionalinfotitle}}</button>
           <div v-if="booleanitems.additionalinfoshown" v-html="settings.additionalinfo" class="imageinfo"></div>
-          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="$parent.range && $parent.toc.length > 1">{{$parent.toctitle}}</button>
+          <button class="infolink buttonlink" v-on:click="sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="basecompontent.range && basecompontent.toc.length > 1">{{basecompontent.toctitle}}</button>
           <div v-if="booleanitems.tocshown" class="tocinfo">
-            <div v-for="toc in $parent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
-              
+            <div v-for="(toc, index) in basecompontent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
               <div class="title">
-                <button class="buttonlink" v-on:click="$parent.nextItemRange(toc.position);">
-                  <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail">{{toc.label}}
+                <button class="buttonlink" v-on:click="basecompontent.nextItemRange(toc.position);">
+                  <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail" style="max-width: 30px;">{{index+1}}. {{toc.label}}
                 </button>
               </div>
               <div class="additionaltext" v-html="toc.description" v-if="toc.description"></div>
@@ -218,18 +218,7 @@ export default {
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
       isautorunning: '',
-      buttons: {
-        'autorunbutton': '<i class="fas fa-magic"></i>',
-        'overlaybutton': '<i class="fas fa-toggle-on"></i>',
-        'expandbutton' : '<i class="fas fa-expand"></i>',
-        'hide_button' : '<i class="fas fa-caret-up"></i>',
-        'playpause': '<i class="fas fa-play"></i>',
-        'tags': '<i class="fas fa-tag"></i>',
-        'info': '<i class="fas fa-info-circle"></i>',
-        'layer': '<i class="fas fa-layer-group"></i>',
-        'keyboard': '<i class="fas fa-keyboard"></i>',
-        'anno': '<i class="fas fa-file-alt"></i>'
-      },
+      buttons: JSON.parse(JSON.stringify(shared.buttons)),
       settings: {},
       currentlang: '',
       languages: [],
@@ -239,12 +228,14 @@ export default {
       imageinfo: {'text': '', 'label': 'Manifest information'},
       imagetitle: '',
       layerslist: [],
-      shortcuts: {}
+      shortcuts: {},
+      basecompontent: ''
     }
   },
   created() {
-    if(this.$parent.range) {
-      this.fullscreenChange(this.$parent.isfullscreen);
+    this.basecompontent = this.$parent;
+    if (this.basecompontent && this.basecompontent.range && !this.$parent.multi){
+      this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
     }
     var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
@@ -266,6 +257,14 @@ export default {
       this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
       if ((newVal['anno'] == '' && newVal['transcription'] == '') || (this.settings.hide_annotationtext)){
         this.shown = false;
+      }
+    },
+    buttons: {
+      deep: true,
+      handler: function(){
+        if (this.$parent.multi){
+          this.$parent.buttons = this.buttons;
+        }
       }
     }
   },
@@ -358,9 +357,11 @@ export default {
       this.booleanitems.istranscription = this.settings.transcription && !this.settings.textfirst ? true : false;
       if (this.$parent.multi) {
         Object.keys(this.tagslist).length > 0 ? this.$parent.tags = true : '';
-        this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent)
+        this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent);
+        this.shortcuts = this.$parent.shortcuts;
+      } else {
+        this.shortcuts = shared.keyboardShortcuts('storyboard', this);
       }
-      this.shortcuts = shared.keyboardShortcuts('storyboard', this);
     },
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
@@ -922,7 +923,8 @@ export default {
     },
     //go to specified area on OpenSeadragon viewer
     goToArea: function(rect){
-      var xywh = this.currentanno['section'][0].split(",");
+      const currentanno = Array.isArray(this.currentanno) ? this.currentanno[0] : this.currentanno;
+      var xywh = currentanno['section'][0].split(",");
       var isFull = xywh.join("") == 'full';
       rect['height'] == 0 && rect['width'] == 0 ? rect['height'] = .001 : '';
       if (isFull){
@@ -941,7 +943,7 @@ export default {
     },
     //toggle fullscreen button
     toggle_fullscreen: function(){
-      var element = this.$parent.range ? this.$parent.$el : this.$el;
+      var element = this.basecompontent.range ? this.basecompontent.$el : this.$el;
       this.$fullscreen.toggle(element, {
         wrap: false,
         callback: this.fullscreenChange
@@ -962,14 +964,9 @@ export default {
     },
     //on fullscreen change toggle button and set value;
     fullscreenChange (fullscreen) {
-      if(fullscreen){
-        this.buttons.expandbutton = '<i class="fas fa-compress"></i>';
-      } else {
-        this.buttons.expandbutton = '<i class="fas fa-expand"></i>';
-      }
       this.fullscreen = fullscreen;
-      if(this.$parent.range) {
-        this.$parent.updateFullScreen(fullscreen, this.buttons.expandbutton);
+      if(this.basecompontent.range) {
+        this.basecompontent.updateFullScreen(fullscreen);
       }
     },
     // Click of the next button, goes to section and load annotation data.
@@ -1166,16 +1163,20 @@ export default {
       return grouplist;
     },
     annoContent: function() {
-      var annocontent = ''
-      var transcriptcontent = ''
-      if (this.currentanno.constructor.name == Array) {
+      var annocontent = []
+      var transcriptcontent = []
+      if (Array.isArray(this.currentanno)) {
         for (var i=0; i<this.currentanno.length; i++){
           var multicreateContent = shared.createContent(this.currentanno[i], this.currentlang, true);
-          annocontent += multicreateContent['anno'];
-          annocontent += '<hr>';
-          transcriptcontent += multicreateContent['transcription'];
-          transcriptcontent += '<hr>';
+          if (multicreateContent['anno']){
+            annocontent.push(multicreateContent['anno']);
+          }
+          if (multicreateContent['transcription']) {
+            transcriptcontent.push(multicreateContent['transcription']);
+          }
         }
+        annocontent = annocontent.join("<hr>");
+        transcriptcontent = transcriptcontent.join("<hr>")
       } else {
         var createContent = shared.createContent(this.currentanno, this.currentlang, true);
         transcriptcontent = createContent['transcription'];
