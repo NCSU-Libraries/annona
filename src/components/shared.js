@@ -208,6 +208,7 @@ export default {
   canvasRegion: function(canvasId, ondict){
     var canvasRegion;
     var svg;
+    var ispct = false;
     if (ondict && ondict.selector) {
        var parser = this.selectorParser(ondict.selector);
        canvasRegion = parser['bounds'];
@@ -231,14 +232,22 @@ export default {
       }
       canvasId = this.getId(canvasId);
     }
-    if (canvasId && canvasId.indexOf("#xywh") > -1){
-      canvasRegion = canvasId.split("#")[1].split("=")[1];
-      canvasId = canvasId.split("#")[0];
+    if (canvasId){
+      if (canvasId.indexOf("#xywh") > -1 || canvasId.indexOf("#pct") > -1){
+        canvasRegion = canvasId.split("#")[1].split("=")[1];
+        if (canvasId.indexOf("#pct") > -1){
+          ispct = true;
+        }
+        canvasId = canvasId.split("#")[0];
+      }
     } 
     if (!canvasRegion || canvasRegion.trim() === '') {
       canvasRegion = "full";
     }
     canvasRegion != 'full' ? canvasRegion = canvasRegion.split(",").map(element => element.replace(/[^0-9.]/g, '')).join(",") : "";
+    if (ispct) {
+      canvasRegion = `pct,${canvasRegion}`
+    }
     return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion, 'svg': svg};
   },
   //get the manifest link from annotation;

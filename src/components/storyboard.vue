@@ -513,6 +513,11 @@ export default {
       tags = tags ? shared.tagsToClass(tags) : '';
       for (var jt=0; jt<annotation['section'].length; jt++){
         var xywh = annotation['section'][jt].split(",");
+        if (xywh[0].indexOf('pct') > -1){
+          const wh = this.viewer.world.getItemAt(0).getContentSize();
+          xywh = [(parseFloat(xywh[1])/100)*wh['x'], (parseFloat(xywh[2])/100)*wh['y'], (parseFloat(xywh[3])/100)*wh['x'], (parseFloat(xywh[4])/100)*wh['y']]
+          annotation['section'][jt] = xywh.join(",");
+        }
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         rect = xywh[0] == 'full' ? imagesize : rect;
