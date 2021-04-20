@@ -74,6 +74,14 @@
         <button id="transcription_button" class="annocontrols_button" v-if="hastranscription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
           <span v-html="buttons.anno"></span>
         </button>
+        <button v-hotkey="shortcuts['prev']['shortcut']" v-if="shortcuts['prev']" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="annocontrols_button">
+          <i class="fa fa-arrow-left"></i>
+          <span class="toolbartext">Previous Annotation</span>
+        </button>
+        <button v-hotkey="shortcuts['next']['shortcut']" v-if="shortcuts['next']" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="annocontrols_button">
+          <i class="fa fa-arrow-right"></i>
+          <span class="toolbartext">Next Annotation</span>
+        </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
       <div id="layers" v-if="shown == 'layer'" class="content">

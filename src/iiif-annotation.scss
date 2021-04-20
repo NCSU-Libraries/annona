@@ -13,10 +13,6 @@ $top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
 $annocontrolsize: 1rem;
 $sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*4}px);
 $phonetoolbarfontsize: .79rem;
-.inactive {
-  color: red;
-  pointer-events: none;
-}
 .toolbarButton {
   font-size: $toolbarfontsize;
   background-color: #F0F0F0;
@@ -243,6 +239,11 @@ $phonetoolbarfontsize: .79rem;
   padding: 3.5px;
   height: 1.5rem;
   cursor: pointer;
+}
+
+.inactive {
+  color: red;
+  pointer-events: none;
 }
 
 .pin > *:not(svg) {
