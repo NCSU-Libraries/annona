@@ -232,14 +232,12 @@ export default {
       }
       canvasId = this.getId(canvasId);
     }
-    if (canvasId){
-      if (canvasId.indexOf("#xywh") > -1){
-        canvasRegion = canvasId.split("#")[1].split("=")[1];
-        if (canvasId.indexOf("pct") > -1){
-          ispct = true;
-        }
-        canvasId = canvasId.split("#")[0];
+    if (canvasId && canvasId.indexOf("#xywh") > -1){
+      canvasRegion = canvasId.split("#")[1].split("=")[1];
+      if (canvasId.indexOf("pct") > -1){
+        ispct = true;
       }
+      canvasId = canvasId.split("#")[0];
     } 
     if (!canvasRegion || canvasRegion.trim() === '') {
       canvasRegion = "full";
