@@ -278,7 +278,7 @@ This annotation has the language set for each of the annotations in the annotati
 **This functionality has been depracated but can be recreated by the use the settings below**
 
 ```
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json" styling="startposition: 1; toggleoverlay: true; hidenext:true;"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json" styling="startposition: 1; toggleoverlay: true; hide_nextbuttons:true;"></iiif-storyboard>
 ```
 
-<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json" styling="startposition: 1; toggleoverlay: true;hidenext:true;"></iiif-storyboard>
+<iiif-storyboard annotationurl="https://dnoneill.github.io/annotate/annotations/qva4uqb6ncml7jyjq0er.json" styling="startposition: 1; toggleoverlay: true;hide_nextbuttons:true;"></iiif-storyboard>

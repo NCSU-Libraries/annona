@@ -59,20 +59,28 @@
         <button class="annocontrols_button" id="close_button" v-if="shortcuts['close']" v-on:click="shown = false; setDefaultButtons();" v-hotkey="shortcuts['close']['shortcut']">
           <i class="fas fa-times"></i>
         </button>
-        <button v-if="shortcuts['hide']" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': ''});">
+        <button v-if="shortcuts['hide']" v-hotkey="shortcuts['hide']['shortcut']" id="hide_button" class="annocontrols_button"  v-on:click="sendMessage({'function': 'hide', 'args': '','toolbar': true});">
           <span v-html="buttons.hide_button"></span>
         </button>
-        <button id="playpause_button" v-hotkey="shortcuts['playpause']['shortcut']" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': ''});" v-if="settings.tts && shortcuts['playpause']">
+        <button id="playpause_button" v-hotkey="shortcuts['playpause']['shortcut']" class="annocontrols_button" v-on:click="sendMessage({'function': 'playpause', 'args': '','toolbar': true});" v-if="settings.tts && shortcuts['playpause']">
           <span v-html="buttons.playpause"></span>
         </button>
-        <button id="tags_button" v-if="shortcuts['tags']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags'});">
+        <button id="tags_button" v-if="shortcuts['tags']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'tags','toolbar': true});">
           <span v-html="buttons.tags"></span>
         </button>
-        <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info'});">
+        <button id="info_button" v-if="(imageinfo || annoinfo.text) && shortcuts['info']" class="annocontrols_button" v-on:click="sendMessage({'function': 'clickButton', 'args': 'info','toolbar': true});">
           <span v-html="buttons.info"></span>
         </button>
-        <button id="transcription_button" class="annocontrols_button" v-if="hastranscription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription'});">
+        <button id="transcription_button" class="annocontrols_button" v-if="hastranscription && shortcuts['transcription']" v-hotkey="shortcuts['transcription']['shortcut']" v-on:click="sendMessage({'function': 'setShownData', 'args': booleanitems.istranscription ? 'anno' : 'transcription','toolbar': true});">
           <span v-html="buttons.anno"></span>
+        </button>
+        <button v-hotkey="shortcuts['prev']['shortcut']" v-if="shortcuts['prev']" id="previousButton" v-on:click="sendMessage({'function': 'next', 'args': 'prev','toolbar': true});" v-bind:class="{ 'inactive' : prev_inactive }" class="annocontrols_button">
+          <i class="fa fa-arrow-left"></i>
+          <span class="toolbartext">Previous Annotation</span>
+        </button>
+        <button v-hotkey="shortcuts['next']['shortcut']" v-if="shortcuts['next']" id="nextButton" v-on:click="sendMessage({'function': 'next', 'args': 'next','toolbar': true});" v-bind:class="{ 'inactive' : next_inactive }" class="annocontrols_button">
+          <i class="fa fa-arrow-right"></i>
+          <span class="toolbartext">Next Annotation</span>
         </button>
         <span class="lang-icon" id="lang_button" v-if="languages.length > 0"><select class="lang_drop" v-on:change="sendMessage({'function': 'changeLang', 'args': $event });" v-html="languages.join('')"></select></span>
       </span>
@@ -513,6 +521,11 @@ export default {
       tags = tags ? shared.tagsToClass(tags) : '';
       for (var jt=0; jt<annotation['section'].length; jt++){
         var xywh = annotation['section'][jt].split(",");
+        if (xywh[0].indexOf('pct') > -1){
+          const wh = this.viewer.world.getItemAt(0).getContentSize();
+          xywh = [(parseFloat(xywh[1])/100)*wh['x'], (parseFloat(xywh[2])/100)*wh['y'], (parseFloat(xywh[3])/100)*wh['x'], (parseFloat(xywh[4])/100)*wh['y']]
+          annotation['section'][jt] = xywh.join(",");
+        }
         var imagesize = this.viewer.world.getItemAt(0).getBounds();
         var rect = this.viewer.world.getItemAt(0).imageToViewportRectangle(parseInt(xywh[0]), parseInt(xywh[1]), parseInt(xywh[2]), parseInt(xywh[3]));
         rect = xywh[0] == 'full' ? imagesize : rect;
@@ -603,7 +616,12 @@ export default {
         e['shown'] = this.shown;
         this.socket.emit('broadcast', e);
       }
-      this[e['function']](e['args']);
+      if(this.$parent.multi && e['toolbar']){
+        e['toolbar'] = false;
+        this.$parent.multiButton(e)
+      } else {
+        this[e['function']](e['args']);
+      }
     },
     //Hide annotation if hide button pressed
     hide: function(){
