@@ -618,7 +618,7 @@ export default {
       }
       if(this.$parent.multi && e['toolbar']){
         e['toolbar'] = false;
-        this.$parent.multiButton(e)
+        this.$parent.multiButton(e);
       } else {
         this[e['function']](e['args']);
       }
