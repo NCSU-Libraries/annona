@@ -283,7 +283,440 @@ describe('Component', () => {
       expect(data.nextPageInactive).toBe(false)
       expect(data.rangeid).toBe('manifest')
       expect(data.isfullscreen).toBe(false)
-      expect(data.toc).toEqual([{"position":0,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg","description":""},{"position":1,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg","description":""},{"position":2,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg","description":""},{"position":1,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg","description":""},{"position":2,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg","description":""},{"position":3,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg","description":""},{"position":2,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg","description":""},{"position":3,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg","description":""},{"position":4,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg","description":""},{"position":3,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg","description":""},{"position":4,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg","description":""},{"position":5,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg","description":""},{"position":4,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg","description":""},{"position":5,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg","description":""},{"position":6,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg","description":""},{"position":5,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg","description":""},{"position":6,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg","description":""},{"position":7,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg","description":""},{"position":6,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg","description":""},{"position":7,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg","description":""},{"position":8,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg","description":""},{"position":7,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg","description":""},{"position":8,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg","description":""},{"position":9,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg","description":""},{"position":8,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg","description":""},{"position":9,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg","description":""},{"position":10,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg","description":""},{"position":9,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg","description":""},{"position":10,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg","description":""},{"position":11,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg","description":""},{"position":10,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg","description":""},{"position":11,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg","description":""},{"position":12,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg","description":""},{"position":11,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg","description":""},{"position":12,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg","description":""},{"position":13,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg","description":""},{"position":12,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg","description":""},{"position":13,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg","description":""},{"position":14,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg","description":""},{"position":13,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg","description":""},{"position":14,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg","description":""},{"position":15,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg","description":""},{"position":14,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg","description":""},{"position":15,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg","description":""},{"position":16,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg","description":""},{"position":15,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg","description":""},{"position":16,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg","description":""},{"position":17,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg","description":""},{"position":16,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg","description":""},{"position":17,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg","description":""},{"position":18,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg","description":""},{"position":17,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg","description":""},{"position":18,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg","description":""},{"position":19,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg","description":""},{"position":18,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg","description":""},{"position":19,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg","description":""},{"position":20,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg","description":""},{"position":19,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg","description":""},{"position":20,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg","description":""},{"position":21,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg","description":""},{"position":20,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg","description":""},{"position":21,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg","description":""},{"position":22,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg","description":""},{"position":21,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg","description":""},{"position":22,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg","description":""},{"position":23,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg","description":""},{"position":22,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg","description":""},{"position":23,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg","description":""},{"position":24,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg","description":""},{"position":23,"label":"Text of this page (word level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg","description":""},{"position":24,"label":"Text of this page (line level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg","description":""},{"position":25,"label":"Text of this page (paragraph level)","thumbnail":"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg","description":""}])
+      expect(data.toc).toEqual([
+        {
+          "position": 0,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 1,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 2,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 3,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 4,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 5,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 6,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 7,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 8,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 9,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 10,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 11,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 12,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 13,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 14,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 15,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 16,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 17,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 18,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 19,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 20,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 21,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 22,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 23,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 24,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 25,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 26,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 27,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 28,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 29,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 30,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 31,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 32,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 33,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 34,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 35,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 36,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 37,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 38,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 39,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 40,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 41,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 42,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 43,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 44,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 45,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 46,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 47,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 48,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 49,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 50,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 51,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 52,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 53,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 54,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 55,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 56,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 57,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 58,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 59,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 60,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 61,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 62,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 63,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 64,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 65,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 66,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 67,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 68,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 69,
+          "label": "Text of this page (word level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 70,
+          "label": "Text of this page (line level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg",
+          "description": ""
+        },
+        {
+          "position": 71,
+          "label": "Text of this page (paragraph level)",
+          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg",
+          "description": ""
+        }
+      ])
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("Technician Basketball Special, November 1991");
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
