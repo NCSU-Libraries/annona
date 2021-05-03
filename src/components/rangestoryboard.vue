@@ -134,15 +134,15 @@ export default {
           var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
             for (var h=0; h<anno.length; h++){
-              this.addToLists(anno[h], an+h, this.$props.rangeurl, otherContent[an]['canvas']);
+              this.addToLists(anno[h], this.$props.rangeurl, otherContent[an]['canvas']);
             }
           } else{
-            this.addToLists(anno, an, this.$props.rangeurl, otherContent[an]['canvas']);
+            this.addToLists(anno, this.$props.rangeurl, otherContent[an]['canvas']);
           }  
         }
         this.setDefaults(manifest);
       },
-      addToLists: function(anno, an, manifesturl, canvas) {
+      addToLists: function(anno, manifesturl, canvas) {
         if(anno.resources || anno.items){
           var jsonanno = anno; 
         } else {
@@ -159,10 +159,11 @@ export default {
             var thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
           }
         }
-        var toclabel = anno['label'] ? anno['label'] : canvas && canvas['label'] ? canvas['label'] : `Page ${an + 1}`;
+        const position = this.rangelist.length;
+        var toclabel = anno['label'] ? anno['label'] : canvas && canvas['label'] ? canvas['label'] : `Page ${this. position + 1}`;
         toclabel = shared.parseMetaFields(toclabel);
         var description = anno['description'] ?  anno['description'] : '';
-        this.toc.push({ 'position' :an, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
+        this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
         this.rangelist.push({'canvas': canvasid, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
       },
       setDefaults: function(data) {
@@ -192,7 +193,7 @@ export default {
           var anno = annos[ca];
           var manifest = canvas ? canvas['within'] : '';
           manifest = shared.getId(manifest);
-          this.addToLists(anno, ca, manifest, canvas);
+          this.addToLists(anno, manifest, canvas);
         }
         this.setDefaults(rangelist);
       },
