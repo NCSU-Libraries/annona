@@ -100,7 +100,7 @@ export default {
         var canvasId = shared.getCanvasId(this.anno[i]);
         // Get custom size values
         var size;
-        var width = this.settings.width ? this.settings.width : this.manifestlink.indexOf('iiif/2.0') > -1 ? '1200' : '';
+        var width = this.settings.width ? this.settings.width : this.manifestlink.indexOf('iiif/2.0') > -1 && !this.settings.height ? '1200' : '';
         var height = this.settings.height ? this.settings.height : '';
         size = `${width}${height}` != '' ? `${width},${height}` : 'full';
         // If has manifest take canvas ids and check canvas against manifest to get image
