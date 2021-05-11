@@ -59,6 +59,9 @@ export default {
   parseCharValue: function(value) {
     try {
       const parsevalue = JSON.parse(value);
+      if (parsevalue.constructor.name != 'Array' || parsevalue.constructor.name != 'Object'){
+        return value;
+      }
       const context = parsevalue['@context'];
       var newvalue = ''
       for (var key in parsevalue){
