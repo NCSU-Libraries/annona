@@ -48,12 +48,12 @@
 <script type="text/javascript">
    if(window.location.href.indexOf('#/display') > -1){
      const header = document.getElementsByTagName('header')[0];
-     header.setAttribute('style', 'display:none');
-     const ssindex = Array.from(document.styleSheets).findIndex(element => element.href.indexOf("main.css"));
-     document.styleSheets[ssindex].disabled = 'true';
+     header.parentNode.removeChild(header);      
      const footer = document.getElementsByTagName('footer')[0];
-     footer.setAttribute('style', 'display:none');
+     footer.parentNode.removeChild(footer);      
      const sitetitle = document.getElementsByClassName('post-header')[0];
-     sitetitle.setAttribute('style', 'display:none');
+     sitetitle.parentNode.removeChild(sitetitle); 
+     const ssindex = Array.from(document.styleSheets).findIndex(element => element.href && element.href.indexOf("main.css"));
+     document.styleSheets[ssindex].disabled = 'true';
    }
  </script>
