@@ -181,7 +181,7 @@ export default {
       }
     }
     authors = this.getAuthor(anno);
-    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data['language'], 'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,'itemclass': charclass};
+    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data ? res_data['language'] : '', 'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,'itemclass': charclass};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
