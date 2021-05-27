@@ -17,7 +17,7 @@ export default {
     'prev' : '<i class="fas fa-chevron-left"></i>',
     'next': '<i class="fas fa-chevron-right"></i>'
   },
-  imageextensions: ['jpg', 'jpeg', 'png', 'svg'],
+  imageextensions: ['jpeg', 'jpg', 'png', 'svg', 'bmp', 'gif', 'apng', 'avif', 'jfif', 'pjpeg', 'pjp', 'webp', 'ico', 'cur'],
   //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.
   on_structure: function(anno){
     if (!anno['on'] || typeof anno['on'] === 'undefined'){
@@ -472,7 +472,7 @@ export default {
   },
   getCanvasTile: function(image, addinfo=false) {
     var imgResource = image.resource ? image.resource : image.body;
-    const iiifimage = imgResource && JSON.stringify(imgResource).indexOf('/full/full') > -1 ? true : false;
+    const iiifimage = imgResource && JSON.stringify(imgResource).indexOf('http://iiif.io/api/image/') > -1 ? true : false;
     var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ? this.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? this.getId(imgResource.service).split("/full/")[0] :this.getId(imgResource);
     canvas_tile = this.iiifOrImageCheck(canvas_tile, addinfo, iiifimage)
     return {'canvas_tile': canvas_tile, 'img_resource': imgResource};
