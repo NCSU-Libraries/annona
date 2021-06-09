@@ -6,14 +6,17 @@ $seadrgon_height: 600px;
 $mid_pin: $pin_size/3 + px;
 $pin_font: $pin_size + px;
 $active_color: lightgreen;
-$borderwidthnumber: 2;
-$borderwidth: $borderwidthnumber + px;
-$toolbarfontsize: 1.5rem;
-$top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
-$annocontrolsize: 1rem;
-$collapseheight: calc(#{$seadrgon_height} - #{$borderwidthnumber*2}px);
-$sidebyside: calc(#{$seadrgon_height} + #{$toolbarfontsize} + #{$borderwidthnumber*4}px);
-$phonetoolbarfontsize: .79rem;
+$borderwidth: 2px;
+$marginbottomtoolbar: 2px;
+$toolbarfontsize: 24px;
+$phonetoolbarfontsize: 12.5px;
+$top: calc(#{$toolbarfontsize} + #{$borderwidth}*4 + #{$marginbottomtoolbar});
+$topphone: calc(#{$phonetoolbarfontsize} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
+$annocontrolsize: 16px;
+$collapseheight: calc(#{$seadrgon_height} - #{$borderwidth} - #{$marginbottomtoolbar});
+$sidebyside: calc(#{$seadrgon_height} + #{$toolbarfontsize} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
+$sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borderwidth}*2 + #{$marginbottomtoolbar});
+
 .toolbarButton {
   font-size: $toolbarfontsize;
   background-color: #F0F0F0;
@@ -62,8 +65,8 @@ $phonetoolbarfontsize: .79rem;
 }
 
 .fullpage .collapse .annotation {
-  height: calc(100vh - #{$borderwidthnumber*8}px - #{$toolbarfontsize});
-  max-height: calc(100vh - #{$borderwidthnumber*8}px - #{$toolbarfontsize});
+  height: calc(100vh - #{$borderwidth}*7 - #{$marginbottomtoolbar} - #{$toolbarfontsize});
+  max-height: calc(100vh - #{$borderwidth}*7 - #{$marginbottomtoolbar} - #{$toolbarfontsize});
 }
 
 .fullpage .sidebyside .annotation {
@@ -109,7 +112,11 @@ $phonetoolbarfontsize: .79rem;
 }
 
 .multistoryboard .sidebyside .annotation {
-  height: calc(100% - #{$borderwidthnumber*2}px);
+  height: calc(100% - #{$borderwidth}*2);
+}
+
+.multifullpage .sidebyside .annotation {
+  height: calc(100% - #{$toolbarfontsize});
 }
 
 .sidebyside .bottom_menu_annotation {
@@ -123,8 +130,8 @@ $phonetoolbarfontsize: .79rem;
 
 .collapse .bottom_menu_annotation {
   top: -1px;
-  height: calc(100% - #{$toolbarfontsize} - #{$borderwidthnumber*7}px);
-  max-height: calc(100% - #{$toolbarfontsize} - #{$borderwidthnumber*7}px);
+  height: calc(100% - #{$toolbarfontsize} - #{$borderwidth}*7);
+  max-height: calc(100% - #{$toolbarfontsize} - #{$borderwidth}*7);
 }
 
 .defaultview .bottom_menu_annotation {
@@ -249,7 +256,7 @@ $phonetoolbarfontsize: .79rem;
   line-height: 10px;
   border: none;
   padding: 3.5px;
-  height: 1.5rem;
+  height: #{$toolbarfontsize};
   cursor: pointer;
 }
 
@@ -393,7 +400,7 @@ figcaption {
 .iiifannotation .tags {
   width: auto;
   display: inline-block;
-  padding-right: 3rem;
+  padding-right: 48px;
 }
 
 .tags div {
@@ -486,7 +493,7 @@ figcaption {
 }
 
 .active.pin {
-  -webkit-text-stroke: .1rem $active_color;
+  -webkit-text-stroke: .1em $active_color;
 }
 
 .pin.overlay.active circle, rect {
@@ -568,7 +575,25 @@ figcaption {
   }
 
   .sidebyside .annotation:not(.no_toolbar_annotation) {
-    height: calc(#{$phonetoolbarfontsize} + 100% + #{$borderwidthnumber*3}px);
+    height: $sidebysidephone;
+  }
+
+  .multistoryboard .sidebyside .annotation {
+    height: calc(100% - #{$borderwidth}*2);
+  }
+
+
+  .collapse .annotation { 
+    top: $topphone;
+  }
+
+  .fullpage .collapse .annotation {
+    height: calc(100vh - #{$borderwidth}*6 - #{$marginbottomtoolbar} - #{$phonetoolbarfontsize});
+    max-height: calc(100vh - #{$borderwidth}*6 - #{$marginbottomtoolbar} - #{$phonetoolbarfontsize});
+  }
+
+  .multifullpage .sidebyside .annotation {
+    height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidth}*4 - #{$marginbottomtoolbar});
   }
 
   .defaultview .bottom_menu_annotation {
@@ -576,8 +601,8 @@ figcaption {
   }
 
   .collapse .bottom_menu_annotation:not(.no_toolbar_annotation) {
-    height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidthnumber*6}px);
-    max-height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidthnumber*6}px);
+    height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidth}*6);
+    max-height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidth}*6);
   }
 
   .annotation {
@@ -595,7 +620,7 @@ figcaption {
 
   .toolbarButton {
     margin-left: 0px!important;
-    font-size: .79rem;
+    font-size: $phonetoolbarfontsize;
   }
 }
 
@@ -619,7 +644,7 @@ figcaption {
 }
 
 #header_toolbar > .toolbarButton {
-  margin-bottom: 2px;
+  margin-bottom: $marginbottomtoolbar;
 }
 .imageinfo > div {
   padding-bottom: 5px;
@@ -686,8 +711,8 @@ figcaption {
 }
 
 .imagetitle h1 {
-  margin-block-end: .35rem;
-  margin-block-start: .35rem;
+  margin-block-end: 5.6px;
+  margin-block-start: 5.6px;
   text-align: center;
   font-size: large;
   font-weight: bold;
@@ -774,11 +799,11 @@ figcaption {
 }
 
 .multifullpage:not(.bottom_menu_container) .openseadragon-container {
-  height: calc(100% - #{$toolbarfontsize} - #{$borderwidthnumber*7}px)!important;
+  height: calc(100% - #{$toolbarfontsize} - #{$borderwidth}*7)!important;
 }
 
 .bottom_menu_container .seadragonbox {
-  height: calc(100vh - #{$toolbarfontsize} - #{$borderwidthnumber*7}px)!important;
+  height: calc(100vh - #{$toolbarfontsize} - #{$borderwidth}*7)!important;
 }
 
 .buttonastext {
@@ -806,7 +831,7 @@ table {
 }
 
 .ocrtranscription {
-  padding-right: .2rem;
+  padding-right: 3.2px;
 }
 
 code {
