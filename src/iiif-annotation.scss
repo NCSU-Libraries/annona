@@ -11,7 +11,8 @@ $borderwidth: $borderwidthnumber + px;
 $toolbarfontsize: 1.5rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidthnumber*5}px);
 $annocontrolsize: 1rem;
-$sidebyside: calc(100% + #{$toolbarfontsize} + #{$borderwidthnumber*4}px);
+$collapseheight: calc(#{$seadrgon_height} - #{$borderwidthnumber*2}px);
+$sidebyside: calc(#{$seadrgon_height} + #{$toolbarfontsize} + #{$borderwidthnumber*4}px);
 $phonetoolbarfontsize: .79rem;
 .toolbarButton {
   font-size: $toolbarfontsize;
@@ -47,17 +48,16 @@ $phonetoolbarfontsize: .79rem;
 
 .sidebyside .seadragonbox, .sidebyside .seadragonboxfull {
   width: 80%;
-  left: 20%;
 }
 
 .collapse .annotation {
-  height: calc(100% - #{$borderwidthnumber*1.5}px);
+  height: $collapseheight;
   width: 20%;
   top: $top;
   transition: 0.3s;
   margin: 1px 0px 0px;
   font-size: 18px;
-  max-height: calc(100% - 3px);
+  max-height: $collapseheight;
   resize: none;
 }
 
@@ -81,6 +81,9 @@ $phonetoolbarfontsize: .79rem;
   display: none;
 }
 
+.sidebyside {
+  display: flex!important;
+}
 
 .sidebyside .annotation {
   height: #{$sidebyside};
@@ -90,6 +93,7 @@ $phonetoolbarfontsize: .79rem;
   font-size: 18px;
   max-height: #{$sidebyside};
   background: white;
+  left: 80%;
 }
 
 .fullpage .sidebyside .annotation {
