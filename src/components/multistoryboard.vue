@@ -1,56 +1,6 @@
 <template>
 <div id="multistoryboard" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.toolbarposition ? settings.toolbarposition + '_menu_container' : 'top_menu_container']">
-  <span id="header_toolbar" v-if="!settings.hide_toolbar || settings.hide_toolbar && !fullscreen" v-bind:class="[settings.toolbarposition ? settings.toolbarposition + '_multi_menu' : 'top_multi_menu']">
-    <button v-if="shortcuts['autorun']" v-hotkey="shortcuts['autorun']['shortcut']" id="autoRunButton" v-on:click="multiButton({'function':'autoRun', 'args': settings.autorun_interval});" class="toolbarButton">
-      <span v-html="buttons.autorunbutton"></span>
-      <span class="toolbartext">Start/Stop Autorun</span>
-    </button>
-    <button v-hotkey="shortcuts['info']['shortcut']" v-if="shortcuts['info']" v-on:click="multiButton({'function': 'clickButton', 'args': 'info'});" id="infoButton" class="toolbarButton">
-      <span v-html="buttons.info"></span>
-      <span class="toolbartext">View source image information</span>
-    </button>
-    <button v-hotkey="shortcuts['tags']['shortcut']" v-on:click="multiButton({'function': 'clickButton', 'args': 'tags'});" id="tagsButton" v-if="shortcuts['tags']" class="toolbarButton">
-      <span v-html="buttons.tags"></span>
-      <span class="toolbartext">Toggle Tags</span>
-    </button>
-    <button v-hotkey="shortcuts['overlay']['shortcut']" v-if="shortcuts['overlay']" id="overlayButton" v-on:click="multiButton({'function': 'createOverlay', 'args': ''});" class="toolbarButton">
-      <span v-html="buttons.overlaybutton"></span>
-      <span class="toolbartext">Toggle Overlays</span>
-    </button>
-    <button v-hotkey="shortcuts['layers']['shortcut']" v-if="shortcuts['layers']" id="layerButton" v-on:click="multiButton({'function': 'clickButton', 'args': 'layer'});" class="toolbarButton">
-      <span v-html="buttons.layer"></span>
-      <span class="toolbartext">View layers</span>
-    </button>
-    <button v-hotkey="shortcuts['zoomin']['shortcut']" v-if="shortcuts['zoomin']" v-on:click="multiButton({'function': 'zoom', 'args': 'in'});" id="zoomInButton" class="toolbarButton">
-      <i class="fas fa-search-plus"></i>
-      <span class="toolbartext">Zoom in</span>
-    </button>
-    <button v-hotkey="shortcuts['zoomout']['shortcut']" v-if="shortcuts['zoomout']" v-on:click="multiButton({'function': 'zoom', 'args': 'out'});" id="zoomOutButton" class="toolbarButton">
-      <i class="fas fa-search-minus"></i>
-      <span class="toolbartext">Zoom out</span>
-    </button>
-    <button v-hotkey="shortcuts['home']['shortcut']" v-if="shortcuts['home']" v-on:click="multiButton({'function': 'zoom', 'args': 'home'})" id="homeZoomButton" class="toolbarButton">
-      <i class="fas fa-home"></i>
-      <span class="toolbartext">View full image</span>
-    </button>
-    <button v-hotkey="shortcuts['prev']['shortcut']" v-if="shortcuts['prev']" id="previousButton" v-on:click="multiButton({'function': 'next', 'args': 'prev'});" v-bind:class="{ 'inactive' : prev_inactive }" class="toolbarButton">
-      <i class="fa fa-arrow-left"></i>
-      <span class="toolbartext">Previous Annotation</span>
-    </button>
-    <button v-hotkey="shortcuts['next']['shortcut']" v-if="shortcuts['next']" id="nextButton" v-on:click="multiButton({'function': 'next', 'args': 'next'});" v-bind:class="{ 'inactive' : next_inactive }" class="toolbarButton">
-      <i class="fa fa-arrow-right"></i>
-      <span class="toolbartext">Next Annotation</span>
-    </button>
-    <button v-hotkey="shortcuts['shortcut']['shortcut']" v-if="shortcuts['shortcut']" v-on:click="multiButton({'function': 'clickButton', 'args': 'keyboard'});"  id="keyboardShortcutsButton" class="toolbarButton">
-      <span v-html="buttons.keyboard"></span>
-      <span class="toolbartext">Toggle keyboard shortcuts</span>
-    </button>
-    <button v-hotkey="shortcuts['fullscreen']['shortcut']" v-if="shortcuts['fullscreen']" v-on:click="toggle_fullscreen()"  id="fullScreenButton" class="toolbarButton">
-      <span v-if="!fullscreen" v-html="buttons.expand"></span>
-      <span v-else v-html="buttons.compress"></span>
-      <span class="toolbartext">Toggle fullscreen</span>
-    </button>
-  </span>
+  <toolbar></toolbar>
   <span class="storyboard_containers">
     <div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
       <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
@@ -65,15 +15,14 @@
 import storyboard from './storyboard'
 import shared from './shared'
 import openseadragon from 'openseadragon';
-import Vue from 'vue';
-import VueSimpleHotkey from 'vue-simple-hotkey';
-Vue.use(VueSimpleHotkey);
+import toolbar from './toolbar';
 
 export default {
     components: {
-        storyboard
+        storyboard,
+        toolbar
     },
-    props: {
+    props:{
       'manifesturl':String,
       'annotationurls': String,
       'annotationlists': String,
@@ -99,14 +48,16 @@ export default {
         allimages: [],
         viewers: [],
         fullscreen: false,
-        shortcuts: {}
+        shortcuts: {},
+        boardchildren: {}
       }
     },
     mounted(){
       this.createViewers();
+      this.boardchildren = this.$children.filter(child => child.$options.name == 'storyboard')
       if (this.$parent.range){
-        for (var ch=0; ch<this.$children.length; ch++){
-          this.$children[ch].basecompontent = this.$parent;
+        for (var ch=0; ch<this.boardchildren.length; ch++){
+          this.boardchildren[ch].basecompontent = this.$parent;
         }
       }
     },
@@ -146,8 +97,8 @@ export default {
     methods: {
       // move annotations and image viewers based on bounds
       moveArea (bounds, ignore) {
-        for (var i=0; i<this.$children.length; i++){
-          var viewer =this.$children[i].viewer;
+        for (var i=0; i<this.boardchildren.length; i++){
+          var viewer =this.boardchildren[i].viewer;
           if (!this.settings.matchclick) {
             var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
             viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
@@ -230,22 +181,22 @@ export default {
       },
       autoRunImages: function() {
         for (var k=0; k<this.viewers.length; k++){
-          this.viewers[k].viewport.fitBounds(this.$children[0].viewer.viewport.getConstrainedBounds())
+          this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
-        var data = this.$children[0]._data;
+        var data = this.boardchildren[0]._data;
         this.buttons = data.buttons;
         this.prev_inactive = data.prev_inactive;
         this.next_inactive = data.next_inactive;
       },
       //Sends message to each storyboard viewer and each image viewer
-      multiButton(e) {
-        for (var i=0; i<this.$children.length; i++){
-          this.$children[i].sendMessage(e);
+      sendMessage(e) {
+        for (var i=0; i<this.boardchildren.length; i++){
+          this.boardchildren[i].sendMessage(e);
         }
         for (var k=0; k<this.viewers.length; k++){
-          this.viewers[k].viewport.fitBounds(this.$children[0].viewer.viewport.getConstrainedBounds())
+          this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
-        var data = this.$children[0]._data;
+        var data = this.boardchildren[0]._data;
         this.buttons = data.buttons;
         this.prev_inactive = data.prev_inactive;
         this.next_inactive = data.next_inactive;

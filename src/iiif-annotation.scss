@@ -8,10 +8,10 @@ $pin_font: $pin_size + px;
 $active_color: lightgreen;
 $borderwidth: 2px;
 $marginbottomtoolbar: 2px;
-$toolbarfontsize: 24px;
-$phonetoolbarfontsize: 12.5px;
-$top: calc(#{$toolbarfontsize} + #{$borderwidth}*4 + #{$marginbottomtoolbar});
-$topphone: calc(#{$phonetoolbarfontsize} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
+$toolbarfontsize: 1.5rem;
+$phonetoolbarfontsize: .79rem;
+$top: calc(#{$toolbarfontsize} + #{$borderwidth}*3.5 + #{$marginbottomtoolbar});
+$topphone: calc(#{$phonetoolbarfontsize} + #{$borderwidth}*3.2 + #{$marginbottomtoolbar});
 $annocontrolsize: 16px;
 $collapseheight: calc(#{$seadrgon_height} - #{$borderwidth} - #{$marginbottomtoolbar});
 $sidebyside: calc(#{$seadrgon_height} + #{$toolbarfontsize} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
@@ -56,9 +56,8 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
 .collapse .annotation {
   height: $collapseheight;
   width: 20%;
-  top: $top;
   transition: 0.3s;
-  margin: 1px 0px 0px;
+  margin: 0px;
   font-size: 18px;
   max-height: $collapseheight;
   resize: none;
@@ -88,7 +87,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
 
 .collapse .excerpt #hide_button {
   font-size:  $annocontrolsize*2;
-  height: $annocontrolsize*2;
+  height: auto;
   width: $annocontrolsize*2;
 }
 .collapse .excerpt .content {
@@ -400,7 +399,7 @@ figcaption {
 .iiifannotation .tags {
   width: auto;
   display: inline-block;
-  padding-right: 48px;
+  padding-right: 3rem;
 }
 
 .tags div {
@@ -493,7 +492,7 @@ figcaption {
 }
 
 .active.pin {
-  -webkit-text-stroke: .1em $active_color;
+  -webkit-text-stroke: .1rem $active_color;
 }
 
 .pin.overlay.active circle, rect {
@@ -548,7 +547,7 @@ figcaption {
   padding: 3.5px;
 }
 
-.lang-icon:before {
+.lang-icon::before {
     content:"\f0ac";
     font-weight: 900;
     font-family: "Font Awesome\ 5 Free";
@@ -711,8 +710,8 @@ figcaption {
 }
 
 .imagetitle h1 {
-  margin-block-end: 5.6px;
-  margin-block-start: 5.6px;
+  margin-block-end: .35rem;
+  margin-block-start: .35rem;
   text-align: center;
   font-size: large;
   font-weight: bold;
@@ -822,6 +821,19 @@ figcaption {
   background: yellow;
 }
 
+.activeword .ocrtranscription p::before {
+  content:"\f0da";
+    font-weight: 900;
+    font-family: "Font Awesome\ 5 Free";
+    color:black;
+    position:relative;
+    display: inline;
+  padding-right: 6px;
+}
+
+.ocrtranscription p {
+  margin: 5px;
+}
 .keyboard td, th {
   border: 1px solid #ddd;
   padding: 8px;
@@ -831,7 +843,7 @@ table {
 }
 
 .ocrtranscription {
-  padding-right: 3.2px;
+  padding-right: .2rem;
 }
 
 code {

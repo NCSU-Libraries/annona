@@ -14,11 +14,11 @@
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
-  <button id="previousPageInactiveButton" v-hotkey="prevshortcut" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
+  <button id="previousPageInactiveButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.prev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
-  <button id="nextPageInactiveButton" v-hotkey="nextshortcut" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
+  <button id="nextPageInactiveButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
     <span v-html="buttons.next"></span>
     <span class="toolbartext">Next Page</span>
   </button>
@@ -31,9 +31,7 @@ import shared from './shared';
 import axios from 'axios';
 require("es6-promise").polyfill();
 import Vue from 'vue';
-import VueSimpleHotkey from 'vue-simple-hotkey';
 import multistoryboard from './multistoryboard.vue';
-Vue.use(VueSimpleHotkey);
 
 export default {
     components: {
@@ -237,7 +235,9 @@ export default {
       updateFullScreen: function(fullscreen) {
         this.isfullscreen = fullscreen;
         for (var fs=0; fs<this.$children.length; fs++){
-          this.$children[fs].fullscreen = fullscreen;
+          if (this.$children[fs].$options.name.indexOf('storyboard') > -1){
+            this.$children[fs].fullscreen = fullscreen;
+          }
         }
       }
     }

@@ -34,7 +34,6 @@
     "vue": "^2.6.12",
     "vue-custom-element": "^3.3.0",
     "vue-fullscreen": "^2.3.2",
-    "vue-simple-hotkey": "^0.1.5",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
