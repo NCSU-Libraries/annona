@@ -22,7 +22,7 @@ export default {
         storyboard,
         toolbar
     },
-    props:{
+    props: {
       'manifesturl':String,
       'annotationurls': String,
       'annotationlists': String,
