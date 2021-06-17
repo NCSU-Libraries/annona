@@ -460,6 +460,10 @@ export default {
         element.style.removeProperty("height");
       }
     },
+    close: function(){
+      this.shown = false;
+      this.setDefaultButtons();
+    },
     //Hide annotation if hide button pressed
     hide: function(){
       this.removeHeight();
@@ -801,6 +805,10 @@ export default {
         wrap: false,
         callback: this.fullscreenChange
       });
+    },
+    toggletranscription: function(){
+      const switchto = this.booleanitems.istranscription ? 'anno' : 'transcription';
+      this.setShownData(switchto);
     },
     //when annotation is clicked add active class to overlay.
     makeactive: function(position){

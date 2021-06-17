@@ -540,9 +540,9 @@ export default {
       'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen',
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
       'close' : {'icon': '<i class="fas fa-times"></i>', 'label': 'Close',
-        'shortcut': ['x', '6']},
+        'shortcut': ['x', '6'], 'function': {'function': 'close', 'args': '', 'run': true}},
       'hide' : {'icon': buttons['hide_button'], 'label': 'Collapse text',
-        'shortcut': ['c', '7']},
+        'shortcut': ['c', '7'], 'function': {'function': 'hide', 'args': ''}},
       'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}}
     }
@@ -555,7 +555,8 @@ export default {
         'shortcut': ['l', '5'], 'function': {'function': 'clickButton', 'args': 'layer'}};
     }
     if (vueinfo.settings.tts){
-      shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause', 'shortcut': ['r', '9']}
+      shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause',
+        'shortcut': ['r', '9'], 'function': {'function': 'playpause', 'args': ''}}
     }
     if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
       shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 
@@ -567,7 +568,8 @@ export default {
     var hasocr = this.flatten(annotation.filter(element=>element && element.ocr && element.ocr.length > 0));
     var hastext = this.flatten(annotation.filter(element=>element && element.textual_body && element.textual_body.length > 0));
     if (hasocr.length > 0 && hastext.length > 0){
-      shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation', 'shortcut': ['a', '/']};
+      shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
+        'shortcut': ['a', '/'], 'function': {'function': 'toggletranscription', 'args': ''}};
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
     for (var hd=0; hd<removefields.length; hd++){
