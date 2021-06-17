@@ -405,4 +405,34 @@ describe('Component', () => {
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
       expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'shortcut', 'tags', 'zoomin', 'zoomout'].sort())
     })
+    test('test storyboard with mutliple settings', async ()  => {
+
+      const wrapper =  mount(storyboard,{
+        propsData: {
+          annotationurl: 'cssnestedandnonested.json',
+          styling: 'overlaynext: true;textfirst: true;toggleoverlay: true;panorzoom: pan;textposition: left;startenddisplay: keyboard;toolbarposition: bottom;autorun_interval: 5;customid: test;title: test;'
+        },
+        attachTo: document.getElementById('root')
+      })
+      const saveMock = jest.fn()
+      wrapper.vm.createViewer = saveMock;
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      data.booleanitems.annoinfoshown = true;
+      expect(data.seadragontile).toBe("/image/info.json")
+      expect(data.annotations[0]['section']).toEqual(["740,566,3997,4586"])
+      expect(data.annotations[0]['svg_path'][0].outerHTML.toString()).toEqual('<polygon points="2230.0,1596.5 2224.5,1596.0 2224.5,1572.0 2209.5,1575.0 2210.0,1286.5 2218.0,1286.5 2231.5,1290.0 2232.5,1312.0 2240.0,1317.5 2247.5,1318.0 2248.0,1293.5 2275.5,1305.0 2274.5,1567.0 2257.0,1567.5 2240.0,1571.5 2239.5,1593.0 2230.0,1596.5"></polygon>')
+      expect(data.annotations[0]['type']).toEqual("path")
+      expect(data.seadragonid).toBe('test_storyboard')
+      expect(data.annotations[0]['tags'].length).toEqual(1)
+      expect(data.annotations.length).toEqual(2)
+      expect(data.currentanno).toEqual('')
+      expect(data.tagslist['testvariable']['checked']).toEqual(true)
+      var contentpos1 = shared.createContent(data.annotations[1], null, data.settings, true);
+      expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: test variable</div></span>")
+      const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'shortcut', 'tags', 'zoomin', 'zoomout'].sort())
+    })
 })

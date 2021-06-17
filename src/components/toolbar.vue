@@ -1,5 +1,5 @@
 <template>
-    <span id="header_toolbar" v-if="!parentcomp.settings.hide_toolbar || (parentcomp.settings.hide_toolbar && !parentcomp.fullscreen)" v-bind:class="menuclass">
+    <span id="header_toolbar" v-if="!parentcomp.settings.hide_toolbar" v-bind:class="menuclass">
         <button v-if="parentcomp.shortcuts['autorun']" id="autoRunButton" v-on:click="parentcomp.sendMessage(parentcomp.shortcuts['autorun']['function']);" class="toolbarButton">
           <span v-html="parentcomp.buttons.autorunbutton"></span>
           <span class="toolbartext">Start/Stop Autorun</span>
@@ -62,27 +62,28 @@ export default {
         }
     },
   mounted() {
-      this.parentcomp.$el.addEventListener("keydown", this.keydownListener);
+    this.parentcomp.$el.addEventListener("keydown", this.keydownListener);
   },
   created() {
       this.parentcomp = this.$parent;
       var menuext = '_menu'
       if (this.parentcomp.multi) {
-          menuext = '_multi' + menuext
-          if (!this.parentcomp.settings.toolbarposition) {
-              this.menuclass = 'top' +  menuext;
-          }
+        menuext = '_multi' + menuext
+        if (!this.parentcomp.settings.toolbarposition) {
+            this.menuclass = 'top' +  menuext;
+        }
       }
       if (this.parentcomp.settings.toolbarposition) {
-          this.menuclass = parentcomp.settings.toolbarposition + menuext
+        this.menuclass = this.parentcomp.settings.toolbarposition + menuext;
       }
   },
   methods: {
     keydownListener: function(event) {
-      var keycombo = event.code.replace('Key', '').toLowerCase();
+      var keycombo = event.code.replace('Key', '').replace('Digit', '').toLowerCase();
       var addon = event.altKey ? 'alt+' : event.shiftKey ? 'shift+' : ''
       keycombo = addon + keycombo;
-      const keydown = Object.values(this.parentcomp.shortcuts).filter(elem => elem.shortcut.indexOf(keycombo) > -1)
+      var keycombo2 = addon + event.key;
+      const keydown = Object.values(this.parentcomp.shortcuts).filter(elem => elem.shortcut.indexOf(keycombo) > -1 || elem.shortcut.indexOf(keycombo2) > -1)
       if (keydown.length > 0){
         var shortcutdict = keydown[0];
         var funct = shortcutdict['function']

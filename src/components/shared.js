@@ -528,9 +528,9 @@ export default {
       'overlay': {'icon': buttons['overlaybutton'], 'label': 'Toggle',
         'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
       'zoomin' : {'icon': '<i class="fas fa-search-plus"></i>', 'label': 'Zoom In',
-        'shortcut': ['z', '+', 'shift+up'], 'function': {'function': 'zoom', 'args': 'in'}},
+        'shortcut': ['z', '+', 'shift+ArrowUp'], 'function': {'function': 'zoom', 'args': 'in'}},
       'zoomout' :{'icon': '<i class="fas fa-search-minus"></i>', 'label': 'Zoom Out',
-        'shortcut': ['m', '-', 'shift+down'], 'function': {'function': 'zoom', 'args': 'out'}},
+        'shortcut': ['m', '-', 'shift+ArrowDown'], 'function': {'function': 'zoom', 'args': 'out'}},
       'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home',
         'shortcut': ['h', '0'], 'function': {'function': 'zoom', 'args': 'home'}},
       'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous',
@@ -569,7 +569,7 @@ export default {
     var hastext = this.flatten(annotation.filter(element=>element && element.textual_body && element.textual_body.length > 0));
     if (hasocr.length > 0 && hastext.length > 0){
       shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
-        'shortcut': ['a', '/'], 'function': {'function': 'toggletranscription', 'args': ''}};
+        'shortcut': ['e', '`'], 'function': {'function': 'toggletranscription', 'args': ''}};
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
     for (var hd=0; hd<removefields.length; hd++){
