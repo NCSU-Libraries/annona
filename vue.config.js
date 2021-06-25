@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const filename = `js/${process.env["TYPE"]}.js`
 module.exports = {
   configureWebpack: {
     plugins: [
@@ -8,7 +9,10 @@ module.exports = {
     ]
   },
   configureWebpack: config => {
-        config.output.filename = 'js/annona.js';
+    config.output.filename = filename,
+    optimization = {
+      runtimeChunk: 'single',
+    }
 
   },
   chainWebpack:
