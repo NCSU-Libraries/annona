@@ -22,6 +22,7 @@ export default {
         storyboard,
         toolbar
     },
+    name: 'multistoryboard',
     props: {
       'manifesturl':String,
       'annotationurls': String,
