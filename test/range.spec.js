@@ -652,7 +652,7 @@ describe('Component', () => {
       expect(data.nextPageInactive).toBe(false)
       expect(data.rangeid).toBe('storyboardlist.json')
       expect(data.isfullscreen).toBe(false)
-      expect(data.toc).toEqual([{"description": undefined, "label": "Bayeux Tapestry test", "position": 0, "thumbnail": undefined}, {"description": undefined, "label": "jsonexample", "position": 1, "thumbnail": undefined}, {"description": undefined, "label": "Page 3", "position": 2, "thumbnail": undefined}, {"description": undefined, "label": "multistoryboard test", "position": 3, "thumbnail": undefined}, {"description": undefined, "label": "layers test", "position": 4, "thumbnail": undefined}])
+      expect(data.toc).toEqual([{"description": undefined, "label": "Bayeux Tapestry test", "position": 0, "thumbnail": undefined}, {"description": undefined, "label": "jsonexample", "position": 1, "thumbnail": undefined}, {"description": undefined, "label": "Page 3", "position": 2, "thumbnail": undefined}, {"description": undefined, "label": "multistoryboard test", "position": 3, "thumbnail": undefined}, {"description": undefined, "label": "multistoryboard test 2", "position": 4, "thumbnail": undefined}, {"description": undefined, "label": "layers test", "position": 5, "thumbnail": undefined}])
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("");
       await wrapper.vm.$nextTick()
@@ -693,6 +693,11 @@ describe('Component', () => {
       expect(data.isfullscreen).toBe(false)
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("");
+      wrapper.vm.nextItemRange(3);
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      expect(data.annotationurl['annotationurls']).toEqual('mc00240.json;page.json;')
+      expect(data.annotationurl['tag']).toEqual('iiif-multistoryboard')
       wrapper.destroy()
     })
 
