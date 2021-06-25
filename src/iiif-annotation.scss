@@ -173,18 +173,18 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   margin: 0px;
 }
 
-#annotation_text p {
+.content p {
   margin-block-start: .5em;
   margin-block-end: .5em;
 }
 
-#annotation_text img, #annotation_text iframe {
+.content img, .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
 }
 
-#content img, #content iframe {
+.content img, .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -896,3 +896,7 @@ table tr {
   color: black;
 }
 
+.scrolltext {
+  padding-top: 20rem!important;
+  padding-bottom: 20rem!important;
+}

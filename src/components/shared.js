@@ -48,6 +48,10 @@ export default {
         settings[keyvalue[0].trim()] = value;
       }
     }
+    if (settings.annoview == 'scrollview'){
+      settings.startposition = settings.startposition != undefined ? settings.startposition : 1;
+      settings.hide_nextbuttons = settings.hide_nextbuttons != undefined ? settings.hide_nextbuttons : true;
+    }
     if (settings.tagscolor) {
       settings.tagscolor = Object.keys(settings.tagscolor).reduce((out, key) => {
         out[this.tagsToClass(key)] = settings.tagscolor[key]

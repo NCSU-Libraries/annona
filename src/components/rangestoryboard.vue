@@ -30,7 +30,6 @@ import iiifannotation from './iiifannotation';
 import shared from './shared';
 import axios from 'axios';
 require("es6-promise").polyfill();
-import Vue from 'vue';
 import multistoryboard from './multistoryboard.vue';
 
 export default {

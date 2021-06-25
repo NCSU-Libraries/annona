@@ -1,11 +1,11 @@
 <template>
 <div id="storyboard_viewer" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
-  <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' ? 'sidebyside' : 'collapse']">
+  <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' || settings.annoview == 'scrollview' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <toolbar v-if="!$parent.multi"></toolbar>
-      <annotationbox v-if="settings.annoview != 'sidebyside'"></annotationbox>
+      <annotationbox v-if="settings.annoview != 'sidebyside' && settings.annoview != 'scrollview'"></annotationbox>
     </div>
-    <annotationbox v-if="settings.annoview == 'sidebyside'"></annotationbox>
+    <annotationbox v-if="settings.annoview == 'sidebyside' || settings.annoview == 'scrollview'"></annotationbox>
   </div>
 </div>
 </template>
@@ -1015,19 +1015,13 @@ export default {
         this.isautorunning = '';
         this.buttons.autorunbutton = '<i class="fas fa-magic"></i>';
       }
-    }
-  },
-  computed: {
-    groupTagDict: function(){
-      const grouplist = shared.groupBy(this.tagslist, 'group');
-      return grouplist;
     },
-    annoContent: function() {
+    createAnnoContent: function(anno) {
       var annocontent = []
       var transcriptcontent = []
-      if (Array.isArray(this.currentanno)) {
-        for (var i=0; i<this.currentanno.length; i++){
-          var multicreateContent = shared.createContent(this.currentanno[i], this.currentlang, true);
+      if (Array.isArray(anno)) {
+        for (var i=0; i<anno.length; i++){
+          var multicreateContent = shared.createContent(anno[i], this.currentlang, true);
           if (multicreateContent['anno']){
             annocontent.push(multicreateContent['anno']);
           }
@@ -1038,12 +1032,21 @@ export default {
         annocontent = annocontent.join("<hr>");
         transcriptcontent = transcriptcontent.join("<hr>")
       } else {
-        var createContent = shared.createContent(this.currentanno, this.currentlang, true);
+        var createContent = shared.createContent(anno, this.currentlang, true);
         transcriptcontent = createContent['transcription'];
         annocontent = createContent['anno'];
       }
       annocontent = annocontent ? annocontent : transcriptcontent;
       return {'anno': annocontent, 'transcription': transcriptcontent };
+    }
+  },
+  computed: {
+    groupTagDict: function(){
+      const grouplist = shared.groupBy(this.tagslist, 'group');
+      return grouplist;
+    },
+    annoContent: function(){
+      return this.createAnnoContent(this.currentanno);
     }
   },
   //truncate item in annotation box

@@ -114,16 +114,19 @@
         <div v-if="$parent.booleanitems.imageinfoshown" v-html="$parent.imageinfo.text" class="imageinfo"></div>
       </span>
     </div>
-    <div id="transcription" v-if="$parent.shown == 'transcription'" class="content" v-bind:class="$parent.currentanno.itemclass">
-      <span v-if="!$parent.booleanitems.isexcerpt && !$parent.settings.transcription" v-html="$parent.annoContent['transcription']"></span>
-      <button v-for="(item, index) in $parent.annotations" v-bind:key="index" v-else-if="!$parent.booleanitems.isexcerpt && $parent.settings.transcription" v-on:click="$parent.sendMessage({'function':'next', 'args': index});" class="buttonastext ocrlink" v-bind:class="[index == $parent.position ? 'activeword' : '']">
-        <div v-html="item.ocr.join('')" class="ocrtranscription" v-bind:id="'line' + index"></div>
+    <div id='transcription' v-if="$parent.shown == 'transcription'" class="content" v-bind:class="$parent.currentanno.itemclass">
+      <span v-if="!$parent.booleanitems.isexcerpt && !$parent.settings.transcription && !isscrollview" v-html="$parent.annoContent['transcription']"></span>
+      <button v-for="(item, index) in transcriptions" v-bind:key="index" v-else-if="(!$parent.booleanitems.isexcerpt && $parent.settings.transcription) || isscrollview" v-on:click="$parent.sendMessage({'function':'next', 'args': index});" class="buttonastext" v-bind:class="[index == $parent.position && $parent.settings.annoview != 'scrollview' ? 'activeword' : '', $parent.settings.annoview == 'scrollview' ? 'scrolltext' :  'ocrlink']">
+        <div v-if="item" v-html="item" class="ocrtranscription" v-bind:id="'line' + index" :ref="index"></div>
       </button>
       <span v-html="$parent.$options.filters.truncate($parent.annoContent['transcription'], $parent.settings.truncate_length)" v-else-if="$parent.booleanitems.isexcerpt"></span>
     </div>
     <div id="annotation_text" v-if="$parent.shown == 'anno'" class="content" v-bind:class="$parent.currentanno.itemclass">
-      <span v-html="$parent.annoContent['anno']" v-if="!$parent.booleanitems.isexcerpt"></span>
-      <span v-html="$parent.$options.filters.truncate($parent.annoContent['anno'], $parent.settings.truncate_length)" v-if="$parent.booleanitems.isexcerpt"></span>
+      <span v-html="$parent.annoContent['anno']" v-if="!$parent.booleanitems.isexcerpt && !isscrollview"></span>
+      <span v-html="$parent.$options.filters.truncate($parent.annoContent['anno'], $parent.settings.truncate_length)" v-else-if="!isscrollview"></span>
+      <button v-for="(item, index) in scrollitems" v-bind:key="index" v-else-if="!$parent.booleanitems.isexcerpt || isscrollview" v-on:click="$parent.sendMessage({'function':'next', 'args': index});" class="buttonastext scrolltext">
+        <div v-if="item" v-html="item" class="scrollitem" v-bind:id="'line' + index" :ref="index"></div>
+      </button>
     </div>
   </div>
 </template>
@@ -132,6 +135,62 @@ export default {
   name: 'annotationbox',
   data: function() {
     return {
+      transcriptions: [],
+      scrollitems: [],
+      isscrollview: false,
+      updatedto: ''
+    }
+  },
+  watch: {
+   '$parent.annotations': function(){
+      if (this.$parent.settings.transcription || this.isscrollview){
+        for (var an=0; an<this.$parent.annotations.length; an++){
+          const transcript = this.$parent.createAnnoContent(this.$parent.annotations[an]);
+          var text = transcript['transcription'] ? transcript['transcription'] : transcript['anno'];
+          this.transcriptions.push(text);
+          this.scrollitems.push(transcript['anno']);
+        }
+      }
+    },
+    '$parent.position': function(newval, oldval) {
+      if (this.updatedto.toString() != newval.toString() && this.$refs[newval]){
+        this.$nextTick(() => {
+          const valelem = this.$refs[newval][0];
+          const yelem = valelem.offsetTop - this.padding/2;
+          this.$el.scrollTo(0, yelem);
+        })
+      }
+    }
+  },
+  mounted() {
+    if (this.$parent.settings.annoview == 'scrollview'){
+      this.$el.addEventListener('scroll', this.handleScroll);
+    }
+  },
+  created() {
+    this.isscrollview = this.$parent.settings.annoview == 'scrollview';
+  },
+  methods: {
+    handleScroll: function() {
+      if (this.$parent.shown == 'transcription' || this.$parent.shown == 'anno'){
+        for (var key in this.$refs){
+          const refitem = this.$refs[key][0];
+          const top = refitem.offsetTop - this.padding;
+          const bottom = top + refitem.offsetHeight + this.padding;
+          const numb = parseInt(key);
+          if (top <= this.$el.scrollTop && this.$el.scrollTop <= bottom){
+            if (this.$parent.position != numb){
+              this.$parent.next(numb);
+              this.updatedto = numb;
+            }
+          }
+        }
+      }
+    }
+  },
+  computed: {
+    padding: function(){
+      return (this.$refs['1'][0].offsetTop - this.$refs['0'][0].offsetTop)/1.1;
     }
   }
 }
