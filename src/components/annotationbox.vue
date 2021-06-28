@@ -180,7 +180,11 @@ export default {
           const numb = parseInt(key);
           if (top <= this.$el.scrollTop && this.$el.scrollTop <= bottom){
             if (this.$parent.position != numb){
-              this.$parent.next(numb);
+              if (this.$parent.$parent.multi) {
+                this.$parent.$parent.sendMessage({'function': 'next', 'args': numb})
+              } else {
+                this.$parent.sendMessage({'function': 'next', 'args': numb})
+              }
               this.updatedto = numb;
             }
           }
