@@ -4,8 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "release": "jest && vue-cli-service build && ./docs.sh && ./prerelease.sh",
-    "build": "jest && vue-cli-service build && ./prerelease.sh",
+    "storyboard": "TYPE=storyboard vue-cli-service build src/storyboard.js --no-clean",
+    "rangestoryboard": "TYPE=rangestoryboard vue-cli-service build src/rangestoryboard.js --no-clean",
+    "iiifannotation": "TYPE=iiifannotation vue-cli-service build src/iiifannotation.js --no-clean",
+    "multistoryboard": "TYPE=multistoryboard vue-cli-service build src/multistoryboard.js --no-clean",
+    "searchapi": "TYPE=multistoryboard vue-cli-service build src/searchapi.js --no-clean",
+    "release": "jest && TYPE=annona vue-cli-service build --no-clean && ./componentbuild.sh && ./docs.sh && ./prerelease.sh",
+    "build": "jest && TYPE=annona vue-cli-service build --no-clean && ./componentbuild.sh && ./prerelease.sh",
     "lint": "vue-cli-service lint",
     "test": "jest"
   },
@@ -34,7 +39,6 @@
     "vue": "^2.6.12",
     "vue-custom-element": "^3.3.0",
     "vue-fullscreen": "^2.3.2",
-    "vue-simple-hotkey": "^0.1.5",
     "webpack": "^4.46.0"
   },
   "devDependencies": {

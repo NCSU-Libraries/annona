@@ -21,6 +21,8 @@ module.exports = {
     "<iiif-storyboard annotationurl='https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json'></iiif-storyboard>"}
     ,
     {"title": "multistoryboard test", "board":
+    "<iiif-multistoryboard annotationurls='mc00240.json;page.json;'></iiif-multistoryboard>"},
+    {"title": "multistoryboard test 2", "board":
     "<iiif-multistoryboard annotationurls='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-multistoryboard>"},
     {"title": "layers test", "board":
     "<iiif-storyboard annotationurl='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' layers='[{\"label\":\"x-ray\",\"xywh\":\"\",\"image\":\"https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json\",\"section\":\"\",\"rotation\":\"\"}]' styling='togglelayers: true;'></iiif-storyboard>"}

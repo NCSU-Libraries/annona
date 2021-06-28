@@ -1,4 +1,6 @@
-cp dist/js/* docs/dist/
+rm -r docs/dist/
+mkdir docs/dist/
+cp -R dist/js/* docs/dist/
 cp dist/css/* docs/dist/
 cd docs
 rm dist2.zip

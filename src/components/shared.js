@@ -48,6 +48,10 @@ export default {
         settings[keyvalue[0].trim()] = value;
       }
     }
+    if (settings.annoview == 'scrollview'){
+      settings.startposition = settings.startposition != undefined ? settings.startposition : 1;
+      settings.hide_nextbuttons = settings.hide_nextbuttons != undefined ? settings.hide_nextbuttons : true;
+    }
     if (settings.tagscolor) {
       settings.tagscolor = Object.keys(settings.tagscolor).reduce((out, key) => {
         out[this.tagsToClass(key)] = settings.tagscolor[key]
@@ -509,49 +513,68 @@ export default {
   //get full image URL
   getImages: function(baseImageUrl, canvasRegion, size, jpgformat='default.jpg'){
     var regExp = new RegExp("/+$");
+    var imageurlsize = size.split(',').filter(Boolean).length > 1 ? `${size.split(',')[0]},` : size;
     baseImageUrl = baseImageUrl.replace(regExp, "")
     var extension = this.getExtension(baseImageUrl);
     if (canvasRegion.split(',').length > 1){
       canvasRegion = canvasRegion.split(',').map(elem => parseInt(elem)).join(",")
     }
-    var imageurl = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
+    var imageurl = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${imageurlsize}/0/${jpgformat}`;
     var fullImage = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
     return {'fullImage':fullImage, 'imageurl': imageurl};
   },
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
     var shortcuts = {
-      'autorun': {'icon': buttons['autorunbutton'], 'label': 'Auto Run', 'shortcut': ['b', '1']},
-      'info': {'icon': buttons['info'], 'label': 'Info Button', 'shortcut': ['i', '2']},
-      'overlay': {'icon': buttons['overlaybutton'], 'label': 'Toggle', 'shortcut': ['o', '4']},
-      'zoomin' : {'icon': '<i class="fas fa-search-plus"></i>', 'label': 'Zoom In', 'shortcut': ['z', '+', 'shift+up']},
-      'zoomout' :{'icon': '<i class="fas fa-search-minus"></i>', 'label': 'Zoom Out', 'shortcut': ['m', '-', 'shift+down']},
-      'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home', 'shortcut': ['h', '0']},
-      'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous', 'shortcut': ['p', ',', 'shift+left']},
-      'next' : {'icon': '<i class="fa fa-arrow-right"></i>', 'label': 'Next', 'shortcut': ['n', '.', 'shift+right']},
-      'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen', 'shortcut': ['alt+f', ';']},
-      'close' : {'icon': '<i class="fas fa-times"></i>', 'label': 'Close', 'shortcut': ['x', '6']},
-      'hide' : {'icon': buttons['hide_button'], 'label': 'Collapse text', 'shortcut': ['c', '7']},
-      'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts', 'shortcut': ['s', '8']}
+      'autorun': {'icon': buttons['autorunbutton'], 'label': 'Auto Run', 
+        'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': vueinfo.settings.autorun_interval}},
+      'info': {'icon': buttons['info'], 'label': 'Info Button', 
+        'shortcut': ['i', '2'], 'function': {'function': 'clickButton', 'args': 'info'}},
+      'overlay': {'icon': buttons['overlaybutton'], 'label': 'Toggle',
+        'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
+      'zoomin' : {'icon': '<i class="fas fa-search-plus"></i>', 'label': 'Zoom In',
+        'shortcut': ['z', '+', 'shift+ArrowUp'], 'function': {'function': 'zoom', 'args': 'in'}},
+      'zoomout' :{'icon': '<i class="fas fa-search-minus"></i>', 'label': 'Zoom Out',
+        'shortcut': ['m', '-', 'shift+ArrowDown'], 'function': {'function': 'zoom', 'args': 'out'}},
+      'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home',
+        'shortcut': ['h', '0'], 'function': {'function': 'zoom', 'args': 'home'}},
+      'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous',
+        'shortcut': ['p', ',', 'shift+ArrowLeft'], 'function': {'function': 'next', 'args': 'prev'}},
+      'next' : {'icon': '<i class="fa fa-arrow-right"></i>', 'label': 'Next',
+        'shortcut': ['n', '.', 'shift+ArrowRight'], 'function':{'function': 'next', 'args': 'next'}},
+      'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen',
+        'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
+      'close' : {'icon': '<i class="fas fa-times"></i>', 'label': 'Close',
+        'shortcut': ['x', '6'], 'function': {'function': 'close', 'args': '', 'run': true}},
+      'hide' : {'icon': buttons['hide_button'], 'label': 'Collapse text',
+        'shortcut': ['c', '7'], 'function': {'function': 'hide', 'args': ''}},
+      'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
+        'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}}
     }
     if ((type == 'storyboard' && Object.keys(vueinfo.tagslist).length > 0) || (type=='multistoryboard' && vueinfo.tags)){
-      shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Tags', 'shortcut': ['t', '3']};
+      shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Tags', 
+        'shortcut': ['t', '3'], 'function': {'function': 'clickButton', 'args': 'tags'}};
     }
     if ((type == 'storyboard' && vueinfo.layerslist.length > 1) || (type=='multistoryboard' && vueinfo.layerslist)){
-      shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 'shortcut': ['l', '5']};
+      shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 
+        'shortcut': ['l', '5'], 'function': {'function': 'clickButton', 'args': 'layer'}};
     }
     if (vueinfo.settings.tts){
-      shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause', 'shortcut': ['r', '9']}
+      shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause',
+        'shortcut': ['r', '9'], 'function': {'function': 'playpause', 'args': ''}}
     }
     if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
-      shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 'shortcut': vueinfo.$parent.prevshortcut};
-      shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 'shortcut': vueinfo.$parent.nextshortcut};
+      shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 
+        'shortcut': vueinfo.$parent.prevshortcut, 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
+      shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 
+        'shortcut': vueinfo.$parent.nextshortcut, 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
     }
     var annotation = type == 'storyboard' ? vueinfo.annotations : vueinfo.$children.map(board => board.annotations);
-    var hasocr = this.flatten(annotation.filter(element=>element.ocr && element.ocr.length > 0));
-    var hastext = this.flatten(annotation.filter(element=>element.textual_body && element.textual_body.length > 0));
+    var hasocr = this.flatten(annotation.filter(element=>element && element.ocr && element.ocr.length > 0));
+    var hastext = this.flatten(annotation.filter(element=>element && element.textual_body && element.textual_body.length > 0));
     if (hasocr.length > 0 && hastext.length > 0){
-      shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation', 'shortcut': ['a', '/']};
+      shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
+        'shortcut': ['e', '`'], 'function': {'function': 'toggletranscription', 'args': ''}};
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
     for (var hd=0; hd<removefields.length; hd++){
