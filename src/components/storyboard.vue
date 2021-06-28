@@ -91,9 +91,12 @@ export default {
     this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
     this.settings.annoview == 'collapse' ? this.buttons.hide_button = '<i class="fas fa-caret-left"></i>' : '';
     if(isURL['isURL']){
+      if (this.basecompontent.annotationurl && this.basecompontent.annotationurl.imageurl){
+        this.seadragontile = this.basecompontent.annotationurl.imageurl;
+      }
       axios.get(annotationurl).then(response => {
         this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
-      });
+      }).catch((error) => {this.renderError(annotationurl)});
     }
   },
   watch: {
@@ -128,6 +131,12 @@ export default {
         if (groupdict.checked == tagstotoggle[st].checked){
           this.sendMessage({'function': 'hideshowalltags', 'args': tagstotoggle[st]['key']})
         }
+      }
+    },
+    renderError: function(url) {
+      this.rendered = `There was a error with ${url}`;
+      if (this.seadragontile) {
+        this.buildseadragon();
       }
     },
     parseAnnoData: function(annotation, annotationurl, isURL){
@@ -565,7 +574,7 @@ export default {
           var images = get_canvas['images'];
           this.getLayerData(images);
           this.buildseadragon(canvasId);
-      });
+      }).catch((error) => {this.renderError(manifestlink)});
     },
     //set defaults before creating viewer and then create viewer
     buildseadragon: function(canvasId){

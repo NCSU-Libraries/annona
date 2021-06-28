@@ -148,7 +148,7 @@ export default {
     '$parent.currentlang': function(){
       this.scrollContent(true);
     },
-    '$parent.position': function(newval, oldval) {
+    '$parent.position': function(newval) {
       if (this.updatedto.toString() != newval.toString() && this.$refs[newval]){
         this.$nextTick(() => {
           const valelem = this.$refs[newval][0];

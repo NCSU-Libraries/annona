@@ -140,12 +140,11 @@ export default {
         this.setDefaults(manifest);
       },
       addToLists: function(anno, manifesturl, canvas) {
-        if(anno.resources || anno.items){
+        if(anno.resources || anno.items || anno.body){
           var jsonanno = anno; 
         } else {
           var annourl = shared.getId(anno);
         }
-        
         if (canvas){
           var canvasid = shared.getId(canvas);
           if (canvasid.constructor.name === 'String' && canvasid.indexOf('#xywh') > -1){
@@ -154,6 +153,7 @@ export default {
           var firstcanvas = canvas.images ? canvas.images[0] : canvas.items ? canvas.items[0].items[0] : undefined;
           if (firstcanvas){
             var thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
+            var imageurl = thumbnail.split('/full/30,')[0] + '/info.json';
           }
         }
         const position = this.rangelist.length;
@@ -161,7 +161,7 @@ export default {
         toclabel = shared.parseMetaFields(toclabel);
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
-        this.rangelist.push({'canvas': canvasid, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
+        this.rangelist.push({'canvas': canvasid, 'imageurl': imageurl, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
       },
       setDefaults: function(data) {
         var viewingDirection = data.viewingDirection;
