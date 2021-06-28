@@ -143,14 +143,10 @@ export default {
   },
   watch: {
    '$parent.annotations': function(){
-      if (this.$parent.settings.transcription || this.isscrollview){
-        for (var an=0; an<this.$parent.annotations.length; an++){
-          const transcript = this.$parent.createAnnoContent(this.$parent.annotations[an]);
-          var text = transcript['transcription'] ? transcript['transcription'] : transcript['anno'];
-          this.transcriptions.push(text);
-          this.scrollitems.push(transcript['anno']);
-        }
-      }
+      this.scrollContent();
+    },
+    '$parent.currentlang': function(){
+      this.scrollContent(true);
     },
     '$parent.position': function(newval, oldval) {
       if (this.updatedto.toString() != newval.toString() && this.$refs[newval]){
@@ -171,6 +167,20 @@ export default {
     this.isscrollview = this.$parent.settings.annoview == 'scrollview';
   },
   methods: {
+    scrollContent: function(reset=false) {
+      if (this.$parent.settings.transcription || this.isscrollview){
+        if (reset){
+          this.scrollitems = [];
+          this.transciptions = [];
+        }
+        for (var an=0; an<this.$parent.annotations.length; an++){
+          const transcript = this.$parent.createAnnoContent(this.$parent.annotations[an]);
+          var text = transcript['transcription'] ? transcript['transcription'] : transcript['anno'];
+          this.transcriptions.push(text);
+          this.scrollitems.push(transcript['anno']);
+        }
+      }
+    },
     handleScroll: function() {
       if (this.$parent.shown == 'transcription' || this.$parent.shown == 'anno'){
         for (var key in this.$refs){
