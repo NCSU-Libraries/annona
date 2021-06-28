@@ -10,8 +10,8 @@
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
       <div class="aftercontent" v-html="item.after" v-if="item.after && !settings.image_only && !settings.hide_beforeafter">
       </div>
-      <div id="tags">
-        <div v-if="!settings.hide_tags && item.tags" v-for="tag in item.tags" v-bind:key="tag.key" class="tags">
+      <div id="tags" v-if="!settings.hide_tags && item.tags">
+        <div v-for="tag in item.tags" v-bind:key="tag.key" class="tags">
           <div class="countkey">
             {{tag.label}}
             <span class="tagscount" v-bind:style="[tag.color ? {background: tag.color }: {}]">

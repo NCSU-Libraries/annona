@@ -32,7 +32,7 @@ describe('Component', () => {
       expect(wrapper.vm.$data.annotation_items).toHaveLength(1)
       expect(wrapper.vm.$data.manifest.label).toBe("Letter from Francis Crick to Michael Crick")
       expect(annotation.label).toBe(undefined)
-      expect(annotation.image).toEqual(['<img src=\"https://dlcs.io/iiif-img/wellcome/1/ce30a1a7-a606-4b5e-b2ad-c13677d3e8f6/310,1250,1850,1180/!1024,1024/0/default.jpg\" alt=\"Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.\">'])
+      expect(annotation.image).toEqual(['<img src=\"https://dlcs.io/iiif-img/wellcome/1/ce30a1a7-a606-4b5e-b2ad-c13677d3e8f6/310,1250,1850,1180/!1024,/0/default.jpg\" alt=\"Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.\">'])
       expect(annotation['content']['ocr']).toEqual(["Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A."])
       expect(wrapper.vm.$data.rendered).toEqual(true);
       wrapper.destroy()

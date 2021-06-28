@@ -513,12 +513,13 @@ export default {
   //get full image URL
   getImages: function(baseImageUrl, canvasRegion, size, jpgformat='default.jpg'){
     var regExp = new RegExp("/+$");
+    var imageurlsize = size.split(',').filter(Boolean).length > 1 ? `${size.split(',')[0]},` : size;
     baseImageUrl = baseImageUrl.replace(regExp, "")
     var extension = this.getExtension(baseImageUrl);
     if (canvasRegion.split(',').length > 1){
       canvasRegion = canvasRegion.split(',').map(elem => parseInt(elem)).join(",")
     }
-    var imageurl = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${size}/0/${jpgformat}`;
+    var imageurl = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${imageurlsize}/0/${jpgformat}`;
     var fullImage = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
     return {'fullImage':fullImage, 'imageurl': imageurl};
   },
