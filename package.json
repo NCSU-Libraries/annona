@@ -8,7 +8,7 @@
     "rangestoryboard": "TYPE=rangestoryboard vue-cli-service build src/rangestoryboard.js --no-clean",
     "iiifannotation": "TYPE=iiifannotation vue-cli-service build src/iiifannotation.js --no-clean",
     "multistoryboard": "TYPE=multistoryboard vue-cli-service build src/multistoryboard.js --no-clean",
-    "searchapi": "TYPE=multistoryboard vue-cli-service build src/searchapi.js --no-clean",
+    "searchapi": "TYPE=searchapi vue-cli-service build src/searchapi.js --no-clean",
     "release": "jest && TYPE=annona vue-cli-service build --no-clean && ./componentbuild.sh && ./docs.sh && ./prerelease.sh",
     "build": "jest && TYPE=annona vue-cli-service build --no-clean && ./componentbuild.sh && ./prerelease.sh",
     "lint": "vue-cli-service lint",
