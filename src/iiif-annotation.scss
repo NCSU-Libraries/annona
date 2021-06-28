@@ -209,6 +209,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   stroke-width: 3px;
   stroke:$overlay_color;
   fill: none;
+  vector-effect: non-scaling-stroke;
 }
 
 .active > svg > * {
