@@ -3,12 +3,26 @@ import rtlDetect from 'rtl-detect';
 
 export default {
   buttons: {
-    'autorunbutton': '<i class="fas fa-magic"></i>',
-    'overlaybutton': '<i class="fas fa-toggle-on"></i>',
+    'autorun': '<i class="fas fa-magic"></i>',
+    'autorunoff': '<i class="fas fa-stop-circle"></i>',
+    'overlay': '<i class="fas fa-toggle-on"></i>',
+    'overlayoff': '<i class="fas fa-toggle-off"></i>',
+    'textoverlay': '<i class="fas fa-align-justify"></i>',
+    'textoverlayoff': `
+    <span class="fa-stack">
+      <i class="fas fa-align-justify fa-stack-1x"></i>
+      <i class="fas fa-slash fa-stack-1x" style="color:Tomato"></i>
+    </span>`,
     'expand' : '<i class="fas fa-expand"></i>',
+    'annooff': '<i class="fas fa-pen-nib"></i>',
+    'anno': '<i class="fas fa-file-alt"></i>',
     'compress' : '<i class="fas fa-compress"></i>',
-    'hide_button' : '<i class="fas fa-caret-up"></i>',
+    'hide' : '<i class="fas fa-caret-up"></i>',
+    'hideoff' : '<i class="fas fa-caret-down"></i>',
+    'collapsehide' : '<i class="fas fa-caret-left"></i>',
+    'collapsehideoff' : '<i class="fas fa-caret-right"></i>',
     'playpause': '<i class="fas fa-play"></i>',
+    'playpauseoff': '<i class="fas fa-pause"></i>',
     'tags': '<i class="fas fa-tag"></i>',
     'info': '<i class="fas fa-info-circle"></i>',
     'layer': '<i class="fas fa-layer-group"></i>',
@@ -136,9 +150,10 @@ export default {
     anno.bodyValue ? textual_body.push(anno.bodyValue) : '';
     for (var i=0; i < res.length; i++){
       var res_data = res[i];
-      var type = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
+      var typefield = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
+      var type = res_data[typefield];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
-      var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : res_data[type] ? res_data[type] : 'dctypes:text';
+      var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : type ? type : 'dctypes:text';
       purpose = purpose.toLowerCase();
       if (res_data.selector){
         shapetype = res_data.selector.value;
@@ -150,42 +165,46 @@ export default {
         value = this.parseCharValue(value);
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
-          value += purpose != 'tagging' && res_data[type] !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
+          value += purpose != 'tagging' && type !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
         }
-        if (res_data[type] === 'TextualBody'){
+        if (type === 'TextualBody'){
           if (purpose === 'tagging'){
             tags.push({'value': value, 'group': ''});
-          } else if (purpose == 'transcribing'){
+          } else if (purpose == 'transcribing' || purpose == 'describing'){
             ocr.push(value);
           } else {
             textual_body.push(`<div class="${purpose}">${value}</div>`);
           }
-        } else if (res_data[type] === 'oa:Tag'){
+        } else if (type === 'oa:Tag'){
           tags.push({'value': value, 'group': ''});
-        } else if (res_data[type] === 'dctypes:Dataset' || res_data[type] === 'Dataset') {
+        } else if (type === 'dctypes:Dataset' || type === 'Dataset') {
           if (res_data['@id']){
             textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`)
           } else if (purpose == 'tagging') {
             tags.push(res_data['value'])
           }
-        } else if (res_data[type] === 'cnt:ContentAsText') {
+        } else if (type === 'cnt:ContentAsText') {
           ocr.push(value);
         } else {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
-      } else if (res_data[type] === 'Choice') {
+      } else if (type === 'Choice') {
         langs = res_data['items'].map(element => `<option value="${element['language']}"${navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${by639_1[element['language']] && by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
         var values = []
         res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
-      } else if (res_data[type] === 'dctypes:Image' || res_data[type] === 'Image') {
+      } else if (type === 'dctypes:Image' || type === 'Image') {
         textual_body.push(`<img src="${res_data['@id']}">
           <div class="attribution">${res_data['attribution']}</div>
           <div class="caption">${res_data['description']}</div>`);
       }
     }
     authors = this.getAuthor(anno);
-    return {'ocr': ocr, 'textual_body':textual_body,'tags':tags, 'type': shapetype, 'languages':langs, 'label':label, 'language': res_data ? res_data['language'] : '', 'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,'itemclass': charclass};
+    return {'ocr': ocr, 'textual_body':textual_body,
+      'tags':tags, 'type': shapetype, 'languages':langs,
+      'label':label, 'language': res_data ? res_data['language'] : '',
+      'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,
+      'itemclass': charclass};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -526,11 +545,11 @@ export default {
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
     var shortcuts = {
-      'autorun': {'icon': buttons['autorunbutton'], 'label': 'Auto Run', 
+      'autorun': {'icon': buttons['autorun'], 'label': 'Auto Run',
         'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': vueinfo.settings.autorun_interval}},
       'info': {'icon': buttons['info'], 'label': 'Info Button', 
         'shortcut': ['i', '2'], 'function': {'function': 'clickButton', 'args': 'info'}},
-      'overlay': {'icon': buttons['overlaybutton'], 'label': 'Toggle',
+      'overlay': {'icon': buttons['overlay'], 'label': 'Toggle overlays',
         'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
       'zoomin' : {'icon': '<i class="fas fa-search-plus"></i>', 'label': 'Zoom In',
         'shortcut': ['z', '+', 'shift+ArrowUp'], 'function': {'function': 'zoom', 'args': 'in'}},
@@ -546,7 +565,7 @@ export default {
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
       'close' : {'icon': '<i class="fas fa-times"></i>', 'label': 'Close',
         'shortcut': ['x', '6'], 'function': {'function': 'close', 'args': '', 'run': true}},
-      'hide' : {'icon': buttons['hide_button'], 'label': 'Collapse text',
+      'hide' : {'icon': buttons['hide'], 'label': 'Collapse text',
         'shortcut': ['c', '7'], 'function': {'function': 'hide', 'args': ''}},
       'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}}
@@ -572,9 +591,13 @@ export default {
     var annotation = type == 'storyboard' ? vueinfo.annotations : vueinfo.$children.map(board => board.annotations);
     var hasocr = this.flatten(annotation.filter(element=>element && element.ocr && element.ocr.length > 0));
     var hastext = this.flatten(annotation.filter(element=>element && element.textual_body && element.textual_body.length > 0));
-    if (hasocr.length > 0 && hastext.length > 0){
-      shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
-        'shortcut': ['e', '`'], 'function': {'function': 'toggletranscription', 'args': ''}};
+    if (hasocr.length > 0){
+      shortcuts['textoverlay'] = {'icon': buttons['textoverlay'], 'label': 'Toggle ocr text',
+        'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': 'textoverlay'}}
+      if (hastext.length > 0){
+        shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
+          'shortcut': ['e', '`'], 'function': {'function': 'toggletranscription', 'args': ''}};
+      }
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
     for (var hd=0; hd<removefields.length; hd++){

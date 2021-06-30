@@ -89,7 +89,7 @@ export default {
     var isURL = shared.isURL(annotationurl, this.settings);
     this.seadragonid = isURL['id'] + '_storyboard';
     this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
-    this.settings.annoview == 'collapse' ? this.buttons.hide_button = '<i class="fas fa-caret-left"></i>' : '';
+    this.settings.annoview == 'collapse' ? this.buttons.hide = '<i class="fas fa-caret-left"></i>' : '';
     if(isURL['isURL']){
       if (this.basecompontent.annotationurl && this.basecompontent.annotationurl.imageurl){
         this.seadragontile = this.basecompontent.annotationurl.imageurl;
@@ -432,7 +432,35 @@ export default {
           element: elem,
           location: rect
         });
+        //set viewBox based on section. SVG will not show up without this.
         this.addTracking(elem, rect, position, this);
+        if (annotation.ocr.length > 0){
+          //var elem2 = elem.cloneNode(true);
+          var elem2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            //set viewBox based on section. SVG will not show up without this.
+          elem2.setAttribute('viewBox', xywh.join(" "));
+          elem2.setAttribute('style', 'position: absolute;');
+          //svg.setAttribute('class', 'textoverlay')
+          elem2.id = `ocr-position${position}`;
+          elem2.classList = 'textoverlay';
+          elem2.style.userSelect = 'text';
+          elem2.style.display = 'none';
+          elem2.style.transform = 'rotate(-50deg)';
+          elem2.innerHTML +=  `
+            <text font-size="${xywh[3]*1.4}px" x="${xywh[0]}" y="${parseFloat(xywh[1])+parseFloat(xywh[3])}" textLength='${xywh[2]}' lengthAdjust="spacingAndGlyphs">
+              ${annotation.ocr.join(' ')}
+            </text>
+          `;
+          this.viewer.addOverlay({
+            element: elem2,
+            location: rect
+          });
+          new openseadragon.MouseTracker({
+            element: elem2,
+            canvasHandler: function() {
+            }
+          }).setTracking(true);
+        }
       }
     },
     //play pause TTS if enabled. Called when playpause button pressed.
@@ -440,13 +468,13 @@ export default {
       var synth = window.speechSynthesis;
       if (synth.paused){
         synth.resume();
-        this.buttons.playpause = '<i class="fas fa-pause"></i>';
+        this.buttons.playpause = shared.buttons['playpauseoff'];
       } else if (!synth.speaking) {
         this.ttscontent();
-        this.buttons.playpause = '<i class="fas fa-pause"></i>';
+        this.buttons.playpause = shared.buttons['playpauseoff'];
       } else {
         synth.pause();
-        this.buttons.playpause = '<i class="fas fa-play"></i>';
+        this.buttons.playpause = shared.buttons['playpause'];
       }
     },
     ttscontent: function(){
@@ -476,12 +504,13 @@ export default {
     //Hide annotation if hide button pressed
     hide: function(){
       this.removeHeight();
+      const hidesetting =  this.settings.annoview == 'collapse' ? 'collapsehide' : 'hide';
       if(this.booleanitems.isexcerpt){
         this.booleanitems.isexcerpt = false;
-        this.buttons.hide_button = this.settings.annoview == 'collapse' ? '<i class="fas fa-caret-left"></i>' : '<i class="fas fa-caret-up"></i>' ;
+        this.buttons.hide = shared.buttons[hidesetting];
       } else {
         this.booleanitems.isexcerpt = true;
-        this.buttons.hide_button = this.settings.annoview == 'collapse' ? '<i class="fas fa-caret-right"></i>' : '<i class="fas fa-caret-down"></i>';
+        this.buttons.hide = shared.buttons[`${hidesetting}off`];
       }
     },
     //when specified button clicked change shown value
@@ -511,10 +540,10 @@ export default {
       this.setDefaultButtons();
     },
     setDefaultButtons: function() {
-      this.buttons.info = '<i class="fas fa-info-circle"></i>';
-      this.buttons.layer = '<i class="fas fa-layer-group"></i>';
-      this.buttons.tags = '<i class="fas fa-tag"></i>';
-      this.buttons.keyboard = '<i class="fas fa-keyboard"></i>';
+      const fields = ['info', 'layer', 'tags', 'keyboard']
+      for (var fi=0; fi<fields.length; fi++){
+        this.buttons[fields[fi]] = shared.buttons[fields[fi]];
+      }
       this.buttons.anno = !this.booleanitems.istranscription ? '<i class="fas fa-pen-nib"></i>' : '<i class="fas fa-file-alt"></i>';
     },
     //Set all buttons to correct value, change specified button and shown value
@@ -555,11 +584,11 @@ export default {
       }
       var areviewable = Object.values(this.tagslist).map(element => element['checked']);
       if (areviewable.indexOf(true) === -1){
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
         this.booleanitems.isoverlaytoggled = false;
+        this.buttons.overlay = shared.buttons['overlay'];
       } else {
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
         this.booleanitems.isoverlaytoggled = true;
+        this.buttons.overlay = shared.buttons['overlayoff'];
       }
       //This is the only way to ensure checkboxes update
       this.shown = false;
@@ -703,7 +732,7 @@ export default {
       speech.voice = voice ? voice[0] : synth.getVoices()[0];
       var this_functions = this;
       speech.onstart = function() {
-        this_functions.buttons.playpause = '<i class="fas fa-pause"></i>';
+        this_functions.buttons.playpause = shared.buttons['playpauseoff'];
       }
       if (!text){
         this.autoRunTTS();
@@ -712,7 +741,7 @@ export default {
       }
       console.log("utterance", speech);
       synth.speak(speech);
-      this.buttons.playpause = '<i class="fas fa-pause"></i>';
+      this.buttons.playpause = shared.buttons['playpauseoff'];
     },
     // Makes sure that autoRun waits for TTS to finish
     autoRunTTS: function(){
@@ -729,27 +758,31 @@ export default {
         clearTimeout(this.isautorunning);
       }
       if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
-        this.buttons.playpause = '<i class="fas fa-play"></i>';
+        this.buttons.playpause = shared.buttons['playpause'];
       }
     },
     //toggles created overlays;
-    createOverlay: function(){
-      var box_elements = this.anno_elem.getElementsByClassName("overlay");
+    createOverlay: function(classname){
+      classname = classname ? classname : 'overlay';
+      var box_elements = this.anno_elem.getElementsByClassName(classname);
       var display_setting;
       var checked;
-      if (this.booleanitems.isoverlaytoggled){
+      var togglestatus = this.booleanitems[`is${classname}toggled`];
+      if (togglestatus){
         display_setting = 'none';
         checked = false;
-        this.booleanitems.isoverlaytoggled = false;
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-on"></i>';
+        this.booleanitems[`is${classname}toggled`] = false;
+        this.buttons[classname] = shared.buttons[classname];
       } else {
         display_setting = 'block';
         checked = true;
-        this.booleanitems.isoverlaytoggled = true;
-        this.buttons.overlaybutton = '<i class="fas fa-toggle-off"></i>';
+        this.booleanitems[`is${classname}toggled`] = true;
+        this.buttons[classname] = shared.buttons[`${classname}off`];
       }
-      for (var key in this.tagslist){
-        this.tagslist[key].checked = checked;
+      if (classname == 'overlay'){
+        for (var key in this.tagslist){
+          this.tagslist[key].checked = checked;
+        }
       }
       for (var a=0; a<box_elements.length; a++){
         box_elements[a].style.display = display_setting;
@@ -852,7 +885,7 @@ export default {
       } else {
         this.position = this.position;
       }
-      if(this.buttons.overlaybutton.indexOf('toggle-off') == -1){
+      if(this.buttons.overlay.indexOf('toggle-off') == -1){
         var multielements = document.getElementsByClassName("multi");
         for (var we=0; we<multielements.length; we++){
           multielements[we].style.display = "none";
@@ -1018,11 +1051,11 @@ export default {
             this_functions.next('next');
           }, interval);
         }
-        this.buttons.autorunbutton = '<i class="fas fa-stop-circle"></i>';
+        this.buttons.autorun = shared.buttons['autorunoff'];
       } else {
         clearInterval(this.isautorunning);
         this.isautorunning = '';
-        this.buttons.autorunbutton = '<i class="fas fa-magic"></i>';
+        this.buttons.autorun = shared.buttons['autorun'];
       }
     },
     createAnnoContent: function(anno) {

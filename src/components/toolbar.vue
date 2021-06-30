@@ -1,7 +1,7 @@
 <template>
   <span id="header_toolbar" v-if="!$parent.settings.hide_toolbar" v-bind:class="menuclass">
     <button v-if="$parent.shortcuts['autorun']" id="autoRunButton" v-on:click="$parent.sendMessage($parent.shortcuts['autorun']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.autorunbutton"></span>
+      <span v-html="$parent.buttons.autorun"></span>
       <span class="toolbartext">Start/Stop Autorun</span>
     </button>
     <button v-on:click="$parent.sendMessage($parent.shortcuts['info']['function']);" v-if="$parent.shortcuts['info']"  id="infoButton" class="toolbarButton">
@@ -13,8 +13,12 @@
       <span class="toolbartext">Toggle Tags</span>
     </button>
     <button v-if="$parent.shortcuts['overlay']" id="overlayButton" v-on:click="$parent.sendMessage($parent.shortcuts['overlay']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.overlaybutton"></span>
+      <span v-html="$parent.buttons.overlay"></span>
       <span class="toolbartext">Toggle Overlays</span>
+    </button>
+    <button v-if="$parent.shortcuts['textoverlay']" id="overlayButton" v-on:click="$parent.sendMessage($parent.shortcuts['textoverlay']['function']);" class="toolbarButton">
+      <span v-html="$parent.buttons.textoverlay"></span>
+      <span class="toolbartext">Toggle OCR Overlays</span>
     </button>
     <button v-if="$parent.shortcuts['layers']" id="layerButton" v-on:click="$parent.sendMessage($parent.shortcuts['layers']['function']);" class="toolbarButton">
       <span v-html="$parent.buttons.layer"></span>
@@ -78,7 +82,7 @@ export default {
   methods: {
     keydownListener: function(event) {
       var keycombo = event.code.replace('Key', '').replace('Digit', '').toLowerCase();
-      var addon = event.altKey ? 'alt+' : event.shiftKey ? 'shift+' : ''
+      var addon = event.altKey ? 'alt+' : event.shiftKey ? 'shift+' : event.metaKey ? 'cmd+' : ''
       keycombo = addon + keycombo;
       var keycombo2 = addon + event.key;
       const keydown = Object.values(this.$parent.shortcuts).filter(elem => elem.shortcut.indexOf(keycombo) > -1 || elem.shortcut.indexOf(keycombo2) > -1)
