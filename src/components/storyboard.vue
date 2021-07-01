@@ -91,9 +91,6 @@ export default {
     this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
     this.settings.annoview == 'collapse' ? this.buttons.hide = '<i class="fas fa-caret-left"></i>' : '';
     if(isURL['isURL']){
-      if (this.basecompontent.annotationurl && this.basecompontent.annotationurl.imageurl){
-        this.seadragontile = this.basecompontent.annotationurl.imageurl;
-      }
       axios.get(annotationurl).then(response => {
         this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
       }).catch((error) => {this.renderError(annotationurl)});
@@ -321,10 +318,10 @@ export default {
     },
     // Get image info from manifest; This populates the info button for the image.
     getImageInfo: function(canvas_data, manifestlink){
-      var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.data.label}, {'label':'description', 'value': canvas_data.data.description},
-      {'label': 'attribution', 'value': canvas_data.data.attribution},{'label': 'license', 'value': canvas_data.data.license}]
-      metadata = canvas_data.data.metadata ? metadata.concat(canvas_data.data.metadata) : metadata;
-      canvas_data.data.sequences && canvas_data.data.sequences[0].canvases.length == 1 ? this.imageinfo.label = 'Image information' : '';
+      var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': canvas_data.description},
+      {'label': 'attribution', 'value': canvas_data.attribution},{'label': 'license', 'value': canvas_data.license}]
+      metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
+      canvas_data.sequences && canvas_data.sequences[0].canvases.length == 1 ? this.imageinfo.label = 'Image information' : '';
       for (var j=0; j<metadata.length; j++){
         var label = shared.parseMetaFields(metadata[j]['label']);
         var value = shared.parseMetaFields(metadata[j]['value']);
@@ -445,7 +442,6 @@ export default {
           elem2.classList = 'textoverlay';
           elem2.style.userSelect = 'text';
           elem2.style.display = 'none';
-          elem2.style.transform = 'rotate(-50deg)';
           elem2.innerHTML +=  `
             <text font-size="${xywh[3]*1.4}px" x="${xywh[0]}" y="${parseFloat(xywh[1])+parseFloat(xywh[3])}" textLength='${xywh[2]}' lengthAdjust="spacingAndGlyphs">
               ${annotation.ocr.join(' ')}
@@ -456,9 +452,7 @@ export default {
             location: rect
           });
           new openseadragon.MouseTracker({
-            element: elem2,
-            canvasHandler: function() {
-            }
+            element: elem2
           }).setTracking(true);
         }
       }
@@ -596,14 +590,23 @@ export default {
     },
     //get Manifest data from manifest and get layerdata
     getManifestData: function(manifestlink, canvas, canvasId){
-        axios.get(manifestlink).then(canvas_data => {
-          this.getImageInfo(canvas_data, manifestlink)
-          var get_canvas = shared.matchCanvas(canvas_data.data, canvas, this.imagetitle);
-          this.imagetitle = get_canvas['title'];
-          var images = get_canvas['images'];
-          this.getLayerData(images);
-          this.buildseadragon(canvasId);
-      }).catch((error) => {this.renderError(manifestlink)});
+        if (this.basecompontent.annotationurl && this.basecompontent.annotationurl.images){
+          this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.annotationurl.images)
+        } else if (this.basecompontent.manifestcontents) {
+          this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId)
+        } else {
+          axios.get(manifestlink).then(canvas_data => {
+            this.manifestDataFunctions(manifestlink, canvas_data.data, canvas, canvasId)
+          }).catch((error) => {this.renderError(manifestlink)});
+        }
+    },
+    manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {
+      this.getImageInfo(canvas_data, manifestlink)
+      var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images);
+      this.imagetitle = get_canvas['title'];
+      var canvsimgs = get_canvas['images'];
+      this.getLayerData(canvsimgs);
+      this.buildseadragon(canvasId);
     },
     //set defaults before creating viewer and then create viewer
     buildseadragon: function(canvasId){
@@ -637,6 +640,7 @@ export default {
         const resourceid = images[i].resource ? shared.getId(images[i].resource) : '';
         var xywh = resourceid && resourceid.constructor.name === 'String' && resourceid.indexOf('xywh') > -1 ? resourceid : shared.on_structure(images[i]) && shared.on_structure(images[i])[0].constructor.name === 'String' ? shared.on_structure(images[i])[0] : '';
         xywh = xywh ? xywh.split("xywh=").slice(-1)[0].split(",") : xywh;
+        xywh = xywh.length > 1 ? xywh : ''
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         var checked = this.settings.togglelayers || i == 0 ? true : false;
         var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;
