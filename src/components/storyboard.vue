@@ -3,6 +3,7 @@
   <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' || settings.annoview == 'scrollview' ? 'sidebyside' : 'collapse']">
     <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <toolbar v-if="!$parent.multi"></toolbar>
+      <div v-if="rendered" v-html="rendered" style="position: relative; top: 50%;text-align: center;"></div>
       <annotationbox v-if="settings.annoview != 'sidebyside' && settings.annoview != 'scrollview'"></annotationbox>
     </div>
     <annotationbox v-if="settings.annoview == 'sidebyside' || settings.annoview == 'scrollview'"></annotationbox>
@@ -73,7 +74,8 @@ export default {
       imagetitle: '',
       layerslist: [],
       shortcuts: {},
-      basecompontent: ''
+      basecompontent: '',
+      rendered: ''
     }
   },
   created() {
@@ -131,9 +133,10 @@ export default {
       }
     },
     renderError: function(url) {
-      this.rendered = `There was a error with ${url}`;
-      if (this.seadragontile) {
-        this.buildseadragon();
+      if (this.basecompontent.manifestcontents){
+        this.getManifestData()
+      } else {
+        this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
     },
     parseAnnoData: function(annotation, annotationurl, isURL){

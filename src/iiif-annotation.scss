@@ -900,3 +900,10 @@ table tr {
   padding-top: 20rem!important;
   padding-bottom: 20rem!important;
 }
+
+.fa-stack {
+  display: -webkit-box; 
+  height: $toolbarfontsize;
+  line-height: $toolbarfontsize;
+  width: auto;
+}
