@@ -5,7 +5,7 @@
         <i class="fas fa-times"></i>
       </button>
       <button v-if="$parent.shortcuts['hide']" id="hide_button" class="annocontrols_button"  v-on:click="$parent.sendMessage($parent.shortcuts['hide']['function']);" aria-label="collapse content box button">
-        <span v-html="$parent.buttons.hide_button"></span>
+        <span v-html="$parent.buttons.hide"></span>
       </button>
       <button id="playpause_button" class="annocontrols_button" v-on:click="$parent.sendMessage($parent.shortcuts['playpause']['function']);" v-if="$parent.settings.tts && $parent.shortcuts['playpause']" aria-label="play/pause text to speech button">
         <span v-html="$parent.buttons.playpause"></span>
