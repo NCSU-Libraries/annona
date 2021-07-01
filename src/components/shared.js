@@ -27,7 +27,6 @@ export default {
     'info': '<i class="fas fa-info-circle"></i>',
     'layer': '<i class="fas fa-layer-group"></i>',
     'keyboard': '<i class="fas fa-keyboard"></i>',
-    'anno': '<i class="fas fa-file-alt"></i>',
     'prev' : '<i class="fas fa-chevron-left"></i>',
     'next': '<i class="fas fa-chevron-right"></i>'
   },
@@ -153,8 +152,8 @@ export default {
       var typefield = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var type = res_data[typefield];
       var value = res_data['value'] ? res_data['value'] : res_data['chars'];
-      var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : type ? type : 'dctypes:text';
-      purpose = purpose.toLowerCase();
+      var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : anno['motivation'] && !Array.isArray(anno['motivation']) ? anno['motivation'] : type;
+      purpose = purpose ? purpose.toLowerCase() : purpose;
       if (res_data.selector){
         shapetype = res_data.selector.value;
       }
@@ -170,7 +169,7 @@ export default {
         if (type === 'TextualBody'){
           if (purpose === 'tagging'){
             tags.push({'value': value, 'group': ''});
-          } else if (purpose == 'transcribing' || purpose == 'describing'){
+          } else if (purpose == 'transcribing'){
             ocr.push(value);
           } else {
             textual_body.push(`<div class="${purpose}">${value}</div>`);
@@ -183,7 +182,7 @@ export default {
           } else if (purpose == 'tagging') {
             tags.push(res_data['value'])
           }
-        } else if (type === 'cnt:ContentAsText') {
+        } else if (type === 'cnt:ContentAsText' && (type.toLowerCase() === purpose || purpose.indexOf('painting') > -1)) {
           ocr.push(value);
         } else {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
@@ -415,7 +414,7 @@ export default {
       var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr';
       var directiontext = `<span style="direction: ${direction};">`
       text = directiontext
-      text += annotation['label'] ? `<div class="title">${annotation['label']}</div>` : ``;
+      const title = annotation['label'] ? `<div class="title" style="direction: ${direction};">${annotation['label']}</div>` : ``;
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
       var authors = annotation['authors'];
@@ -445,6 +444,8 @@ export default {
           text = ''
         }
       }
+      text = title + text;
+      ocrtext = title + ocrtext;
     }
     text += annotation && annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
     ocrtext += annotation && annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';
@@ -509,22 +510,29 @@ export default {
     }
     return canvas_tile
   },
-  matchCanvas: function(manifest, canvas, imagetitle) {
+  matchCanvasData: function(imagetitle, canvas, canvases) {
+    var title = imagetitle;
+    var images = canvas.images ? canvas.images : this.flatten(canvas.items.map(element => element['items']));
+    if (!imagetitle){
+      title = canvas.label;
+      title = this.getValueField(title);
+      title = title && title !== imagetitle && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
+    }
+    return {'images': images, 'title': title}
+  },
+  matchCanvas: function(manifest, canvas, imagetitle, images) {
     var canvases = manifest.sequences ? manifest.sequences[0].canvases : manifest.items;
     var title = imagetitle;
-    var images = '';
-    for (var i = 0; i< canvases.length; i++){
-      var cleancanvas = canvas.split('/canvas').slice(-1)[0];
-      var canvregex = cleancanvas ? new RegExp(`${cleancanvas}$`,"g") : new RegExp(`${canvas}$`,"g");
-      var cleanexisting = this.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
-      if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
-        images = canvases[i].images ? canvases[i].images : this.flatten(canvases[i].items.map(element => element['items']));
-        if (!imagetitle){
-          title = canvases[i].label;
-          title = this.getValueField(title);
-          title = title && title !== imagetitle && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
+    if (images){
+      return this.matchCanvasData(imagetitle, images, canvases)
+    } else {
+      for (var i = 0; i< canvases.length; i++){
+        var cleancanvas = canvas.split('/canvas').slice(-1)[0];
+        var canvregex = cleancanvas ? new RegExp(`${cleancanvas}$`,"g") : new RegExp(`${canvas}$`,"g");
+        var cleanexisting = this.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
+        if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
+          return this.matchCanvasData(imagetitle, canvases[i], canvases)
         }
-        return {'images': images, 'title': title}
       }
     }
     return {'images': images, 'title': title}
@@ -544,31 +552,33 @@ export default {
   },
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
+    //openseadragon : a, f, s, d, r, R, w, arrows, 0, -, shift w, shift s,s shift up/down arrows
+    // j, k, q, u, w, y are open
     var shortcuts = {
       'autorun': {'icon': buttons['autorun'], 'label': 'Auto Run',
         'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': vueinfo.settings.autorun_interval}},
+      'hide' : {'icon': buttons['hide'], 'label': 'Collapse text',
+        'shortcut': ['c', '7'], 'function': {'function': 'hide', 'args': ''}},
+      'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home',
+        'shortcut': ['h', '0'], 'function': {'function': 'zoom', 'args': 'home'}},
       'info': {'icon': buttons['info'], 'label': 'Info Button', 
         'shortcut': ['i', '2'], 'function': {'function': 'clickButton', 'args': 'info'}},
-      'overlay': {'icon': buttons['overlay'], 'label': 'Toggle overlays',
-        'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
       'zoomin' : {'icon': '<i class="fas fa-search-plus"></i>', 'label': 'Zoom In',
         'shortcut': ['z', '+', 'shift+ArrowUp'], 'function': {'function': 'zoom', 'args': 'in'}},
       'zoomout' :{'icon': '<i class="fas fa-search-minus"></i>', 'label': 'Zoom Out',
         'shortcut': ['m', '-', 'shift+ArrowDown'], 'function': {'function': 'zoom', 'args': 'out'}},
-      'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home',
-        'shortcut': ['h', '0'], 'function': {'function': 'zoom', 'args': 'home'}},
-      'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous',
-        'shortcut': ['p', ',', 'shift+ArrowLeft'], 'function': {'function': 'next', 'args': 'prev'}},
       'next' : {'icon': '<i class="fa fa-arrow-right"></i>', 'label': 'Next',
         'shortcut': ['n', '.', 'shift+ArrowRight'], 'function':{'function': 'next', 'args': 'next'}},
-      'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen',
-        'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
+      'overlay': {'icon': buttons['overlay'], 'label': 'Toggle overlays',
+        'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
+      'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous',
+        'shortcut': ['p', ',', 'shift+ArrowLeft'], 'function': {'function': 'next', 'args': 'prev'}},
+      'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
+        'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}},
       'close' : {'icon': '<i class="fas fa-times"></i>', 'label': 'Close',
         'shortcut': ['x', '6'], 'function': {'function': 'close', 'args': '', 'run': true}},
-      'hide' : {'icon': buttons['hide'], 'label': 'Collapse text',
-        'shortcut': ['c', '7'], 'function': {'function': 'hide', 'args': ''}},
-      'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
-        'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}}
+      'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen',
+        'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}}
     }
     if ((type == 'storyboard' && Object.keys(vueinfo.tagslist).length > 0) || (type=='multistoryboard' && vueinfo.tags)){
       shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Tags', 
@@ -580,24 +590,31 @@ export default {
     }
     if (vueinfo.settings.tts){
       shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause',
-        'shortcut': ['r', '9'], 'function': {'function': 'playpause', 'args': ''}}
+        'shortcut': ['v', '9'], 'function': {'function': 'playpause', 'args': ''}}
     }
+
     if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
       shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 
-        'shortcut': vueinfo.$parent.prevshortcut, 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
+        'shortcut': ['alt+p', 'alt+,', 'alt+left'], 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 
-        'shortcut': vueinfo.$parent.nextshortcut, 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
+        'shortcut': ['alt+n', 'alt+.', 'alt+right'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
     }
     var annotation = type == 'storyboard' ? vueinfo.annotations : vueinfo.$children.map(board => board.annotations);
-    var hasocr = this.flatten(annotation.filter(element=>element && element.ocr && element.ocr.length > 0));
-    var hastext = this.flatten(annotation.filter(element=>element && element.textual_body && element.textual_body.length > 0));
+    var hasocr = this.flatten(annotation.filter(element=> element && element.ocr && element.ocr.length > 0));
+    const hasocrandtext = annotation.some(elem => elem && elem.ocr && elem.ocr.length > 0 && elem.textual_body && elem.textual_body.length > 0 && elem.ocr != elem.textual_body);
     if (hasocr.length > 0){
       shortcuts['textoverlay'] = {'icon': buttons['textoverlay'], 'label': 'Toggle ocr text',
-        'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': 'textoverlay'}}
-      if (hastext.length > 0){
+        'shortcut': ['g', 'alt+z'], 'function': {'function': 'createOverlay', 'args': 'textoverlay'}}
+      if (hasocrandtext){
         shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
           'shortcut': ['e', '`'], 'function': {'function': 'toggletranscription', 'args': ''}};
       }
+    }
+    if (annotation.length == 0) {
+      delete shortcuts['prev'];
+      delete shortcuts['next'];
+      delete shortcuts['overlay'];
+      delete shortcuts['autorun'];
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
     for (var hd=0; hd<removefields.length; hd++){
