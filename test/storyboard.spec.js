@@ -111,7 +111,7 @@ describe('Component', () => {
       expect(data.seadragonid).toBe('page_storyboard')
       expect(data.annotations[0]['tags'].length).toEqual(0)
       expect(data.annotations.length).toEqual(1)
-      expect(data.annotations[0]['textual_body']).toContain("<div class=\"textualbody\"><iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/0001-1.json'></iiif-annotation></div>")
+      expect(data.annotations[0]['textual_body']).toContain("<div class=\"describing\"><iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/0001-1.json'></iiif-annotation></div>")
       expect(data.currentanno).toEqual('')
       wrapper.destroy()
     })
@@ -237,7 +237,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Meet the Pack One Last Look</div></span>")
       expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Player proﬁles of all members of the Remember the exciting ﬁnal year of men’s and women’s basketball teams the “Fire & Ice” backoourt</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual( ["autorun", "info", "overlay", "zoomin", "zoomout", "home", "prev", "next", "fullscreen", "close", "hide", "shortcut"].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual( ["autorun", "info", "overlay", "zoomin", "textoverlay", "zoomout", "home", "prev", "next", "fullscreen", "close", "hide", "shortcut"].sort())
       wrapper.destroy()
     })
     test('test storyboard with transcription', async ()  => {
@@ -269,7 +269,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'next', 'overlay', 'prev', 'shortcut', 'transcription', 'zoomin', 'zoomout'].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'next', 'overlay', 'prev', 'shortcut', 'transcription', 'textoverlay', 'zoomin', 'zoomout'].sort())
       wrapper.setData({'position': 2, 'currentanno': data.annotations[2], 'shown': 'anno'});
       await wrapper.vm.$nextTick()
       expect(wrapper.vm._computedWatchers.annoContent.value['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
