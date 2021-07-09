@@ -144,9 +144,9 @@ describe('Component', () => {
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0];
       expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/200,/0/default.jpg\" alt=\"Image section of &quot;undefined&quot;\" style=\"width: 200px;\">"])
-      expect(Object.keys(annotations).length).toBe(4)
+      expect(Object.keys(annotations).length).toBe(5)
       expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/200,/0/default.jpg")
-      expect(Object.keys(annotations)).toEqual(["image", "altText", "id", "fullImage"])
+      expect(Object.keys(annotations)).toEqual(["image", "altText", "id", "content","fullImage"])
       expect(wrapper.vm.$data.rendered).toEqual(true);
       wrapper.destroy()
     })

@@ -13,7 +13,7 @@
       <tr v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container" v-bind:class="[item.content ? item.content.itemclass : '']">
         <td v-if="has_sections">
           <span v-for="image in item.image" :key="image">
-            <span v-html="image" id="annoimage"></span>
+            <span v-html="image" class="annoimage"></span>
           </span>
         </td>
         <td class="beforecontent" v-html="item.before" v-if="item.before && !settings.image_only && !settings.hide_beforeafter">

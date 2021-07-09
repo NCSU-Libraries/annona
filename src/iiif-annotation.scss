@@ -336,7 +336,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   vertical-align: middle;
 }
 
-#annoimage > * {
+.annoimage > * {
   width: 49%;
   height: auto;
   vertical-align: middle;
@@ -906,4 +906,9 @@ table tr {
   height: $toolbarfontsize;
   line-height: $toolbarfontsize;
   width: auto;
+}
+
+.imageViewButton {
+  width: 35px;
+  height: 35px;
 }

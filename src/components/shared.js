@@ -1,6 +1,7 @@
 import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
 
+
 export default {
   buttons: {
     'autorun': '<i class="fas fa-magic"></i>',
@@ -230,6 +231,114 @@ export default {
     } else {
       return {'bounds': item.split("=").slice(-1)[0], 'svg': undefined}
     }
+  },
+  findLimits: function(path, xywh) {
+    var boundingPoints = {
+      minX: {x: 10000000000, y: 0, 'p': 0},
+      maxX: {x: 0, y: 1000000000,  'p': 0},
+      minY: {x: 0, y: 10000000000,  'p': 0},
+      maxY: {x: 10000000000, y: 0, 'p': 0},
+    }
+    var l = path.getTotalLength();
+    const pt1 = path.getPointAtLength(0);
+    const lstpt = path.getPointAtLength(l);
+
+    var point1 = {'p': 0, 'x': pt1['x'], 'y': pt1['y']};
+    var point2 = {'p': l, 'x': lstpt['x'], 'y': lstpt['y']};
+    for (var p = 0; p < l; p++) {
+      var coords = path.getPointAtLength(p);
+      var dict = {'p': p, 'x': coords['x'], 'y': coords['y'] };
+      if (this.diffpt1(coords, xywh) <= this.diffpt1(point1, xywh)){
+        point1 = dict;
+      }
+      if (this.diffpt2(coords, xywh) <= this.diffpt2(point2, xywh)){
+          point2 = dict;
+      }
+      if (coords.x <= boundingPoints.minX.x) boundingPoints.minX = dict;
+      if (coords.x >= boundingPoints.maxX.x) boundingPoints.maxX = dict;
+      if (coords.y <= boundingPoints.minY.y) boundingPoints.minY= dict;
+      if (coords.y >= boundingPoints.maxY.y) boundingPoints.maxY = dict;
+    }
+    return {'start': point1, 'end': point2, 'bounding': boundingPoints}
+  },
+  diffpt1: function(coords, xywh) {
+    const point1 = {'x': xywh[0], 'y': xywh[1]+xywh[3]}
+    const diffpt1 =Math.sqrt(((point1['x']-coords.x)**2) + ((point1['y']-coords.y)**2))
+    return diffpt1;
+  },
+  diffpt2: function(coords, xywh) {
+    const point2 = {'x': xywh[0]+xywh[2], 'y': xywh[1]+xywh[3]}
+    var diffpt2 = Math.abs(coords['x']-point2['x']) + Math.sqrt(((point2['x']-coords.x)**2) + ((point2['y']-coords.y)**2));
+    return diffpt2;
+  },
+  polyToPath: function(poly) {
+    var path = document.createElementNS("http://www.w3.org/2000/svg","path");
+    var pathdata = 'M'+poly.getAttribute('points');
+    if (poly.tagName=='polygon') pathdata+='z';
+    path.setAttribute('d',pathdata);
+    return path;
+  },
+  findSVGcoords: function(svg_overlay, xywh) {
+    var limits;
+    try {
+      if (svg_overlay.points){
+        svg_overlay = this.polyToPath(svg_overlay);
+      }
+      limits = this.findLimits(svg_overlay, xywh);
+    } catch (except){
+      return {'path': 'M'}
+    }
+    const points = limits['bounding'];
+    var fontsize;
+    var length = Math.sqrt(((limits['start']['x']-limits['end']['x'])**2) + ((limits['start']['y']-limits['end']['y'])**2));
+    const h1 = Math.sqrt(((points['minY']['x']-points['minX']['x'])**2) + ((points['minY']['y']-points['minX']['y'])**2))
+    const h2 = Math.sqrt(((points['minY']['x']-points['maxX']['x'])**2) + ((points['minY']['y']-points['maxX']['y'])**2))
+    if (h1 > h2){
+      fontsize = h2;
+    } else {
+      fontsize = h1;
+    }
+    const subtract = (limits['start']['p']- limits['end']['p']);
+    var start = limits['start']['p'];
+    var end = limits['end']['p'];
+    var reverse = false;
+    if (subtract < 0){
+      start = limits['end']['p'];
+      end = limits['start']['p'];
+      reverse = true;
+    }
+    var path = ''
+    for (var p = start; p > end; p--) {
+     var coords = svg_overlay.getPointAtLength(p);
+        path += `${coords['x']},${coords['y']} ` 
+    }
+    path = reverse ? path.split(" ").reverse().join(" ").trim() :path;
+    return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.5, 'textLength': length};
+  },
+  textOverlayHTML: function(xywh, ocrlist, svgitems=false){
+    const ocr = this.stripHTML(ocrlist.join(' ').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
+    var innerHTML = '';
+    if (svgitems && svgitems['path'] != 'M'){
+      innerHTML = `
+      <def>
+      <path id="${svgitems['pathid']}" d="${svgitems['path']}" fill="none"  stroke-width="30" stroke="red"/>
+      </def>
+      <text class="textOverlayText" textLength="${svgitems['textLength']}" font-size="${svgitems['fontsize']}" lengthAdjust="spacingAndGlyphs">
+        <textPath textLength="${svgitems['textLength']}" font-size="${svgitems['fontsize']}" xlink:href="#${svgitems['pathid']}" text-anchor="start" lengthAdjust="spacingAndGlyphs">
+          ${ocr}
+        </textPath>
+      </text>
+      `
+    } else {
+      const x = xywh[0];
+      const y = xywh[1]+xywh[3];
+      innerHTML =  `
+      <text class="textOverlayText" x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]}" lengthAdjust="spacingAndGlyphs">
+          ${ocr}
+      </text>
+      `
+    }
+    return innerHTML;
   },
   //get canvas information and section of image annotated.
   //Looks at selector field to see if selector exists and portion of the canvas is defined in the field.

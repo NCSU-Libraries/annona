@@ -12,8 +12,8 @@
 </div>
 </template>
 <script>
-import storyboard from './storyboard'
-import shared from './shared'
+import storyboard from './storyboard';
+import shared from './shared';
 import openseadragon from 'openseadragon';
 import toolbar from './toolbar';
 

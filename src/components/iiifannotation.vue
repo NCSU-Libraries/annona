@@ -16,6 +16,7 @@
 <script>
 import axios from 'axios';
 import shared from './shared';
+
 import defaultimageview from './defaultimageview';
 import tableview from './tableview';
 
@@ -40,7 +41,8 @@ export default {
       annotation_items: [],
       rendered: '',
       languages: [],
-      annotationid: ''
+      annotationid: '',
+      textoverlay: false
     }
   },
   created() {
@@ -148,9 +150,21 @@ export default {
       var isderivative = imageurl.indexOf('img/derivatives') > -1;
       var extension = shared.getExtension(canvasRegion['canvasId']);
       var path = canvasRegion['svg'];
+      var textoverlay = '';
+      const xywh = canvasRegion['canvasRegion'].split(',').map(elem => parseFloat(elem.trim()))
+      if (dictionary && dictionary['content'] && dictionary['content']['ocr'] && dictionary['content']['ocr'].length > 0){
+        this.textoverlay = true;
+        if (path){
+          const svgitems = shared.findSVGcoords(path, xywh);
+          svgitems['pathid'] = `ocrtextpath${dictionary['id']}`;
+          textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'], svgitems)
+        } else {
+          textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'])
+        }
+      }
       isderivative ? imageurl = dictionary['fullImage'] : '';
       if (path && !isderivative) {
-        imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
+        imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn, textoverlay)
       } else {
         imagehtml = document.createElement("img");
         imagehtml.setAttribute('src', imageurl);
@@ -167,7 +181,7 @@ export default {
       }
       return imagehtml;
     },
-    createSVG: function(imageurl, regionCanvas, dictionary, path, position) {
+    createSVG: function(imageurl, regionCanvas, dictionary, path, position, textoverlay) {
       var id = dictionary['id'] + '-' + position;
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.setAttribute('viewBox', regionCanvas.split(",").join(" "));
@@ -181,7 +195,7 @@ export default {
       path.setAttribute("fill", `url(#${id})`);
       path.setAttribute("fill-opacity", "1");
       path.setAttribute("stroke", "none");
-      svg.innerHTML = inner + path.outerHTML;
+      svg.innerHTML = inner + path.outerHTML + textoverlay;
       return svg;
     },
     writecanvas: function(img, xywh, id) {
@@ -229,9 +243,7 @@ export default {
       return {'fullImage': fullImage, 'image': images}
     },
     getBeforeAfterText: function(dictionary, anno) {
-      var span = document.createElement('span');
-      span.innerHTML = dictionary['rendered_content'];
-      var text = (span.textContent || span.innerText).trim();
+      var text = shared.stripHTML(dictionary['rendered_content']);
       var index = anno.hits.match.indexOf(text);
       var before = anno.hits.match.substring(0, index).trim();
       var after = anno.hits.match.substring(index+text.length, ).trim();
@@ -264,8 +276,10 @@ export default {
         dictionary['before'] = banda && banda['before'] ? banda['before'] : "";
         dictionary['after'] = banda && banda['after'] ? banda['after'] : "";
       } else {
+        var dict = shared.chars(anno);
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         dictionary['id'] = this.annotationid + i;
+        dictionary['content'] = dict;
         this.settings.hide_viewlarger = true;
       }
       return dictionary;
