@@ -367,6 +367,9 @@ export default {
         minY: {x: 0, y: 10000000000,  'p': 0},
         maxY: {x: 10000000000, y: 0, 'p': 0},
       }
+      if (path.points){
+        path = this.polyToPath(path);
+      }
       var l = path.getTotalLength();
       const pt1 = path.getPointAtLength(0);
       const lstpt = path.getPointAtLength(l);
@@ -375,10 +378,10 @@ export default {
       for (var p = 0; p < l; p++) {
         var coords = path.getPointAtLength(p);
         var dict = {'p': p, 'x': coords['x'], 'y': coords['y'] };
-        if (this.diffpt1(coords, xywh) < this.diffpt1(point1, xywh)){
+        if (this.diffpt1(coords, xywh) <= this.diffpt1(point1, xywh)){
           point1 = dict;
         }
-        if (this.diffpt2(coords, xywh, 'x') < this.diffpt2(point2, xywh, 'x')){
+        if (this.diffpt2(coords, xywh) <= this.diffpt2(point2, xywh)){
             point2 = dict;
         }
         if (coords.x <= boundingPoints.minX.x) boundingPoints.minX = dict;
@@ -388,40 +391,56 @@ export default {
       }
       return {'start': point1, 'end': point2, 'bounding': boundingPoints}
     },
+    polyToPath: function(poly) {
+      var path = document.createElementNS("http://www.w3.org/2000/svg","path");
+      var pathdata = 'M'+poly.getAttribute('points');
+      if (poly.tagName=='polygon') pathdata+='z';
+      path.setAttribute('d',pathdata);
+      return path;
+    },
     diffpt1: function(coords, xywh) {
       const point1 = {'x': xywh[0], 'y': xywh[1]+xywh[3]}
       const diffpt1 =Math.sqrt(((point1['x']-coords.x)**2) + ((point1['y']-coords.y)**2))
       return diffpt1;
     },
-    diffpt2: function(coords, xywh, type) {
+    diffpt2: function(coords, xywh) {
       const point2 = {'x': xywh[0]+xywh[2], 'y': xywh[1]+xywh[3]}
-      var diffpt2 = Math.abs(coords[type]-point2[type]) + Math.sqrt(((point2['x']-coords.x)**2) + ((point2['y']-coords.y)**2));
+      var diffpt2 = Math.abs(coords['x']-point2['x']) + Math.sqrt(((point2['x']-coords.x)**2) + ((point2['y']-coords.y)**2));
       return diffpt2;
     },
     findSVGcoords: function(svg_overlay, xywh) {
-      const limits = this.findLimits(svg_overlay, xywh);
+      var limits;
+      try {
+        limits = this.findLimits(svg_overlay, xywh);
+      } catch (except){
+        return {'path': 'M'}
+      }
       const points = limits['bounding'];
       var fontsize;
-      var length;
-      var pstart;
-      var pend;
+      var length = Math.sqrt(((limits['start']['x']-limits['end']['x'])**2) + ((limits['start']['y']-limits['end']['y'])**2));
       const h1 = Math.sqrt(((points['minY']['x']-points['minX']['x'])**2) + ((points['minY']['y']-points['minX']['y'])**2))
       const h2 = Math.sqrt(((points['minY']['x']-points['maxX']['x'])**2) + ((points['minY']['y']-points['maxX']['y'])**2))
       if (h1 > h2){
         fontsize = h2;
-        length = h1;
       } else {
         fontsize = h1;
-        length = h2;
       }
       const subtract = (limits['start']['p']- limits['end']['p'])/10;
+      var start = limits['start']['p'];
+      var end = limits['end']['p'];
+      var reverse = false;
+      if (subtract < 0){
+        start = limits['end']['p'];
+        end = limits['start']['p'];
+        reverse = true;
+      }
       var path = ''
-      for (var p = limits['start']['p']; p > limits['end']['p']; p--) {
+      for (var p = start; p > end; p--) {
        var coords = svg_overlay.getPointAtLength(p);
           path += `${coords['x']},${coords['y']} ` 
       }
-      path = 'M' + path;
-      return {'path': path.trim(), 'fontsize': fontsize*1.5, 'textLength': length};   
+      path = reverse ? path.split(" ").reverse().join(" ").trim() :path;
+      return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.5, 'textLength': length};
     },
     //Create overlays on OpenSeadragon viewer
     createOverlayElement: function(position, tags) {
@@ -502,27 +521,13 @@ export default {
           var innerHTML;
           xywh = xywh.map(elem => parseFloat(elem))
           const ocr = shared.stripHTML(annotation.ocr.join(' ').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
-          console.log(elem)
           if(elem.getElementsByTagName('svg').length > 0){
-            var path = elem.getElementsByTagName('svg')[0].childNodes[0];
-            const pathid = `ocrtextpath${position}`;
-            const d = path.getAttribute('d');
-            const svgitems = this.findSVGcoords(path, xywh);
-            innerHTML = `
-            <path id="${pathid}" d="${svgitems['path']}" fill="none"/>
-            <text textLength="${svgitems['textLength']}" font-size="${svgitems['fontsize']}" lengthAdjust="spacingAndGlyphs">
-              <textPath xlink:href="#${pathid}" startOffset="50%" text-anchor="middle">
-                ${ocr}
-              </textPath>
-            </text>`
+            var svgpathelem = elem.getElementsByTagName('svg')[0].childNodes[0];
+            const svgitems = this.findSVGcoords(svgpathelem, xywh);
+            svgitems['pathid'] = `ocrtextpath${position}`;
+            innerHTML = this.textOverlayHTML(xywh, ocr, svgitems)
           } else {
-              const x = xywh[0];
-              const y = xywh[1]+xywh[3];
-             innerHTML =  `
-            <text x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]}" lengthAdjust="spacingAndGlyphs">
-                ${ocr}
-            </text>
-            `
+            innerHTML = this.textOverlayHTML(xywh, ocr)
           }
           var elem2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             //set viewBox based on section. SVG will not show up without this.
@@ -542,6 +547,30 @@ export default {
           }).setTracking(true);
         }
       }
+    },
+    textOverlayHTML: function(xywh, ocr, svgitems=false){
+      var innerHTML = '';
+      if (svgitems && svgitems['path'] != 'M'){
+        innerHTML = `
+        <def>
+        <path id="${svgitems['pathid']}" d="${svgitems['path']}" fill="none"  stroke-width="30" stroke="red"/>
+        </def>
+        <text textLength="${svgitems['textLength']}" font-size="${svgitems['fontsize']}" lengthAdjust="spacingAndGlyphs">
+          <textPath textLength="${svgitems['textLength']}" font-size="${svgitems['fontsize']}" xlink:href="#${svgitems['pathid']}" text-anchor="start" lengthAdjust="spacingAndGlyphs">
+            ${ocr}
+          </textPath>
+        </text>
+        `
+      } else {
+        const x = xywh[0];
+        const y = xywh[1]+xywh[3];
+        innerHTML =  `
+        <text x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]}" lengthAdjust="spacingAndGlyphs">
+            ${ocr}
+        </text>
+        `
+      }
+      return innerHTML;
     },
     //play pause TTS if enabled. Called when playpause button pressed.
     playpause: function(){
