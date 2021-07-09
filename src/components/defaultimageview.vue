@@ -58,7 +58,7 @@ export default {
     }
   },
   created() {
-    this.textoverlaybutton = this.textoverlayicon;
+    this.textoverlaybutton = this.textoverlayofficon;
     for (var key in this.compdata) {
       this[key] = this.compdata[key]
     }
@@ -83,10 +83,10 @@ export default {
       for (var to=0; to<textelements.length; to++){
         if (textelements[to].style.display == 'none'){
           textelements[to].style.display = '';
-          this.textoverlaybutton = this.textoverlayicon;
+          this.textoverlaybutton = this.textoverlayofficon;
         } else {
           textelements[to].style.display = 'none';
-          this.textoverlaybutton = this.textoverlayofficon;
+          this.textoverlaybutton = this.textoverlayicon;
         }
       }
     },
