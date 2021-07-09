@@ -360,6 +360,69 @@ export default {
         this.ttscontent();
       }
     },
+    findLimits: function(path, xywh) {
+      var boundingPoints = {
+        minX: {x: 10000000000, y: 0, 'p': 0},
+        maxX: {x: 0, y: 1000000000,  'p': 0},
+        minY: {x: 0, y: 10000000000,  'p': 0},
+        maxY: {x: 10000000000, y: 0, 'p': 0},
+      }
+      var l = path.getTotalLength();
+      const pt1 = path.getPointAtLength(0);
+      const lstpt = path.getPointAtLength(l);
+      var point1 = {'p': 0, 'x': pt1['x'], 'y': pt1['y']};
+      var point2 = {'p': l, 'x': lstpt['x'], 'y': lstpt['y']};
+      for (var p = 0; p < l; p++) {
+        var coords = path.getPointAtLength(p);
+        var dict = {'p': p, 'x': coords['x'], 'y': coords['y'] };
+        if (this.diffpt1(coords, xywh) < this.diffpt1(point1, xywh)){
+          point1 = dict;
+        }
+        if (this.diffpt2(coords, xywh, 'x') < this.diffpt2(point2, xywh, 'x')){
+            point2 = dict;
+        }
+        if (coords.x <= boundingPoints.minX.x) boundingPoints.minX = dict;
+        if (coords.x >= boundingPoints.maxX.x) boundingPoints.maxX = dict;
+        if (coords.y <= boundingPoints.minY.y) boundingPoints.minY= dict;
+        if (coords.y >= boundingPoints.maxY.y) boundingPoints.maxY = dict;
+      }
+      return {'start': point1, 'end': point2, 'bounding': boundingPoints}
+    },
+    diffpt1: function(coords, xywh) {
+      const point1 = {'x': xywh[0], 'y': xywh[1]+xywh[3]}
+      const diffpt1 =Math.sqrt(((point1['x']-coords.x)**2) + ((point1['y']-coords.y)**2))
+      return diffpt1;
+    },
+    diffpt2: function(coords, xywh, type) {
+      const point2 = {'x': xywh[0]+xywh[2], 'y': xywh[1]+xywh[3]}
+      var diffpt2 = Math.abs(coords[type]-point2[type]) + Math.sqrt(((point2['x']-coords.x)**2) + ((point2['y']-coords.y)**2));
+      return diffpt2;
+    },
+    findSVGcoords: function(svg_overlay, xywh) {
+      const limits = this.findLimits(svg_overlay, xywh);
+      const points = limits['bounding'];
+      var fontsize;
+      var length;
+      var pstart;
+      var pend;
+      const h1 = Math.sqrt(((points['minY']['x']-points['minX']['x'])**2) + ((points['minY']['y']-points['minX']['y'])**2))
+      const h2 = Math.sqrt(((points['minY']['x']-points['maxX']['x'])**2) + ((points['minY']['y']-points['maxX']['y'])**2))
+      if (h1 > h2){
+        fontsize = h2;
+        length = h1;
+      } else {
+        fontsize = h1;
+        length = h2;
+      }
+      const subtract = (limits['start']['p']- limits['end']['p'])/10;
+      var path = ''
+      for (var p = limits['start']['p']; p > limits['end']['p']; p--) {
+       var coords = svg_overlay.getPointAtLength(p);
+          path += `${coords['x']},${coords['y']} ` 
+      }
+      path = 'M' + path;
+      return {'path': path.trim(), 'fontsize': fontsize*1.5, 'textLength': length};   
+    },
     //Create overlays on OpenSeadragon viewer
     createOverlayElement: function(position, tags) {
       var annotation = this.annotations[position];
@@ -436,20 +499,40 @@ export default {
         this.addTracking(elem, rect, position, this);
         if (annotation.ocr.length > 0){
           //var elem2 = elem.cloneNode(true);
+          var innerHTML;
+          xywh = xywh.map(elem => parseFloat(elem))
+          const ocr = shared.stripHTML(annotation.ocr.join(' ').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
+          console.log(elem)
+          if(elem.getElementsByTagName('svg').length > 0){
+            var path = elem.getElementsByTagName('svg')[0].childNodes[0];
+            const pathid = `ocrtextpath${position}`;
+            const d = path.getAttribute('d');
+            const svgitems = this.findSVGcoords(path, xywh);
+            innerHTML = `
+            <path id="${pathid}" d="${svgitems['path']}" fill="none"/>
+            <text textLength="${svgitems['textLength']}" font-size="${svgitems['fontsize']}" lengthAdjust="spacingAndGlyphs">
+              <textPath xlink:href="#${pathid}" startOffset="50%" text-anchor="middle">
+                ${ocr}
+              </textPath>
+            </text>`
+          } else {
+              const x = xywh[0];
+              const y = xywh[1]+xywh[3];
+             innerHTML =  `
+            <text x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]}" lengthAdjust="spacingAndGlyphs">
+                ${ocr}
+            </text>
+            `
+          }
           var elem2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             //set viewBox based on section. SVG will not show up without this.
           elem2.setAttribute('viewBox', xywh.join(" "));
           elem2.setAttribute('style', 'position: absolute;');
-          //svg.setAttribute('class', 'textoverlay')
           elem2.id = `ocr-position${position}`;
           elem2.classList = 'textoverlay';
           elem2.style.userSelect = 'text';
           elem2.style.display = 'none';
-          elem2.innerHTML +=  `
-            <text font-size="${xywh[3]*1.4}px" x="${xywh[0]}" y="${parseFloat(xywh[1])+parseFloat(xywh[3])}" textLength='${xywh[2]}' lengthAdjust="spacingAndGlyphs">
-              ${annotation.ocr.join(' ')}
-            </text>
-          `;
+          elem2.innerHTML +=  innerHTML;    
           this.viewer.addOverlay({
             element: elem2,
             location: rect
@@ -726,9 +809,7 @@ export default {
     tts: function(text){
       var synth = window.speechSynthesis;
       synth.cancel();
-      var div = document.createElement("div");
-      div.innerHTML = text;
-      var speak = div.textContent;
+      var speak = shared.stripHTML(text);
       var speech = new SpeechSynthesisUtterance(speak);
       var lang = this.currentanno ? this.currentanno['language'] : '';
       speech.lang = lang ? lang : this.settings.tts;
@@ -1103,9 +1184,7 @@ export default {
     truncate: function(string, words_length) {
       string = string ? string.split('<div class="tags">')[0] : '';
       string = string ? string.split('<div class="authorship">')[0] : '';
-      var tmp = document.createElement("DIV");
-      tmp.innerHTML = string;
-      var text = tmp.textContent || tmp.innerText || "";
+      var text = shared.stripHTML(string);
       return truncate(text, words_length, { byWords: true });
     }
   }

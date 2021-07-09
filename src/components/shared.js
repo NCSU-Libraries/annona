@@ -91,6 +91,11 @@ export default {
       return value;
     }
   },
+  stripHTML: function(text){
+    var div = document.createElement("div");
+    div.innerHTML = text;
+    return (div.textContent || div.innerText || "").trim();
+  },
   colorDict: function (styleContent, styleclass) {
     var doc = document.implementation.createHTMLDocument(""),
     styleElement = document.createElement("style");
