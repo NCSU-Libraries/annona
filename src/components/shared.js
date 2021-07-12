@@ -242,32 +242,42 @@ export default {
     var l = path.getTotalLength();
     const pt1 = path.getPointAtLength(0);
     const lstpt = path.getPointAtLength(l);
-
     var point1 = {'p': 0, 'x': pt1['x'], 'y': pt1['y']};
     var point2 = {'p': l, 'x': lstpt['x'], 'y': lstpt['y']};
+    var point3 = {'p': 0, 'x': pt1['x'], 'y': pt1['y']};
+    var point4 = {'p': 0, 'x': lstpt['x'], 'y': lstpt['y']};
+    const leftbottom = {'x': xywh[0], 'y': xywh[1]+xywh[3]}
+    const lefttop = {'x': xywh[0], 'y': xywh[1]}
+    const rightbottom = {'x': xywh[0]+xywh[2], 'y': xywh[1]+xywh[3]}
+    const righttop = {'x': xywh[0]+xywh[2], 'y': xywh[1]}
     for (var p = 0; p < l; p++) {
       var coords = path.getPointAtLength(p);
       var dict = {'p': p, 'x': coords['x'], 'y': coords['y'] };
-      if (this.diffpt1(coords, xywh) <= this.diffpt1(point1, xywh)){
+
+      if (this.diffpt(coords, leftbottom) <= this.diffpt(point1, leftbottom)){
         point1 = dict;
       }
-      if (this.diffpt2(coords, xywh) <= this.diffpt2(point2, xywh)){
+      if (this.diffpt2(coords, rightbottom) <= this.diffpt2(point2, rightbottom)){
           point2 = dict;
+      }
+      if (this.diffpt2(coords, lefttop) <= this.diffpt2(point3, lefttop)){
+        point3 = dict;
+      }
+      if (this.diffpt2(coords, righttop) <= this.diffpt2(point4, righttop)){
+        point4 = dict;
       }
       if (coords.x <= boundingPoints.minX.x) boundingPoints.minX = dict;
       if (coords.x >= boundingPoints.maxX.x) boundingPoints.maxX = dict;
       if (coords.y <= boundingPoints.minY.y) boundingPoints.minY= dict;
       if (coords.y >= boundingPoints.maxY.y) boundingPoints.maxY = dict;
     }
-    return {'start': point1, 'end': point2, 'bounding': boundingPoints}
+    return {'start': point1, 'end': point2, 'topleft': point3, 'topright': point4,  'bounding': boundingPoints}
   },
-  diffpt1: function(coords, xywh) {
-    const point1 = {'x': xywh[0], 'y': xywh[1]+xywh[3]}
-    const diffpt1 =Math.sqrt(((point1['x']-coords.x)**2) + ((point1['y']-coords.y)**2))
-    return diffpt1;
+  diffpt: function(coords, point) {
+    const diffpt =Math.sqrt(((point['x']-coords.x)**2) + ((point['y']-coords.y)**2))
+    return diffpt;
   },
-  diffpt2: function(coords, xywh) {
-    const point2 = {'x': xywh[0]+xywh[2], 'y': xywh[1]+xywh[3]}
+  diffpt2: function(coords, point2) {
     var diffpt2 = Math.abs(coords['x']-point2['x']) + Math.sqrt(((point2['x']-coords.x)**2) + ((point2['y']-coords.y)**2));
     return diffpt2;
   },
@@ -290,14 +300,9 @@ export default {
     }
     const points = limits['bounding'];
     var fontsize;
-    var length = Math.sqrt(((limits['start']['x']-limits['end']['x'])**2) + ((limits['start']['y']-limits['end']['y'])**2));
-    const h1 = Math.sqrt(((points['minY']['x']-points['minX']['x'])**2) + ((points['minY']['y']-points['minX']['y'])**2))
-    const h2 = Math.sqrt(((points['minY']['x']-points['maxX']['x'])**2) + ((points['minY']['y']-points['maxX']['y'])**2))
-    if (h1 > h2){
-      fontsize = h2;
-    } else {
-      fontsize = h1;
-    }
+    const leftside = Math.sqrt(((limits['start']['x']-limits['topleft']['x'])**2) + ((limits['start']['y']-limits['topleft']['y'])**2));
+    const rightside = Math.sqrt(((limits['end']['x']-limits['topright']['x'])**2) + ((limits['end']['y']-limits['topright']['y'])**2));
+    fontsize = leftside > rightside ? leftside : rightside;
     const subtract = (limits['start']['p']- limits['end']['p']);
     var start = limits['start']['p'];
     var end = limits['end']['p'];
@@ -310,10 +315,13 @@ export default {
     var path = ''
     for (var p = start; p > end; p--) {
      var coords = svg_overlay.getPointAtLength(p);
-        path += `${coords['x']},${coords['y']} ` 
+     path += `${coords['x']},${coords['y']} `;
     }
     path = reverse ? path.split(" ").reverse().join(" ").trim() :path;
-    return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.5, 'textLength': length};
+    var newsvgpath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    newsvgpath.setAttribute('d', 'M' + path.trim());
+    var length = newsvgpath.getTotalLength();
+    return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.4, 'textLength': length};
   },
   textOverlayHTML: function(xywh, ocrlist, svgitems=false){
     const ocr = this.stripHTML(ocrlist.join(' ').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
