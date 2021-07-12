@@ -341,7 +341,7 @@ export default {
       const x = xywh[0];
       const y = xywh[1]+xywh[3];
       innerHTML =  `
-      <text class="textOverlayText" x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]}" lengthAdjust="spacingAndGlyphs">
+      <text class="textOverlayText" x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]*1.1}" lengthAdjust="spacingAndGlyphs">
           ${ocr}
       </text>
       `
