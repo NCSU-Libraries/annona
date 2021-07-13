@@ -574,7 +574,8 @@ export default {
     return {'anno':text, 'transcription': ocrtext};
   },
   addGeometry: function(currentanno, content, mapid, custommap) {
-    if (document.getElementById(`map${mapid}`).classList.length == 0){
+    const mapdiv = document.getElementById(`map${mapid}`);
+    if (mapdiv.classList.length == 0){
       var geojsonFeature = {
         "type": "Feature",
         "properties": {
@@ -591,6 +592,10 @@ export default {
       const jsonLayer = L.geoJSON(geojsonFeature);
       jsonLayer.addTo(mymap).bindPopup(content['anno'], {autoClose:false}).openPopup();
       mymap.fitBounds(jsonLayer.getBounds());
+      const resizeObserver = new ResizeObserver(() => {
+        mymap.invalidateSize();
+      });
+      resizeObserver.observe(mapdiv);
       //jsonLayer.openPopup();
     }
   },
