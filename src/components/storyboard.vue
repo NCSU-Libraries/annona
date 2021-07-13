@@ -76,7 +76,8 @@ export default {
       layerslist: [],
       shortcuts: {},
       basecompontent: '',
-      rendered: ''
+      rendered: '',
+      leaflet: false
     }
   },
   created() {
@@ -104,6 +105,27 @@ export default {
       this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
       if ((newVal['anno'] == '' && newVal['transcription'] == '') || (this.settings.hide_annotationtext)){
         this.shown = false;
+      }
+      this.$nextTick(() => {
+        if (this.currentanno.geometry && !this.currentanno.geometryloaded){
+          const maplayers = this.settings.maplayer ? {'layer': this.settings.maplayer, 'attribution': this.settings.mapattribution} : '';
+          shared.addGeometry(this.currentanno, this.createAnnoContent(this.currentanno), this.position, maplayers);
+          this.currentanno.geometryloaded = true;
+        }
+      })
+    },
+    leaflet: function() {
+      if (this.leaflet){
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js';
+        head.appendChild(script);
+        var link = document.createElement('link');
+        link.href = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        head.appendChild(link);
       }
     },
     buttons: {
@@ -173,6 +195,9 @@ export default {
         }
         content_data = Object.assign({}, content_data, {'section':sections, 'type':type, svg_path: svg_path})
         this.annotations.push(content_data);
+        if (content_data['geometry']){
+          this.leaflet = true;
+        }
         if (content_data['styles']) {
           if (content_data['styles']['overlay'] && !this.settings.overlaycolor){
             this.settings.overlaycolor = content_data['styles']['overlay'];

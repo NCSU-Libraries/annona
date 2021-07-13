@@ -121,12 +121,15 @@
       </button>
       <span v-html="$parent.$options.filters.truncate($parent.annoContent['transcription'], $parent.settings.truncate_length)" v-else-if="$parent.booleanitems.isexcerpt"></span>
     </div>
-    <div id="annotation_text" v-if="$parent.shown == 'anno'" class="content" v-bind:class="$parent.currentanno.itemclass">
+    <div id="annotation_text" v-show="$parent.shown == 'anno'" class="content" v-bind:class="$parent.currentanno.itemclass">
       <span v-html="$parent.annoContent['anno']" v-if="!$parent.booleanitems.isexcerpt && !isscrollview"></span>
       <span v-html="$parent.$options.filters.truncate($parent.annoContent['anno'], $parent.settings.truncate_length)" v-else-if="!isscrollview"></span>
       <button v-for="(item, index) in scrollitems" v-bind:key="index" v-else-if="!$parent.booleanitems.isexcerpt || isscrollview" v-on:click="$parent.sendMessage({'function':'next', 'args': index});" class="buttonastext scrolltext">
         <div v-if="item" v-html="item" class="scrollitem" v-bind:id="'line' + index" :ref="index"></div>
       </button>
+      <div v-for="(annotation, index) in $parent.annotations" v-bind:key="index">
+        <div v-if="annotation.geometry" v-show="$parent.position == index" v-bind:id="'map' + index" style="height:180px" ></div>
+      </div>
     </div>
   </div>
 </template>

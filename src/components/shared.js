@@ -1,7 +1,6 @@
 import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
 
-
 export default {
   buttons: {
     'autorun': '<i class="fas fa-magic"></i>',
@@ -175,7 +174,7 @@ export default {
         if (type === 'TextualBody'){
           if (purpose === 'tagging'){
             tags.push({'value': value, 'group': ''});
-          } else if (purpose == 'transcribing'){
+          } else if (purpose == 'transcribing' || purpose == 'supplementing'){
             ocr.push(value);
           } else {
             textual_body.push(`<div class="${purpose}">${value}</div>`);
@@ -187,6 +186,10 @@ export default {
             textual_body.push(`<a href="${res_data['@id']}">Download dataset (${res_data['format']})</a>`)
           } else if (purpose == 'tagging') {
             tags.push(res_data['value'])
+          } else if (purpose == 'transcribing' || purpose == 'supplementing'){
+            ocr.push(res_data['value'])
+          } else {
+            textual_body.push(`<div class="${purpose}">${value}</div>`)
           }
         } else if (type === 'cnt:ContentAsText' && (type.toLowerCase() === purpose || purpose.indexOf('painting') > -1)) {
           ocr.push(value);
@@ -209,7 +212,7 @@ export default {
       'tags':tags, 'type': shapetype, 'languages':langs,
       'label':label, 'language': res_data ? res_data['language'] : '',
       'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,
-      'itemclass': charclass};
+      'itemclass': charclass, 'geometry': res_data ? res_data['geometry'] : ''};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -233,12 +236,6 @@ export default {
     }
   },
   findLimits: function(path, xywh) {
-    var boundingPoints = {
-      minX: {x: 10000000000, y: 0, 'p': 0},
-      maxX: {x: 0, y: 1000000000,  'p': 0},
-      minY: {x: 0, y: 10000000000,  'p': 0},
-      maxY: {x: 10000000000, y: 0, 'p': 0},
-    }
     var l = path.getTotalLength();
     const pt1 = path.getPointAtLength(0);
     const lstpt = path.getPointAtLength(l);
@@ -266,12 +263,8 @@ export default {
       if (this.diffpt2(coords, righttop) <= this.diffpt2(point4, righttop)){
         point4 = dict;
       }
-      if (coords.x <= boundingPoints.minX.x) boundingPoints.minX = dict;
-      if (coords.x >= boundingPoints.maxX.x) boundingPoints.maxX = dict;
-      if (coords.y <= boundingPoints.minY.y) boundingPoints.minY= dict;
-      if (coords.y >= boundingPoints.maxY.y) boundingPoints.maxY = dict;
     }
-    return {'start': point1, 'end': point2, 'topleft': point3, 'topright': point4,  'bounding': boundingPoints}
+    return {'start': point1, 'end': point2, 'topleft': point3, 'topright': point4}
   },
   diffpt: function(coords, point) {
     const diffpt =Math.sqrt(((point['x']-coords.x)**2) + ((point['y']-coords.y)**2))
@@ -298,7 +291,6 @@ export default {
     } catch (except){
       return {'path': 'M'}
     }
-    const points = limits['bounding'];
     var fontsize;
     const leftside = Math.sqrt(((limits['start']['x']-limits['topleft']['x'])**2) + ((limits['start']['y']-limits['topleft']['y'])**2));
     const rightside = Math.sqrt(((limits['end']['x']-limits['topright']['x'])**2) + ((limits['end']['y']-limits['topright']['y'])**2));
@@ -526,6 +518,14 @@ export default {
   sortBy: function(arry, field){
     return arry.sort((a, b) => (a[field] > b[field]) ? 1 : -1)
   },
+  parseObject: function(object, currentlang) {
+    if (object.constructor.name == 'Object'){
+      const lang = currentlang ? currentlang : Object.keys(object)[0];
+      const item = object[lang];
+      return item.constructor.name == 'Array' ? item.join("\n") : item;
+    }
+    return object
+  },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
   createContent: function(annotation, currentlang, storyboard) {
@@ -535,8 +535,8 @@ export default {
       var language = currentlang ? currentlang : annotation['language'];
       var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr';
       var directiontext = `<span style="direction: ${direction};">`
-      text = directiontext
-      const title = annotation['label'] ? `<div class="title" style="direction: ${direction};">${annotation['label']}</div>` : ``;
+      text = directiontext;
+      const title = annotation['label'] ? `<div class="title" style="direction: ${direction};">${this.parseObject(annotation['label'], currentlang)}</div>` : ``;
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
       var authors = annotation['authors'];
@@ -572,6 +572,27 @@ export default {
     text += annotation && annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
     ocrtext += annotation && annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';
     return {'anno':text, 'transcription': ocrtext};
+  },
+  addGeometry: function(currentanno, content, mapid, custommap) {
+    if (document.getElementById(`map${mapid}`).classList.length == 0){
+      var geojsonFeature = {
+        "type": "Feature",
+        "properties": {
+          "popupContent": content['anno']
+        },
+        "geometry": currentanno['geometry']
+      };
+      var mymap = L.map(`map${mapid}`)
+      const maplayer = custommap ? custommap['layer'] : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      const attribution = custommap ? custommap['attribution'] : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      L.tileLayer(maplayer, {
+        attribution: attribution
+      }).addTo(mymap);
+      const jsonLayer = L.geoJSON(geojsonFeature);
+      jsonLayer.addTo(mymap).bindPopup(content['anno'], {autoClose:false}).openPopup();
+      mymap.fitBounds(jsonLayer.getBounds());
+      //jsonLayer.openPopup();
+    }
   },
   getExtension: function (tile) {
     return tile.split('?')[0].split('.').slice(-1)[0].toLowerCase();
