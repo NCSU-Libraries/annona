@@ -71,7 +71,7 @@ export default {
       fullscreen: false,
       tagslist: {},
       annoinfo: {'text': '', 'annodata': []},
-      imageinfo: {'text': '', 'label': 'Manifest information'},
+      imageinfo: {'text': '', 'label': 'Image information'},
       imagetitle: '',
       layerslist: [],
       shortcuts: {},
@@ -350,7 +350,7 @@ export default {
       var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': canvas_data.description},
       {'label': 'attribution', 'value': canvas_data.attribution},{'label': 'license', 'value': canvas_data.license}]
       metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
-      canvas_data.sequences && canvas_data.sequences[0].canvases.length == 1 ? this.imageinfo.label = 'Image information' : '';
+      canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1 ? this.imageinfo.label = 'Manifest information' : '';
       for (var j=0; j<metadata.length; j++){
         var label = shared.parseMetaFields(metadata[j]['label']);
         var value = shared.parseMetaFields(metadata[j]['value']);
@@ -663,6 +663,7 @@ export default {
       this.settings.autorun_interval = this.settings.autorun_interval ? this.settings.autorun_interval : 3;
       this.mapmarker = this.settings.mapmarker ? this.settings.mapmarker : this.mapmarker;
       this.tagslistShortcuts();
+      this.imageinfo.text += `<div id="imageurl"><b>Image URL: </b><a href="${this.seadragontile}" target="_blank">${this.seadragontile}</a></div>`
     },
     //get any layers in manfiest and get custom layers. This is called for all viewers and will get the tile if there are no layers
     getLayerData: function(images) {

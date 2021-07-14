@@ -774,6 +774,7 @@ figcaption {
 .content {
   position: relative;
   overflow: auto;
+  white-space: pre-wrap;
 }
 
 .content > * {

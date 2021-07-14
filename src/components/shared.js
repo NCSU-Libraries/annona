@@ -316,9 +316,10 @@ export default {
     return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.4, 'textLength': length};
   },
   textOverlayHTML: function(xywh, ocrlist, svgitems=false){
-    const ocr = this.stripHTML(ocrlist.join(' ').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
+    var ocr = this.stripHTML(ocrlist.join('\n').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
+    const multiline = ocr.split('\n');
     var innerHTML = '';
-    if (svgitems && svgitems['path'] != 'M'){
+    if (svgitems && svgitems['path'] != 'M' && multiline.length < 1){
       innerHTML = `
       <def>
       <path id="${svgitems['pathid']}" d="${svgitems['path']}" fill="none"  stroke-width="30" stroke="red"/>
@@ -332,11 +333,22 @@ export default {
     } else {
       const x = xywh[0];
       const y = xywh[1]+xywh[3];
-      innerHTML =  `
-      <text class="textOverlayText" x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]*1.1}" lengthAdjust="spacingAndGlyphs">
-          ${ocr}
-      </text>
+      if (multiline.length > 1){
+        for (var nl=0; nl<multiline.length; nl++){
+          const fontsize = xywh[3]/multiline.length;
+          const y = xywh[1] + (fontsize*(nl+1));
+          innerHTML +=
+          `<text textLength="${xywh[2]}" font-size="${fontsize}" x="${xywh[0]}" y="${y}" lengthAdjust="spacingAndGlyphs">
+            ${multiline[nl]}
+          </text>`
+        }
+      } else {
+        innerHTML = `
+        <text class="textOverlayText" x="${x}" y="${y}" textLength="${xywh[2]}" font-size="${xywh[3]*1.1}" lengthAdjust="spacingAndGlyphs">
+            ${ocr}
+        </text>
       `
+      }
     }
     return innerHTML;
   },

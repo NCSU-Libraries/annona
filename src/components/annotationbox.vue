@@ -127,8 +127,10 @@
       <button v-for="(item, index) in scrollitems" v-bind:key="index" v-else-if="!$parent.booleanitems.isexcerpt || isscrollview" v-on:click="$parent.sendMessage({'function':'next', 'args': index});" class="buttonastext scrolltext">
         <div v-if="item" v-html="item" class="scrollitem" v-bind:id="'line' + index" :ref="index"></div>
       </button>
-      <div v-for="(annotation, index) in $parent.annotations" v-bind:key="index">
-        <div v-if="annotation.geometry" v-show="$parent.position == index" v-bind:id="'map' + index" style="height:180px" ></div>
+      <div v-if="$parent.leaflet">
+        <div v-for="(annotation, index) in $parent.annotations" v-bind:key="index">
+          <div v-if="annotation.geometry" v-show="$parent.position == index" v-bind:id="'map' + index" style="height:180px" ></div>
+        </div>
       </div>
     </div>
   </div>
