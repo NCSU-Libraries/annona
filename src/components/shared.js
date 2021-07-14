@@ -313,9 +313,15 @@ export default {
     var newsvgpath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     newsvgpath.setAttribute('d', 'M' + path.trim());
     var length = newsvgpath.getTotalLength();
-    return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.1, 'textLength': length};
+    var id = svg_overlay.id ? svg_overlay.id : Math.random().toString(36).substring(2,7);
+    id += '-ocrtextoverlaypath'
+    return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.1, 'textLength': length, 'pathid': id};
   },
-  textOverlayHTML: function(xywh, ocrlist, svgitems=false){
+  textOverlayHTML: function(xywh, ocrlist, svgpath=false){
+    var svgitems = ''
+    if (svgpath){
+      svgitems = this.findSVGcoords(svgpath, xywh);
+    }
     var ocr = this.stripHTML(ocrlist.join('\n').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
     const multiline = ocr.split('\n');
     var innerHTML = '';
@@ -547,8 +553,7 @@ export default {
       var language = currentlang ? currentlang : annotation['language'];
       var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr';
       var directiontext = `<span style="direction: ${direction};">`
-      text = directiontext;
-      const title = annotation['label'] ? `<div class="title" style="direction: ${direction};">${this.parseObject(annotation['label'], currentlang)}</div>` : ``;
+      const title = annotation['label'] ? `<div class="title">${this.parseObject(annotation['label'], currentlang)}</div>` : ``;
       var oldtext = annotation['textual_body'];
       var ocr = annotation['ocr'];
       var authors = annotation['authors'];
@@ -566,20 +571,20 @@ export default {
       text += `${ocr.length > 0 && !storyboard ? `<div id="ocr">${ocr}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
       var tags = `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].map(tag => tag['value'] ? tag['value'] : tag).join(", ")}</div>` : ``}`
-      text += '</span>'
-      var ocrtext = `${ocr.length > 0 ? `${directiontext}<div id="ocr">${ocr.join(" ")}</div></span>` : ``}`
-      var isempty = /<span style="direction: (ltr|rtl);"><\/span>/g;
-      if (isempty.test(text)){
+      var ocrtext = `${ocr.length > 0 ? `<div id="ocr">${ocr.join(" ")}</div>` : ``}`
+      text = text || !ocrtext ? title + text : '';
+      ocrtext = ocrtext ? title + ocrtext : '';
+      text = (text || !ocrtext) && storyboard ? text + tags : text;
+      ocrtext = ocrtext && storyboard ? ocrtext + tags : ocrtext;
+      text = text ? `${directiontext}${text}</span>` : '';
+      ocrtext = ocrtext ? `${directiontext}${ocrtext}</span>` : '';
+      if (!text){
         if (ocr.length > 0 && storyboard){
           text = ocrtext
         } else {
           text = ''
         }
       }
-      text = text ? title + text : '';
-      ocrtext = ocrtext ? title + ocrtext : '';
-      text = text && storyboard ? text + tags : text;
-      ocrtext = ocrtext && storyboard ? ocrtext + tags : ocrtext;
     }
     text += annotation && annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
     ocrtext += annotation && annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';

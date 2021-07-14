@@ -190,6 +190,10 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
     object-fit: contain;
 }
 
+#annotation_text {
+  white-space: pre-wrap;
+}
+
 .rect:hover {
   background: grey;
   opacity: .4;
@@ -774,7 +778,6 @@ figcaption {
 .content {
   position: relative;
   overflow: auto;
-  white-space: pre-wrap;
 }
 
 .content > * {

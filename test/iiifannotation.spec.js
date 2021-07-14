@@ -93,7 +93,7 @@ describe('Component', () => {
       expect(annotations['content']['label']).toBe("The Bees")
       expect(annotations['content']['ocr']).toEqual([])
       expect(annotations.fullImage).toBe("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/1170,/0/default.jpg")
-      expect(annotations['rendered_content']).toBe('<div class=\"title\" style=\"direction: ltr;\">The Bees</div>')
+      expect(annotations['rendered_content']).toBe('<span style=\"direction: ltr;\"><div class=\"title\">The Bees</div></span>')
       expect(annotations.tags).toEqual([{"checked": "", "color": "white", "count": 1, "group": "", "key": "somanybees", "label": "So many bees."}])
       expect(annotations.altText).toBe("The Bees")
       expect(wrapper.vm.$data.rendered).toEqual(true);

@@ -108,7 +108,7 @@ export default {
       }
       this.$nextTick(() => {
         if (this.currentanno.geometry && !this.currentanno.geometryloaded){
-          const maplayers = this.settings.maplayer ? {'layer': this.settings.maplayer, 'attribution': this.settings.mapattribution} : '';
+          const maplayers = this.settings.maplayer && this.settings.mapattribution ? {'layer': this.settings.maplayer, 'attribution': this.settings.mapattribution} : '';
           shared.addGeometry(this.currentanno, this.createAnnoContent(this.currentanno), this.position, maplayers);
           this.currentanno.geometryloaded = true;
         }
@@ -464,14 +464,8 @@ export default {
           //var elem2 = elem.cloneNode(true);
           var innerHTML;
           xywh = xywh.map(elem => parseFloat(elem))
-          if(elem.getElementsByTagName('svg').length > 0){
-            var svgpathelem = elem.getElementsByTagName('svg')[0].childNodes[0];
-            const svgitems = shared.findSVGcoords(svgpathelem, xywh);
-            svgitems['pathid'] = `ocrtextpath${position}`;
-            innerHTML = shared.textOverlayHTML(xywh, annotation.ocr, svgitems)
-          } else {
-            innerHTML = shared.textOverlayHTML(xywh, annotation.ocr)
-          }
+          var svgpathelem = elem.getElementsByTagName('svg').length > 0 ? elem.getElementsByTagName('svg')[0].childNodes[0] : "";
+          innerHTML = shared.textOverlayHTML(xywh, annotation.ocr, svgpathelem);
           var elem2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             //set viewBox based on section. SVG will not show up without this.
           elem2.setAttribute('viewBox', xywh.join(" "));

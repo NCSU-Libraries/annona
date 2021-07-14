@@ -154,13 +154,7 @@ export default {
       const xywh = canvasRegion['canvasRegion'].split(',').map(elem => parseFloat(elem.trim()))
       if (dictionary && dictionary['content'] && dictionary['content']['ocr'] && dictionary['content']['ocr'].length > 0){
         this.textoverlay = true;
-        if (path){
-          const svgitems = shared.findSVGcoords(path, xywh);
-          svgitems['pathid'] = `ocrtextpath${dictionary['id']}`;
-          textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'], svgitems)
-        } else {
-          textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'])
-        }
+        textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'], path)
       }
       isderivative ? imageurl = dictionary['fullImage'] : '';
       if (path && !isderivative) {
@@ -255,8 +249,8 @@ export default {
     getImageData: function(i){
       var anno = this.anno[i];
       var dictionary = {'image':[]};
+      var dict = shared.chars(anno);
       if (this.settings.image_only !== true){
-        var dict = shared.chars(anno);
         this.languages = dict['languages'] ? [...new Set(this.languages.concat(dict['languages']))] : this.languages;
         var all_langs = dict['textual_body'].map(el => el.language);
         var langs = all_langs.filter(element => navigator.language.indexOf(element) > -1);
@@ -276,7 +270,6 @@ export default {
         dictionary['before'] = banda && banda['before'] ? banda['before'] : "";
         dictionary['after'] = banda && banda['after'] ? banda['after'] : "";
       } else {
-        var dict = shared.chars(anno);
         dictionary['altText'] = `Image section of "${this.manifest['label']}"`;
         dictionary['id'] = this.annotationid + i;
         dictionary['content'] = dict;
