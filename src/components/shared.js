@@ -313,13 +313,13 @@ export default {
     var newsvgpath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     newsvgpath.setAttribute('d', 'M' + path.trim());
     var length = newsvgpath.getTotalLength();
-    return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.4, 'textLength': length};
+    return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.1, 'textLength': length};
   },
   textOverlayHTML: function(xywh, ocrlist, svgitems=false){
     var ocr = this.stripHTML(ocrlist.join('\n').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
     const multiline = ocr.split('\n');
     var innerHTML = '';
-    if (svgitems && svgitems['path'] != 'M' && multiline.length < 1){
+    if (svgitems && svgitems['path'] != 'M' && multiline.length < 2){
       innerHTML = `
       <def>
       <path id="${svgitems['pathid']}" d="${svgitems['path']}" fill="none"  stroke-width="30" stroke="red"/>
@@ -565,9 +565,7 @@ export default {
       }
       text += `${ocr.length > 0 && !storyboard ? `<div id="ocr">${ocr}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
-      if (storyboard){
-        text += `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].map(tag => tag['value'] ? tag['value'] : tag).join(", ")}</div>` : ``}`
-      }
+      var tags = `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].map(tag => tag['value'] ? tag['value'] : tag).join(", ")}</div>` : ``}`
       text += '</span>'
       var ocrtext = `${ocr.length > 0 ? `${directiontext}<div id="ocr">${ocr.join(" ")}</div></span>` : ``}`
       var isempty = /<span style="direction: (ltr|rtl);"><\/span>/g;
@@ -578,8 +576,10 @@ export default {
           text = ''
         }
       }
-      text = title + text;
-      ocrtext = title + ocrtext;
+      text = text ? title + text : '';
+      ocrtext = ocrtext ? title + ocrtext : '';
+      text = text && storyboard ? text + tags : text;
+      ocrtext = ocrtext && storyboard ? ocrtext + tags : ocrtext;
     }
     text += annotation && annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
     ocrtext += annotation && annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';
