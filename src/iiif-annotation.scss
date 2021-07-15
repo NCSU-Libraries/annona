@@ -178,13 +178,13 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   margin-block-end: .5em;
 }
 
-.content img, .content iframe {
+.content img:not(.leaflet-marker-icon), .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
 }
 
-.content img, .content iframe {
+.content img:not(.leaflet-marker-icon), .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
