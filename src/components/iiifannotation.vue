@@ -16,7 +16,6 @@
 <script>
 import axios from 'axios';
 import shared from './shared';
-
 import defaultimageview from './defaultimageview';
 import tableview from './tableview';
 
@@ -92,7 +91,7 @@ export default {
     changeLang: function(event){
       var lang = event.target ? event.target.value : event;
       for(var ai=0; ai<this.annotation_items.length; ai++){
-        this.annotation_items[ai]['rendered_content'] = shared.createContent(this.annotation_items[ai]['content'], lang)['anno'];
+        this.annotation_items[ai]['rendered_content'] = shared.createContent(this.annotation_items[ai]['content'], lang, true)['anno'];
       }
     },
     // Loop through annotations
@@ -255,7 +254,7 @@ export default {
         var all_langs = dict['textual_body'].map(el => el.language);
         var langs = all_langs.filter(element => navigator.language.indexOf(element) > -1);
         this.currentlang = langs.length > 0 ? langs[0] : this.currentlang ? this.currentlang : dict['textual_body'][0] && dict['textual_body'][0]['language'];
-        dictionary['rendered_content'] = shared.createContent(dict, this.currentlang)['anno'];
+        dictionary['rendered_content'] = shared.createContent(dict, this.currentlang, true)['anno'];
         dictionary['content'] = dict;
         dictionary['id'] = this.annotationid + i;
         dictionary['altText'] = dict['ocr'].length > 0 ? dict['ocr'][0] : dict['label'] !== undefined ? dict['label'] : `Image section of "${this.manifest['label']}"`;

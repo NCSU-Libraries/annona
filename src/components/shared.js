@@ -546,7 +546,7 @@ export default {
   },
   //Create HTML element using chars data; This uses the data from the chars() function up above.
   //It takes the chars data and renders the data as an HTML object.
-  createContent: function(annotation, currentlang, storyboard) {
+  createContent: function(annotation, currentlang, imageview=false) {
     var text = ''
     var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];
     if (filter.length > 0){
@@ -568,18 +568,18 @@ export default {
       } else {
         text += `${oldtext.join("")}`;
       }
-      text += `${ocr.length > 0 && !storyboard ? `<div id="ocr">${ocr}</div>` : ``}`;
+      text += `${ocr.length > 0 && imageview ? `<div id="ocr">${ocr}</div>` : ``}`;
       text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
       var tags = `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].map(tag => tag['value'] ? tag['value'] : tag).join(", ")}</div>` : ``}`
       var ocrtext = `${ocr.length > 0 ? `<div id="ocr">${ocr.join(" ")}</div>` : ``}`
       text = text || !ocrtext ? title + text : '';
       ocrtext = ocrtext ? title + ocrtext : '';
-      text = (text || !ocrtext) && storyboard ? text + tags : text;
-      ocrtext = ocrtext && storyboard ? ocrtext + tags : ocrtext;
+      text = (text || !ocrtext) && !imageview ? text + tags : text;
+      ocrtext = ocrtext && !imageview ? ocrtext + tags : ocrtext;
       text = text ? `${directiontext}${text}</span>` : '';
       ocrtext = ocrtext ? `${directiontext}${ocrtext}</span>` : '';
       if (!text){
-        if (ocr.length > 0 && storyboard){
+        if (ocr.length > 0 && !imageview){
           text = ocrtext
         } else {
           text = ''
@@ -589,32 +589,6 @@ export default {
     text += annotation && annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
     ocrtext += annotation && annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';
     return {'anno':text, 'transcription': ocrtext};
-  },
-  addGeometry: function(currentanno, content, mapid, custommap) {
-    const mapdiv = document.getElementById(`map${mapid}`);
-    if (mapdiv.classList.length == 0){
-      var geojsonFeature = {
-        "type": "Feature",
-        "properties": {
-          "popupContent": content['anno']
-        },
-        "geometry": currentanno['geometry']
-      };
-      var mymap = L.map(`map${mapid}`)
-      const maplayer = custommap ? custommap['layer'] : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      const attribution = custommap ? custommap['attribution'] : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      L.tileLayer(maplayer, {
-        attribution: attribution
-      }).addTo(mymap);
-      const jsonLayer = L.geoJSON(geojsonFeature);
-      jsonLayer.addTo(mymap).bindPopup(content['anno'], {autoClose:false}).openPopup();
-      mymap.fitBounds(jsonLayer.getBounds());
-      const resizeObserver = new ResizeObserver(() => {
-        mymap.invalidateSize();
-      });
-      resizeObserver.observe(mapdiv);
-      //jsonLayer.openPopup();
-    }
   },
   getExtension: function (tile) {
     return tile.split('?')[0].split('.').slice(-1)[0].toLowerCase();

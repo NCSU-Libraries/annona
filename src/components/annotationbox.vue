@@ -129,13 +129,14 @@
       </button>
       <div v-if="$parent.leaflet">
         <div v-for="(annotation, index) in $parent.annotations" v-bind:key="index">
-          <div v-if="annotation.geometry" v-show="$parent.position == index" v-bind:id="'map' + index" style="height:180px" ></div>
+          <leaflet v-if="annotation.geometry" v-bind:key="index" v-show="$parent.position == index" :position="index" :annotation="annotation"></leaflet>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import leaflet from './leaflet'
 export default {
   name: 'annotationbox',
   data: function() {
@@ -145,6 +146,9 @@ export default {
       isscrollview: false,
       updatedto: ''
     }
+  },
+  components: {
+    leaflet
   },
   watch: {
    '$parent.annotations': function(){
@@ -173,7 +177,7 @@ export default {
   },
   methods: {
     scrollContent: function(reset=false) {
-      if (this.$parent.settings.transcription || this.isscrollview){
+      if (this.$parent.settings.transcription || this.isscrollview || this.$parent.leaflet){
         if (reset){
           this.scrollitems = [];
           this.transciptions = [];

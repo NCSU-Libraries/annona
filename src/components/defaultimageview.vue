@@ -3,7 +3,7 @@
     <button v-if="$parent.textoverlay" v-on:click="displayTextOverlay()" class="imageViewButton">
       <span v-html="textoverlaybutton"></span>
     </button>
-    <div v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container" :class="[item.content ? item.content.itemclass : '']">
+    <div v-for="(item, index) in annotation_items" :key="item.id" :id="item.id" class="annotation_container" :class="[item.content ? item.content.itemclass : '']">
       <span v-for="image in item.image" :key="image">
       <span v-html="image" class="annoimage"></span>
       </span>
@@ -13,6 +13,7 @@
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
       <div class="aftercontent" v-html="item.after" v-if="item.after && !settings.image_only && !settings.hide_beforeafter">
       </div>
+      <leaflet v-if="item['content'] && item['content']['geometry']" :position="index" :annotation="item['content']"></leaflet>
       <div id="tags" v-if="!settings.hide_tags && item.tags">
         <div v-for="tag in item.tags" v-bind:key="tag.key" class="tags">
           <div class="countkey">
@@ -31,10 +32,14 @@
   </div>
 </template>
 <script>
+import leaflet from './leaflet';
 export default {
   name: 'defaultimageview',
   props: {
     'compdata': {type: Object, required: false}
+  },
+  components: {
+    leaflet
   },
   data: function() {
     return {
@@ -43,7 +48,6 @@ export default {
       settings: {},
       manifestlink: '',
       annotation_items: [],
-      rendered: '',
       languages: [],
       fielddata: [],
       annotationid: '',

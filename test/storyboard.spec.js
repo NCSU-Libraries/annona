@@ -176,8 +176,8 @@ describe('Component', () => {
       expect(data.annotations.length).toEqual(1)
       expect(data.annotations[0]['ocr'][0]).toContain('Jim Watson and I have probably made a')
       expect(data.currentanno).toEqual('')
-      expect(shared.createContent(data.annotations[0], null, data.settings, true)['anno'].replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.</div></span>")
-      expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno'].replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("")
+      expect(shared.createContent(data.annotations[0], null, data.settings)['anno'].replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.</div></span>")
+      expect(shared.createContent(data.annotations[1], null, data.settings)['anno'].replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("")
       wrapper.destroy()
     })
     test('test storyboard with no manifest', async ()  => {
@@ -205,8 +205,8 @@ describe('Component', () => {
       expect(data.annotations.length).toEqual(8)
       expect(data.annotations[0]['textual_body']).toEqual(['<div class=\"textualbody\">Campo San Maurizio</div>'])
       expect(data.currentanno).toEqual('')
-      expect(shared.createContent(data.annotations[0], null, data.settings, true)).toEqual({"anno": "<span style=\"direction: ltr;\"><div class=\"textualbody\">Campo San Maurizio</div><div class=\"tags\">Tags: campo</div></span>", "transcription": ""})
-      expect(shared.createContent(data.annotations[1], null, data.settings, true)).toEqual({"anno": "<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>", "transcription": ""})
+      expect(shared.createContent(data.annotations[0], null, data.settings)).toEqual({"anno": "<span style=\"direction: ltr;\"><div class=\"textualbody\">Campo San Maurizio</div><div class=\"tags\">Tags: campo</div></span>", "transcription": ""})
+      expect(shared.createContent(data.annotations[1], null, data.settings)).toEqual({"anno": "<span style=\"direction: ltr;\"><div class=\"textualbody\">Church of San Maurizio. Is now a Museum on music of Baroque Venice.</div><div class=\"tags\">Tags: church, deconsecrated</div></span>", "transcription": ""})
       expect(data.annoinfo.annodata.length).toBe(8)
       expect(data.annoinfo.annodata[0].title).toBe('Annotation 1')
       wrapper.destroy()
@@ -235,7 +235,7 @@ describe('Component', () => {
       var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
       expect(contentpos1['anno']).toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Meet the Pack One Last Look</div></span>")
-      expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Player proﬁles of all members of the Remember the exciting ﬁnal year of men’s and women’s basketball teams the “Fire & Ice” backoourt</div></span>")
+      expect(shared.createContent(data.annotations[1], null, data.settings)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Player proﬁles of all members of the Remember the exciting ﬁnal year of men’s and women’s basketball teams the “Fire & Ice” backoourt</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
       expect(Object.keys(shortcuts).sort()).toEqual( ["autorun", "info", "overlay", "zoomin", "textoverlay", "zoomout", "home", "prev", "next", "fullscreen", "close", "hide", "shortcut"].sort())
       wrapper.destroy()
@@ -264,10 +264,10 @@ describe('Component', () => {
       expect(data.currentanno).toEqual('')
       expect(wrapper.find('#information').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"information\" class=\"info content\" style=\"height: auto;\"> <div class=\"imagetitle\"> <h1></h1> </div> <span><!----> <!----> <!----> <!----> <button class=\"infolink buttonlink annoinfolink\">Annotation information</button> <!----> <button class=\"infolink buttonlink imageinfolink\">Image information</button> <!----></span> </div>")
       //wrapper.find('.annoinfolink').trigger('click')
-      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
-      expect(shared.createContent(data.annotations[1], null, data.settings, true)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
+      expect(shared.createContent(data.annotations[1], null, data.settings)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
       expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'next', 'overlay', 'prev', 'shortcut', 'transcription', 'textoverlay', 'zoomin', 'zoomout'].sort())
       wrapper.setData({'position': 2, 'currentanno': data.annotations[2], 'shown': 'anno'});
@@ -307,7 +307,7 @@ describe('Component', () => {
       expect(data.annotations[0]['tags'].length).toEqual(2)
       expect(data.annotations.length).toEqual(1)
       expect(data.currentanno).toEqual('')
-      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"authorship\">Written by: mary</div><div class=\"tags\">Tags: Dome, cathedral</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
@@ -337,7 +337,7 @@ describe('Component', () => {
       expect(data.annotations.length).toEqual(2)
       expect(data.currentanno).toEqual('')
       expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
-      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
@@ -368,7 +368,7 @@ describe('Component', () => {
       expect(data.annotations.length).toEqual(2)
       expect(data.currentanno).toEqual('')
       expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "red", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "white", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
-      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings, true);
+      var contentpos1 = shared.createContent(data.annotations[0], null, data.settings);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
@@ -399,7 +399,7 @@ describe('Component', () => {
       expect(data.annotations.length).toEqual(2)
       expect(data.currentanno).toEqual('')
       expect(data.tagslist).toEqual({"testvariable": {"checked": false, "color": "green", "count": 1, "group": "", "key": "testvariable", "label": "test variable"}, "points3": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points3", "label": "3"}})
-      var contentpos1 = shared.createContent(data.annotations[1], null, data.settings, true);
+      var contentpos1 = shared.createContent(data.annotations[1], null, data.settings);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: test variable</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
@@ -429,7 +429,7 @@ describe('Component', () => {
       expect(data.annotations.length).toEqual(2)
       expect(data.currentanno).toEqual('')
       expect(data.tagslist['testvariable']['checked']).toEqual(true)
-      var contentpos1 = shared.createContent(data.annotations[1], null, data.settings, true);
+      var contentpos1 = shared.createContent(data.annotations[1], null, data.settings);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: test variable</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);

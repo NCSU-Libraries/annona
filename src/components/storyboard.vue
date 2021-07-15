@@ -106,27 +106,6 @@ export default {
       if ((newVal['anno'] == '' && newVal['transcription'] == '') || (this.settings.hide_annotationtext)){
         this.shown = false;
       }
-      this.$nextTick(() => {
-        if (this.currentanno.geometry && !this.currentanno.geometryloaded){
-          const maplayers = this.settings.maplayer && this.settings.mapattribution ? {'layer': this.settings.maplayer, 'attribution': this.settings.mapattribution} : '';
-          shared.addGeometry(this.currentanno, this.createAnnoContent(this.currentanno), this.position, maplayers);
-          this.currentanno.geometryloaded = true;
-        }
-      })
-    },
-    leaflet: function() {
-      if (this.leaflet){
-        var head = document.getElementsByTagName('head')[0];
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.js';
-        head.appendChild(script);
-        var link = document.createElement('link');
-        link.href = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';
-        link.type = "text/css";
-        link.rel = "stylesheet";
-        head.appendChild(link);
-      }
     },
     buttons: {
       deep: true,
@@ -365,7 +344,7 @@ export default {
     // Create TOC for each annotation; Gets a list of annotations and corresponding data
     getAnnoInfo: function(content_data, i){
       var title = content_data['label'] ? `${i+1}. ${content_data['label']}` : `Annotation ${i+1}`;
-      var content = shared.createContent(content_data, this.currentlang, true)['anno'];
+      var content = shared.createContent(content_data, this.currentlang)['anno'];
       var additionaltext = `
         ${ content ? `${this.$options.filters.truncate(content, 5)}<br>` : ``}
         ${content_data['authors'] ? `<b>Authors:</b> ${content_data['authors']}<br>` : ``}
@@ -500,7 +479,7 @@ export default {
       }
     },
     ttscontent: function(){
-      var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang, true) : '';
+      var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
       content ? this.tts(content[this.shown]) : '';
     },
     // call function and send broadcast to WS server if enabled
@@ -1094,7 +1073,7 @@ export default {
       var transcriptcontent = []
       if (Array.isArray(anno)) {
         for (var i=0; i<anno.length; i++){
-          var multicreateContent = shared.createContent(anno[i], this.currentlang, true);
+          var multicreateContent = shared.createContent(anno[i], this.currentlang);
           if (multicreateContent['anno']){
             annocontent.push(multicreateContent['anno']);
           }
@@ -1105,7 +1084,7 @@ export default {
         annocontent = annocontent.join("<hr>");
         transcriptcontent = transcriptcontent.join("<hr>")
       } else {
-        var createContent = shared.createContent(anno, this.currentlang, true);
+        var createContent = shared.createContent(anno, this.currentlang);
         transcriptcontent = createContent['transcription'];
         annocontent = createContent['anno'];
       }
