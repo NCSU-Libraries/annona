@@ -548,47 +548,51 @@ export default {
   //It takes the chars data and renders the data as an HTML object.
   createContent: function(annotation, currentlang, imageview=false) {
     var text = ''
+    var annoreturntext = '';
+    var annoreturntranscription = '';
     var filter = annotation ? Object.values(annotation).filter(el => el && el.length > 0) : [];
     if (filter.length > 0){
       var language = currentlang ? currentlang : annotation['language'];
       var direction = language && rtlDetect.isRtlLang(language) ? 'rtl' : 'ltr';
       var directiontext = `<span style="direction: ${direction};">`
-      const title = annotation['label'] ? `<div class="title">${this.parseObject(annotation['label'], currentlang)}</div>` : ``;
       var oldtext = annotation['textual_body'];
+      const title = annotation['label'] ? `<div class="title">${this.parseObject(annotation['label'], currentlang)}</div>` : ``;
       var ocr = annotation['ocr'];
-      var authors = annotation['authors'];
       if (currentlang && oldtext[0] && oldtext[0]['language']) {
         var correctdata = oldtext.filter(element => element['language'] === currentlang);
         if(correctdata.length > 0){
-          text += `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
+          text = `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
         } else {
           var langtranslation = by639_1[currentlang]['nativeName'];
-          text += `Translation not avaliable in "${langtranslation ? langtranslation : currentlang}"`;
+          text = `Translation not avaliable in "${langtranslation ? langtranslation : currentlang}"`;
         }
       } else {
-        text += `${oldtext.join("")}`;
+        text = `${oldtext.join("")}`;
       }
-      text += `${ocr.length > 0 && imageview ? `<div id="ocr">${ocr}</div>` : ``}`;
-      text += `${authors ? `<div class="authorship">Written by: ${authors}</div>` : ``}`;
+      ocr = ocr.length > 0 ? `<div id="ocr">${ocr.join("")}</div>` : '';
+      var authors = annotation['authors']? `<div class="authorship">Written by: ${annotation['authors']}</div>` : ''
       var tags = `${annotation['tags'].length > 0 ? `<div class="tags">Tags: ${annotation['tags'].map(tag => tag['value'] ? tag['value'] : tag).join(", ")}</div>` : ``}`
-      var ocrtext = `${ocr.length > 0 ? `<div id="ocr">${ocr.join(" ")}</div>` : ``}`
-      text = text || !ocrtext ? title + text : '';
-      ocrtext = ocrtext ? title + ocrtext : '';
-      text = (text || !ocrtext) && !imageview ? text + tags : text;
-      ocrtext = ocrtext && !imageview ? ocrtext + tags : ocrtext;
-      text = text ? `${directiontext}${text}</span>` : '';
-      ocrtext = ocrtext ? `${directiontext}${ocrtext}</span>` : '';
-      if (!text){
-        if (ocr.length > 0 && !imageview){
-          text = ocrtext
-        } else {
-          text = ''
-        }
-      }
+
+    var template = `${directiontext}`+
+      `${title}`+
+      `*replacementtext*${authors}`+
+      `${!imageview ? tags : ''}`+
+      `</span>` +
+      `${annotation && annotation.stylesheet ? 
+        `<style>${annotation.stylesheet}</style>` : ''}`.replace(/\s\s+/g, ' ');
+    if (imageview && ocr) {
+      text += ocr;
+    } else if(!text && ocr) {
+      text = ocr;
+      ocr = '';
     }
-    text += annotation && annotation.stylesheet && text ? `<style>${annotation.stylesheet}</style>` : '';
-    ocrtext += annotation && annotation.stylesheet && ocrtext ? `<style>${annotation.stylesheet}</style>` : '';
-    return {'anno':text, 'transcription': ocrtext};
+    const empty = `${directiontext}</span>`;
+    const annoreplacetext = template.replace('*replacementtext*', text);
+    annoreturntext = annoreplacetext == empty ? '' : annoreplacetext;
+    const annoreplacetranscript = ocr ? template.replace('*replacementtext*', ocr) : '';
+    annoreturntranscription = annoreplacetranscript == empty ? '' : annoreplacetranscript;
+    }
+    return {'anno':annoreturntext, 'transcription': annoreturntranscription};
   },
   getExtension: function (tile) {
     return tile.split('?')[0].split('.').slice(-1)[0].toLowerCase();
