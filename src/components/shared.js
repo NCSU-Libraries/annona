@@ -8,11 +8,6 @@ export default {
     'overlay': '<i class="fas fa-toggle-on"></i>',
     'overlayoff': '<i class="fas fa-toggle-off"></i>',
     'textoverlay': '<i class="fas fa-align-justify"></i>',
-    'textoverlayoff': `
-    <span class="fa-stack">
-      <i class="fas fa-align-justify fa-stack-1x"></i>
-      <i class="fas fa-slash fa-stack-1x" style="color:Tomato"></i>
-    </span>`,
     'expand' : '<i class="fas fa-expand"></i>',
     'annooff': '<i class="fas fa-pen-nib"></i>',
     'anno': '<i class="fas fa-file-alt"></i>',
@@ -64,6 +59,15 @@ export default {
     if (settings.annoview == 'scrollview'){
       settings.startposition = settings.startposition != undefined ? settings.startposition : 1;
       settings.hide_nextbuttons = settings.hide_nextbuttons != undefined ? settings.hide_nextbuttons : true;
+    }
+    if (Object.keys(settings).join("").indexOf('textoverlay')) {
+      const fields = ['opacity', 'fontcolor', 'background']
+      for (var fi=0; fi<fields.length; fi++){
+        const setting = settings[`textoverlay${fields[fi]}`];
+        if (setting){
+          vueinfo.textoverlay[fields[fi]] = setting;
+        }
+      }
     }
     if (settings.tagscolor) {
       settings.tagscolor = Object.keys(settings.tagscolor).reduce((out, key) => {
@@ -747,7 +751,7 @@ export default {
     const hasocrandtext = annotation.some(elem => elem && elem.ocr && elem.ocr.length > 0 && elem.textual_body && elem.textual_body.length > 0 && elem.ocr != elem.textual_body);
     if (hasocr.length > 0){
       shortcuts['textoverlay'] = {'icon': buttons['textoverlay'], 'label': 'Toggle ocr text',
-        'shortcut': ['g', 'alt+z'], 'function': {'function': 'createOverlay', 'args': 'textoverlay'}}
+        'shortcut': ['g', 'alt+z'], 'function': {'function': 'clickButton', 'args': 'textoverlay'}}
       if (hasocrandtext){
         shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
           'shortcut': ['e', '`'], 'function': {'function': 'toggletranscription', 'args': ''}};

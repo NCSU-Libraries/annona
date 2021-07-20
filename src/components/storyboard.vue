@@ -66,6 +66,11 @@ export default {
       isautorunning: '',
       buttons: JSON.parse(JSON.stringify(shared.buttons)),
       settings: {},
+      textoverlay: {
+        'opacity': 100,
+        'fontcolor': '#000000',
+        'background': '#FFFFFF'
+      },
       currentlang: '',
       languages: [],
       fullscreen: false,
@@ -541,7 +546,7 @@ export default {
       this.setDefaultButtons();
     },
     setDefaultButtons: function() {
-      const fields = ['info', 'layer', 'tags', 'keyboard']
+      const fields = ['info', 'layer', 'tags', 'keyboard', 'textoverlay']
       for (var fi=0; fi<fields.length; fi++){
         this.buttons[fields[fi]] = shared.buttons[fields[fi]];
       }
@@ -787,7 +792,9 @@ export default {
         display_setting = 'block';
         checked = true;
         this.booleanitems[`is${classname}toggled`] = true;
-        this.buttons[classname] = shared.buttons[`${classname}off`];
+        if (shared.buttons[`${classname}off`]){
+          this.buttons[classname] = shared.buttons[`${classname}off`];
+        }
       }
       if (classname == 'overlay'){
         for (var key in this.tagslist){
