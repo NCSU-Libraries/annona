@@ -190,7 +190,7 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0];
-      expect(annotations.image).toEqual(["<div id=\"regular0_canvas_img0\"></div>"])
+      expect(annotations.image).toEqual(["<canvas id=\"regular0_canvas_img0\"></canvas>"])
       expect(Object.keys(annotations).length).toBe(9)
       expect(annotations.fullImage).toEqual("/annotate/assets/images/custom/spencer-davis-7ZpvOE2psxM-unsplash.jpg")
       expect(wrapper.vm.$data.rendered).toEqual(true);

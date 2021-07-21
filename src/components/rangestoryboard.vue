@@ -29,7 +29,6 @@ import storyboard from './storyboard';
 import iiifannotation from './iiifannotation';
 import shared from './shared';
 import axios from 'axios';
-require("es6-promise").polyfill();
 import multistoryboard from './multistoryboard.vue';
 
 export default {
