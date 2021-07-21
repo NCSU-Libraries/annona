@@ -30,7 +30,6 @@
     "iso-language-codes": "^1.0.7",
     "jest-canvas-mock": "^1.1.0",
     "jquery": "^3.6.0",
-    "leaflet": "^1.7.1",
     "node-sass": "^4.14.1",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.2",
