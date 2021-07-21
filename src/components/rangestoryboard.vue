@@ -85,7 +85,7 @@ export default {
     },
     created(){
       // get annotation urls in list
-      this.rangeid = this.$props.rangeurl.split("/").slice(-1)[0];
+      this.rangeid = "rangestoryboard_" + this.$props.rangeurl.split("/").slice(-1)[0];
       this.settings = shared.getsettings(this);
       var isURL = shared.isURL(this.$props.rangeurl, this.settings);
       if (isURL['isURL']){

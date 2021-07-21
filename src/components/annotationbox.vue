@@ -126,9 +126,9 @@ export default {
       return (this.$refs['1'][0].offsetTop - this.$refs['0'][0].offsetTop)/1.1;
     },
     customStyle: function(){
-      return `<style type="text/css">.textoverlay { fill: ${this.$parent.textoverlay.fontcolor};
+      return `<style type="text/css">#${this.$parent.seadragonid} .textoverlay { fill: ${this.$parent.textoverlay.fontcolor};
       background: ${this.$parent.textoverlay.background};
-      opacity: ${this.$parent.textoverlay.opacity/100}
+      opacity: ${this.$parent.textoverlay.opacity/100};
       }</style>`;
     }
   }
