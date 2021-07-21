@@ -1,12 +1,12 @@
 $width: 50px;
 $height: 30px;
-#toggletextoverly {
+.toggletextoverlay {
 	height: 0;
 	width: 0;
 	visibility: hidden;
 }
 
-label[for=toggletextoverly] {
+.toggletextoverlaylabel {
 	cursor: pointer;
 	text-indent: -9999px;
 	width: $width;
@@ -17,7 +17,7 @@ label[for=toggletextoverly] {
 	position: relative;
 }
 
-label[for=toggletextoverly]:after {
+.toggletextoverlaylabel:after {
 	content: '';
 	position: absolute;
 	top: 5px;
@@ -29,11 +29,11 @@ label[for=toggletextoverly]:after {
 	transition: 0.3s;
 }
 
-#toggletextoverly:checked + label[for=toggletextoverly] {
+.toggletextoverlay:checked + .toggletextoverlaylabel {
 	background: #046B99;
 }
 
-#toggletextoverly:checked + label[for=toggletextoverly]:after {
+.toggletextoverlay:checked + .toggletextoverlaylabel:after {
 	left: calc(100% - 5px);
 	transform: translateX(-100%);
 }
