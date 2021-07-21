@@ -35,9 +35,6 @@ export default {
     }) 
   },
   methods:  {
-    clickAndUnwatch: function(jsonLayer) {
-      
-    },
     addGeometry: function() {
     const maplayers = this.parentelem.settings.maplayer && this.parentelem.settings.mapattribution ? {'layer': this.parentelem.settings.maplayer, 'attribution': this.parentelem.settings.mapattribution} : '';
     const mapdiv = document.getElementById(this.mapid);
@@ -70,7 +67,7 @@ export default {
         });
       }
       
-      jsonLayer.on('click', function(e){
+      jsonLayer.on('click', function(){
         mymap.fitBounds(jsonLayer.getBounds());
       });
       

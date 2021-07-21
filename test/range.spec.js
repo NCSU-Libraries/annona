@@ -46,7 +46,7 @@ describe('Component', () => {
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(false)
-      expect(data.rangeid).toBe('range.json')
+      expect(data.rangeid).toBe('rangestoryboard_range.json')
       expect(data.customlayers).toEqual('')
       expect(data.isfullscreen).toBe(false)
       expect(data.toc).toEqual([{"description": "", "label": "1", "position": 0}, {"description": "", "label": "4", "position": 1}, {"description": "", "label": "5", "position": 2}, {"description": "", "label": "6", "position": 3}, {"description": "", "label": "7", "position": 4}, {"description": "", "label": "8", "position": 5}, {"description": "", "label": "9", "position": 6}, {"description": "", "label": "10", "position": 7}, {"description": "", "label": "11", "position": 8}, {"description": "", "label": "12", "position": 9}, {"description": "", "label": "13", "position": 10}, {"description": "", "label": "14", "position": 11}, {"description": "", "label": "15", "position": 12}, {"description": "", "label": "16", "position": 13}, {"description": "", "label": "17", "position": 14}, {"description": "", "label": "18", "position": 15}, {"description": "", "label": "20", "position": 16}, {"description": "", "label": "21", "position": 17}, {"description": "", "label": "22", "position": 18}, {"description": "", "label": "23", "position": 19}, {"description": "", "label": "24", "position": 20}, {"description": "", "label": "25", "position": 21}, {"description": "", "label": "26", "position": 22}, {"description": "", "label": "27", "position": 23}, {"description": "", "label": "28", "position": 24}, {"description": "", "label": "29", "position": 25}, {"description": "", "label": "30", "position": 26}, {"description": "", "label": "31", "position": 27}])
@@ -77,7 +77,7 @@ describe('Component', () => {
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(true)
-      expect(data.rangeid).toBe('range2.json')
+      expect(data.rangeid).toBe('rangestoryboard_range2.json')
       expect(data.customlayers).toEqual('')
       expect(data.isfullscreen).toBe(false)
       expect(data.toc).toEqual([{"description": "", "label": "Page 1", "position": 0}])
@@ -109,7 +109,7 @@ describe('Component', () => {
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(true)
-      expect(data.rangeid).toBe('range2.json')
+      expect(data.rangeid).toBe('rangestoryboard_range2.json')
       expect(data.customlayers).toEqual('[{"label":"View from Arles", "xywh": "200,200,4750,6513", "image":"https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json"}]')
       expect(data.isfullscreen).toBe(false)
       expect(data.toc).toEqual([{"description": "", "label": "Page 1", "position": 0}])
@@ -118,7 +118,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("longer-article-annos1_storyboard");
+      expect(sbd.seadragonid).toBe("storyboard_longer-article-annos1");
       expect(sbd.annotations).toEqual([{"section": ["1958,1907,113,51"], "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Lodinv<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "styles": "", "itemclass": "", "stylesheet": undefined, "tags": [], "textual_body": ["<div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}, 
         {"styles": "", "itemclass": "", "stylesheet": undefined, "section": ["1537,579,382,352"], "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": [], "type": "rect"}, 
         {"section": ["1704,1509,319,123"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["BRITANIA INSVLA<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": ["<div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}]);
@@ -164,7 +164,7 @@ describe('Component', () => {
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(false)
-      expect(data.rangeid).toBe('manifest')
+      expect(data.rangeid).toBe('rangestoryboard_manifest')
       expect(data.isfullscreen).toBe(false)
       expect(data.toc).toEqual([
         {
@@ -605,7 +605,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("technician-basketballspecial-1991-11_0001-annotation-word_storyboard");
+      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001-annotation-word");
       expect(sbd.annotations).toEqual([{"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 1"], "tags": [], "textual_body": []}, {"section": ["12288,16567,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 2"], "tags": [], "textual_body": []}]);
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -650,7 +650,7 @@ describe('Component', () => {
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(false)
-      expect(data.rangeid).toBe('storyboardlist.json')
+      expect(data.rangeid).toBe('rangestoryboard_storyboardlist.json')
       expect(data.isfullscreen).toBe(false)
       expect(data.toc).toEqual([{"description": undefined, "label": "Bayeux Tapestry test", "position": 0, "thumbnail": undefined}, {"description": undefined, "label": "jsonexample", "position": 1, "thumbnail": undefined}, {"description": undefined, "label": "Page 3", "position": 2, "thumbnail": undefined}, {"description": undefined, "label": "multistoryboard test", "position": 3, "thumbnail": undefined}, {"description": undefined, "label": "multistoryboard test 2", "position": 4, "thumbnail": undefined}, {"description": undefined, "label": "layers test", "position": 5, "thumbnail": undefined}])
       expect(data.viewingDirection).toBe('ltr')
@@ -660,7 +660,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0];
       expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("list_storyboard");
+      expect(sbd.seadragonid).toBe("storyboard_list");
       expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -689,7 +689,7 @@ describe('Component', () => {
       expect(data.position).toEqual(1)
       expect(data.prevPageInactive).toBe(false)
       expect(data.nextPageInactive).toBe(false)
-      expect(data.rangeid).toBe('storyboardlist.json')
+      expect(data.rangeid).toBe('rangestoryboard_storyboardlist.json')
       expect(data.isfullscreen).toBe(false)
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("");
@@ -721,7 +721,7 @@ describe('Component', () => {
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(true)
-      expect(data.rangeid).toBe('manifest.json')
+      expect(data.rangeid).toBe('rangestoryboard_manifest.json')
       expect(data.isfullscreen).toBe(false)
       expect(data.toc).toEqual([{"description": "", "label": "The Ambassadors", "position": 0, "thumbnail": "https://images.cogapp.com/iiif/holbein_big_p.tif/full/30,/0/default.jpg"}])
       expect(data.viewingDirection).toBe('ltr')
@@ -731,7 +731,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0];
       expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("list_storyboard");
+      expect(sbd.seadragonid).toBe("storyboard_list");
       expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -774,7 +774,7 @@ describe('Component', () => {
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(true)
-      expect(data.rangeid).toBe('ocean-liners.json')
+      expect(data.rangeid).toBe('rangestoryboard_ocean-liners.json')
       expect(data.isfullscreen).toBe(false)
       expect(data.toc).toEqual([{"description": "", "label": "Object image 0", "position": 0, "thumbnail": "https://framemark.vam.ac.uk/collections/2013GU2911/full/30,/0/default.jpg"}])
       expect(data.viewingDirection).toBe('ltr')
@@ -782,7 +782,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://framemark.vam.ac.uk/collections/2013GU2911/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("p1_storyboard");
+      expect(sbd.seadragonid).toBe("storyboard_p1");
       expect(sbd.annotations[2]).toEqual({"styles": "", "itemclass": "", "stylesheet": undefined, "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": [], "section": ["2000,2800,400,400"], "svg_path": [undefined], "tags": [], "textual_body": ["<div class=\"describing\"><h2 class=\"annotatedzoom-annotation-detail__label\">First-class restaurant</h2><div class=\"annotatedzoom-annotation-detail__content\"><img class=\"annotatedzoom-annotation-detail__image\" src=\"https://media.vam.ac.uk/feature/annotatedzoom/O1023003/2017KE6204-Aquitania-restaurant-cropped.jpg\" width=300 height=250/><p>Dining on ocean liners was a radically different experience depending on the class of travel. In first class, the <i>Aquitania</i>&#39;s Louis XVI-style dining room offered seating in small isolated groups, echoing elegant restaurants on land. The ship&#39;s architect, Arthur Davis, explained that a &ldquo;cheerful room with comfortable surroundings&rdquo; was a necessary distraction from &ldquo;the often very unpleasant conditions&rdquo; at sea. </p><p class=\"annotatedzoom-annotation-detail__credit\">Photograph from <em>The New Art of Going Abroad</em>, 1929, US. National Art Library: 38041986015030. &copy; Victoria and Albert Museum, London</p></div></div>"], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);

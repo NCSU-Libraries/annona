@@ -69,7 +69,7 @@ export default {
       textoverlay: {
         'opacity': 100,
         'fontcolor': '#000000',
-        'background': '#FFFFFF'
+        'background': ''
       },
       currentlang: '',
       languages: [],
@@ -787,7 +787,9 @@ export default {
         display_setting = 'none';
         checked = false;
         this.booleanitems[`is${classname}toggled`] = false;
-        this.buttons[classname] = shared.buttons[classname];
+        if (shared.buttons[`${classname}off`]){
+          this.buttons[classname] = shared.buttons[classname];
+        }
       } else {
         display_setting = 'block';
         checked = true;
