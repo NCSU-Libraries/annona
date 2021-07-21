@@ -2,41 +2,73 @@
     <div v-bind:id="this.mapid" style="height: 180px"></div>
 </template>
 <script>
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 export default {
   name: 'leaflet',
   data: function() {
     return {
         'mapid': '',
-        'parentelem': '',
         'jsonLayer': '',
-        'watcher': ''
+        'watcher': '',
+        'leafletloaded': false
     }
   },
   props: [
     'position',
-    'annotation'
+    'annotation',
+    'parent'
   ],
+  watch: {
+    'parent.leaflet': function(newval) {
+      this.leafletloaded = newval;
+    },
+    'leafletloaded': function(newval) {
+      if(newval == true){
+        this.$nextTick(() => {
+          this.addGeometry()
+        });
+      }
+    }
+  },
   mounted() {
-    this.parentelem = this.$parent.$parent ? this.$parent.$parent : this.$parent;
-    const parentid = this.parentelem.seadragonid ? this.parentelem.seadragonid : this.parentelem.annotationid;
+    const parentid = this.parent.seadragonid ? this.parent.seadragonid : this.parent.annotationid;
     this.mapid = `${parentid}-map-${this.position}`
-    this.$nextTick(() => {
-      let DefaultIcon = L.icon({
-          iconUrl: icon,
-          shadowUrl: iconShadow
-      });
-
-      L.Marker.prototype.options.icon = DefaultIcon;
-      this.addGeometry(); 
-    }) 
+    this.leafletloaded = this.parent.leaflet;
+    if(!this.parent.leafletadded){
+      this.addLeafletLibrary();
+    }
   },
   methods:  {
+    addLeafletLibrary: function(){
+      var vue = this;
+      var head = document.getElementsByTagName('head')[0];
+      const leafletsrc = "https://unpkg.com/leaflet@1.7.1/dist/leaflet.js";
+      const leafletloaded = Array.from(head.children).some(elem => elem.src && elem.src.indexOf('leaflet'));
+      if (!leafletloaded) { 
+        var link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/leaflet@1.7.1/dist/leaflet.css';
+        head.append(link);
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = leafletsrc;
+        if(script.readyState) {  // only required for IE <9
+          script.onreadystatechange = function() {
+          if ( script.readyState === "loaded" || script.readyState === "complete" ) {
+            script.onreadystatechange = null;
+            vue.parent.leaflet = true;
+            }
+          };
+        } else {  //Others
+          script.onload = function() {
+          vue.parent.leaflet = true;
+          };
+        }
+        head.appendChild(script);
+      }
+    },
     addGeometry: function() {
-    const maplayers = this.parentelem.settings.maplayer && this.parentelem.settings.mapattribution ? {'layer': this.parentelem.settings.maplayer, 'attribution': this.parentelem.settings.mapattribution} : '';
+    const maplayers = this.parent.settings.maplayer && this.parent.settings.mapattribution ? {'layer': this.parent.settings.maplayer, 'attribution': this.parent.settings.mapattribution} : '';
     const mapdiv = document.getElementById(this.mapid);
     if (mapdiv && mapdiv.classList.length == 0){
       var geojsonFeature = {
@@ -56,7 +88,7 @@ export default {
       mymap.fitBounds(bounds);
       const zoom = mymap.getZoom();
       if (zoom == 0){
-        this.watcher = this.$watch('parentelem.position', function(newValue) {
+        this.watcher = this.$watch('parent.position', function(newValue) {
           if (this.position == newValue){
             var vue = this;
             setTimeout(function(){ 

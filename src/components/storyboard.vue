@@ -180,7 +180,7 @@ export default {
         content_data = Object.assign({}, content_data, {'section':sections, 'type':type, svg_path: svg_path})
         this.annotations.push(content_data);
         if (content_data['geometry']){
-          this.leaflet = true;
+          this.leaflet = 'true';
         }
         if (content_data['styles']) {
           if (content_data['styles']['overlay'] && !this.settings.overlaycolor){

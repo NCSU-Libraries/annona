@@ -41,7 +41,8 @@ export default {
       rendered: '',
       languages: [],
       annotationid: '',
-      textoverlay: false
+      textoverlay: false,
+      leaflet: false
     }
   },
   created() {

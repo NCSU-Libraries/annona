@@ -27,7 +27,7 @@
       </button>
       <div v-if="$parent.leaflet">
         <div v-for="(annotation, index) in $parent.annotations" v-bind:key="index">
-          <leaflet v-if="annotation.geometry" v-bind:key="index" v-show="$parent.position == index" :position="index" :annotation="annotation"></leaflet>
+          <leaflet v-if="annotation.geometry" v-bind:key="index" v-show="$parent.position == index" :parent="$parent" :position="index" :annotation="annotation"></leaflet>
         </div>
       </div>
     </div>
