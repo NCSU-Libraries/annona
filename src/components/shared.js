@@ -334,12 +334,12 @@ export default {
     var ocr = this.stripHTML(ocrlist.join('\n').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
     const multiline = ocr.split('\n');
     var innerHTML = '';
-    const svgfill = svgpath.getAttribute('d') ? this.createPath(svgpath) : svgpath;
-    svgfill.setAttribute("style", "z-index:-1;");
-    svgfill.setAttribute('fill', 'none');
-    svgfill.setAttribute('stroke', 'none');
-    svgfill.classList = 'svgBackground';
     if (svgitems && svgitems['path'] != 'M' && multiline.length < 2){
+      const svgfill = svgpath.getAttribute('d') ? this.createPath(svgpath) : svgpath;
+      svgfill.setAttribute("style", "z-index:-1;");
+      svgfill.setAttribute('fill', 'none');
+      svgfill.setAttribute('stroke', 'none');
+      svgfill.classList = 'svgBackground';
       innerHTML = `
       ${svgfill.outerHTML}
       <def>
