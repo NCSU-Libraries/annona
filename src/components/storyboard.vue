@@ -54,6 +54,7 @@ export default {
       booleanitems: {
         isexcerpt: false,
         isoverlaytoggled: false,
+        istextoverlaytoggled: false,
         annoinfoshown: false,
         imageinfoshown: false,
         additionalinfoshown: false,
@@ -87,8 +88,12 @@ export default {
   },
   created() {
     this.basecompontent = this.$parent;
-    if (this.basecompontent && this.basecompontent.range && !this.$parent.multi){
-      this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
+    if (this.basecompontent && this.basecompontent.range){
+      if (!this.$parent.multi){
+        this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
+      }
+      this.basecompontent.textoverlay ? this.textoverlay = this.basecompontent.textoverlay : this.basecompontent.textoverlay = this.textoverlay;
+      this.basecompontent.booleanitems ? this.booleanitems = this.basecompontent.booleanitems : this.basecompontent.booleanitems = this.booleanitems;
     }
     var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
@@ -289,8 +294,11 @@ export default {
           }
         }
         // if setting call for toggled and language set to values
-        if (vue.settings.toggleoverlay){
-          vue.createOverlay();
+        if (vue.booleanitems.isoverlaytoggled){
+          vue.createOverlay('', true);
+        }
+        if (vue.booleanitems.istextoverlaytoggled){
+          vue.createOverlay('textoverlay', true)
         }
         if (vue.currentlang) {
           vue.changeLang(vue.currentlang);
@@ -780,13 +788,13 @@ export default {
       }
     },
     //toggles created overlays;
-    createOverlay: function(classname){
+    createOverlay: function(classname, dontswitch=false){
       classname = classname ? classname : 'overlay';
       var box_elements = this.anno_elem.getElementsByClassName(classname);
       var display_setting;
       var checked;
       var togglestatus = this.booleanitems[`is${classname}toggled`];
-      if (togglestatus){
+      if (togglestatus && !dontswitch){
         display_setting = 'none';
         checked = false;
         this.booleanitems[`is${classname}toggled`] = false;

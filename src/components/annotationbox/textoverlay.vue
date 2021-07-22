@@ -5,20 +5,20 @@
     <label v-bind:for="parent.seadragonid + 'toggletextoverly'" class="toggletextoverlaylabel">Toggle text overlay</label>
     <p>
     <label for="backgroundcolor">Background Color: </label>
-    <input type="color" v-model="parent.textoverlay.background" id="backgroundcolor">
+    <input type="color" v-model="textoverlay.background" id="backgroundcolor">
     </p>
     <p>
     <label for="fontcolor">Font Color: </label>
-    <input type="color" v-model="parent.textoverlay.fontcolor" id="fontcolor">
+    <input type="color" v-model="textoverlay.fontcolor" id="fontcolor">
     </p>
     <p class="slidecontainer">
     <label for="textoverlayopacity">Opacity:</label>
-    <input id="textoverlayopacity" v-model="parent.textoverlay.opacity" type="range" min="0" max="100" class="slider">
+    <input id="textoverlayopacity" v-model="textoverlay.opacity" type="range" min="0" max="100" class="slider">
     </p>
 </div>
 </template>
 <script>
 export default {
-    props: ['parent']
+    props: ['parent', 'textoverlay']
 }
 </script>

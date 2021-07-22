@@ -201,6 +201,10 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   opacity: .4;
 }
 
+.overlay {
+  z-index: 10;
+}
+
 .overlay:hover:not(.overlay) > svg {
   background: grey;
   opacity: .4;

@@ -67,7 +67,9 @@ export default {
         rangetitle: '',
         ready: false,
         listtype: '',
-        startCanvas: ''
+        startCanvas: '',
+        textoverlay: '',
+        booleanitems: ''
       }
     },
     watch: {

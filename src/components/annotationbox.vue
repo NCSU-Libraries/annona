@@ -8,7 +8,7 @@
         <div class="slidecontainer">Opacity: <input v-on:change="$parent.sendMessage({'function': 'setOpacity', 'args': {'event': $event, 'layer': layer} })" type="range" min="0" max="100" v-bind:value="layer.opacity*100" class="slider"></div>
       </div>
     </div>
-    <textoverlay v-if="$parent.shown == 'textoverlay'" :parent="$parent"></textoverlay>
+    <textoverlay v-if="$parent.shown == 'textoverlay'" :textoverlay="textoverlayparent" :parent="$parent"></textoverlay>
     <shortcuts v-if="$parent.shown == 'keyboard'" :parent="$parent"></shortcuts>
     <tags v-if="$parent.shown == 'tags'" :parent="$parent"></tags>
     <info v-if="$parent.shown == 'info'" :parent="$parent"></info>
@@ -49,7 +49,8 @@ export default {
       transcriptions: [],
       scrollitems: [],
       isscrollview: false,
-      updatedto: ''
+      updatedto: '',
+      textoverlayparent: ''
     }
   },
   components: {
@@ -78,6 +79,7 @@ export default {
     }
   },
   mounted() {
+    this.textoverlayparent = this.$parent.$parent.range ? this.$parent.$parent.textoverlay : this.$parent.textoverlay;
     if (this.$parent.settings.annoview == 'scrollview'){
       this.$el.addEventListener('scroll', this.handleScroll);
     }
@@ -126,15 +128,15 @@ export default {
       return (this.$refs['1'][0].offsetTop - this.$refs['0'][0].offsetTop)/1.1;
     },
     customStyle: function(){
-      return `<style type="text/css">#${this.$parent.seadragonid} .textoverlay { fill: ${this.$parent.textoverlay.fontcolor};
-      background: ${this.$parent.textoverlay.background};
-      opacity: ${this.$parent.textoverlay.opacity/100};
+      return `<style type="text/css">#${this.$parent.seadragonid} .textoverlay { fill: ${this.textoverlayparent.fontcolor};
+      background: ${this.textoverlayparent.background};
+      opacity: ${this.textoverlayparent.opacity/100};
       }
       #${this.$parent.seadragonid} .textoverlaywithpath {
         background: none;
       }
-      #${this.$parent.seadragonid} .svgBackground { fill: ${this.$parent.textoverlay.background};
-      opacity: ${this.$parent.textoverlay.opacity/100};
+      #${this.$parent.seadragonid} .svgBackground { fill: ${this.textoverlayparent.background};
+      opacity: ${this.textoverlayparent.opacity/100};
       }
       </style>`;
     }

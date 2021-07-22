@@ -60,7 +60,17 @@ export default {
       settings.startposition = settings.startposition != undefined ? settings.startposition : 1;
       settings.hide_nextbuttons = settings.hide_nextbuttons != undefined ? settings.hide_nextbuttons : true;
     }
-    if (Object.keys(settings).join("").indexOf('textoverlay')) {
+
+    if (Object.keys(settings).join("").indexOf('toggle') > -1 && vueinfo.booleanitems){
+      const toggles = ['overlay', 'textoverlay']
+      for (var tog=0;tog<toggles.length; tog++){
+        const togglesetting = settings[`toggle${toggles[tog]}`];
+        if (togglesetting){
+          vueinfo.booleanitems[`is${toggles[tog]}toggled`] = togglesetting;
+        }
+      }
+    }
+    if (Object.keys(settings).join("").indexOf('textoverlay') > -1) {
       const fields = ['opacity', 'fontcolor', 'background']
       for (var fi=0; fi<fields.length; fi++){
         const setting = settings[`textoverlay${fields[fi]}`];
@@ -600,7 +610,6 @@ export default {
       text += ocr;
     } else if(!text && ocr) {
       text = ocr;
-      ocr = '';
     }
     const empty = `${directiontext}</span>`;
     const annoreplacetext = template.replace('*replacementtext*', text);
