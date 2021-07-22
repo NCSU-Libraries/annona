@@ -1,7 +1,7 @@
 <template>
 <div id="textoverlay" class="content">
     <b>Text Overlay</b>
-    <input v-bind:id="parent.seadragonid + 'toggletextoverly'" class="toggletextoverlay" type="checkbox" v-bind:value="!parent.booleanitems.istextoverlaytoggled" v-on:change="parent.sendMessage({'function': 'createOverlay', 'args': 'textoverlay' })">
+    <input v-bind:key="parent.booleanitems.istextoverlaytoggled" v-bind:id="parent.seadragonid + 'toggletextoverly'" class="toggletextoverlay" type="checkbox" v-bind:checked="parent.booleanitems.istextoverlaytoggled" v-on:change="parent.sendMessage({'function': 'createOverlay', 'args': 'textoverlay' })">
     <label v-bind:for="parent.seadragonid + 'toggletextoverly'" class="toggletextoverlaylabel">Toggle text overlay</label>
     <p>
     <label for="backgroundcolor">Background Color: </label>
