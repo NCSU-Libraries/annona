@@ -485,7 +485,7 @@ export default {
     },
     ttscontent: function(){
       var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
-      content ? this.tts(content[this.shown]) : '';
+      content && content[this.shown] ? this.tts(content[this.shown]) : '';
     },
     // call function and send broadcast to WS server if enabled
     sendMessage: function(e) {
