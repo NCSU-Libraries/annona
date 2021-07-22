@@ -69,7 +69,7 @@ export default {
       textoverlay: {
         'opacity': 100,
         'fontcolor': '#000000',
-        'background': ''
+        'background': 'none'
       },
       currentlang: '',
       languages: [],
@@ -455,7 +455,8 @@ export default {
           elem2.setAttribute('viewBox', xywh.join(" "));
           elem2.setAttribute('style', 'position: absolute;');
           elem2.id = `ocr-position${position}`;
-          elem2.classList = 'textoverlay';
+          const classlist = svgpathelem ? 'textoverlay textoverlaywithpath' : 'textoverlay';
+          elem2.classList = classlist;
           elem2.style.userSelect = 'text';
           elem2.style.display = 'none';
           elem2.innerHTML +=  innerHTML;    

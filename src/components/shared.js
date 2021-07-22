@@ -321,6 +321,11 @@ export default {
     id += '-ocrtextoverlaypath'
     return {'path': 'M' + path.trim(), 'fontsize': fontsize*1.1, 'textLength': length, 'pathid': id};
   },
+  createPath: function(svgpath) {
+    var path = document.createElement('path');
+    path.setAttribute('d', svgpath.getAttribute('d'));
+    return path;
+  },
   textOverlayHTML: function(xywh, ocrlist, svgpath=false){
     var svgitems = ''
     if (svgpath){
@@ -329,8 +334,14 @@ export default {
     var ocr = this.stripHTML(ocrlist.join('\n').replace(/<div class="authorship">[\s\S]*?<\/div>/g, ''))
     const multiline = ocr.split('\n');
     var innerHTML = '';
+    const svgfill = svgpath.getAttribute('d') ? this.createPath(svgpath) : svgpath;
+    svgfill.setAttribute("style", "z-index:-1;");
+    svgfill.setAttribute('fill', 'none');
+    svgfill.setAttribute('stroke', 'none');
+    svgfill.classList = 'svgBackground';
     if (svgitems && svgitems['path'] != 'M' && multiline.length < 2){
       innerHTML = `
+      ${svgfill.outerHTML}
       <def>
       <path id="${svgitems['pathid']}" d="${svgitems['path']}" fill="none"  stroke-width="30" stroke="red"/>
       </def>

@@ -129,7 +129,14 @@ export default {
       return `<style type="text/css">#${this.$parent.seadragonid} .textoverlay { fill: ${this.$parent.textoverlay.fontcolor};
       background: ${this.$parent.textoverlay.background};
       opacity: ${this.$parent.textoverlay.opacity/100};
-      }</style>`;
+      }
+      #${this.$parent.seadragonid} .textoverlaywithpath {
+        background: none;
+      }
+      #${this.$parent.seadragonid} .svgBackground { fill: ${this.$parent.textoverlay.background};
+      opacity: ${this.$parent.textoverlay.opacity/100};
+      }
+      </style>`;
     }
   }
 }
