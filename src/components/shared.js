@@ -343,7 +343,8 @@ export default {
     } else {
       const x = xywh[0];
       const y = xywh[1]+xywh[3];
-      if (multiline.length > 1){
+      const shouldbemultiline = xywh[3]/multiline.length > 10;
+      if (shouldbemultiline){
         for (var nl=0; nl<multiline.length; nl++){
           const fontsize = xywh[3]/multiline.length;
           const y = xywh[1] + (fontsize*(nl+1));
