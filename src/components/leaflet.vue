@@ -94,7 +94,7 @@ export default {
             setTimeout(function(){ 
                 jsonLayer.fire('click');
                 vue.watcher(); 
-            }, 9);
+            }, 10);
           }
         });
       }
