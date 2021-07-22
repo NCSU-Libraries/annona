@@ -87,7 +87,7 @@ export default {
     }
   },
   created() {
-    this.basecompontent = this.$parent;
+    this.basecompontent = this.$parent.$parent && this.$parent.$parent.range ? this.$parent.$parent : this.$parent;
     if (this.basecompontent && this.basecompontent.range){
       if (!this.$parent.multi){
         this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
