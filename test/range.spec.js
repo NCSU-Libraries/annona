@@ -128,7 +128,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -613,7 +613,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -668,7 +668,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": true, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -739,7 +739,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -790,7 +790,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
