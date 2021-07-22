@@ -92,8 +92,8 @@ export default {
       if (!this.$parent.multi){
         this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
       }
-      this.basecompontent.textoverlay ? this.textoverlay = this.basecompontent.textoverlay : this.basecompontent.textoverlay = this.textoverlay;
-      this.basecompontent.booleanitems ? this.booleanitems = this.basecompontent.booleanitems : this.basecompontent.booleanitems = this.booleanitems;
+      this.basecompontent.textoverlay ? this.textoverlay = this.objectToNewObject(this.basecompontent.textoverlay) : this.basecompontent.textoverlay = this.objectToNewObject(this.textoverlay);
+      this.basecompontent.booleanitems ? this.booleanitems = this.objectToNewObject(this.basecompontent.booleanitems) : this.basecompontent.booleanitems = this.objectToNewObject(this.booleanitems);
     }
     var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
@@ -115,6 +115,22 @@ export default {
       this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
       if ((newVal['anno'] == '' && newVal['transcription'] == '' && (newVal == 'anno' || newVal == 'transcription')) || (this.settings.hide_annotationtext)){
         this.shown = false;
+      }
+    },
+    booleanitems: {
+      deep: true,
+      handler: function(newval){
+        if (this.basecompontent.range) {
+          this.basecompontent.booleanitems = this.objectToNewObject(this.booleanitems);
+        }
+      }
+    },
+    textoverlay: {
+      deep: true,
+      handler: function(newval){
+        if (this.basecompontent.range) {
+          this.basecompontent.textoverlay = this.objectToNewObject(this.textoverlay);
+        }
       }
     },
     buttons: {
@@ -150,6 +166,9 @@ export default {
       } else {
         this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
+    },
+    objectToNewObject: function(object) {
+      return JSON.parse(JSON.stringify(object));
     },
     parseAnnoData: function(annotation, annotationurl, isURL){
       this.imagetitle = this.settings.title ? this.imagetitle : annotation.label;
