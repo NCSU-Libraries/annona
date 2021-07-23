@@ -50,7 +50,7 @@ export default {
         isws: '',
         range: true,
         toctitle: 'Range Pages',
-        buttons: JSON.parse(JSON.stringify(shared.buttons)),
+        buttons: shared.objectToNewObject(shared.buttons),
         settings: {},
         stylingstring: "",
         annotationurl: '',
@@ -68,8 +68,8 @@ export default {
         ready: false,
         listtype: '',
         startCanvas: '',
-        textoverlay: '',
-        booleanitems: ''
+        textoverlay: shared.objectToNewObject(shared.textoverlay),
+        booleanitems: shared.objectToNewObject(shared.booleanitems)
       }
     },
     watch: {

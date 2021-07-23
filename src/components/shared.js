@@ -2,6 +2,11 @@ import {by639_1} from 'iso-language-codes'
 import rtlDetect from 'rtl-detect';
 
 export default {
+  textoverlay:{
+    'opacity': 100,
+    'fontcolor': '#000000',
+    'background': 'none'
+  },
   buttons: {
     'autorun': '<i class="fas fa-magic"></i>',
     'autorunoff': '<i class="fas fa-stop-circle"></i>',
@@ -24,6 +29,19 @@ export default {
     'keyboard': '<i class="fas fa-keyboard"></i>',
     'prev' : '<i class="fas fa-chevron-left"></i>',
     'next': '<i class="fas fa-chevron-right"></i>'
+  },
+  booleanitems: {
+    isexcerpt: false,
+    isoverlaytoggled: false,
+    istextoverlaytoggled: false,
+    annoinfoshown: false,
+    imageinfoshown: false,
+    additionalinfoshown: false,
+    tocshown: false,
+    istranscription: false
+  },
+  objectToNewObject: function(object) {
+    return JSON.parse(JSON.stringify(object));
   },
   imageextensions: ['jpeg', 'jpg', 'png', 'svg', 'bmp', 'gif', 'apng', 'avif', 'jfif', 'pjpeg', 'pjp', 'webp', 'ico', 'cur'],
   //gets on structure for annotation; gets contents of the annotation 'on' field and places it into a list for multi image.
@@ -70,7 +88,7 @@ export default {
         }
       }
     }
-    if (Object.keys(settings).join("").indexOf('textoverlay') > -1) {
+    if (Object.keys(settings).join("").indexOf('textoverlay') > -1 && vueinfo.textoverlay) {
       const fields = ['opacity', 'fontcolor', 'background']
       for (var fi=0; fi<fields.length; fi++){
         const setting = settings[`textoverlay${fields[fi]}`];

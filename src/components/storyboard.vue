@@ -51,27 +51,14 @@ export default {
       prev_inactive: true,
       next_inactive: false,
       toolbar_id: '',
-      booleanitems: {
-        isexcerpt: false,
-        isoverlaytoggled: false,
-        istextoverlaytoggled: false,
-        annoinfoshown: false,
-        imageinfoshown: false,
-        additionalinfoshown: false,
-        tocshown: false,
-        istranscription: false
-      },
+      booleanitems: shared.objectToNewObject(shared.booleanitems),
       shown: false,
       mapmarker: '<i class="fas fa-map-marker-alt map-marker"></i>',
       anno_elem: '',
       isautorunning: '',
-      buttons: JSON.parse(JSON.stringify(shared.buttons)),
+      buttons: shared.objectToNewObject(shared.buttons),
       settings: {},
-      textoverlay: {
-        'opacity': 100,
-        'fontcolor': '#000000',
-        'background': 'none'
-      },
+      textoverlay: shared.objectToNewObject(shared.textoverlay),
       currentlang: '',
       languages: [],
       fullscreen: false,
@@ -92,8 +79,8 @@ export default {
       if (!this.$parent.multi){
         this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
       }
-      this.basecompontent.textoverlay ? this.textoverlay = this.objectToNewObject(this.basecompontent.textoverlay) : this.basecompontent.textoverlay = this.objectToNewObject(this.textoverlay);
-      this.basecompontent.booleanitems ? this.booleanitems = this.objectToNewObject(this.basecompontent.booleanitems) : this.basecompontent.booleanitems = this.objectToNewObject(this.booleanitems);
+      this.textoverlay = shared.objectToNewObject(this.basecompontent.textoverlay);
+      this.booleanitems = shared.objectToNewObject(this.basecompontent.booleanitems);
     }
     var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
@@ -121,7 +108,7 @@ export default {
       deep: true,
       handler: function(newval){
         if (this.basecompontent.range) {
-          this.basecompontent.booleanitems = this.objectToNewObject(this.booleanitems);
+          this.basecompontent.booleanitems = shared.objectToNewObject(this.booleanitems);
         }
       }
     },
@@ -129,7 +116,7 @@ export default {
       deep: true,
       handler: function(newval){
         if (this.basecompontent.range) {
-          this.basecompontent.textoverlay = this.objectToNewObject(this.textoverlay);
+          this.basecompontent.textoverlay = shared.objectToNewObject(this.textoverlay);
         }
       }
     },
@@ -166,9 +153,6 @@ export default {
       } else {
         this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
-    },
-    objectToNewObject: function(object) {
-      return JSON.parse(JSON.stringify(object));
     },
     parseAnnoData: function(annotation, annotationurl, isURL){
       this.imagetitle = this.settings.title ? this.imagetitle : annotation.label;
