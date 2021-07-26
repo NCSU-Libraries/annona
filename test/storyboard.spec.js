@@ -1,5 +1,4 @@
 import { mount } from '@vue/test-utils';
-import { shallowMount } from '@vue/test-utils';
 
 import storyboard from '../src/components/storyboard.vue';
 import shared from '../src/components/shared.js'
@@ -66,14 +65,14 @@ describe('Component', () => {
       wrapper.destroy()
     })
     test('test storyboard with openannotation list', async ()  => {
-      const wrapper =  shallowMount(storyboard,{
+      const wrapper =  mount(storyboard,{
         propsData: {
           annotationurl: 'mc00240.json'
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      //const saveMock = jest.fn()
+      //wrapper.vm.createViewer = saveMock;
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -92,14 +91,13 @@ describe('Component', () => {
       wrapper.destroy()
     })
     test('test storyboard with w3 annotations page', async ()  => {
-      const wrapper =  shallowMount(storyboard,{
+      const wrapper =  mount(storyboard,{
         propsData: {
           annotationurl: 'page.json'
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -116,14 +114,12 @@ describe('Component', () => {
       wrapper.destroy()
     })
     test('test storyboard with single open annotation', async ()  => {
-      const wrapper =  shallowMount(storyboard,{
+      const wrapper =  mount(storyboard,{
         propsData: {
           annotationurl: 'paragraph.json'
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -133,18 +129,26 @@ describe('Component', () => {
       expect(data.annotations[0]['tags'].length).toEqual(0)
       expect(data.annotations.length).toEqual(1)
       expect(data.annotations[0]['ocr'][0]).toContain('Jim Watson and I have probably made a')
+      wrapper.find('#textOverlayButton').trigger('click');
+      await wrapper.vm.$nextTick()
+      await flushPromises();
+      expect(data.shown).toEqual('textoverlay')
+      expect(wrapper.find('#textoverlay').html()).toContain(`<label for=\"backgroundcolor\">Background Color: </label> <input type=\"color\" id=\"backgroundcolor\"></p>`);
+      wrapper.find('#storyboard_paragraphtoggletextoverly').trigger('change');
+      expect(data.booleanitems.istextoverlaytoggled).toBe(true)
       expect(data.currentanno).toEqual('')
+      console.log(wrapper.html())
+      expect(data.shown).toBe('textoverlay')
       wrapper.destroy()
     })
     test('test storyboard with single w3 annotation', async ()  => {
-      const wrapper =  shallowMount(storyboard,{
+      const wrapper =  mount(storyboard,{
         propsData: {
           annotationurl: 'bees.json'
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -158,14 +162,13 @@ describe('Component', () => {
       wrapper.destroy()
     })
     test('test storyboard with single open annotation', async ()  => {
-      const wrapper =  shallowMount(storyboard,{
+      const wrapper =  mount(storyboard,{
         propsData: {
           annotationurl: 'paragraph.json'
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -219,8 +222,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -249,8 +251,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -274,14 +275,14 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       expect(wrapper.vm._computedWatchers.annoContent.value['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       expect(wrapper.vm._computedWatchers.annoContent.value['transcription']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">BRITANIA INSVLA<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
-      expect(wrapper.find('.content').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <!----> </div>")
+      expect(wrapper.find('.content').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <div> <div> <div id=\"storyboard_recogito-map-0\" style=\"height: 180px; display: none;\"></div> </div> <div> <!----> </div> <div> <!----> </div> </div> </div>")
       wrapper.find('#transcription_button').trigger('click')
       await wrapper.vm.$nextTick()
       expect(data.shown).toEqual('transcription')
       expect(wrapper.find('.content').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"transcription\" class=\"content\"><span><span style=\"direction: ltr;\"><div id=\"ocr\">BRITANIA INSVLA<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span></div>")
       wrapper.find('#transcription_button').trigger('click')
       await wrapper.vm.$nextTick()
-      expect(wrapper.find('.content').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <!----> </div>")
+      expect(wrapper.find('.content').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <div> <div> <div id=\"storyboard_recogito-map-0\" style=\"height: 180px; display: none;\"></div> </div> <div> <!----> </div> <div> <!----> </div> </div> </div>")
       expect(data.shown).toEqual('anno')
     })
 
@@ -293,8 +294,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -322,8 +322,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -353,8 +352,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -384,8 +382,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -414,8 +411,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data

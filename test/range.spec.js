@@ -30,8 +30,7 @@ describe('Component', () => {
         },
         attachTo: '#root'
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -62,8 +61,7 @@ describe('Component', () => {
         },
         attachTo: '#root'
       })
-      const saveMock = jest.fn()
-      wrapper.vm.createViewer = saveMock;
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -119,7 +117,7 @@ describe('Component', () => {
       expect(sbd.seadragontile).toEqual("https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7/info.json")
       expect(sbd.position).toBe(-1);
       expect(sbd.seadragonid).toBe("storyboard_longer-article-annos1");
-      expect(sbd.annotations).toEqual([{"section": ["1958,1907,113,51"], "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Lodinv<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "styles": "", "itemclass": "", "stylesheet": undefined, "tags": [], "textual_body": ["<div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}, 
+      expect(sbd.annotations).toEqual([{"section": ["1958,1907,113,51"], "geometry": {"coordinates": [-75.87877, 5.6561], "type": "Point"}, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Lodinv<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "styles": "", "itemclass": "", "stylesheet": undefined, "tags": [], "textual_body": ["<div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}, 
         {"styles": "", "itemclass": "", "stylesheet": undefined, "section": ["1537,579,382,352"], "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": [], "type": "rect"}, 
         {"section": ["1704,1509,319,123"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["BRITANIA INSVLA<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": ["<div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}]);
       expect(sbd.currentanno).toBe("");
