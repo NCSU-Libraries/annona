@@ -789,7 +789,7 @@ export default {
     var hasocr = this.flatten(annotation.filter(element=> element && element.ocr && element.ocr.length > 0));
     const hasocrandtext = annotation.some(elem => elem && elem.ocr && elem.ocr.length > 0 && elem.textual_body && elem.textual_body.length > 0 && elem.ocr != elem.textual_body);
     if (hasocr.length > 0){
-      shortcuts['textoverlay'] = {'icon': buttons['textoverlay'], 'label': 'Toggle ocr text',
+      shortcuts['textoverlay'] = {'icon': buttons['textoverlay'], 'label': 'Show OCR text overlay settings box',
         'shortcut': ['g', 'alt+z'], 'function': {'function': 'clickButton', 'args': 'textoverlay'}}
       if (hasocrandtext){
         shortcuts['transcription'] = {'icon': buttons.anno, 'label': 'Toggle between transcription/annotation',
