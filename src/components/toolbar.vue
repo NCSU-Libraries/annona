@@ -16,7 +16,7 @@
       <span v-html="$parent.buttons.overlay"></span>
       <span class="toolbartext">Toggle Overlays</span>
     </button>
-    <button v-if="$parent.shortcuts['textoverlay']" id="overlayButton" v-on:click="$parent.sendMessage($parent.shortcuts['textoverlay']['function']);" class="toolbarButton">
+    <button v-if="$parent.shortcuts['textoverlay']" id="textOverlayButton" v-on:click="$parent.sendMessage($parent.shortcuts['textoverlay']['function']);" class="toolbarButton">
       <span v-html="$parent.buttons.textoverlay"></span>
       <span class="toolbartext">Toggle OCR Overlays</span>
     </button>

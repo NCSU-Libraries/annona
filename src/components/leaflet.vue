@@ -21,6 +21,9 @@ export default {
     'parent.basecompontent.leaflet': function(newval) {
       this.leafletloaded = newval;
     },
+    'parent.leaflet': function(newval) {
+      this.leafletloaded = newval;
+    },
     'leafletloaded': function(newval) {
       if(newval == true){
         this.$nextTick(() => {
@@ -31,8 +34,8 @@ export default {
   },
   mounted() {
     const parentid = this.parent.seadragonid ? this.parent.seadragonid : this.parent.annotationid;
-    this.mapid = `${parentid}-map-${this.position}`
-    this.leafletloaded = this.parent.basecompontent.leaflet;
+    this.mapid = `${parentid}-map-${this.position}`;
+    this.leafletloaded = this.parent.basecompontent ? this.parent.basecompontent.leaflet : this.parent.leaflet;
     if(this.leafletloaded != true){
       this.addLeafletLibrary();
     }
@@ -52,16 +55,17 @@ export default {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = leafletsrc;
+
         if(script.readyState) {  // only required for IE <9
           script.onreadystatechange = function() {
           if ( script.readyState === "loaded" || script.readyState === "complete" ) {
             script.onreadystatechange = null;
-            vue.parent.basecompontent.leaflet = true;
+            vue.parent.basecompontent ? vue.parent.basecompontent.leaflet = true : vue.parent.leaflet = true;
             }
           };
         } else {  //Others
           script.onload = function() {
-          vue.parent.basecompontent.leaflet = true;
+          vue.parent.basecompontent ? vue.parent.basecompontent.leaflet = true : vue.parent.leaflet = true;
           };
         }
         head.appendChild(script);
