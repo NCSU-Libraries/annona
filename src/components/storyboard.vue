@@ -464,7 +464,7 @@ export default {
           var elem2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             //set viewBox based on section. SVG will not show up without this.
           elem2.setAttribute('viewBox', xywh.join(" "));
-          elem2.setAttribute('style', 'position: absolute;');
+          elem2.setAttribute('style', `position: absolute;z-index: ${this.annotations.length-position}`);
           elem2.id = `ocr-position${position}`;
           const classlist = svgpathelem ? 'textoverlay textoverlaywithpath' : 'textoverlay';
           elem2.classList = classlist;
