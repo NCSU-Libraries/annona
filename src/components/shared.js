@@ -10,8 +10,8 @@ export default {
   buttons: {
     'autorun': '<i class="fas fa-magic"></i>',
     'autorunoff': '<i class="fas fa-stop-circle"></i>',
-    'overlay': '<i class="fas fa-toggle-on"></i>',
-    'overlayoff': '<i class="fas fa-toggle-off"></i>',
+    'overlay': '<i class="fas fa-toggle-off"></i>',
+    'overlayoff': '<i class="fas fa-toggle-on"></i>',
     'textoverlay': '<i class="fas fa-align-justify"></i>',
     'expand' : '<i class="fas fa-expand"></i>',
     'annooff': '<i class="fas fa-pen-nib"></i>',
