@@ -18,7 +18,7 @@ export default {
     'parent'
   ],
   watch: {
-    'parent.leaflet': function(newval) {
+    'parent.basecompontent.leaflet': function(newval) {
       this.leafletloaded = newval;
     },
     'leafletloaded': function(newval) {
@@ -32,8 +32,8 @@ export default {
   mounted() {
     const parentid = this.parent.seadragonid ? this.parent.seadragonid : this.parent.annotationid;
     this.mapid = `${parentid}-map-${this.position}`
-    this.leafletloaded = this.parent.leaflet;
-    if(!this.parent.leafletadded){
+    this.leafletloaded = this.parent.basecompontent.leaflet;
+    if(this.leafletloaded != true){
       this.addLeafletLibrary();
     }
   },
@@ -43,7 +43,7 @@ export default {
       var head = document.getElementsByTagName('head')[0];
       const leafletsrc = "https://unpkg.com/leaflet@1.7.1/dist/leaflet.js";
       const leafletloaded = Array.from(head.children).some(elem => elem.src && elem.src.indexOf('leaflet'));
-      if (!leafletloaded) { 
+      if (!leafletloaded) {
         var link = document.createElement('link');
         link.type = 'text/css';
         link.rel = 'stylesheet';
@@ -56,61 +56,69 @@ export default {
           script.onreadystatechange = function() {
           if ( script.readyState === "loaded" || script.readyState === "complete" ) {
             script.onreadystatechange = null;
-            vue.parent.leaflet = true;
+            vue.parent.basecompontent.leaflet = true;
             }
           };
         } else {  //Others
           script.onload = function() {
-          vue.parent.leaflet = true;
+          vue.parent.basecompontent.leaflet = true;
           };
         }
         head.appendChild(script);
       }
     },
+    retryAdd: function() {
+      var vue = this;
+      setTimeout(function(){ 
+        vue.addGeometry(); 
+      }, 10);
+    },
     addGeometry: function() {
-    const maplayers = this.parent.settings.maplayer && this.parent.settings.mapattribution ? {'layer': this.parent.settings.maplayer, 'attribution': this.parent.settings.mapattribution} : '';
-    const mapdiv = document.getElementById(this.mapid);
-    if (mapdiv && mapdiv.classList.length == 0){
-      var geojsonFeature = {
-        "type": "Feature",
-        "geometry": this.annotation['geometry']
-      };
-      var mymap = L.map(this.mapid);
-      const maplayer = maplayers ? maplayers['layer'] : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      const attribution = maplayers ? maplayers['attribution'] : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      L.tileLayer(maplayer, {
-        attribution: attribution,
-      }).addTo(mymap);
-      const jsonLayer = L.geoJSON(geojsonFeature);
-      this.jsonLayer = jsonLayer;
-      mymap.addLayer(jsonLayer);
-      const bounds = jsonLayer.getBounds();
-      mymap.fitBounds(bounds);
-      const zoom = mymap.getZoom();
-      if (zoom == 0){
-        this.watcher = this.$watch('parent.position', function(newValue) {
-          if (this.position == newValue){
-            var vue = this;
-            setTimeout(function(){ 
-                jsonLayer.fire('click');
-                vue.watcher(); 
-            }, 10);
-          }
+      const maplayers = this.parent.settings.maplayer && this.parent.settings.mapattribution ? {'layer': this.parent.settings.maplayer, 'attribution': this.parent.settings.mapattribution} : '';
+      const mapdiv = document.getElementById(this.mapid);
+      if (mapdiv && mapdiv.classList.length == 0){
+        var geojsonFeature = {
+          "type": "Feature",
+          "geometry": this.annotation['geometry']
+        };
+        var mymap = L.map(this.mapid);
+        const maplayer = maplayers ? maplayers['layer'] : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const attribution = maplayers ? maplayers['attribution'] : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        L.tileLayer(maplayer, {
+          attribution: attribution,
+        }).addTo(mymap);
+        const jsonLayer = L.geoJSON(geojsonFeature);
+        this.jsonLayer = jsonLayer;
+        mymap.addLayer(jsonLayer);
+        const bounds = jsonLayer.getBounds();
+        mymap.fitBounds(bounds);
+        const zoom = mymap.getZoom();
+        if (zoom == 0){
+          this.watcher = this.$watch('parent.position', function(newValue) {
+            if (this.position == newValue){
+              var vue = this;
+              setTimeout(function(){ 
+                  jsonLayer.fire('click');
+                  vue.watcher(); 
+              }, 10);
+            }
+          });
+        }
+        
+        jsonLayer.on('click', function(){
+          mymap.fitBounds(jsonLayer.getBounds());
         });
-      }
-      
-      jsonLayer.on('click', function(){
-        mymap.fitBounds(jsonLayer.getBounds());
-      });
-      
-      //jsonLayer.bindPopup(this.rendered, {autoClose:false}).openPopup();
-      const resizeObserver = new ResizeObserver(() => {
-        mymap.invalidateSize();
-      });
-      resizeObserver.observe(mapdiv);
-      
-      //jsonLayer.openPopup();
-    }
+        
+        //jsonLayer.bindPopup(this.rendered, {autoClose:false}).openPopup();
+        const resizeObserver = new ResizeObserver(() => {
+          mymap.invalidateSize();
+        });
+        resizeObserver.observe(mapdiv);
+        
+        //jsonLayer.openPopup();
+      } else if (!mapdiv) {
+        this.retryAdd();
+      } 
     }
   }
 }

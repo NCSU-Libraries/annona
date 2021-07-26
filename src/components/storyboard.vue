@@ -94,7 +94,7 @@ export default {
     if(isURL['isURL']){
       axios.get(annotationurl).then(response => {
         this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
-      }).catch((error) => {this.renderError(annotationurl)});
+      }).catch(() => {this.renderError(annotationurl)});
     }
   },
   watch: {
@@ -106,7 +106,7 @@ export default {
     },
     booleanitems: {
       deep: true,
-      handler: function(newval){
+      handler: function(){
         if (this.basecompontent.range) {
           this.basecompontent.booleanitems = shared.objectToNewObject(this.booleanitems);
         }
@@ -114,7 +114,7 @@ export default {
     },
     textoverlay: {
       deep: true,
-      handler: function(newval){
+      handler: function(){
         if (this.basecompontent.range) {
           this.basecompontent.textoverlay = shared.objectToNewObject(this.textoverlay);
         }
@@ -623,7 +623,7 @@ export default {
         } else {
           axios.get(manifestlink).then(canvas_data => {
             this.manifestDataFunctions(manifestlink, canvas_data.data, canvas, canvasId)
-          }).catch((error) => {this.renderError(manifestlink)});
+          }).catch(() => {this.renderError(manifestlink)});
         }
     },
     manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {

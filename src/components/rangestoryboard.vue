@@ -69,7 +69,8 @@ export default {
         listtype: '',
         startCanvas: '',
         textoverlay: shared.objectToNewObject(shared.textoverlay),
-        booleanitems: shared.objectToNewObject(shared.booleanitems)
+        booleanitems: shared.objectToNewObject(shared.booleanitems),
+        leaflet: false
       }
     },
     watch: {
