@@ -137,7 +137,6 @@ describe('Component', () => {
       wrapper.find('#storyboard_paragraphtoggletextoverly').trigger('change');
       expect(data.booleanitems.istextoverlaytoggled).toBe(true)
       expect(data.currentanno).toEqual('')
-      console.log(wrapper.html())
       expect(data.shown).toBe('textoverlay')
       wrapper.destroy()
     })
