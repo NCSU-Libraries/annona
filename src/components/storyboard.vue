@@ -918,7 +918,7 @@ export default {
       } else {
         this.position = this.position;
       }
-      if(this.buttons.overlay.indexOf('toggle-off') == -1){
+      if(this.buttons.overlay == shared.buttons['overlay']){
         var multielements = document.getElementsByClassName("multi");
         for (var we=0; we<multielements.length; we++){
           multielements[we].style.display = "none";
