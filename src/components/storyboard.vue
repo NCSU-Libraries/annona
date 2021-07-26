@@ -99,8 +99,8 @@ export default {
   },
   watch: {
     annoContent: function(newVal) {
-      this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription']
-      if ((newVal['anno'] == '' && newVal['transcription'] == '' && (newVal == 'anno' || newVal == 'transcription')) || (this.settings.hide_annotationtext)){
+      this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription'];
+      if ((newVal['anno'] == '' && newVal['transcription'] == '' && (this.shown == 'anno' || this.shown == 'transcription')) || (this.settings.hide_annotationtext)){
         this.shown = false;
       }
     },
