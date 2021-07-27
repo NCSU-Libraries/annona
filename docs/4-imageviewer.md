@@ -72,19 +72,8 @@ W3 standards allow for transitions between multiple bodies [https://www.w3.org/T
 
 What areas are shown in the embedded image are customizable either through settings or through basic css. Below are the setting options and their values. An example with all settings enabled can be seen here: [all settings]({{site.baseurl}}/imageviewer_settings). This can also be applied to a single annotation.
 
-| Variable      | Settings |
-| ----------- | ----------- |
-| hide_viewlarger   | **true** or **false**. Shows/hides the "View Full Image" button. **Default** is false |
-| hide_fullobject |  **true** or **false**. Shows/hides the full object url. **Default** is false |
-| hide_tags | **true** or **false**. Shows/hides the tags if they exists. **Default** is false |
-| height | Any height dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
-| width | Any width dimension in pixels. Changes annotation and full size image size. **Default** is IIIF image size. |
-| image_only | **true** or **false**. Will only show the annotated image. **Default** is false |
-| text_only |  **true** or **false**. Will only show the text and tags. **Default** is false |
-| hide_tagcount | **true** or **false**. Will hide the count number in the tag. **Default** is **false** |
-| hide_beforeafter | **true** or **false**. Will hide the before and after results from search views. **Default** is **false** |
-| tagscolor	| String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. {'tag name': 'color', 'tag name 2': 'color2'}. See [Storyboard single annotation](https://ncsu-libraries.github.io/annona/storyboard/#single-annotation-setting) settings for an example. |
-| table_view | **true** or **false**. In `<iiif-annotation>` default is **false**, in `<iiif-searchapi>` default is **true**. Displays annotations in a table. tagscolor, hide_tagcount do not work with this view |  
+<script src="{{site.url}}{{site.baseurl}}/tools/js/settings.js"></script>
+<annona-settings type="iiifannotation"></annona-settings> 
 
 ## Global settings
 Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
