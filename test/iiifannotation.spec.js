@@ -32,7 +32,7 @@ describe('Component', () => {
       expect(wrapper.vm.$data.annotation_items).toHaveLength(1)
       expect(wrapper.vm.$data.manifest.label).toBe("Letter from Francis Crick to Michael Crick")
       expect(annotation.label).toBe(undefined)
-      expect(annotation.image).toEqual(['<img src=\"https://dlcs.io/iiif-img/wellcome/1/ce30a1a7-a606-4b5e-b2ad-c13677d3e8f6/310,1250,1850,1180/!1024,/0/default.jpg\" alt=\"Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.\">'])
+      expect(annotation.image[0].replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<svg viewBox=\"310 1250 1850 1180\" aria-label=\"Jim Watson and I have probably made a most important discovery. We have built a model for the structure of des-oxy-ribose-nucleic-acid (read it carefully) called D.N.A. for short. You may remember that the genes of the chromosomes - which carry the hereditary factors - are made up of protein and D.N.A.\"><image href=\"https://dlcs.io/iiif-img/wellcome/1/ce30a1a7-a606-4b5e-b2ad-c13677d3e8f6/310,1250,1850,1180/!1024,/0/default.jpg\" width=\"100%\" height=\"100%\" x=\"310\" y=\"1250\"></image><text class=\"textOverlayText\" textLength=\"1850\" font-size=\"168.57142857142858\" x=\"310\" y=\"1418.5714285714287\" lengthAdjust=\"spacingAndGlyphs\">             Jim Watson and I have probably made a           </text><text class=\"textOverlayText\" textLength=\"1850\" font-size=\"168.57142857142858\" x=\"310\" y=\"1587.142857142857\" lengthAdjust=\"spacingAndGlyphs\">             most important discovery. We have built a model for           </text><text class=\"textOverlayText\" textLength=\"1850\" font-size=\"168.57142857142858\" x=\"310\" y=\"1755.7142857142858\" lengthAdjust=\"spacingAndGlyphs\">             the structure of des-oxy-ribose-nucleic-acid (read it           </text><text class=\"textOverlayText\" textLength=\"1850\" font-size=\"168.57142857142858\" x=\"310\" y=\"1924.2857142857142\" lengthAdjust=\"spacingAndGlyphs\">             carefully) called D.N.A. for short. You may remember           </text><text class=\"textOverlayText\" textLength=\"1850\" font-size=\"168.57142857142858\" x=\"310\" y=\"2092.857142857143\" lengthAdjust=\"spacingAndGlyphs\">             that the genes of the chromosomes - which carry the           </text><text class=\"textOverlayText\" textLength=\"1850\" font-size=\"168.57142857142858\" x=\"310\" y=\"2261.4285714285716\" lengthAdjust=\"spacingAndGlyphs\">             hereditary factors - are made up of protein and           </text><text class=\"textOverlayText\" textLength=\"1850\" font-size=\"168.57142857142858\" x=\"310\" y=\"2430\" lengthAdjust=\"spacingAndGlyphs\">             D.N.A.           </text></svg>")
       expect(annotation['content']['ocr']).toEqual(["Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A."])
       expect(wrapper.vm.$data.rendered).toEqual(true);
       wrapper.destroy()
@@ -51,7 +51,7 @@ describe('Component', () => {
       expect(wrapper.vm.$data.annotation_items).toHaveLength(4)
       expect(wrapper.vm.$data.manifest.label).toBe("Technician Basketball Special, November 1991")
       expect(annotation.label).toBe(undefined)
-      expect(annotation.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/883,3544,92,31/1170,/0/default.jpg\" alt=\"test\">"])
+      expect(annotation.image[0].replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<svg viewBox=\"883 3544 92 31\" aria-label=\"test\"><image href=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/883,3544,92,31/1170,/0/default.jpg\" width=\"100%\" height=\"100%\" x=\"883\" y=\"3544\"></image><text class=\"textOverlayText\" textLength=\"92\" font-size=\"31\" x=\"883\" y=\"3575\" lengthAdjust=\"spacingAndGlyphs\">             test           </text></svg>")
       expect(annotation['content']['ocr']).toEqual(["test"])
       expect(wrapper.vm.$data.rendered).toEqual(true);
       wrapper.destroy()
@@ -127,7 +127,7 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0]
-      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/full/0/default.jpg\" alt=\"Annotation 1\">"])
+      expect(annotations.image[0].replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<svg viewBox=\"6270 3903 2250 2250\" aria-label=\"Annotation 1\"><image href=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/full/0/default.jpg\" width=\"100%\" height=\"100%\" x=\"6270\" y=\"3903\"></image><text class=\"textOverlayText\" textLength=\"2250\" font-size=\"2250\" x=\"6270\" y=\"6153\" lengthAdjust=\"spacingAndGlyphs\">             Annotation 1           </text></svg>")
       expect(annotations['content']['ocr']).toEqual(["Annotation 1"])
       expect(wrapper.vm.$data.rendered).toEqual(true);
       wrapper.destroy()
@@ -143,7 +143,8 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0];
-      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/200,/0/default.jpg\" alt=\"Image section of &quot;undefined&quot;\" style=\"width: 200px;\">"])
+      expect(annotations.content.ocr).toEqual(["Annotation 1"])
+      expect(annotations.image[0].replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<svg viewBox=\"6270 3903 2250 2250\" aria-label=\"Image section of &quot;undefined&quot;\" style=\"width: 200px;\"><image href=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/200,/0/default.jpg\" width=\"100%\" height=\"100%\" x=\"6270\" y=\"3903\"></image><text class=\"textOverlayText\" textLength=\"2250\" font-size=\"2250\" x=\"6270\" y=\"6153\" lengthAdjust=\"spacingAndGlyphs\">             Annotation 1           </text></svg>")
       expect(Object.keys(annotations).length).toBe(5)
       expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/200,/0/default.jpg")
       expect(Object.keys(annotations)).toEqual(["image", "altText", "id", "content","fullImage"])
@@ -161,7 +162,8 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       await flushPromises()
       const annotations = wrapper.vm.$data.annotation_items[0]
-      expect(annotations.image).toEqual(["<img src=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/,200/0/default.jpg\" alt=\"Annotation 1\" style=\"height: 200px; width: auto;\">"])
+      expect(annotations.image[0].replace(/(\r\n|\n|\r)/gm, " ")).toEqual("<svg viewBox=\"6270 3903 2250 2250\" aria-label=\"Annotation 1\" style=\"height: 200px; width: auto;\"><image href=\"https://iiif.lib.ncsu.edu/iiif/segIns_023/6270,3903,2250,2250/,200/0/default.jpg\" width=\"100%\" height=\"100%\" x=\"6270\" y=\"3903\"></image><text class=\"textOverlayText\" textLength=\"2250\" font-size=\"2250\" x=\"6270\" y=\"6153\" lengthAdjust=\"spacingAndGlyphs\">             Annotation 1           </text></svg>")
+      expect(annotations.image.length).toBe(1)
       expect(Object.keys(annotations).length).toBe(9)
       expect(annotations.fullImage).toEqual("https://iiif.lib.ncsu.edu/iiif/segIns_023/full/,200/0/default.jpg")
       expect(wrapper.vm.$data.rendered).toEqual(true);
