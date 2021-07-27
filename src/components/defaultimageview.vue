@@ -1,8 +1,11 @@
 <template>
   <div>
-    <div v-for="item in annotation_items" :key="item.id" :id="item.id" class="annotation_container" :class="[item.content ? item.content.itemclass : '']">
-      <span v-for="image in item.image" :key="image">
-      <span v-html="image" id="annoimage"></span>
+    <button v-if="$parent.textoverlay" v-on:click="displayTextOverlay()" class="imageViewButton">
+      <span v-html="textoverlaybutton"></span>
+    </button>
+    <div v-for="(item, index) in annotation_items" :key="item.id" :id="item.id" class="annotation_container" :class="[item.content ? item.content.itemclass : '']">
+      <span v-for="(image, index) in item.image" :key="index">
+        <span v-html="image" class="annoimage"></span>
       </span>
       <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
       <div class="beforecontent" v-html="item.before" v-if="item.before && !settings.image_only && !settings.hide_beforeafter">
@@ -10,6 +13,7 @@
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
       <div class="aftercontent" v-html="item.after" v-if="item.after && !settings.image_only && !settings.hide_beforeafter">
       </div>
+      <leaflet v-if="item['content'] && item['content']['geometry']" :position="index" :annotation="item['content']" :parent="$parent"></leaflet>
       <div id="tags" v-if="!settings.hide_tags && item.tags">
         <div v-for="tag in item.tags" v-bind:key="tag.key" class="tags">
           <div class="countkey">
@@ -28,10 +32,14 @@
   </div>
 </template>
 <script>
+import leaflet from './leaflet';
 export default {
   name: 'defaultimageview',
   props: {
     'compdata': {type: Object, required: false}
+  },
+  components: {
+    leaflet
   },
   data: function() {
     return {
@@ -40,14 +48,21 @@ export default {
       settings: {},
       manifestlink: '',
       annotation_items: [],
-      rendered: '',
       languages: [],
       fielddata: [],
       annotationid: '',
-      full_object: ''
+      full_object: '',
+      textoverlayicon: '<i class="fas fa-align-justify"></i>',
+      textoverlayofficon: `
+      <span class="fa-stack">
+        <i class="fas fa-align-justify fa-stack-1x"></i>
+        <i class="fas fa-slash fa-stack-1x" style="color:Tomato"></i>
+      </span>`,
+      textoverlaybutton: ''
     }
   },
   created() {
+    this.textoverlaybutton = this.textoverlayofficon;
     for (var key in this.compdata) {
       this[key] = this.compdata[key]
     }
@@ -65,6 +80,18 @@ export default {
       } else {
         fullImage.style.display= 'none';
         change_html.innerHTML = "View Full Image";
+      }
+    },
+    displayTextOverlay: function(){
+      const textelements = document.getElementsByClassName('textOverlayText');
+      for (var to=0; to<textelements.length; to++){
+        if (textelements[to].style.display == 'none'){
+          textelements[to].style.display = '';
+          this.textoverlaybutton = this.textoverlayofficon;
+        } else {
+          textelements[to].style.display = 'none';
+          this.textoverlaybutton = this.textoverlayicon;
+        }
       }
     },
     getFullObject: function() {

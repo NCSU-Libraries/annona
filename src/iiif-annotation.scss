@@ -1,4 +1,6 @@
 @import url('https://use.fontawesome.com/releases/v5.5.0/css/all.css');
+@import "css/textoverlay.scss";
+
 $pin_size: 25;
 $overlay_color: lightblue;
 $seadragon_width: 100%;
@@ -178,21 +180,29 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   margin-block-end: .5em;
 }
 
-.content img, .content iframe {
+.content img:not(.leaflet-marker-icon), .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
 }
 
-.content img, .content iframe {
+.content img:not(.leaflet-marker-icon), .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
+}
+
+#annotation_text {
+  white-space: pre-wrap;
 }
 
 .rect:hover {
   background: grey;
   opacity: .4;
+}
+
+.overlay {
+  z-index: 10;
 }
 
 .overlay:hover:not(.overlay) > svg {
@@ -336,7 +346,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   vertical-align: middle;
 }
 
-#annoimage > * {
+.annoimage > * {
   width: 49%;
   height: auto;
   vertical-align: middle;
@@ -879,7 +889,7 @@ table tr {
 }
 .subtags {
   display: block!important;
-  padding-left: 10px;
+  padding-left: 10px!important;
 }
 
 .rangefullpage {
@@ -899,4 +909,16 @@ table tr {
 .scrolltext {
   padding-top: 20rem!important;
   padding-bottom: 20rem!important;
+}
+
+.fa-stack {
+  display: -webkit-box; 
+  height: $toolbarfontsize;
+  line-height: $toolbarfontsize;
+  width: auto;
+}
+
+.imageViewButton {
+  width: 35px;
+  height: 35px;
 }

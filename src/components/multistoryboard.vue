@@ -12,8 +12,8 @@
 </div>
 </template>
 <script>
-import storyboard from './storyboard'
-import shared from './shared'
+import storyboard from './storyboard';
+import shared from './shared';
 import openseadragon from 'openseadragon';
 import toolbar from './toolbar';
 
@@ -50,12 +50,13 @@ export default {
         viewers: [],
         fullscreen: false,
         shortcuts: {},
-        boardchildren: {}
+        boardchildren: {},
+        leaflet: false
       }
     },
     mounted(){
       this.createViewers();
-      this.boardchildren = this.$children.filter(child => child.$options.name == 'storyboard')
+      this.boardchildren = this.$children.filter(child => child.$options.name == 'storyboard');
       if (this.$parent.range){
         for (var ch=0; ch<this.boardchildren.length; ch++){
           this.boardchildren[ch].basecompontent = this.$parent;

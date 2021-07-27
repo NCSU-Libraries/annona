@@ -6,6 +6,8 @@ permalink: /storyboard/
 <script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 
+<script src="{{site.url}}{{site.baseurl}}/tools/js/settings.js"></script>
+
 <style>
 code {
   word-wrap: break-word;
@@ -15,6 +17,8 @@ code {
 
 * A markdown unordered list which will be replaced with the ToC, excluding the "Contents header" from above
 {:toc}
+
+
 
 # Props
 
@@ -78,46 +82,7 @@ View example below in Tag Builder</a>
 This code is also customizable. Adding a configuration section to the code will provide options. The full page setting only works for one storyboard. An example can be seen here: [all settings example]({{site.baseurl}}/storyboard_settings). The example has set almost all options. They are interchangeable, any combination will work. They only need to be set if you would like to change the default settings. The code and options can be seen below. Like the image viewer these settings can be set for a single storyboard or all storyboards on a page.
 
 Additionally each storyboard viewer has CSS that can be individually customized. The overlay color is set to lightblue on load and a lightgreen outline will appear inside the overlay when annotation is being viewed. This can easily be customized to each viewer. See [Single annotation settings](#single-annotation-setting) for an example.
-
-| Variable      | Settings |
-| ----------- | ----------- |
-| autorun_interval   | time between switches in seconds, e.g. 4 will switch between annotations every four seconds; **Default** is 3 seconds. |
-|autorun_onload | **true** or **false**. Will start autorun on page load. **Default** is false.      |
-| hide_toolbar   | **true** or **false**. This will only hide the toolbar. **Default** is false. |
-|fullpage|**true** or **false**. This will only fill the browser window. It will only work with a single storyboard. This will not display the storyboard full screen, due to permissions that has to be done by an operator. This will only fill the browser window. **Default** is false |
-|hide_annocontrols| **true** or **false**. This setting hides <i class="fas fa-times close_button"></i>, <i class="fas fa-caret-square-up close_button"></i> and any other icons in annotation box. **Default** is false |
-| fit | By default the image is fit vertically to the OpenSeadragon viewer. The other options  are to fit horizontally or fill the viewer with the image. This can mean the full image is not visible. The options are **horizontal** and **fill** |
-| panorzoom | **pan**. By default when clicking or tabbing through annotations the viewer will zoom into the annotated area. This can be set to "pan" which will keep the aspect ratio and recenter the image to the clicked annotation |
-| mapmarker | Any HTML object. When creating annotations with Mirador, if a pin is used the default view in the OpenSeadragon viewer is: <i class="fas fa-map-marker-alt"></i>. This can be overridden by entering new HTML icon or SVG element for the map marker |
-| toggleoverlay | **true** or **false**. By default this is **false** and the overlay is hidden unless toggled. This setting shows the overlays on load. |
-| textposition | **top**, **bottom**, **right**, **left**. Will position to the left, right, bottom, or top of annotated area. By default this option is not instantiated and the annotation text appears in the top left hand corner of the viewer. Additional positioning can be done with CSS. Each option has a dedicated class based on the option name (.top, .right, etc.)|
-| tts | **Any ISO language code**. This will provide text to speech for the annotation text content. It will only read the main content, not the tags or labels. If the language is set in the individual annotations it will set the language automatically and this can be set to **true** (see [Auto Language TTS example](#auto-language-tts-example)). A list of language codes can be found here: [http://www.lingoes.net/en/translator/langcode.htm](http://www.lingoes.net/en/translator/langcode.htm). If you are implementing autorun_onload and tts together it will not work in Chrome. It requires user activation (clicking the Auto Run button) to work in Chrome but should work fine in Safari and Firefox. It does not work with Internet Explorer. |
-| truncate_length | **Any Integer.** By default it is set to **2**; This determines how many words appear when the hide button (<i class="fas fa-caret-up"></i>) is clicked. The hide button will only show words in the annotation and will truncate the annotation and hide the tags. If you are looking for a way to hide the tags listed in the annotation (not the tags button) add to css to `.tags {display: none;}` |
-| additionalinfo | Is the id for an HTML object whose innerHTML will be loaded into the info tab. This HTML object should have a title tag. |
-| transcription | **true** or **false**. Default is **false**. For annotations that contain transcriptions. This will combine all annotations that the annotation recognizes as a transcription. This requires a purpose of `transcribing` in W3 annotations or a type of `cnt:ContentAsText` in OpenAnnotation standards. If there are multiple annotations the transcription will display first with this setting. See textfirst setting below to set the comments first. An example is in the [#transcription](Transcription section). |
-| textfirst | **true** or **false**. Will show the commenting annotations before the transcription. Must be used with the **transcription** setting. An example is in the [#transcription](Transcription section). |
-| startenddisplay | Choices are **'tags'**, **'info'**, **transcription (when transcription:true is set)**, and **keyboard**. By default the first and last items are the full image without a text box. This setting allows for the information or tags tab to be toggled at the first and last item. |
-| controller | **true** or **false**. Should only be instantiated if property of `ws` is also used. Default is **false**. Sets the storyboard as being able to control other storyboards connected to the web socket server. |
-| togglelayers |**true** or **false**. By default is **false**; shows all layers on load when set to true. |
-| customid | **String**. If for some reason you would like to customize the identifier which gets automatically generated from the annotation filename use this setting. An example can be seen in the second storyboard in [add custom layers](#add-custom-layers). This setting is necessary if two storyboards with the same annotation get added to the same page. |
-| imagecrop | **String**. X,Y,W,H coordinates on the image in the following format "x,y,w,h", e.g. "200,300,600,400". This will crop the image in the viewer. Make sure not to crop out any annotations you have created. |
-| title | **String**. Allows for a custom title to be placed in the info box.|
-| tagscolor | String in JSON format. Should have tag with corresponding color. Any CSS color can be used. i.e. `{'tag name': 'color', 'tag name 2': 'color2'}`. See [single annotation settings](#single-annotation-setting) for an example. |
-|overlaycolor | change the overlay color; default is `#00bfff`. See [single annotation settings](#single-annotation-setting) for an example.|
-| activecolor | change active color; default is `lightgreen`. See [single annotation settings](#single-annotation-setting) for an example. |
-| hide_tagcount | **true** or **false**. Will hide the count number in the tag key. **Default** is **false** |
-| annoview | **sidebyside** or **collapse**. Will change how the annotation and information box style. Collapse positions the box on top of the image viewer and allows for the bar to collapse. Side by side is similar but it is next to the viewer |   
-| overlaynext | **true** or **false**. When the overlays are not toggled it will show the overlay for the active annotation only. **Default** is **false** |
-| toolbarposition | **bottom**. Will move the toolbar to the bottom of the viewer. Default is the top of the viewer |
-| hide_tagsbutton | **true** or **false**. By default is **false**; If there are tags in the annotations tags will be available for toggling based on tags. This will remove the icons in both toolbars. |
-| hide_autorunbutton | **true** or **false**. By default is **false**; Will stop the autorun button from rendering and not allow the shortcuts to render. |
-| hide_infobutton| **true** or **false**. By default is **false**; Will stop the info button from rendering and not allow the shortcuts to render. |
-| hide_overlaybutton| **true** or **false**. By default is **false**; Will stop the overlay button from rendering and not allow the shortcuts to render. |
-| hide_layersbutton | **true** or **false**. By default is **false**; Will stop the layers button from rendering and not allow the shortcuts to render. |
-| hide_nextbuttons | **true** or **false**. By default is **false**; Will stop the previous and next buttons from rendering and not allow the shortcuts to render. |
-| hide_fullscreenbutton | **true** or **false**. By default is **false**; Will stop the fullscreen button from rendering and not allow the shortcuts to render. |
-| hide_shortcutsbutton | **true** or **false**. By default is **false**; Will stop the shortcut button from rendering |
-| hide_annotationtext | **true** or **false**. By default is **false**; This will hide the annotation text associated with annotation while still allowing for the box to appear for overlays and tags |
+<annona-settings type="iiifstoryboard"></annona-settings>
 
 ## Global Settings
 Item here: [global settings example]({{site.baseurl}}/storyboard_settings)
@@ -216,6 +181,7 @@ This allows for layers to be created without having to define the layers in a ma
 # Transcription
 
 ## No settings enabled
+
 ```
 <iiif-storyboard annotationurl="{{site.url}}{{site.baseurl}}/webannotations/4665993.json"></iiif-storyboard>
 ```

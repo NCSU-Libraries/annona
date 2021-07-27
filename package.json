@@ -17,19 +17,11 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "axios": "^0.21.1",
-    "axios-mock-adapter": "^1.19.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.2.2",
     "babel-preset-env": "^1.7.0",
-    "core-js": "^3.10.0",
     "document-register-element": "^1.14.10",
-    "es6-promise": "^4.2.8",
-    "flush-promises": "^1.0.2",
-    "is-obj": "^2.0.0",
-    "iso-639-1": "^2.1.9",
     "iso-language-codes": "^1.0.7",
-    "jest-canvas-mock": "^1.1.0",
-    "jquery": "^3.6.0",
     "node-sass": "^4.14.1",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.2",
@@ -37,7 +29,6 @@
     "socket.io-client": "^2.4.0",
     "truncate-html": "^1.0.2",
     "vue": "^2.6.12",
-    "vue-custom-element": "^3.3.0",
     "vue-fullscreen": "^2.3.2",
     "webpack": "^4.46.0"
   },
@@ -46,9 +37,14 @@
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
     "@vue/test-utils": "^1.1.3",
+    "axios-mock-adapter": "^1.19.0",
     "babel-jest": "^23.6.0",
+    "core-js": "^3.10.1",
     "eslint": "^5.16.0",
+    "flush-promises": "^1.0.2",
     "jest": "^23.6.0",
+    "jest-canvas-mock": "^2.3.1",
+    "vue-custom-element": "^3.3.0",
     "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.12"
   },
@@ -92,7 +88,8 @@
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     },
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "^.+\\.(css|less|png)$": "<rootDir>/test/CSSStub.js"
     }
   }
 }

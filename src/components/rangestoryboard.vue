@@ -29,7 +29,6 @@ import storyboard from './storyboard';
 import iiifannotation from './iiifannotation';
 import shared from './shared';
 import axios from 'axios';
-require("es6-promise").polyfill();
 import multistoryboard from './multistoryboard.vue';
 
 export default {
@@ -51,7 +50,7 @@ export default {
         isws: '',
         range: true,
         toctitle: 'Range Pages',
-        buttons: JSON.parse(JSON.stringify(shared.buttons)),
+        buttons: shared.objectToNewObject(shared.buttons),
         settings: {},
         stylingstring: "",
         annotationurl: '',
@@ -62,18 +61,33 @@ export default {
         rangeid: '',
         customlayers: '',
         isfullscreen: false,
+        manifestcontents: '',
         toc: [],
         viewingDirection: 'ltr',
         rangetitle: '',
-        nextshortcut: ['alt+n', 'alt+.', 'alt+right'],
-        prevshortcut: ['alt+p', 'alt+,', 'alt+left'],
         ready: false,
-        listtype: ''
+        listtype: '',
+        startCanvas: '',
+        textoverlay: shared.objectToNewObject(shared.textoverlay),
+        booleanitems: shared.objectToNewObject(shared.booleanitems),
+        leaflet: false
+      }
+    },
+    watch: {
+      'position': function(newval) {
+        this.prevPageInactive = false;
+        this.nextPageInactive = false;
+        if (newval <= 0){
+          this.prevPageInactive = true;
+        }
+        if (newval >= this.rangelist.length-1){
+          this.nextPageInactive = true;
+        }
       }
     },
     created(){
       // get annotation urls in list
-      this.rangeid = this.$props.rangeurl.split("/").slice(-1)[0];
+      this.rangeid = "rangestoryboard_" + this.$props.rangeurl.split("/").slice(-1)[0];
       this.settings = shared.getsettings(this);
       var isURL = shared.isURL(this.$props.rangeurl, this.settings);
       if (isURL['isURL']){
@@ -118,6 +132,8 @@ export default {
       getManifestData: function(manifest) {
         var otherContent = [];
         if (manifest['sequences'] || manifest['items']){
+          const startCanvas = manifest['items'] ? manifest['items']['start'] : manifest['sequences'][0]['startCanvas'];
+          this.startCanvas = startCanvas ? shared.getId(startCanvas) : startCanvas;
           var canvases = manifest['items'] ? shared.flatten(manifest['items']) : shared.flatten(manifest['sequences'].map(element => element['canvases']));
           for (var cv=0; cv<canvases.length; cv++){
             var canvas = canvases[cv];
@@ -138,14 +154,14 @@ export default {
           }  
         }
         this.setDefaults(manifest);
+        this.manifestcontents = manifest;
       },
       addToLists: function(anno, manifesturl, canvas) {
-        if(anno.resources || anno.items){
+        if(anno.resources || anno.items || anno.body){
           var jsonanno = anno; 
         } else {
           var annourl = shared.getId(anno);
         }
-        
         if (canvas){
           var canvasid = shared.getId(canvas);
           if (canvasid.constructor.name === 'String' && canvasid.indexOf('#xywh') > -1){
@@ -157,11 +173,14 @@ export default {
           }
         }
         const position = this.rangelist.length;
+        if (canvasid == this.startCanvas){
+            this.position = position;
+        }
         var toclabel = anno['label'] ? anno['label'] : canvas && canvas['label'] ? canvas['label'] : `Page ${position + 1}`;
         toclabel = shared.parseMetaFields(toclabel);
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
-        this.rangelist.push({'canvas': canvasid, 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
+        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
       },
       setDefaults: function(data) {
         var viewingDirection = data.viewingDirection;
@@ -170,7 +189,7 @@ export default {
           this.buttons.prev = this.buttons.next;
           this.buttons.next = '<i class="fas fa-chevron-left"></i>';
         }
-        this.annotationurl = this.rangelist[0];
+        this.annotationurl = this.rangelist[this.position];
         this.rangetitle = shared.parseMetaFields(data.label);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.updateFullScreen(this.isfullscreen);
@@ -201,13 +220,6 @@ export default {
           this.position += 1;
         } else {
           this.position = prevornext;
-        }
-        this.prevPageInactive = false;
-        this.nextPageInactive = false;
-        if (this.position <= 0) {
-          this.prevPageInactive = true;
-        } else if (this.position >= this.rangelist.length-1) {
-          this.nextPageInactive = true;
         }
         this.annotationurl = this.rangelist[this.position];
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';

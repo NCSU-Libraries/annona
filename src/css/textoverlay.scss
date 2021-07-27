@@ -1,0 +1,39 @@
+$width: 50px;
+$height: 30px;
+.toggletextoverlay {
+	height: 0;
+	width: 0;
+	visibility: hidden;
+}
+
+.toggletextoverlaylabel {
+	cursor: pointer;
+	text-indent: -9999px;
+	width: $width;
+	height: $height;
+	background: grey;
+	display: inline-block;
+	border-radius: 100px;
+	position: relative;
+}
+
+.toggletextoverlaylabel:after {
+	content: '';
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	width: $height - 10px;
+	height: $height - 10px;
+	background: #fff;
+	border-radius: 90px;
+	transition: 0.3s;
+}
+
+.toggletextoverlay:checked + .toggletextoverlaylabel {
+	background: #046B99;
+}
+
+.toggletextoverlay:checked + .toggletextoverlaylabel:after {
+	left: calc(100% - 5px);
+	transform: translateX(-100%);
+}

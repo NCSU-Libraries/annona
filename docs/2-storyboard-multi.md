@@ -34,12 +34,11 @@ This replaces the need for websockets for comparing two or more annotations. It 
 <script src="{{site.url}}{{site.baseurl}}/latest/annona.js"></script>
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 
-# Multistoryboard Additional Settings
-These are settings that only apply to multi storyboards. See [settings table](/annona/storyboard/#settings) for global storyboard settings.
+# Multistoryboard Settings
+Matchclick is the settings that only applies to multi storyboards. See [settings table](/annona/storyboard/#settings) for global storyboard settings.
 
-| Variable      | Settings |
-| ----------- | ----------- |
-| matchclick | **true** or **false**. When clicking overlays the default is the match the position on the image. If you would like to match position in annotation set this to **true**. See [defaults](#defaults) to see the different of multi storyboards with and without setting. |
+<script src="{{site.url}}{{site.baseurl}}/tools/js/settings.js"></script>
+<annona-settings type="iiifmultistoryboard"></annona-settings> 
 
 # Defaults
 
