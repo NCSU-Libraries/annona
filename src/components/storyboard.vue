@@ -840,7 +840,7 @@ export default {
           functions.reposition(rect);
           //This is for multistoryboard views. updates the position and data.
           if (functions.$parent.multi) {
-            var children = functions.$parent.$children;
+            var children = functions.$parent.boardchildren;
             functions.$parent.next_inactive = functions.next_inactive;
             functions.$parent.prev_inactive = functions.prev_inactive;
             for (var ch=0; ch<children.length; ch++){
