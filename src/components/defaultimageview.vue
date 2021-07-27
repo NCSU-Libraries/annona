@@ -4,8 +4,8 @@
       <span v-html="textoverlaybutton"></span>
     </button>
     <div v-for="(item, index) in annotation_items" :key="item.id" :id="item.id" class="annotation_container" :class="[item.content ? item.content.itemclass : '']">
-      <span v-for="image in item.image" :key="image">
-      <span v-html="image" class="annoimage"></span>
+      <span v-for="(image, index) in item.image" :key="index">
+        <span v-html="image" class="annoimage"></span>
       </span>
       <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
       <div class="beforecontent" v-html="item.before" v-if="item.before && !settings.image_only && !settings.hide_beforeafter">
@@ -83,7 +83,7 @@ export default {
       }
     },
     displayTextOverlay: function(){
-      const textelements = document.getElementsByClassName('textOverlayText')
+      const textelements = document.getElementsByClassName('textOverlayText');
       for (var to=0; to<textelements.length; to++){
         if (textelements[to].style.display == 'none'){
           textelements[to].style.display = '';

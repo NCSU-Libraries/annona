@@ -41,7 +41,7 @@ export default {
       rendered: '',
       languages: [],
       annotationid: '',
-      textoverlay: false,
+      textoverlay: '',
       leaflet: false
     }
   },
@@ -117,9 +117,9 @@ export default {
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
             var imagedict = shared.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
             var imageurl = imagedict['imageurl'];
-            dictionary['fullImage'] = imagedict['fullImage']
+            dictionary['fullImage'] = imagedict['fullImage'];
             var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, cn);
-            dictionary['image'].push(imagehtml.outerHTML);
+            dictionary['image'].push(imagehtml);
           }
         }
         // If received image render element
@@ -150,15 +150,13 @@ export default {
       var isderivative = imageurl.indexOf('img/derivatives') > -1;
       var extension = shared.getExtension(canvasRegion['canvasId']);
       var path = canvasRegion['svg'];
-      var textoverlay = '';
       const xywh = canvasRegion['canvasRegion'].split(',').map(elem => parseFloat(elem.trim()))
       if (dictionary && dictionary['content'] && dictionary['content']['ocr'] && dictionary['content']['ocr'].length > 0){
-        this.textoverlay = true;
-        textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'], path)
+        this.textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'], path);
       }
       isderivative ? imageurl = dictionary['fullImage'] : '';
-      if (path && !isderivative) {
-        imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn, textoverlay)
+      if ((path || this.textoverlay) && !isderivative) {
+        imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
       } else {
         imagehtml = document.createElement("img");
         imagehtml.setAttribute('src', imageurl);
@@ -173,23 +171,29 @@ export default {
       for (var key in this.settings.imagesettings){
         imagehtml.style[key] = this.settings.imagesettings[key];
       }
-      return imagehtml;
+      return imagehtml.outerHTML;
     },
-    createSVG: function(imageurl, regionCanvas, dictionary, path, position, textoverlay) {
+    createSVG: function(imageurl, regionCanvas, dictionary, path, position) {
       var id = dictionary['id'] + '-' + position;
+      var pathhtml = '';
+      var xywh = regionCanvas.split(",");
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute('viewBox', regionCanvas.split(",").join(" "));
+      svg.setAttribute('viewBox', xywh.join(" "));
       svg.setAttribute('aria-label', dictionary['altText']);
       for (var key in this.settings.imagesettings){
         svg.style[key] = this.settings.imagesettings[key];
       }
-      var inner = `<defs><pattern patternUnits="objectBoundingBox" id="${id}"  width="100%" height="100%">
+      var inner = `<image href="${imageurl}" width="100%" height="100%" x="${xywh[0]}" y="${xywh[1]}"/>`
+      if (path){
+        inner = `<defs><pattern patternUnits="objectBoundingBox" id="${id}"  width="100%" height="100%">
       <image xlink:href="${imageurl}" width="100%" height="100%" x="0" y="0" />
       </pattern></defs>`
-      path.setAttribute("fill", `url(#${id})`);
-      path.setAttribute("fill-opacity", "1");
-      path.setAttribute("stroke", "none");
-      svg.innerHTML = inner + path.outerHTML + textoverlay;
+        path.setAttribute("fill", `url(#${id})`);
+        path.setAttribute("fill-opacity", "1");
+        path.setAttribute("stroke", "none");
+        pathhtml = path.outerHTML;
+      }
+      svg.innerHTML = inner + pathhtml + this.textoverlay;
       return svg;
     },
     writecanvas: function(img, xywh, id) {
@@ -232,7 +236,7 @@ export default {
         dictionary['fullImage'] = fullImage;
 
         var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, cn);
-        images.push(imagehtml.outerHTML)
+        images.push(imagehtml)
       }
       return {'fullImage': fullImage, 'image': images}
     },

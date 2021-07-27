@@ -388,7 +388,7 @@ export default {
           const fontsize = xywh[3]/multiline.length;
           const y = xywh[1] + (fontsize*(nl+1));
           innerHTML +=
-          `<text textLength="${xywh[2]}" font-size="${fontsize}" x="${xywh[0]}" y="${y}" lengthAdjust="spacingAndGlyphs">
+          `<text class="textOverlayText" textLength="${xywh[2]}" font-size="${fontsize}" x="${xywh[0]}" y="${y}" lengthAdjust="spacingAndGlyphs">
             ${multiline[nl]}
           </text>`
         }
