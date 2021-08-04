@@ -69,6 +69,10 @@ export default {
           };
         }
         head.appendChild(script);
+      } else {
+        setTimeout(function(){ 
+          vue.parent.basecompontent ? vue.parent.basecompontent.leaflet = true : vue.parent.leaflet = true;
+        }, 1000);
       }
     },
     retryAdd: function() {
