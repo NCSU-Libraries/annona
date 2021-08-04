@@ -92,7 +92,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   height: auto;
   width: $annocontrolsize*2;
 }
-.collapse .excerpt .content {
+.annonaview .collapse .excerpt .content {
   display: none;
 }
 
@@ -175,18 +175,18 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   margin: 0px;
 }
 
-.content p {
+.annonaview .content p {
   margin-block-start: .5em;
   margin-block-end: .5em;
 }
 
-.content img:not(.leaflet-marker-icon), .content iframe {
+.annonaview .content img:not(.leaflet-marker-icon), .annonaview .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
 }
 
-.content img:not(.leaflet-marker-icon), .content iframe {
+.annonaview .content img:not(.leaflet-marker-icon), .annonaview .content iframe {
     width: 100%;
     height: auto;
     object-fit: contain;
@@ -332,13 +332,13 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   border-color: transparent transparent black transparent;
 }
 
-.content .tags, .content .authorship, .content .attribution {
+.annonaview .content .tags, .annonaview .content .authorship, .annonaview .content .attribution {
   font-size: small;
   font-style: italic;
   padding: 2.5px 0px;
 }
 
-.content .tagslist {
+.annonaview .content .tagslist {
   display: grid;
 }
 #fullimage {
@@ -781,12 +781,12 @@ figcaption {
   position: fixed;
 }
 
-.content {
+.annonaview .content {
   position: relative;
   overflow: auto;
 }
 
-.content > * {
+.annonaview .content > * {
   word-break: break-word;
 }
 
