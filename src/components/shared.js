@@ -443,6 +443,9 @@ export default {
     if (!canvasRegion || canvasRegion.trim() === '') {
       canvasRegion = "full";
     }
+    if (canvasRegion && canvasRegion.indexOf("percent") > -1){
+      ispct = true;
+    }
     canvasRegion != 'full' ? canvasRegion = canvasRegion.split(",").map(element => element.replace(/[^0-9.]/g, '')).join(",") : "";
     if (ispct) {
       canvasRegion = `pct,${canvasRegion}`
