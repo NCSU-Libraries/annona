@@ -386,8 +386,9 @@ export default {
       var annotation = this.annotations[position];
       tags = tags ? shared.tagsToClass(tags) : '';
       for (var jt=0; jt<annotation['section'].length; jt++){
-        var xywh = annotation['section'][jt].split(",");
-        if (xywh[0].indexOf('pct') > -1){
+        var ispct = annotation['section'][jt].indexOf('pct') > -1;
+        var xywh = annotation['section'][jt].replace("pct:", "").split(",");
+        if (ispct){
           const wh = this.viewer.world.getItemAt(0).getContentSize();
           xywh = [(parseFloat(xywh[1])/100)*wh['x'], (parseFloat(xywh[2])/100)*wh['y'], (parseFloat(xywh[3])/100)*wh['x'], (parseFloat(xywh[4])/100)*wh['y']]
           annotation['section'][jt] = xywh.join(",");

@@ -448,7 +448,7 @@ export default {
     }
     canvasRegion != 'full' ? canvasRegion = canvasRegion.split(",").map(element => element.replace(/[^0-9.]/g, '')).join(",") : "";
     if (ispct) {
-      canvasRegion = `pct,${canvasRegion}`
+      canvasRegion = `pct:${canvasRegion}`
     }
     return {'canvasId':canvasId.replace("/info.json", ""), 'canvasRegion':canvasRegion, 'svg': svg};
   },
@@ -732,7 +732,7 @@ export default {
     var imageurlsize = size.split(',').filter(Boolean).length > 1 ? `${size.split(',')[0]},` : size;
     baseImageUrl = baseImageUrl.replace(regExp, "")
     var extension = this.getExtension(baseImageUrl);
-    if (canvasRegion.split(',').length > 1){
+    if (canvasRegion.split(',').length > 1 && canvasRegion.indexOf('pct') == -1){
       canvasRegion = canvasRegion.split(',').map(elem => parseInt(elem)).join(",")
     }
     var imageurl = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${imageurlsize}/0/${jpgformat}`;

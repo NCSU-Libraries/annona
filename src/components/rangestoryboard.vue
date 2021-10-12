@@ -140,7 +140,9 @@ export default {
             var annotationfield = canvas['otherContent'] ? canvas['otherContent'] : canvas['annotations'];
             if (annotationfield){
               otherContent.push({'oc': annotationfield, 'canvas': canvas});
-            }            
+            } else {
+              otherContent.push({'oc': "https://noannotation/", 'canvas': canvas});
+            }
           }
         }
         for (var an=0; an<otherContent.length; an++){
@@ -157,6 +159,7 @@ export default {
         this.manifestcontents = manifest;
       },
       addToLists: function(anno, manifesturl, canvas) {
+        var thumbnail;
         if(anno.resources || anno.items || anno.body){
           var jsonanno = anno; 
         } else {
@@ -168,8 +171,10 @@ export default {
             var xywh = canvasid.split("#xywh=").length > 1 ? canvasid.split("#xywh=").slice(-1)[0] : '';
           } 
           var firstcanvas = canvas.images ? canvas.images[0] : canvas.items ? canvas.items[0].items[0] : undefined;
-          if (firstcanvas){
-            var thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
+          if (canvas['thumbnail']){
+            thumbnail = shared.getId(canvas['thumbnail'][0])
+          } else if(firstcanvas) {
+            thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
           }
         }
         const position = this.rangelist.length;
