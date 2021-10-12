@@ -617,8 +617,9 @@ export default {
     },
     //get Manifest data from manifest and get layerdata
     getManifestData: function(manifestlink, canvas, canvasId){
-        if (this.basecompontent.annotationurl && this.basecompontent.annotationurl.images){
-          this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.annotationurl.images)
+        const compposition = this.settings.index && this.basecompontent && this.basecompontent.position ? this.settings.index + this.basecompontent.position : 0;
+        if (this.basecompontent.rangelist && this.basecompontent.rangelist[compposition] && this.basecompontent.rangelist[compposition].images){
+          this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.rangelist[compposition].images)
         } else if (this.basecompontent.manifestcontents) {
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId)
         } else {
@@ -829,7 +830,7 @@ export default {
         clickHandler: function() {
           functions.position = position;
           functions.makeactive(position);
-          functions.sendMessage({'function':'next', 'args': functions.position});
+          functions.sendMessage({'function':'next', 'args': position});
           //Check to see if multiple annotations on same section.
           var matching_sections = functions.annotations.map((section, i) => section.section.map(sect => functions.annotations[position].section.indexOf(sect) > -1).some(x => x === true) ? i : -1)
           matching_sections = matching_sections.filter(index => index != -1);
@@ -845,7 +846,9 @@ export default {
             functions.$parent.next_inactive = functions.next_inactive;
             functions.$parent.prev_inactive = functions.prev_inactive;
             for (var ch=0; ch<children.length; ch++){
-              children[ch].position = position;
+              if (!functions.settings.continousboard) {
+                children[ch].position = position;
+              }
               if (functions.settings.matchclick) {
                 children[ch].next(position)
               }

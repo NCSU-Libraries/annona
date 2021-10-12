@@ -788,7 +788,7 @@ export default {
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 
         'shortcut': ['alt+n', 'alt+.', 'alt+right'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
     }
-    var annotation = type == 'storyboard' ? vueinfo.annotations : vueinfo.$children.map(board => board.annotations);
+    var annotation = type == 'storyboard' ? vueinfo.annotations : this.flatten(vueinfo.$children.map(board => board.annotations));
     var hasocr = this.flatten(annotation.filter(element=> element && element.ocr && element.ocr.length > 0));
     const hasocrandtext = annotation.some(elem => elem && elem.ocr && elem.ocr.length > 0 && elem.textual_body && elem.textual_body.length > 0 && elem.ocr != elem.textual_body);
     if (hasocr.length > 0){

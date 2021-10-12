@@ -11,6 +11,9 @@
       <iiifannotation :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" ></iiifannotation>
     </span>
   </span>
+  <span v-else-if="settings.perpage" style="width: 100vw">
+    <multistoryboard v-bind:key="position" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifesturl"></multistoryboard>
+  </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
@@ -80,7 +83,8 @@ export default {
         if (newval <= 0){
           this.prevPageInactive = true;
         }
-        if (newval >= this.rangelist.length-1){
+        const onpage = this.settings.perpage ? newval + this.settings.perpage : newval;
+        if (onpage >= this.rangelist.length){
           this.nextPageInactive = true;
         }
       }
@@ -96,6 +100,9 @@ export default {
         })
       } else {
         this.manifestOrRange(isURL['json']);
+      }
+      if (this.settings.perpage){
+        this.settings.continousboard = true;
       }
     },
     methods: {
@@ -195,6 +202,9 @@ export default {
           this.buttons.next = '<i class="fas fa-chevron-left"></i>';
         }
         this.annotationurl = this.rangelist[this.position];
+        if (this.settings.perpage){
+          this.annotationurl.annotationurls = this.rangelist.slice(this.position, this.settings.perpage).map(elem => elem.anno).join(";")
+        }
         this.rangetitle = shared.parseMetaFields(data.label);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.updateFullScreen(this.isfullscreen);
@@ -203,7 +213,7 @@ export default {
         this.customlayers = this.$props.layers ? this.$props.layers : this.annotationurl.layers ? this.annotationurl.layers : '';
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
-        this.rangelist.length == 1 ? this.nextPageInactive = true : '';
+        this.rangelist.length == 1 || this.rangelist.length == this.settings.perpage ? this.nextPageInactive = true : '';
         this.ready = true;
       },
       getRangeData: function(rangelist) {
@@ -219,14 +229,18 @@ export default {
         this.setDefaults(rangelist);
       },
       nextItemRange: function(prevornext){
+        const addition = this.settings.perpage ? this.settings.perpage : 1;
         if (prevornext == 'prev') {
-          this.position -= 1;
+          this.position -= addition;
         } else if (prevornext == 'next') {
-          this.position += 1;
+          this.position += addition;
         } else {
           this.position = prevornext;
         }
         this.annotationurl = this.rangelist[this.position];
+        if (this.settings.perpage){
+          this.annotationurl.annotationurls = this.rangelist.slice(this.position, this.position+this.settings.perpage).map(elem => elem.anno).join(";")
+        }
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getTitle();
         this.getStylingString();
