@@ -49,7 +49,8 @@ export default {
       transcriptions: [],
       scrollitems: [],
       isscrollview: false,
-      updatedto: ''
+      updatedto: '',
+      hasitem: {}
     }
   },
   components: {
@@ -63,6 +64,15 @@ export default {
   watch: {
    '$parent.annotations': function(){
       this.scrollContent();
+      this.hasitem['textoverlay'] = this.$parent.annotations.some(element=> element && element.ocr && element.ocr.length > 0);
+      this.hasitem['tags'] = this.$parent.annotations.some(element=> element && element.tags && element.tags.length > 0);
+      this.hasitem['layers'] = this.$parent.layerslist.length > 0;
+    },
+    '$parent.shown': function(newval){
+      const possiblechecks = ['textoverlay', 'tags', 'layers']
+      if (possiblechecks.indexOf(newval) > -1 && !this.hasitem[newval]){
+        this.$parent.shown = false;
+      }
     },
     '$parent.currentlang': function(){
       this.scrollContent(true);
