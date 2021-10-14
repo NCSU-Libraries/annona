@@ -498,6 +498,8 @@ export default {
       if (this.shown == 'anno' || this.shown == 'transcription'){
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         content ? this.tts(content[this.shown]) : '';
+      } else {
+        this.autoRunTTS();
       }
     },
     // call function and send broadcast to WS server if enabled
@@ -778,7 +780,7 @@ export default {
         var this_functions = this;
         var interval = this.settings.autorun_interval*1000;
         this_functions.isautorunning = setTimeout(function(){
-          if (this_functions.position === this_functions.annotations.length){
+          if (this_functions.position >= this_functions.annotations.length){
             this_functions.position = -1;
           }
           this_functions.next('next');
