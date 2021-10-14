@@ -21,7 +21,7 @@
       <span class="toolbartext">Toggle OCR Overlays</span>
     </button>
     <button v-if="$parent.shortcuts['layers']" id="layerButton" v-on:click="$parent.sendMessage($parent.shortcuts['layers']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.layer"></span>
+      <span v-html="$parent.buttons.layers"></span>
       <span class="toolbartext">View layers</span>
     </button>
     <button v-if="$parent.shortcuts['zoomin']" v-on:click="$parent.sendMessage($parent.shortcuts['zoomin']['function']);" id="zoomInButton" class="toolbarButton">

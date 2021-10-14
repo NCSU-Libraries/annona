@@ -196,10 +196,13 @@ export default {
         for (var k=0; k<this.viewers.length; k++){
           this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
-        var data = this.boardchildren[0]._data;
+        this.updateData();
+      },
+      updateData: function() {
+        var data = this.boardchildrenwithannos[0]._data;
         this.buttons = data.buttons;
         this.prev_inactive = data.prev_inactive;
-        this.next_inactive = data.next_inactive;
+        this.next_inactive = this.boardchildrenwithannos[this.boardchildrenwithannos.length-1].next_inactive;
       },
       sendMessageSeperate(e) {
         if (e['args'] == 'next' || e['args'] == 'prev'){
@@ -219,17 +222,18 @@ export default {
           this.sendMessageSeperate(e);
         } else {
           for (var i=0; i<this.boardchildren.length; i++){
-            this.boardchildren[i].sendMessage(e);
+            if (e['function'] == 'clickButton' && !this.boardchildren[i].shortcuts[e["args"]]){
+              //pass
+            } else {
+              this.boardchildren[i].sendMessage(e);
+            }
           }
         }
         for (var k=0; k<this.viewers.length; k++){
           this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
         if (this.boardchildrenwithannos.length > 0){
-          var data = this.boardchildrenwithannos[0]._data;
-          this.buttons = data.buttons;
-          this.prev_inactive = data.prev_inactive;
-          this.next_inactive = this.boardchildrenwithannos[this.boardchildrenwithannos.length-1].next_inactive;
+          this.updateData();
         }
       }
     }

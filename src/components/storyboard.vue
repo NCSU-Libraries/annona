@@ -229,10 +229,8 @@ export default {
       if (this.$parent.multi) {
         Object.keys(this.tagslist).length > 0 ? this.$parent.tags = true : '';
         this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent);
-        this.shortcuts = this.$parent.shortcuts;
-      } else {
-        this.shortcuts = shared.keyboardShortcuts('storyboard', this);
       }
+      this.shortcuts = shared.keyboardShortcuts('storyboard', this);
     },
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
@@ -561,7 +559,7 @@ export default {
       this.setDefaultButtons();
     },
     setDefaultButtons: function() {
-      const fields = ['info', 'layer', 'tags', 'keyboard', 'textoverlay']
+      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay']
       for (var fi=0; fi<fields.length; fi++){
         this.buttons[fields[fi]] = shared.buttons[fields[fi]];
       }
@@ -841,14 +839,12 @@ export default {
           functions.goToArea(rect);
           functions.reposition(rect);
           //This is for multistoryboard views. updates the position and data.
-          if (functions.$parent.multi) {
+          if (functions.$parent.multi && !functions.settings.continousboard) {
             var children = functions.$parent.boardchildren;
             functions.$parent.next_inactive = functions.next_inactive;
             functions.$parent.prev_inactive = functions.prev_inactive;
             for (var ch=0; ch<children.length; ch++){
-              if (!functions.settings.continousboard) {
-                children[ch].position = position;
-              }
+              children[ch].position = position;
               if (functions.settings.matchclick) {
                 children[ch].next(position)
               }

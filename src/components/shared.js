@@ -25,7 +25,7 @@ export default {
     'playpauseoff': '<i class="fas fa-pause"></i>',
     'tags': '<i class="fas fa-tag"></i>',
     'info': '<i class="fas fa-info-circle"></i>',
-    'layer': '<i class="fas fa-layer-group"></i>',
+    'layers': '<i class="fas fa-layer-group"></i>',
     'keyboard': '<i class="fas fa-keyboard"></i>',
     'prev' : '<i class="fas fa-chevron-left"></i>',
     'next': '<i class="fas fa-chevron-right"></i>'
@@ -774,8 +774,8 @@ export default {
         'shortcut': ['t', '3'], 'function': {'function': 'clickButton', 'args': 'tags'}};
     }
     if ((type == 'storyboard' && vueinfo.layerslist.length > 1) || (type=='multistoryboard' && vueinfo.layerslist)){
-      shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 
-        'shortcut': ['l', '5'], 'function': {'function': 'clickButton', 'args': 'layer'}};
+      shortcuts['layers'] = {'icon': buttons['layers'], 'label': 'Layers', 
+        'shortcut': ['l', '5'], 'function': {'function': 'clickButton', 'args': 'layers'}};
     }
     if (vueinfo.settings.tts){
       shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause',
@@ -803,6 +803,9 @@ export default {
       delete shortcuts['prev'];
       delete shortcuts['next'];
       delete shortcuts['overlay'];
+      delete shortcuts['autorun'];
+    }
+    if (vueinfo.settings.continousboard){
       delete shortcuts['autorun'];
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
