@@ -841,14 +841,12 @@ export default {
           functions.goToArea(rect);
           functions.reposition(rect);
           //This is for multistoryboard views. updates the position and data.
-          if (functions.$parent.multi) {
+          if (functions.$parent.multi && !functions.settings.continousboard) {
             var children = functions.$parent.boardchildren;
             functions.$parent.next_inactive = functions.next_inactive;
             functions.$parent.prev_inactive = functions.prev_inactive;
             for (var ch=0; ch<children.length; ch++){
-              if (!functions.settings.continousboard) {
-                children[ch].position = position;
-              }
+              children[ch].position = position;
               if (functions.settings.matchclick) {
                 children[ch].next(position)
               }
@@ -1071,6 +1069,13 @@ export default {
       }
       return {'positions': positions, 'overlayrect': overlayrect, 'maxWidth': maxwidth, 'maxHeight': maxheight, 'textposition': textposition}
     },
+    autoRunContinous: function() {
+      if (this.$parent.multi && this.next_inactive && this.settings.continousboard){
+        clearInterval(this.isautorunning);
+        this.isautorunning = '';
+        this.$parent.sendMessage({'function': 'autoRun', 'args': this.settings.autorun_interval});
+      }
+    },
     //Autorun through annotations
     autoRun: function(interval){
       interval = interval * 1000;
@@ -1086,6 +1091,7 @@ export default {
               this_functions.position = -1;
             }
             this_functions.next('next');
+            this_functions.autoRunContinous();
           }, interval);
         }
         this.buttons.autorun = shared.buttons['autorunoff'];

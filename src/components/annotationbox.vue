@@ -11,7 +11,7 @@
     <textoverlay v-if="$parent.shown == 'textoverlay'" :parent="$parent"></textoverlay>
     <shortcuts v-if="$parent.shown == 'keyboard'" :parent="$parent"></shortcuts>
     <tags v-if="$parent.shown == 'tags'" :parent="$parent"></tags>
-    <info v-if="$parent.shown == 'info'" :parent="$parent"></info>
+    <info v-if="$parent.shown == 'info'" :parent="$parent" :send="sendParent"></info>
     <div id='transcription' v-if="$parent.shown == 'transcription'" class="content" v-bind:class="$parent.currentanno.itemclass">
       <span v-if="!$parent.booleanitems.isexcerpt && !$parent.settings.transcription && !isscrollview" v-html="$parent.annoContent['transcription']"></span>
       <button v-for="(item, index) in transcriptions" v-bind:key="index" v-else-if="(!$parent.booleanitems.isexcerpt && $parent.settings.transcription) || isscrollview" v-on:click="$parent.sendMessage({'function':'next', 'args': index});" class="buttonastext" v-bind:class="[index == $parent.position && $parent.settings.annoview != 'scrollview' ? 'activeword' : '', $parent.settings.annoview == 'scrollview' ? 'scrolltext' :  'ocrlink']">
@@ -50,7 +50,8 @@ export default {
       scrollitems: [],
       isscrollview: false,
       updatedto: '',
-      hasitem: {}
+      hasitem: {},
+      parent: ''
     }
   },
   components: {
@@ -62,16 +63,19 @@ export default {
     info
   },
   watch: {
+   '$parent.layerslist': function() {
+     this.hasitem['layer'] = this.$parent.layerslist.length > 1;
+   },
    '$parent.annotations': function(){
       this.scrollContent();
       this.hasitem['textoverlay'] = this.$parent.annotations.some(element=> element && element.ocr && element.ocr.length > 0);
       this.hasitem['tags'] = this.$parent.annotations.some(element=> element && element.tags && element.tags.length > 0);
-      this.hasitem['layers'] = this.$parent.layerslist.length > 0;
     },
-    '$parent.shown': function(newval){
-      const possiblechecks = ['textoverlay', 'tags', 'layers']
+    '$parent.shown': function(newval, oldval){
+      const possiblechecks = ['textoverlay', 'tags', 'layer']
       if (possiblechecks.indexOf(newval) > -1 && !this.hasitem[newval]){
-        this.$parent.shown = false;
+        const updateval = oldval == 'transcription' || oldval == 'anno' ? oldval : false;
+        this.$parent.shown = updateval;
       }
     },
     '$parent.currentlang': function(){
@@ -93,6 +97,8 @@ export default {
     }
   },
   created() {
+    this.sendParent = this.$parent.$parent.multi ? this.$parent.$parent : this.$parent;
+    console.log(this.sendParent)
     this.isscrollview = this.$parent.settings.annoview == 'scrollview';
   },
   methods: {

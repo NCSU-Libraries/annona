@@ -196,25 +196,49 @@ export default {
         for (var k=0; k<this.viewers.length; k++){
           this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
-        var data = this.boardchildren[0]._data;
-        this.buttons = data.buttons;
-        this.prev_inactive = data.prev_inactive;
-        this.next_inactive = data.next_inactive;
+        this.updateData();
       },
       sendMessageSeperate(e) {
+        const boardslength = this.boardchildrenwithannos.length-1;
         if (e['args'] == 'next' || e['args'] == 'prev'){
           this.boardchildrenwithannos[this.boardnumber].sendMessage(e);
+          if(boardslength >= 0 && this.boardchildrenwithannos[this.boardnumber].next_inactive && boardslength != this.boardnumber){
+            this.boardnumber += 1
+          } else if(boardslength >= 0 && this.boardchildrenwithannos[this.boardnumber].prev_inactive && 0 != this.boardnumber){
+            this.boardnumber -= 1
+          }
+        } else if(e['function']=='autoRun'){
+          const boardcheck = this.boardchildrenwithannos[this.boardnumber].annotations.length == this.boardchildrenwithannos[this.boardnumber].position
+          if(this.boardnumber == boardslength && boardcheck){
+            this.boardchildrenwithannos[this.boardnumber].sendMessage(e);
+          } else if (boardcheck) {
+            this.boardnumber += 1;
+          }
+          this.boardchildrenwithannos[this.boardnumber].sendMessage(e);
         }
-        if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].next_inactive && this.boardchildrenwithannos.length-1 != this.boardnumber){
-          this.boardnumber += 1
-        } else if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].prev_inactive && 0 != this.boardnumber){
-          this.boardnumber -= 1
+      },
+      updateData: function(){
+        if (this.boardchildrenwithannos.length > 0){
+          var data;
+          if (this.settings.continousboard){
+            data = this.boardchildrenwithannos[this.boardnumber]._data;
+            const lastboard = this.boardchildrenwithannos[this.boardchildrenwithannos.length-1];
+            this.buttons = data.buttons;
+            this.prev_inactive = this.boardchildren[0].position == -1 && this.boardnumber == 0;
+            this.next_inactive = lastboard.position == lastboard.annotations.length && this.boardnumber == this.boardchildrenwithannos.length - 1;
+          } else{
+            data = this.boardchildrenwithannos[0]._data;
+            this.buttons = data.buttons;
+            this.prev_inactive = data.prev_inactive;
+            this.next_inactive = data.next_inactive;
+          }
         }
       },
       //Sends message to each storyboard viewer and each image viewer
       sendMessage(e) {
+        console.log(e)
         this.boardchildrenwithannos = this.boardchildrenwithannos.length > 0 ? this.boardchildrenwithannos : this.boardchildren.filter(board => board.annotations.length > 0);
-        const seperateFunctions = ["next"]
+        const seperateFunctions = ["next", "autoRun"]
         if (this.settings.continousboard && seperateFunctions.indexOf(e['function']) > -1){
           this.sendMessageSeperate(e);
         } else {
@@ -225,12 +249,7 @@ export default {
         for (var k=0; k<this.viewers.length; k++){
           this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
-        if (this.boardchildrenwithannos.length > 0){
-          var data = this.boardchildrenwithannos[0]._data;
-          this.buttons = data.buttons;
-          this.prev_inactive = data.prev_inactive;
-          this.next_inactive = this.boardchildrenwithannos[this.boardchildrenwithannos.length-1].next_inactive;
-        }
+        this.updateData();
       }
     }
 }
