@@ -218,7 +218,9 @@ export default {
       sendMessage(e) {
         this.boardchildrenwithannos = this.boardchildrenwithannos.length > 0 ? this.boardchildrenwithannos : this.boardchildren.filter(board => board.annotations.length > 0);
         const seperateFunctions = ["next"]
-        if (this.settings.continousboard && seperateFunctions.indexOf(e['function']) > -1){
+        if (e['function'] == 'toggle_fullscreen'){
+          this.toggle_fullscreen()
+        } else if (this.settings.continousboard && seperateFunctions.indexOf(e['function']) > -1){
           this.sendMessageSeperate(e);
         } else {
           for (var i=0; i<this.boardchildren.length; i++){

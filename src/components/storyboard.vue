@@ -149,7 +149,7 @@ export default {
     },
     renderError: function(url) {
       if (this.basecompontent.manifestcontents){
-        this.getManifestData()
+        this.getManifestData(this.manifesturl)
       } else {
         this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
@@ -620,7 +620,7 @@ export default {
         const compposition = !isNaN(this.settings.index) && this.basecompontent && !isNaN(this.basecompontent.position) ? this.settings.index + this.basecompontent.position : !isNaN(this.settings.index) ? this.settings.index : false;
         if (this.basecompontent.rangelist && this.basecompontent.rangelist[compposition] && this.basecompontent.rangelist[compposition].images){
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.rangelist[compposition].images)
-        } else if (this.basecompontent && this.basecompontent.annotationurl.images) {
+        } else if (this.basecompontent && this.basecompontent.annotationurl && this.basecompontent.annotationurl.images) {
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.annotationurl.images)
         } else if (this.basecompontent.manifestcontents) {
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId)
