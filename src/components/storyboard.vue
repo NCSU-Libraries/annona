@@ -617,7 +617,7 @@ export default {
     },
     //get Manifest data from manifest and get layerdata
     getManifestData: function(manifestlink, canvas, canvasId){
-        const compposition = !isNaN(this.settings.index) && this.basecompontent && !isNaN(this.basecompontent.position) ? this.settings.index + this.basecompontent.position : !isNaN(this.settings.index) ? this.settings.index : false;
+        const compposition = Object.keys(this.settings).indexOf('index') > -1 && this.basecompontent && !isNaN(this.basecompontent.position) ? this.settings.index + this.basecompontent.position :  false;
         if (this.basecompontent.rangelist && this.basecompontent.rangelist[compposition] && this.basecompontent.rangelist[compposition].images){
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.rangelist[compposition].images)
         } else if (this.basecompontent && this.basecompontent.annotationurl && this.basecompontent.annotationurl.images) {
