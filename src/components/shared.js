@@ -760,7 +760,7 @@ export default {
         'shortcut': ['n', '.', 'shift+ArrowRight'], 'function':{'function': 'next', 'args': 'next'}},
       'overlay': {'icon': buttons['overlay'], 'label': 'Toggle overlays',
         'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
-      'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
+      'keyboard' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}},
       'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen',
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
