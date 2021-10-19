@@ -219,7 +219,7 @@ export default {
         this.customlayers = this.$props.layers ? this.$props.layers : this.annotationurl.layers ? this.annotationurl.layers : '';
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
-        this.rangelist.length == 1 || this.rangelist.length == this.settings.perpage ? this.nextPageInactive = true : '';
+        this.rangelist.length == 1 || this.rangelist.length <= this.settings.perpage ? this.nextPageInactive = true : '';
         this.ready = true;
       },
       getRangeData: function(rangelist) {
