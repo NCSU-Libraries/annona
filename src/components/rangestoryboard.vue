@@ -84,7 +84,7 @@ export default {
           this.prevPageInactive = true;
         }
         const onpage = this.settings.perpage ? newval + this.settings.perpage : newval;
-        if (onpage >= this.rangelist.length){
+        if (onpage >= this.rangelist.length-1){
           this.nextPageInactive = true;
         }
       }
@@ -148,7 +148,7 @@ export default {
             if (annotationfield){
               otherContent.push({'oc': annotationfield, 'canvas': canvas});
             } else {
-              otherContent.push({'oc': "https://noannotation/", 'canvas': canvas});
+              otherContent.push({'oc': `https://noannotation/${cv}`, 'canvas': canvas});
             }
           }
         }
@@ -193,6 +193,15 @@ export default {
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
         this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
+        if (this.settings.perpage){
+          const startpage = parseInt(position/this.settings.perpage)*this.settings.perpage;
+          const endpage = startpage + this.settings.perpage;
+          for (var sp=startpage; sp<endpage; sp++){
+            if (this.rangelist[sp]){
+              this.rangelist[sp].annotationurls = this.rangelist.slice(startpage, endpage).map(elem => elem.anno).join(";")
+            }
+          }
+        }
       },
       setDefaults: function(data) {
         var viewingDirection = data.viewingDirection;
@@ -202,9 +211,6 @@ export default {
           this.buttons.next = '<i class="fas fa-chevron-left"></i>';
         }
         this.annotationurl = this.rangelist[this.position];
-        if (this.settings.perpage){
-          this.annotationurl.annotationurls = this.rangelist.slice(this.position, this.settings.perpage).map(elem => elem.anno).join(";")
-        }
         this.rangetitle = shared.parseMetaFields(data.label);
         this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
         this.updateFullScreen(this.isfullscreen);
@@ -235,12 +241,12 @@ export default {
         } else if (prevornext == 'next') {
           this.position += addition;
         } else {
+          if (this.settings.perpage){
+            prevornext = parseInt(prevornext/this.settings.perpage)*this.settings.perpage;
+          }
           this.position = prevornext;
         }
         this.annotationurl = this.rangelist[this.position];
-        if (this.settings.perpage){
-          this.annotationurl.annotationurls = this.rangelist.slice(this.position, this.position+this.settings.perpage).map(elem => elem.anno).join(";")
-        }
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getTitle();
         this.getStylingString();
