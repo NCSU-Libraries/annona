@@ -699,6 +699,66 @@ describe('Component', () => {
       wrapper.destroy()
     })
 
+    test('test manifesturl with per page', async ()  => {
+      const wrapper =  mount(rangestoryboard,{
+        propsData: {
+          rangeurl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest',
+          styling: 'perpage: 2'
+        },
+        attachTo: '#root'
+      });
+      
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      expect(data.tags).toBe(false)
+      expect(data.layerslist).toBe(false)
+      expect(data.range).toBe(true)
+      expect(data.toctitle).toEqual("Range Pages")
+      expect(data.stylingstring).toEqual("perpage:2;continousboard:true;autorun_interval:3;title:Technician Basketball Special, November 1991: Text of this page (word level);")
+      expect(data.annotationurl.annotationurls).toEqual("https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-word.json;https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-line.json")
+      expect(data.annotationurl.annotationurls.split(";").length).toEqual(2)
+      expect(data.position).toEqual(0)
+      expect(data.prevPageInactive).toBe(true)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('rangestoryboard_manifest')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("Technician Basketball Special, November 1991");
+      expect(wrapper.vm.$children[0].$options.name).toBe('multistoryboard')
+      expect(wrapper.vm.$children.length).toBe(1)
+      var sbd = wrapper.vm.$children[0].$children[1].$el['__vue__']._data;
+      expect(wrapper.vm.$children[0].$children.length).toBe(3)
+      expect(wrapper.vm.$children[0].$children.map(elem=>elem.$options.name)).toEqual(["toolbar", "storyboard", "storyboard"])
+      expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
+      expect(sbd.position).toBe(-1);
+      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001-annotation-word");
+      expect(sbd.annotations).toEqual([{"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 1"], "tags": [], "textual_body": []}, {"section": ["12288,16567,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 2"], "tags": [], "textual_body": []}]);
+      expect(sbd.currentanno).toBe("");
+      expect(sbd.transcription).toBe(undefined);
+      expect(sbd.textposition).toBe("corner");
+      expect(sbd.prev_inactive).toBe(true);
+      expect(sbd.next_inactive).toBe(false);
+      expect(sbd.toolbar_id).toBe("");
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.shown).toBe(false);
+      expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
+      expect(sbd.isautorunning).toBe("");
+      expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Technician Basketball Special, November 1991: Text of this page (word level)", "truncate_length": 2, "perpage": 2, "continousboard": true, "index": 0});
+      expect(sbd.currentlang).toBe("");
+      expect(sbd.languages).toEqual([]);
+      expect(sbd.fullscreen).toBe(false);
+      expect(sbd.tagslist).toEqual({});
+      expect(sbd.imageinfo).toEqual({"label": "Manifest information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest\" target=\"_blank\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest</a></div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"attribution\"><b>Attribution: </b>Technician (Raleigh, N.C.) (LH1 .N6 T4), Special Collections Research Center at NC State University Libraries</div><div id=\"license\"><b>License: </b>https://d.lib.ncsu.edu/collections/about#rights_and_use</div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"Creator\"><b>Creator: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog?f%5Bnames_facet%5D%5B%5D=Technician+%28Raleigh%2C+N.C.%29\">Technician (Raleigh, N.C.)</a> (Publisher)</span></div><div id=\"Created Date\"><b>Created Date: </b>1991-11</div><div id=\"URL\"><b>URL: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11</a></span></div><div id=\"\"></b><span><a title=\"IIIF drag &amp; drop\" href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11?manifest=https%3A%2F%2Fd.lib.ncsu.edu%2Fcollections%2Fcatalog%2Ftechnician-basketballspecial-1991-11%2Fmanifest.json\">IIIF drag &amp; drop</a> (<a href=\"https://d.lib.ncsu.edu/collections/about-iiif\">About IIIF</a>)</span></div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json\" target=\"_blank\">https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json</a></div>"});
+      expect(sbd.imagetitle).toBe("Technician Basketball Special, November 1991: Text of this page (word level)");
+      expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json", "xywh": ""}]);
+      expect(Object.keys(sbd.shortcuts).sort()).toEqual(['close', 'textoverlay', 'fullscreen', 'hide', 'home', 'info', 'next', 'nextanno', 'overlay', 'prev', 'prevanno', 'keyboard', 'zoomin', 'zoomout'].sort());
+      wrapper.find("#nextPageButton").trigger('click');
+      expect(data.annotationurl.annotationurls).toEqual("https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-paragraph.json;https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0002/technician-basketballspecial-1991-11_0002-annotation-list-word.json")
+      expect(data.annotationurl.annotationurls.split(";").length).toEqual(2)
+      wrapper.destroy()
+    })
+
     test('test single list manifesturl', async ()  => {
       const wrapper =  mount(rangestoryboard,{
         propsData: {
