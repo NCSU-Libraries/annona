@@ -784,9 +784,9 @@ export default {
 
     if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
       shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 
-        'shortcut': ['alt+p', 'alt+,', 'alt+left'], 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
+        'shortcut': ['alt+p', 'alt+,', 'alt+ArrowLeft'], 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 
-        'shortcut': ['alt+n', 'alt+.', 'alt+right'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
+        'shortcut': ['alt+n', 'alt+.', 'alt+ArrowRight'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
     }
     var annotation = type == 'storyboard' ? vueinfo.annotations : this.flatten(vueinfo.$children.map(board => board.annotations));
     var hasocr = this.flatten(annotation.filter(element=> element && element.ocr && element.ocr.length > 0));

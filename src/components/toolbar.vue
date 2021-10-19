@@ -85,6 +85,7 @@ export default {
       var addon = event.altKey ? 'alt+' : event.shiftKey ? 'shift+' : event.metaKey ? 'cmd+' : ''
       keycombo = addon + keycombo;
       var keycombo2 = addon + event.key;
+      keycombo = keycombo.replace("period", ".").replace("comma", ",")
       const keydown = Object.values(this.$parent.shortcuts).filter(elem => elem.shortcut.indexOf(keycombo) > -1 || elem.shortcut.indexOf(keycombo2) > -1)
       if (keydown.length > 0){
         var shortcutdict = keydown[0];
