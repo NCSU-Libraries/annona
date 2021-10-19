@@ -11,14 +11,17 @@
       <iiifannotation :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" ></iiifannotation>
     </span>
   </span>
+  <span v-else-if="settings.perpage" style="width: 100vw">
+    <multistoryboard v-bind:key="position" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest"></multistoryboard>
+  </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
-  <button id="previousPageInactiveButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
+  <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.prev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
-  <button id="nextPageInactiveButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
+  <button id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
     <span v-html="buttons.next"></span>
     <span class="toolbartext">Next Page</span>
   </button>
@@ -80,7 +83,8 @@ export default {
         if (newval <= 0){
           this.prevPageInactive = true;
         }
-        if (newval >= this.rangelist.length-1){
+        const onpage = this.settings.perpage ? newval + this.settings.perpage : newval;
+        if (onpage >= this.rangelist.length-1){
           this.nextPageInactive = true;
         }
       }
@@ -96,6 +100,9 @@ export default {
         })
       } else {
         this.manifestOrRange(isURL['json']);
+      }
+      if (this.settings.perpage){
+        this.settings.continousboard = true;
       }
     },
     methods: {
@@ -141,7 +148,7 @@ export default {
             if (annotationfield){
               otherContent.push({'oc': annotationfield, 'canvas': canvas});
             } else {
-              otherContent.push({'oc': "https://noannotation/", 'canvas': canvas});
+              otherContent.push({'oc': `https://noannotation/${cv}`, 'canvas': canvas});
             }
           }
         }
@@ -186,6 +193,15 @@ export default {
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
         this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
+        if (this.settings.perpage){
+          const startpage = parseInt(position/this.settings.perpage)*this.settings.perpage;
+          const endpage = startpage + this.settings.perpage;
+          for (var sp=startpage; sp<endpage; sp++){
+            if (this.rangelist[sp]){
+              this.rangelist[sp].annotationurls = this.rangelist.slice(startpage, endpage).map(elem => elem.anno).join(";")
+            }
+          }
+        }
       },
       setDefaults: function(data) {
         var viewingDirection = data.viewingDirection;
@@ -203,7 +219,7 @@ export default {
         this.customlayers = this.$props.layers ? this.$props.layers : this.annotationurl.layers ? this.annotationurl.layers : '';
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
-        this.rangelist.length == 1 ? this.nextPageInactive = true : '';
+        this.rangelist.length == 1 || this.rangelist.length == this.settings.perpage ? this.nextPageInactive = true : '';
         this.ready = true;
       },
       getRangeData: function(rangelist) {
@@ -219,11 +235,15 @@ export default {
         this.setDefaults(rangelist);
       },
       nextItemRange: function(prevornext){
+        const addition = this.settings.perpage ? this.settings.perpage : 1;
         if (prevornext == 'prev') {
-          this.position -= 1;
+          this.position -= addition;
         } else if (prevornext == 'next') {
-          this.position += 1;
+          this.position += addition;
         } else {
+          if (this.settings.perpage){
+            prevornext = parseInt(prevornext/this.settings.perpage)*this.settings.perpage;
+          }
           this.position = prevornext;
         }
         this.annotationurl = this.rangelist[this.position];

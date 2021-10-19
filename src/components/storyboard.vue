@@ -149,7 +149,7 @@ export default {
     },
     renderError: function(url) {
       if (this.basecompontent.manifestcontents){
-        this.getManifestData()
+        this.getManifestData(this.manifesturl)
       } else {
         this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
@@ -500,6 +500,8 @@ export default {
       if (this.shown == 'anno' || this.shown == 'transcription'){
         var content = this.annotations[this.position] ? shared.createContent(this.annotations[this.position], this.currentlang) : '';
         content ? this.tts(content[this.shown]) : '';
+      } else {
+        this.autoRunTTS();
       }
     },
     // call function and send broadcast to WS server if enabled
@@ -561,7 +563,7 @@ export default {
       this.setDefaultButtons();
     },
     setDefaultButtons: function() {
-      const fields = ['info', 'layer', 'tags', 'keyboard', 'textoverlay']
+      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay']
       for (var fi=0; fi<fields.length; fi++){
         this.buttons[fields[fi]] = shared.buttons[fields[fi]];
       }
@@ -617,7 +619,10 @@ export default {
     },
     //get Manifest data from manifest and get layerdata
     getManifestData: function(manifestlink, canvas, canvasId){
-        if (this.basecompontent.annotationurl && this.basecompontent.annotationurl.images){
+        const compposition = Object.keys(this.settings).indexOf('index') > -1 && this.basecompontent && !isNaN(this.basecompontent.position) ? this.settings.index + this.basecompontent.position :  false;
+        if (this.basecompontent.rangelist && this.basecompontent.rangelist[compposition] && this.basecompontent.rangelist[compposition].images){
+          this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.rangelist[compposition].images)
+        } else if (this.basecompontent && this.basecompontent.annotationurl && this.basecompontent.annotationurl.images) {
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId, this.basecompontent.annotationurl.images)
         } else if (this.basecompontent.manifestcontents) {
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId)
@@ -779,7 +784,7 @@ export default {
         var this_functions = this;
         var interval = this.settings.autorun_interval*1000;
         this_functions.isautorunning = setTimeout(function(){
-          if (this_functions.position === this_functions.annotations.length){
+          if (this_functions.position >= this_functions.annotations.length){
             this_functions.position = -1;
           }
           this_functions.next('next');
@@ -829,7 +834,7 @@ export default {
         clickHandler: function() {
           functions.position = position;
           functions.makeactive(position);
-          functions.sendMessage({'function':'next', 'args': functions.position});
+          functions.sendMessage({'function':'next', 'args': position});
           //Check to see if multiple annotations on same section.
           var matching_sections = functions.annotations.map((section, i) => section.section.map(sect => functions.annotations[position].section.indexOf(sect) > -1).some(x => x === true) ? i : -1)
           matching_sections = matching_sections.filter(index => index != -1);
@@ -840,7 +845,7 @@ export default {
           functions.goToArea(rect);
           functions.reposition(rect);
           //This is for multistoryboard views. updates the position and data.
-          if (functions.$parent.multi) {
+          if (functions.$parent.multi && !functions.settings.continousboard) {
             var children = functions.$parent.boardchildren;
             functions.$parent.next_inactive = functions.next_inactive;
             functions.$parent.prev_inactive = functions.prev_inactive;

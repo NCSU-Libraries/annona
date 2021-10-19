@@ -25,7 +25,7 @@ export default {
     'playpauseoff': '<i class="fas fa-pause"></i>',
     'tags': '<i class="fas fa-tag"></i>',
     'info': '<i class="fas fa-info-circle"></i>',
-    'layer': '<i class="fas fa-layer-group"></i>',
+    'layers': '<i class="fas fa-layer-group"></i>',
     'keyboard': '<i class="fas fa-keyboard"></i>',
     'prev' : '<i class="fas fa-chevron-left"></i>',
     'next': '<i class="fas fa-chevron-right"></i>'
@@ -760,7 +760,7 @@ export default {
         'shortcut': ['n', '.', 'shift+ArrowRight'], 'function':{'function': 'next', 'args': 'next'}},
       'overlay': {'icon': buttons['overlay'], 'label': 'Toggle overlays',
         'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
-      'shortcut' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
+      'keyboard' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}},
       'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen',
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
@@ -774,8 +774,8 @@ export default {
         'shortcut': ['t', '3'], 'function': {'function': 'clickButton', 'args': 'tags'}};
     }
     if ((type == 'storyboard' && vueinfo.layerslist.length > 1) || (type=='multistoryboard' && vueinfo.layerslist)){
-      shortcuts['layers'] = {'icon': buttons['layer'], 'label': 'Layers', 
-        'shortcut': ['l', '5'], 'function': {'function': 'clickButton', 'args': 'layer'}};
+      shortcuts['layers'] = {'icon': buttons['layers'], 'label': 'Layers', 
+        'shortcut': ['l', '5'], 'function': {'function': 'clickButton', 'args': 'layers'}};
     }
     if (vueinfo.settings.tts){
       shortcuts['playpause'] = {'icon': buttons['playpause'], 'label': 'Play/Pause',
@@ -784,11 +784,11 @@ export default {
 
     if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
       shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 
-        'shortcut': ['alt+p', 'alt+,', 'alt+left'], 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
+        'shortcut': ['alt+p', 'alt+,', 'alt+ArrowLeft'], 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
       shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 
-        'shortcut': ['alt+n', 'alt+.', 'alt+right'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
+        'shortcut': ['alt+n', 'alt+.', 'alt+ArrowRight'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
     }
-    var annotation = type == 'storyboard' ? vueinfo.annotations : vueinfo.$children.map(board => board.annotations);
+    var annotation = type == 'storyboard' ? vueinfo.annotations : this.flatten(vueinfo.$children.map(board => board.annotations));
     var hasocr = this.flatten(annotation.filter(element=> element && element.ocr && element.ocr.length > 0));
     const hasocrandtext = annotation.some(elem => elem && elem.ocr && elem.ocr.length > 0 && elem.textual_body && elem.textual_body.length > 0 && elem.ocr != elem.textual_body);
     if (hasocr.length > 0){
@@ -803,6 +803,9 @@ export default {
       delete shortcuts['prev'];
       delete shortcuts['next'];
       delete shortcuts['overlay'];
+      delete shortcuts['autorun'];
+    }
+    if (vueinfo.settings.continousboard){
       delete shortcuts['autorun'];
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);

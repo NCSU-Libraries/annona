@@ -21,7 +21,7 @@
       <span class="toolbartext">Toggle OCR Overlays</span>
     </button>
     <button v-if="$parent.shortcuts['layers']" id="layerButton" v-on:click="$parent.sendMessage($parent.shortcuts['layers']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.layer"></span>
+      <span v-html="$parent.buttons.layers"></span>
       <span class="toolbartext">View layers</span>
     </button>
     <button v-if="$parent.shortcuts['zoomin']" v-on:click="$parent.sendMessage($parent.shortcuts['zoomin']['function']);" id="zoomInButton" class="toolbarButton">
@@ -44,7 +44,7 @@
       <i class="fa fa-arrow-right"></i>
       <span class="toolbartext">Next Annotation</span>
     </button>
-    <button v-if="$parent.shortcuts['shortcut']" v-on:click="$parent.sendMessage($parent.shortcuts['shortcut']['function']);"  id="keyboardShortcutsButton" class="toolbarButton">
+    <button v-if="$parent.shortcuts['keyboard']" v-on:click="$parent.sendMessage($parent.shortcuts['keyboard']['function']);"  id="keyboardShortcutsButton" class="toolbarButton">
       <span v-html="$parent.buttons.keyboard"></span>
       <span class="toolbartext">Toggle keyboard shortcuts</span>
     </button>
@@ -85,6 +85,7 @@ export default {
       var addon = event.altKey ? 'alt+' : event.shiftKey ? 'shift+' : event.metaKey ? 'cmd+' : ''
       keycombo = addon + keycombo;
       var keycombo2 = addon + event.key;
+      keycombo = keycombo.replace("period", ".").replace("comma", ",")
       const keydown = Object.values(this.$parent.shortcuts).filter(elem => elem.shortcut.indexOf(keycombo) > -1 || elem.shortcut.indexOf(keycombo2) > -1)
       if (keydown.length > 0){
         var shortcutdict = keydown[0];

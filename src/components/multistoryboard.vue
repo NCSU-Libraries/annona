@@ -3,7 +3,7 @@
   <toolbar></toolbar>
   <span class="storyboard_containers">
     <div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-      <storyboard v-if="$props.annotationurls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + index" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
+      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
     </div>
     <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
       <div v-bind:id="image.id" class="seadragonbox"></div>
@@ -51,7 +51,10 @@ export default {
         fullscreen: false,
         shortcuts: {},
         boardchildren: {},
-        leaflet: false
+        leaflet: false,
+        boardnumber: 0,
+        boardchildrenwithannos: [],
+        annourls: ''
       }
     },
     mounted(){
@@ -69,11 +72,15 @@ export default {
         this.fullscreen = this.$parent.isfullscreen;
         this.$parent.updateFullScreen(this.fullscreen);
       }
-      this.$props.annotationurls = this.$props.annotationurls ? this.$props.annotationurls : this.$props.annotationlists;
-      var annotations = this.$props.annotationurls.split(";");
+      this.annourls = this.annotationurls ? this.annotationurls : this.annotationlists;
+      var annotations = this.annourls.split(";");
       this.anno_data = annotations.filter(function (el) {
         return el != null && el != '';
       });
+      this.isreverse = this.$parent && this.$parent.viewingDirection == 'rtl' ? true : false;
+      if (this.isreverse){
+        this.anno_data = this.anno_data.reverse();
+      }
       // Get settings and create styling string
       this.settings = shared.getsettings(this);
       this.settings.autorun_interval ? '' : this.settings.autorun_interval = 3;
@@ -94,16 +101,18 @@ export default {
         }
       }
       // get width calculated by number of annotations and images
-      this.widthvar = `${parseInt((100/(this.anno_data.length + this.allimages.length)))}%`;
+      this.widthvar = `${parseFloat((100/(this.anno_data.length + this.allimages.length)))}%`;
     },
     methods: {
       // move annotations and image viewers based on bounds
       moveArea (bounds, ignore) {
-        for (var i=0; i<this.boardchildren.length; i++){
-          var viewer =this.boardchildren[i].viewer;
-          if (!this.settings.matchclick) {
-            var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
-            viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
+        if (!this.settings.continousboard) {
+          for (var i=0; i<this.boardchildren.length; i++){
+            var viewer =this.boardchildren[i].viewer;
+            if (!this.settings.matchclick) {
+              var conversion = viewer.world.getItemAt(0).imageToViewportRectangle(bounds.x, bounds.y, bounds.width, bounds.height);
+              viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
+            }
           }
         }
         for (var j=0; j<this.viewers.length; j++){
@@ -113,6 +122,9 @@ export default {
             imageviewer.viewport.fitBoundsWithConstraints(imageconversion).ensureVisible();
           }
         }
+      },
+      indexNumber:function(index){
+        return this.isreverse ? this.anno_data.length-index-1 : index
       },
       // set fullscreen. See vue-fullscreen for more info
       fullscreenChange (fullscreen) {
@@ -185,23 +197,47 @@ export default {
         for (var k=0; k<this.viewers.length; k++){
           this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
-        var data = this.boardchildren[0]._data;
+        this.updateData();
+      },
+      updateData: function() {
+        var data = this.boardchildrenwithannos[0]._data;
         this.buttons = data.buttons;
         this.prev_inactive = data.prev_inactive;
-        this.next_inactive = data.next_inactive;
+        this.next_inactive = this.boardchildrenwithannos[this.boardchildrenwithannos.length-1].next_inactive;
+      },
+      sendMessageSeperate(e) {
+        if (e['args'] == 'next' || e['args'] == 'prev'){
+          this.boardchildrenwithannos[this.boardnumber].sendMessage(e);
+        }
+        if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].next_inactive && this.boardchildrenwithannos.length-1 != this.boardnumber){
+          this.boardnumber += 1
+        } else if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].prev_inactive && 0 != this.boardnumber){
+          this.boardnumber -= 1
+        }
       },
       //Sends message to each storyboard viewer and each image viewer
       sendMessage(e) {
-        for (var i=0; i<this.boardchildren.length; i++){
-          this.boardchildren[i].sendMessage(e);
+        this.boardchildrenwithannos = this.boardchildrenwithannos.length > 0 ? this.boardchildrenwithannos : this.boardchildren.filter(board => board.annotations.length > 0);
+        const seperateFunctions = ["next"]
+        if (e['function'] == 'toggle_fullscreen'){
+          this.toggle_fullscreen()
+        } else if (this.settings.continousboard && seperateFunctions.indexOf(e['function']) > -1){
+          this.sendMessageSeperate(e);
+        } else {
+          for (var i=0; i<this.boardchildren.length; i++){
+            if (e['function'] == 'clickButton' && !this.boardchildren[i].shortcuts[e["args"]]){
+              //pass
+            } else {
+              this.boardchildren[i].sendMessage(e);
+            }
+          }
         }
         for (var k=0; k<this.viewers.length; k++){
           this.viewers[k].viewport.fitBounds(this.boardchildren[0].viewer.viewport.getConstrainedBounds())
         }
-        var data = this.boardchildren[0]._data;
-        this.buttons = data.buttons;
-        this.prev_inactive = data.prev_inactive;
-        this.next_inactive = data.next_inactive;
+        if (this.boardchildrenwithannos.length > 0){
+          this.updateData();
+        }
       }
     }
 }
