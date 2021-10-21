@@ -79,6 +79,7 @@ export default {
       });
       this.isreverse = this.$parent && this.$parent.viewingDirection == 'rtl' ? true : false;
       if (this.isreverse){
+        this.boardnumber = "updateme";
         this.anno_data = this.anno_data.reverse();
       }
       // Get settings and create styling string
@@ -200,24 +201,30 @@ export default {
         this.updateData();
       },
       updateData: function() {
-        var data = this.boardchildrenwithannos[0]._data;
+        const lastboard = this.isreverse ? 0 : this.boardchildrenwithannos.length-1;
+        const firstboard = this.isreverse ? this.boardchildrenwithannos.length-1 : 0;
+        var data = this.boardchildrenwithannos[firstboard]._data;
         this.buttons = data.buttons;
         this.prev_inactive = data.prev_inactive;
-        this.next_inactive = this.boardchildrenwithannos[this.boardchildrenwithannos.length-1].next_inactive;
+        this.next_inactive = this.boardchildrenwithannos[lastboard].next_inactive;
       },
       sendMessageSeperate(e) {
         if (e['args'] == 'next' || e['args'] == 'prev'){
           this.boardchildrenwithannos[this.boardnumber].sendMessage(e);
         }
-        if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].next_inactive && this.boardchildrenwithannos.length-1 != this.boardnumber){
-          this.boardnumber += 1
-        } else if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].prev_inactive && 0 != this.boardnumber){
-          this.boardnumber -= 1
+        const addnumb = this.isreverse ? -1 : 1;
+        const islast = this.isreverse ? this.boardnumber == 0 : this.boardchildrenwithannos.length-1 == this.boardnumber;
+        const isfirst = this.isreverse ? this.boardchildrenwithannos.length-1 == this.boardnumber : this.boardnumber == 0;
+        if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].next_inactive && !islast){
+          this.boardnumber += addnumb;
+        } else if(this.boardchildrenwithannos.length > 0 && this.boardchildrenwithannos[this.boardnumber].prev_inactive && !isfirst){
+          this.boardnumber -= addnumb;
         }
       },
       //Sends message to each storyboard viewer and each image viewer
       sendMessage(e) {
         this.boardchildrenwithannos = this.boardchildrenwithannos.length > 0 ? this.boardchildrenwithannos : this.boardchildren.filter(board => board.annotations.length > 0);
+        this.boardnumber == "updateme" ? this.boardnumber = this.boardchildrenwithannos.length - 1 : '';
         const seperateFunctions = ["next"]
         if (e['function'] == 'toggle_fullscreen'){
           this.toggle_fullscreen()
