@@ -24,6 +24,7 @@ export default {
     'playpause': '<i class="fas fa-play"></i>',
     'playpauseoff': '<i class="fas fa-pause"></i>',
     'tags': '<i class="fas fa-tag"></i>',
+    'reload': '<i class="fas fa-redo"></i>',
     'info': '<i class="fas fa-info-circle"></i>',
     'layers': '<i class="fas fa-layer-group"></i>',
     'keyboard': '<i class="fas fa-keyboard"></i>',
@@ -742,10 +743,12 @@ export default {
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
     //openseadragon : a, f, s, d, r, R, w, arrows, 0, -, shift w, shift s,s shift up/down arrows
-    // j, k, q, u, w, y are open
+    // k, q, u, w, y are open
     var shortcuts = {
       'autorun': {'icon': buttons['autorun'], 'label': 'Auto Run',
         'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': vueinfo.settings.autorun_interval}},
+      'reload': {'icon': buttons['reload'], 'label': 'Reload',
+        'shortcut': ['j', 'shift+1'], 'function': {'function':'reload', 'args': ''}},
       'info': {'icon': buttons['info'], 'label': 'Info Button', 
         'shortcut': ['i', '2'], 'function': {'function': 'clickButton', 'args': 'info'}},
       'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home',

@@ -4,6 +4,10 @@
       <span v-html="$parent.buttons.autorun"></span>
       <span class="toolbartext">Start/Stop Autorun</span>
     </button>
+    <button v-if="$parent.shortcuts['reload']" id="autoRunButton" v-on:click="$parent.sendMessage($parent.shortcuts['reload']['function']);" class="toolbarButton">
+      <span v-html="$parent.buttons.reload"></span>
+      <span class="toolbartext">Reload</span>
+    </button>
     <button v-on:click="$parent.sendMessage($parent.shortcuts['info']['function']);" v-if="$parent.shortcuts['info']"  id="infoButton" class="toolbarButton">
       <span v-html="$parent.buttons.info"></span>
       <span class="toolbartext">View source image information</span>

@@ -1,7 +1,7 @@
 <template>
 <div id="storyboard_viewer" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' || settings.annoview == 'scrollview' ? 'sidebyside' : 'collapse']">
-    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
+    <div v-bind:id="seadragonid" v-bind:key="compkey" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <toolbar v-if="!$parent.multi"></toolbar>
       <div v-if="rendered" v-html="rendered" style="position: relative; top: 50%;text-align: center;"></div>
       <annotationbox v-if="settings.annoview != 'sidebyside' && settings.annoview != 'scrollview'"></annotationbox>
@@ -46,6 +46,7 @@ export default {
       seadragonid: '',
       annotations: [],
       currentanno: '',
+      compkey: 0,
       hastranscription: false,
       textposition: 'corner',
       prev_inactive: true,
@@ -82,20 +83,12 @@ export default {
       this.textoverlay = shared.objectToNewObject(this.basecompontent.textoverlay);
       this.booleanitems = shared.objectToNewObject(this.basecompontent.booleanitems);
     }
-    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
-    var isURL = shared.isURL(annotationurl, this.settings);
-    this.seadragonid = 'storyboard_' + isURL['id'];
-    this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
     this.settings.annoview == 'collapse' ? this.buttons.hide = '<i class="fas fa-caret-left"></i>' : '';
-    if(isURL['isURL']){
-      axios.get(annotationurl).then(response => {
-        this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
-      }).catch(() => {this.renderError(annotationurl)});
-    }
+    this.loadAnnotation();
   },
   watch: {
     annoContent: function(newVal) {
@@ -138,6 +131,26 @@ export default {
     }
   },
   methods: {
+    loadAnnotation: function() {
+      var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
+      var isURL = shared.isURL(annotationurl, this.settings);
+      this.seadragonid = 'storyboard_' + isURL['id'];
+      this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
+      if(isURL['isURL']){
+      axios.get(`${annotationurl}?cb=${Date.now()}`).then(response => {
+        this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
+      }).catch(() => {this.renderError(annotationurl)});
+      }
+    },
+    reload: function(){
+      if (this.basecompontent.range){
+        this.basecompontent.compkey = `reload${this.basecompontent.compkey + 1}`;
+      } else {
+        this.compkey += 1;
+        this.annotations = [];
+        this.loadAnnotation();
+      }
+    },
     checksubgrouptags: function(key) {
       const groupdict = this.groupTagDict[key];
       const tagstotoggle = groupdict.tags;

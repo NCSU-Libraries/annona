@@ -2,20 +2,20 @@
 <div v-bind:id="rangeid" class="rangestoryboard annonaview" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
   <span v-if="listtype == 'storyboardlist'" v-bind:key="position" style="width: 100vw">
     <span v-if="rangelist[position]['tag'] == 'iiif-storyboard'">
-      <storyboard :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers"></storyboard>
+      <storyboard v-bind:key="compkey" :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers"></storyboard>
     </span>
     <span v-else-if="rangelist[position]['tag'] == 'iiif-multistoryboard'">
-      <multistoryboard :annotationurls="annotationurl.annotationurls" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers" v-bind:images="annotationurl.images"></multistoryboard>
+      <multistoryboard v-bind:key="compkey" :annotationurls="annotationurl.annotationurls" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers" v-bind:images="annotationurl.images"></multistoryboard>
     </span>
     <span v-else-if="rangelist[position]['tag'] == 'iiif-annotation'">
-      <iiifannotation :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" ></iiifannotation>
+      <iiifannotation v-bind:key="compkey" :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" ></iiifannotation>
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="position" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
-    <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+    <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
   <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.prev"></span>
@@ -62,6 +62,7 @@ export default {
         prevPageInactive: true,
         nextPageInactive: false,
         rangeid: '',
+        compkey: 0,
         customlayers: '',
         isfullscreen: false,
         manifestcontents: '',
@@ -187,6 +188,7 @@ export default {
         const position = this.rangelist.length;
         if (canvasid == this.startCanvas){
             this.position = position;
+            this.compkey = position;
         }
         var toclabel = anno['label'] ? anno['label'] : canvas && canvas['label'] ? canvas['label'] : `Page ${position + 1}`;
         toclabel = shared.parseMetaFields(toclabel);
@@ -246,6 +248,7 @@ export default {
           }
           this.position = prevornext;
         }
+        this.compkey = this.position;
         this.annotationurl = this.rangelist[this.position];
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getTitle();
