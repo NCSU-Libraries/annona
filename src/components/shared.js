@@ -166,7 +166,7 @@ export default {
   // Get ocr, text, tags, languages, authors, and type of annotation;
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
   //Looks at type in resource field to define which item the resource belongs to.
-  chars: function(anno) {
+  chars: function(anno, currentlang='') {
     var res = anno.body ? anno.body : anno.resource ? anno.resource : '';
     var textual_body = [];
     var tags = [];
@@ -230,8 +230,8 @@ export default {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
       } else if (type === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}"${navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${by639_1[element['language']] && by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
-        var values = []
+        langs = res_data['items'].map(element => `<option value="${element['language']}"${currentlang.indexOf(element['language']) > -1 || navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${by639_1[element['language']] && by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
+        var values = [];
         res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
       } else if (type === 'dctypes:Image' || type === 'Image') {

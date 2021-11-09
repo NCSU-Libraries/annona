@@ -180,7 +180,7 @@ export default {
         var ondict = shared.on_structure(anno[i]);
         var canvasId = shared.getCanvasId(anno[i]);
         var sections = [];
-        var content_data = shared.chars(anno[i]);
+        var content_data = shared.chars(anno[i], this.currentlang);
         var type = content_data['type'] ? content_data['type'] : 'rect';
         var svg_path = [];
         //get SVG paths for each canvas; add svg path to list for each annotation
@@ -222,7 +222,7 @@ export default {
       if(lang_drops.length > 0){
         var all_langs = shared.flatten(this.annotations.map(element => element.textual_body.map(els => els.language)));
         var lang = all_langs.filter(element => element != undefined && navigator.language.indexOf(element.toLowerCase()) > -1);
-        this.currentlang = lang.length > 0 ? lang[0] : all_langs[0];
+        this.currentlang = this.currentlang ? this.currentlang : lang.length > 0 ? lang[0] : all_langs[0];
         var all_drop = shared.flatten(lang_drops, 'languages');
         this.languages = Array.from(new Set(all_drop));
       }

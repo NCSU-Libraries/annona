@@ -253,7 +253,7 @@ export default {
     getImageData: function(i){
       var anno = this.anno[i];
       var dictionary = {'image':[]};
-      var dict = shared.chars(anno);
+      var dict = shared.chars(anno, this.currentlang);
       if (this.settings.image_only !== true){
         this.languages = dict['languages'] ? [...new Set(this.languages.concat(dict['languages']))] : this.languages;
         var all_langs = dict['textual_body'].map(el => el.language);
