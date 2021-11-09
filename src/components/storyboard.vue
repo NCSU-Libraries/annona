@@ -1,7 +1,7 @@
 <template>
-<div id="storyboard_viewer" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
+<div id="storyboard_viewer" v-bind:key="compkey" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' || settings.annoview == 'scrollview' ? 'sidebyside' : 'collapse']">
-    <div v-bind:id="seadragonid" v-bind:key="compkey" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
+    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
       <toolbar v-if="!$parent.multi"></toolbar>
       <div v-if="rendered" v-html="rendered" style="position: relative; top: 50%;text-align: center;"></div>
       <annotationbox v-if="settings.annoview != 'sidebyside' && settings.annoview != 'scrollview'"></annotationbox>
@@ -148,6 +148,7 @@ export default {
       } else {
         this.compkey += 1;
         this.annotations = [];
+        this.layerslist = [];
         this.loadAnnotation();
       }
     },
@@ -320,7 +321,9 @@ export default {
           vue.changeLang(vue.currentlang);
         }
         if (vue.settings.startposition != undefined) {
-          vue.next(vue.settings.startposition -1)
+          vue.next(vue.settings.startposition -1);
+        } else if (vue.position != -1) {
+          vue.next(vue.position);
         }
       });
     },
