@@ -1,6 +1,6 @@
 <template>
   <div v-bind:id="$parent.seadragonid + '_annotation'" class="annotation" v-bind:class="[$parent.booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', $parent.textposition, $parent.settings.toolbarposition ? $parent.settings.toolbarposition + '_menu_annotation' : '', $parent.settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="$parent.shown" tabindex="0">
-    <boxtoolbar v-if="!$parent.settings.hide_annocontrols && $parent.settings.hide_annocontrols !== true"  :parent="$parent"></boxtoolbar>
+    <boxtoolbar v-if="!$parent.settings.hide_annocontrols && $parent.settings.hide_annocontrols !== true" :parent="$parent"></boxtoolbar>
     <div id="layers" v-if="$parent.shown == 'layers'" class="content">
       <div v-for="layer in $parent.layerslist" v-bind:key="layer.tile">
         <input type="checkbox" class="tagscheck" v-on:click="$parent.sendMessage({'function': 'setOpacity', 'args': layer });" v-model="layer.checked">

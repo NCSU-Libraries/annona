@@ -91,12 +91,6 @@ export default {
     this.loadAnnotation();
   },
   watch: {
-    annoContent: function(newVal) {
-      this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription'];
-      if ((newVal['anno'] == '' && newVal['transcription'] == '' && (this.shown == 'anno' || this.shown == 'transcription')) || (this.settings.hide_annotationtext)){
-        this.shown = false;
-      }
-    },
     booleanitems: {
       deep: true,
       handler: function(){
@@ -150,6 +144,16 @@ export default {
         this.annotations = [];
         this.layerslist = [];
         this.loadAnnotation();
+      }
+    },
+    checkForText: function(shown, annoContent) {
+      if (this.settings.startenddisplay != shown){
+        const anno = annoContent['anno'];
+        const transcription = annoContent['transcription'];
+        this.hastranscription = anno && transcription && anno != transcription;
+        if ((anno == '' && transcription == '' && (shown == 'anno' || shown == 'transcription')) || (this.settings.hide_annotationtext)){
+          this.shown = false;
+        }
       }
     },
     checksubgrouptags: function(key) {
@@ -1136,7 +1140,9 @@ export default {
         annocontent = createContent['anno'];
       }
       annocontent = annocontent ? annocontent : transcriptcontent;
-      return {'anno': annocontent, 'transcription': transcriptcontent };
+      const annoContent = {'anno': annocontent, 'transcription': transcriptcontent }
+      this.checkForText(this.shown, annoContent);
+      return annoContent;
     }
   },
   computed: {
