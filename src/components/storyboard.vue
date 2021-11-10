@@ -323,7 +323,9 @@ export default {
         if (vue.settings.startposition != undefined) {
           vue.next(vue.settings.startposition -1);
         } else if (vue.position != -1) {
+          const shown = vue.shown;
           vue.next(vue.position);
+          vue.clickButton(shown);
         }
       });
     },
