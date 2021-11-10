@@ -1,7 +1,7 @@
 <template>
-<div id="storyboard_viewer" v-bind:key="compkey" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
+<div id="storyboard_viewer" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' || settings.annoview == 'scrollview' ? 'sidebyside' : 'collapse']">
-    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
+    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative" v-bind:key="compkey">
       <toolbar v-if="!$parent.multi"></toolbar>
       <div v-if="rendered" v-html="rendered" style="position: relative; top: 50%;text-align: center;"></div>
       <annotationbox v-if="settings.annoview != 'sidebyside' && settings.annoview != 'scrollview'"></annotationbox>
@@ -137,9 +137,9 @@ export default {
       this.seadragonid = 'storyboard_' + isURL['id'];
       this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
       if(isURL['isURL']){
-      axios.get(`${annotationurl}?cb=${Date.now()}`).then(response => {
-        this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
-      }).catch(() => {this.renderError(annotationurl)});
+        axios.get(`${annotationurl}?cb=${Date.now()}`).then(response => {
+          this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
+        }).catch(() => {this.renderError(annotationurl)});
       }
     },
     reload: function(){
