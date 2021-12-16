@@ -151,7 +151,11 @@ export default {
         const anno = annoContent['anno'];
         const transcription = annoContent['transcription'];
         this.hastranscription = anno && transcription && anno != transcription;
-        if ((anno == '' && transcription == '' && (shown == 'anno' || shown == 'transcription')) || (this.settings.hide_annotationtext)){
+        if ((anno == '' && transcription == '' && (shown == 'anno' || shown == 'transcription'))){
+          this.shown = false;
+        } else if(Object.keys(this.tagslist).length == 0 && this.shown == 'tags'){
+          this.shown = false;
+        } else if (this.settings.hide_annotationtext){
           this.shown = false;
         }
       }
