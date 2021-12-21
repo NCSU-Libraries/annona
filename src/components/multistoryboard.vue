@@ -2,8 +2,8 @@
 <div id="multistoryboard" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.toolbarposition ? settings.toolbarposition + '_menu_container' : 'top_menu_container']">
   <toolbar></toolbar>
   <span class="storyboard_containers">
-    <div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
+    <div v-for="(anno, index) in anno_data" v-bind:key="anno.key" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block" v-if="anno_data.length > 0">
+     <storyboard v-if="annourls" v-bind:annotationurl="anno.annourl" v-bind:jsonannotation="anno.json" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
     </div>
     <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
       <div v-bind:id="image.id" class="seadragonbox"></div>
@@ -27,6 +27,7 @@ export default {
       'manifesturl':String,
       'annotationurls': String,
       'annotationlists': String,
+      'jsonannotations':Array,
       'styling': String,
       'ws': String,
       'layers': String,
@@ -72,11 +73,10 @@ export default {
         this.fullscreen = this.$parent.isfullscreen;
         this.$parent.updateFullScreen(this.fullscreen);
       }
-      this.annourls = this.annotationurls ? this.annotationurls : this.annotationlists;
-      var annotations = this.annourls.split(";");
-      this.anno_data = annotations.filter(function (el) {
-        return el != null && el != '';
-      });
+      const annourls = this.annotationurls ? this.annotationurls : this.annotationlists;
+      var annotations = annourls.split(";");
+      this.anno_data = this.checkAnnodata(annotations);
+      this.annourls = annourls;
       this.isreverse = this.$parent && this.$parent.viewingDirection == 'rtl' ? true : false;
       if (this.isreverse){
         this.boardnumber = "updateme";
@@ -105,6 +105,21 @@ export default {
       this.widthvar = `${parseFloat((100/(this.anno_data.length + this.allimages.length)))}%`;
     },
     methods: {
+      checkAnnodata: function(annotations){
+        var anno_data = []
+        for (var ani=0; ani<annotations.length; ani++){
+          const annotation = annotations[ani];
+          if (annotation != null && annotation != ''){
+            const json = shared.tryJsonParse(annotation);
+            if (json.constructor === String){
+              anno_data.push({'annourl': annotation, 'json': '', 'key': annotation}) 
+            } else {
+              anno_data.push({'annourl': '', 'json': json, 'key': shared.getId(json)}) 
+            }
+          }
+        }
+        return anno_data
+      },
       // move annotations and image viewers based on bounds
       moveArea (bounds, ignore) {
         if (!this.settings.continousboard) {

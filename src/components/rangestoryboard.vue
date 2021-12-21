@@ -12,7 +12,7 @@
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest" :jsonannotations="annotationurl.jsonann"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
@@ -111,6 +111,7 @@ export default {
         var listtype = contents['@type'] ? contents['@type'] : contents['type'];
         this.listtype = listtype;
         if (listtype.toLowerCase().indexOf('manifest') > -1){
+          this.settings.perpage = this.settings.perpage ? this.settings.perpage : 1;
           this.getManifestData(contents);
         } else if (listtype == 'storyboardlist') {
           for (var rl =0; rl<contents['items'].length; rl++){
@@ -156,8 +157,10 @@ export default {
         for (var an=0; an<otherContent.length; an++){
           var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
-            for (var h=0; h<anno.length; h++){
-              this.addToLists(anno[h], this.$props.rangeurl, otherContent[an]['canvas']);
+            if (anno.length == 1){
+              this.addToLists(anno[0], this.$props.rangeurl, otherContent[an]['canvas']);
+            } else {
+              this.addToLists(anno[0], this.$props.rangeurl, otherContent[an]['canvas'], anno);
             }
           } else{
             this.addToLists(anno, this.$props.rangeurl, otherContent[an]['canvas']);
@@ -166,11 +169,11 @@ export default {
         this.setDefaults(manifest);
         this.manifestcontents = manifest;
       },
-      addToLists: function(anno, manifesturl, canvas) {
+      addToLists: function(anno, manifesturl, canvas, otherLists=false) {
         var thumbnail;
         if(anno.resources || anno.items || anno.body){
           var jsonanno = anno; 
-        } else {
+        } else if (!otherLists){
           var annourl = shared.getId(anno);
         }
         if (canvas){
@@ -194,7 +197,7 @@ export default {
         toclabel = shared.parseMetaFields(toclabel);
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
-        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
+        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, otherLists: otherLists});
         if (this.settings.perpage){
           const startpage = parseInt(position/this.settings.perpage)*this.settings.perpage;
           const endpage = startpage + this.settings.perpage;
@@ -206,6 +209,35 @@ export default {
         }
       },
       setDefaults: function(data) {
+        const otlist = this.rangelist[this.position].otherLists;
+        var processedlists = 0;
+        if (otlist && !this.rangelist[this.position]['annotationurls']){
+          for (var ol=0; ol<otlist.length; ol++){
+            const list = shared.getId(otlist[ol]);
+            axios.get(`${list}?cb=${Date.now()}`).then(response => {
+              this.compkey -= 1;
+              if (!this.rangelist[this.position]['annotationurls']){
+                this.rangelist[this.position]['annotationurls'] = JSON.stringify(response.data);
+              } else {
+                var parsedAnnos = JSON.parse(this.rangelist[this.position]['annotationurls']);
+                parsedAnnos['resources'] = parsedAnnos['resources'].concat(response.data['resources']);
+                parsedAnnos['@id'] += `,${response.data['@id']}`
+                this.rangelist[this.position]['annotationurls'] = JSON.stringify(parsedAnnos);
+              }
+              processedlists += 1
+              console.log(processedlists)
+              if (otlist.length == processedlists){
+                this.setDefaults2(data);
+              }              
+            }).catch((error) => {console.log(error);});
+          }
+          
+        } else {
+          this.annotationurl = this.rangelist[this.position];
+          this.setDefaults2(data)
+        }
+      },
+      setDefaults2: function(data) {
         var viewingDirection = data.viewingDirection;
         if(viewingDirection === 'right-to-left'){
           this.viewingDirection = 'rtl';
@@ -223,6 +255,7 @@ export default {
         this.getStylingString();
         this.rangelist.length == 1 || this.rangelist.length <= this.settings.perpage ? this.nextPageInactive = true : '';
         this.ready = true;
+        this.compkey = this.position;
       },
       getRangeData: function(rangelist) {
         var annos = rangelist.contentLayer ? rangelist.contentLayer.otherContent: rangelist.items;
@@ -248,8 +281,7 @@ export default {
           }
           this.position = prevornext;
         }
-        this.compkey = this.position;
-        this.annotationurl = this.rangelist[this.position];
+        this.setDefaults(this.rangelist);
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getTitle();
         this.getStylingString();
