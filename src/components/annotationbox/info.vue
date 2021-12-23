@@ -8,7 +8,7 @@
     <div v-if="parent.booleanitems.additionalinfoshown" v-html="parent.settings.additionalinfo" class="imageinfo"></div>
     <button class="infolink buttonlink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'tocshown'});" v-if="parent.basecompontent.range && parent.basecompontent.toc.length > 1">{{parent.basecompontent.toctitle}}</button>
     <div v-if="parent.booleanitems.tocshown" class="tocinfo">
-        <div v-for="(toc, index) in parent.basecompontent.toc" v-bind:key="toc.position" v-bind:id="'data_' + toc.position">
+        <div v-for="(toc, index) in parent.basecompontent.toc" :key="index" v-bind:id="'data_' + toc.position">
         <div class="title">
             <button class="buttonlink" v-on:click="parent.basecompontent.nextItemRange(toc.position);">
             <img v-bind:src="toc.thumbnail" v-if="toc.thumbnail" style="max-width: 30px;">{{index+1}}. {{toc.label}}

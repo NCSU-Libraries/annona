@@ -1,61 +1,9 @@
 <template>
   <span id="header_toolbar" v-if="!$parent.settings.hide_toolbar" v-bind:class="menuclass">
-    <button v-if="$parent.shortcuts['autorun']" id="autoRunButton" v-on:click="$parent.sendMessage($parent.shortcuts['autorun']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.autorun"></span>
-      <span class="toolbartext">Start/Stop Autorun</span>
-    </button>
-    <button v-if="$parent.shortcuts['reload']" id="autoRunButton" v-on:click="$parent.sendMessage($parent.shortcuts['reload']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.reload"></span>
-      <span class="toolbartext">Reload</span>
-    </button>
-    <button v-on:click="$parent.sendMessage($parent.shortcuts['info']['function']);" v-if="$parent.shortcuts['info']"  id="infoButton" class="toolbarButton">
-      <span v-html="$parent.buttons.info"></span>
-      <span class="toolbartext">View source image information</span>
-    </button>
-    <button v-on:click="$parent.sendMessage($parent.shortcuts['tags']['function']);" id="tagsButton" v-if="$parent.shortcuts['tags']" class="toolbarButton">
-      <span v-html="$parent.buttons.tags"></span>
-      <span class="toolbartext">Toggle Tags</span>
-    </button>
-    <button v-if="$parent.shortcuts['overlay']" id="overlayButton" v-on:click="$parent.sendMessage($parent.shortcuts['overlay']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.overlay"></span>
-      <span class="toolbartext">Toggle Overlays</span>
-    </button>
-    <button v-if="$parent.shortcuts['textoverlay']" id="textOverlayButton" v-on:click="$parent.sendMessage($parent.shortcuts['textoverlay']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.textoverlay"></span>
-      <span class="toolbartext">Toggle OCR Overlays</span>
-    </button>
-    <button v-if="$parent.shortcuts['layers']" id="layerButton" v-on:click="$parent.sendMessage($parent.shortcuts['layers']['function']);" class="toolbarButton">
-      <span v-html="$parent.buttons.layers"></span>
-      <span class="toolbartext">View layers</span>
-    </button>
-    <button v-if="$parent.shortcuts['zoomin']" v-on:click="$parent.sendMessage($parent.shortcuts['zoomin']['function']);" id="zoomInButton" class="toolbarButton">
-      <i class="fas fa-search-plus"></i>
-      <span class="toolbartext">Zoom in</span>
-    </button>
-    <button v-if="$parent.shortcuts['zoomout']" v-on:click="$parent.sendMessage($parent.shortcuts['zoomout']['function']);" id="zoomOutButton" class="toolbarButton">
-      <i class="fas fa-search-minus"></i>
-      <span class="toolbartext">Zoom out</span>
-    </button>
-    <button v-if="$parent.shortcuts['home']" v-on:click="$parent.sendMessage($parent.shortcuts['home']['function'])" id="homeZoomButton" class="toolbarButton">
-      <i class="fas fa-home"></i>
-      <span class="toolbartext">View full image</span>
-    </button>
-    <button v-if="$parent.shortcuts['prev']" id="previousButton" v-on:click="$parent.sendMessage($parent.shortcuts['prev']['function']);" v-bind:class="{ 'inactive' : $parent.prev_inactive }" class="toolbarButton">
-      <i class="fa fa-arrow-left"></i>
-      <span class="toolbartext">Previous Annotation</span>
-    </button>
-    <button v-if="$parent.shortcuts['next']" id="nextButton" v-on:click="$parent.sendMessage($parent.shortcuts['next']['function']);" v-bind:class="{ 'inactive' : $parent.next_inactive }" class="toolbarButton">
-      <i class="fa fa-arrow-right"></i>
-      <span class="toolbartext">Next Annotation</span>
-    </button>
-    <button v-if="$parent.shortcuts['keyboard']" v-on:click="$parent.sendMessage($parent.shortcuts['keyboard']['function']);"  id="keyboardShortcutsButton" class="toolbarButton">
-      <span v-html="$parent.buttons.keyboard"></span>
-      <span class="toolbartext">Toggle keyboard shortcuts</span>
-    </button>
-    <button v-if="$parent.shortcuts['fullscreen']" v-on:click="$parent.sendMessage($parent.shortcuts['fullscreen']['function']);"  id="fullScreenButton" class="toolbarButton">
-      <span v-if="!$parent.fullscreen" v-html="$parent.buttons.expand"></span>
-      <span v-else v-html="$parent.buttons.compress"></span>
-      <span class="toolbartext">Toggle fullscreen</span>
+    <button v-bind:class="{ 'inactive' : (key == 'next' && $parent.next_inactive) || (key == 'prev' && $parent.prev_inactive) }" v-for="key in toolbarbuttons" :key="key" v-if="$parent.shortcuts[key]" :id="key + 'Button'" v-on:click="$parent.sendMessage($parent.shortcuts[key]['function']);" class="toolbarButton">
+      <span v-if="$parent.buttons[key]" v-html="$parent.buttons[key]"></span>
+      <span v-else v-html="$parent.shortcuts[key]['icon']"></span>
+      <span class="toolbartext">{{$parent.shortcuts[key].label}}</span>
     </button>
   </span>
 </template>
@@ -63,9 +11,11 @@
 
 export default {
   name: 'toolbar',
+  props: ['parent'],
   data: function() {
     return {
-      menuclass: 'default_menu'
+      menuclass: 'default_menu',
+      toolbarbuttons: ['autorun', 'reload', 'info', 'tags', 'overlay', 'textoverlay', 'layers', 'zoomin', 'zoomout', 'home', 'prev', 'next', 'keyboard', 'perpage', 'fullscreen'],
     }
   },
   mounted() {

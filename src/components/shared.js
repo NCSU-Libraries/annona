@@ -13,10 +13,8 @@ export default {
     'overlay': '<i class="fas fa-toggle-off"></i>',
     'overlayoff': '<i class="fas fa-toggle-on"></i>',
     'textoverlay': '<i class="fas fa-align-justify"></i>',
-    'expand' : '<i class="fas fa-expand"></i>',
     'annooff': '<i class="fas fa-pen-nib"></i>',
     'anno': '<i class="fas fa-file-alt"></i>',
-    'compress' : '<i class="fas fa-compress"></i>',
     'hide' : '<i class="fas fa-caret-up"></i>',
     'hideoff' : '<i class="fas fa-caret-down"></i>',
     'collapsehide' : '<i class="fas fa-caret-left"></i>',
@@ -28,8 +26,11 @@ export default {
     'info': '<i class="fas fa-info-circle"></i>',
     'layers': '<i class="fas fa-layer-group"></i>',
     'keyboard': '<i class="fas fa-keyboard"></i>',
-    'prev' : '<i class="fas fa-chevron-left"></i>',
-    'next': '<i class="fas fa-chevron-right"></i>'
+    'rangeprev' : '<i class="fas fa-chevron-left"></i>',
+    'rangenext': '<i class="fas fa-chevron-right"></i>',
+    'perpage': '<i class="fas fa-book-open"></i>',
+    'fullscreen': '<i class="fas fa-expand"></i>',
+    'fullscreenoff': '<i class="fas fa-compress"></i>'
   },
   booleanitems: {
     isexcerpt: false,
@@ -703,11 +704,9 @@ export default {
   matchCanvasData: function(imagetitle, canvas, canvases) {
     var title = imagetitle;
     var images = canvas.images ? canvas.images : this.flatten(canvas.items.map(element => element['items']));
-    if (!imagetitle){
-      title = canvas.label;
-      title = this.getValueField(title);
-      title = title && title !== imagetitle && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
-    }
+    title = canvas.label;
+    title = this.getValueField(title);
+    title = title && title !== imagetitle && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
     return {'images': images, 'title': title}
   },
   matchCanvas: function(manifest, canvas, imagetitle, images) {
@@ -743,29 +742,29 @@ export default {
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
     //openseadragon : a, f, s, d, r, R, w, arrows, 0, -, shift w, shift s,s shift up/down arrows
-    // k, q, u, w, y are open
+    // k, q, u, w are open
     var shortcuts = {
-      'autorun': {'icon': buttons['autorun'], 'label': 'Auto Run',
+      'autorun': {'icon': buttons['autorun'], 'label': 'Start/Stop Autorun',
         'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': vueinfo.settings.autorun_interval}},
       'reload': {'icon': buttons['reload'], 'label': 'Reload',
         'shortcut': ['j', 'shift+1'], 'function': {'function':'reload', 'args': ''}},
-      'info': {'icon': buttons['info'], 'label': 'Info Button', 
+      'info': {'icon': buttons['info'], 'label': 'View source image information',
         'shortcut': ['i', '2'], 'function': {'function': 'clickButton', 'args': 'info'}},
-      'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'Home',
+      'home' : {'icon': '<i class="fas fa-home"></i>', 'label': 'View full image',
         'shortcut': ['h', '0'], 'function': {'function': 'zoom', 'args': 'home'}},
       'zoomin' : {'icon': '<i class="fas fa-search-plus"></i>', 'label': 'Zoom In',
         'shortcut': ['z', '+', 'shift+ArrowUp'], 'function': {'function': 'zoom', 'args': 'in'}},
       'zoomout' :{'icon': '<i class="fas fa-search-minus"></i>', 'label': 'Zoom Out',
         'shortcut': ['m', '-', 'shift+ArrowDown'], 'function': {'function': 'zoom', 'args': 'out'}},
-      'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous',
+      'prev' : {'icon': '<i class="fa fa-arrow-left"></i>', 'label': 'Previous Annotation',
         'shortcut': ['p', ',', 'shift+ArrowLeft'], 'function': {'function': 'next', 'args': 'prev'}},
-      'next' : {'icon': '<i class="fa fa-arrow-right"></i>', 'label': 'Next',
+      'next' : {'icon': '<i class="fa fa-arrow-right"></i>', 'label': 'Next Annotation',
         'shortcut': ['n', '.', 'shift+ArrowRight'], 'function':{'function': 'next', 'args': 'next'}},
       'overlay': {'icon': buttons['overlay'], 'label': 'Toggle overlays',
         'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
-      'keyboard' : {'icon': buttons['keyboard'], 'label': 'Keyboard Shortcuts',
+      'keyboard' : {'icon': buttons['keyboard'], 'label': 'Toggle Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}},
-      'fullscreen' : {'icon': buttons['expand'], 'label': 'Fullscreen',
+      'fullscreen' : {'icon': buttons['fullscreen'], 'label': 'Toggle Fullscreen',
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
       'hide' : {'icon': buttons['hide'], 'label': 'Collapse text',
         'shortcut': ['c', '7'], 'function': {'function': 'hide', 'args': ''}},
@@ -773,11 +772,11 @@ export default {
         'shortcut': ['x', '6'], 'function': {'function': 'close', 'args': '', 'run': true}}
     }
     if ((type == 'storyboard' && Object.keys(vueinfo.tagslist).length > 0) || (type=='multistoryboard' && vueinfo.tags)){
-      shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Tags', 
+      shortcuts['tags'] = {'icon': buttons['tags'], 'label': 'Toggle Tags',
         'shortcut': ['t', '3'], 'function': {'function': 'clickButton', 'args': 'tags'}};
     }
     if ((type == 'storyboard' && vueinfo.layerslist.length > 1) || (type=='multistoryboard' && vueinfo.layerslist)){
-      shortcuts['layers'] = {'icon': buttons['layers'], 'label': 'Layers', 
+      shortcuts['layers'] = {'icon': buttons['layers'], 'label': 'View Avaliable Layers',
         'shortcut': ['l', '5'], 'function': {'function': 'clickButton', 'args': 'layers'}};
     }
     if (vueinfo.settings.tts){
@@ -802,13 +801,21 @@ export default {
           'shortcut': ['e', '`'], 'function': {'function': 'toggletranscription', 'args': ''}};
       }
     }
+    if (vueinfo.settings.perpage){
+      shortcuts['perpage'] = {'icon': buttons.perpage, 'label': 'Switch the number of pages shown',
+          'shortcut': ['y'], 'function': {'function': 'clickButton', 'args': 'perpage'}};
+    }
     if (annotation.length == 0) {
       delete shortcuts['prev'];
       delete shortcuts['next'];
       delete shortcuts['overlay'];
       delete shortcuts['autorun'];
     }
-    if (vueinfo.settings.continousboard){
+    if (vueinfo.settings.perpage){
+      if (vueinfo.settings.perpage > 1){
+        delete shortcuts['autorun'];
+      }
+    } else if (vueinfo.settings.continousboard){
       delete shortcuts['autorun'];
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);

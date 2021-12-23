@@ -1,5 +1,5 @@
 <template>
-  <div v-bind:id="$parent.seadragonid + '_annotation'" class="annotation" v-bind:class="[$parent.booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', $parent.textposition, $parent.settings.toolbarposition ? $parent.settings.toolbarposition + '_menu_annotation' : '', $parent.settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="$parent.shown" tabindex="0">
+  <div v-bind:id="$parent.seadragonid + '_annotation'" class="annotation" v-bind:class="[$parent.booleanitems.isexcerpt ? 'excerpt' : 'fullcontent', $parent.textposition, $parent.settings.toolbarposition ? $parent.settings.toolbarposition + '_menu_annotation' : '', $parent.settings.hide_toolbar ? 'no_toolbar_annotation' : '']" v-show="$parent.shown && show" tabindex="0">
     <boxtoolbar v-if="!$parent.settings.hide_annocontrols && $parent.settings.hide_annocontrols !== true" :parent="$parent"></boxtoolbar>
     <div id="layers" v-if="$parent.shown == 'layers'" class="content">
       <div v-for="layer in $parent.layerslist" v-bind:key="layer.tile">
@@ -12,6 +12,7 @@
     <shortcuts v-if="$parent.shown == 'keyboard'" :parent="$parent"></shortcuts>
     <tags v-if="$parent.shown == 'tags'" :parent="$parent"></tags>
     <info v-if="$parent.shown == 'info'" :parent="$parent"></info>
+    <perpage v-if="$parent.shown == 'perpage' && show" :parent="$parent"></perpage>
     <div id='transcription' v-if="$parent.shown == 'transcription'" class="content" v-bind:class="$parent.currentanno.itemclass">
       <span v-if="!$parent.booleanitems.isexcerpt && !$parent.settings.transcription && !isscrollview" v-html="$parent.annoContent['transcription']"></span>
       <button v-for="(item, index) in transcriptions" v-bind:key="index" v-else-if="(!$parent.booleanitems.isexcerpt && $parent.settings.transcription) || isscrollview" v-on:click="$parent.sendMessage({'function':'next', 'args': index});" class="buttonastext" v-bind:class="[index == $parent.position && $parent.settings.annoview != 'scrollview' ? 'activeword' : '', $parent.settings.annoview == 'scrollview' ? 'scrolltext' :  'ocrlink']">
@@ -41,6 +42,7 @@ import textoverlay from './annotationbox/textoverlay.vue'
 import shortcuts from './annotationbox/shortcuts.vue'
 import tags from './annotationbox/tags.vue'
 import info from './annotationbox/info.vue'
+import perpage from './annotationbox/perpage.vue'
 
 export default {
   name: 'annotationbox',
@@ -49,7 +51,8 @@ export default {
       transcriptions: [],
       scrollitems: [],
       isscrollview: false,
-      updatedto: ''
+      updatedto: '',
+      show: true
     }
   },
   components: {
@@ -58,7 +61,8 @@ export default {
     textoverlay,
     shortcuts,
     tags,
-    info
+    info,
+    perpage
   },
   watch: {
    '$parent.annotations': function(){
@@ -66,6 +70,14 @@ export default {
     },
     '$parent.currentlang': function(){
       this.scrollContent(true);
+    },
+    '$parent.shown': function(newval) {
+      const single = ['perpage', 'textoverlay', 'keyboard']
+      if (this.$parent.$parent && this.$parent.$parent.multi && single.indexOf(newval) > -1){
+        this.show = this.$parent.$parent.boardchildren[0].seadragonid == this.$parent.seadragonid;
+      } else {
+        this.show = true;
+      }
     },
     '$parent.position': function(newval) {
       if (this.updatedto.toString() != newval.toString() && this.$refs[newval]){

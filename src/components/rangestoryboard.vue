@@ -18,11 +18,11 @@
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
   <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
-    <span v-html="buttons.prev"></span>
+    <span v-html="buttons.rangeprev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
   <button id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
-    <span v-html="buttons.next"></span>
+    <span v-html="buttons.rangenext"></span>
     <span class="toolbartext">Next Page</span>
   </button>
 </div>
@@ -78,6 +78,9 @@ export default {
       }
     },
     watch: {
+      'fullscreen': function(newval) {
+        this.buttons.fullscreen = newval ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
+      },
       'position': function(newval) {
         this.prevPageInactive = false;
         this.nextPageInactive = false;
@@ -153,6 +156,10 @@ export default {
             }
           }
         }
+        if (otherContent.length > 1){
+          this.settings.perpage = this.settings.perpage ? this.settings.perpage : 1;
+          this.settings.continousboard = this.settings.continousboard ? this.settings.continousboard : true;
+        }
         for (var an=0; an<otherContent.length; an++){
           var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
@@ -209,8 +216,8 @@ export default {
         var viewingDirection = data.viewingDirection;
         if(viewingDirection === 'right-to-left'){
           this.viewingDirection = 'rtl';
-          this.buttons.prev = this.buttons.next;
-          this.buttons.next = '<i class="fas fa-chevron-left"></i>';
+          this.buttons.rangeprev = shared.buttons['rangenext'];
+          this.buttons.rangenext = shared.buttons['rangeprev'];
         }
         this.annotationurl = this.rangelist[this.position];
         this.rangetitle = shared.parseMetaFields(data.label);
@@ -265,7 +272,7 @@ export default {
       },
       getTitle: function() {
         var title = this.rangetitle ? this.rangetitle : '';
-        if (this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') {
+        if ((this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') && (!this.settings.perpage || this.settings.perpage < 2)) {
           this.rangetitle && this.annotationurl.title ? title += ': ' : '';
           title += this.annotationurl.title ? this.annotationurl.title : '';
         }

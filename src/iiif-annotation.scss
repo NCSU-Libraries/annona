@@ -8,21 +8,22 @@ $seadrgon_height: 600px;
 $mid_pin: $pin_size/3 + px;
 $pin_font: $pin_size + px;
 $active_color: lightgreen;
-$borderwidth: 2px;
+$borderwidth: 0px;
+$toolbarborder: 2px;
 $marginbottomtoolbar: 2px;
 $toolbarfontsize: 1.5rem;
 $phonetoolbarfontsize: .79rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidth}*3.5 + #{$marginbottomtoolbar});
 $topphone: calc(#{$phonetoolbarfontsize} + #{$borderwidth}*3.2 + #{$marginbottomtoolbar});
 $annocontrolsize: 16px;
-$collapseheight: calc(#{$seadrgon_height} - #{$borderwidth} - #{$marginbottomtoolbar});
+$collapseheight: calc(#{$seadrgon_height} - #{$borderwidth});
 $sidebyside: calc(#{$seadrgon_height} + #{$toolbarfontsize} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
 $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borderwidth}*2 + #{$marginbottomtoolbar});
 
 .toolbarButton {
   font-size: $toolbarfontsize;
   background-color: #F0F0F0;
-  border: $borderwidth solid #D3D3D3;
+  border: $toolbarborder solid #D3D3D3;
   width: 100%;
   position: relative;
   padding: 0px;
@@ -151,7 +152,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
 .annotation {
   width: 20%;
   resize: both;
-  border: $borderwidth solid black;
+  border: 0px solid black;
   background: rgba(255, 255, 255, 0.9);
   position: absolute;
   left: 0px;
@@ -217,8 +218,8 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
 
 .overlay > svg > * {
   stroke-width: 3px;
-  stroke:$overlay_color;
   fill: none;
+  stroke:$overlay_color;
   vector-effect: non-scaling-stroke;
 }
 
@@ -233,10 +234,6 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   stroke: $active_color;
   -webkit-transform: scale(.994);
   transform: scale(.994);
-}
-
-.overlay > svg > * {
-  stroke-width: 3px;
 }
 
 .rect {

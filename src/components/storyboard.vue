@@ -71,7 +71,8 @@ export default {
       shortcuts: {},
       basecompontent: '',
       rendered: '',
-      leaflet: false
+      leaflet: false,
+      boardnumber: 0
     }
   },
   created() {
@@ -98,6 +99,9 @@ export default {
           this.basecompontent.booleanitems = shared.objectToNewObject(this.booleanitems);
         }
       }
+    },
+    fullscreen: function(newval) {
+      this.buttons.fullscreen = newval ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
     },
     textoverlay: {
       deep: true,
@@ -156,6 +160,8 @@ export default {
         } else if(Object.keys(this.tagslist).length == 0 && this.shown == 'tags'){
           this.shown = false;
         } else if (this.settings.hide_annotationtext){
+          this.shown = false;
+        } else if (this.layerslist.length < 2 && this.shown == 'layers') {
           this.shown = false;
         }
       }
@@ -589,7 +595,7 @@ export default {
       this.setDefaultButtons();
     },
     setDefaultButtons: function() {
-      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay']
+      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay', 'perpage']
       for (var fi=0; fi<fields.length; fi++){
         this.buttons[fields[fi]] = shared.buttons[fields[fi]];
       }
@@ -1019,8 +1025,11 @@ export default {
       } else {
         this.prev_inactive = false;
       }
-      if (this.$parent.multi && this.isautorunning) {
-       this.$parent.autoRunImages()
+      if (this.$parent.multi) {
+       if (this.isautorunning){
+        this.$parent.autoRunImages();
+       }
+       this.$parent.boardnumber = this.boardnumber;
       }
       if (this.settings.transcription) {
         this.$nextTick(() => {

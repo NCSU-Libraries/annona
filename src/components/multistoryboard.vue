@@ -54,7 +54,22 @@ export default {
         leaflet: false,
         boardnumber: 0,
         boardchildrenwithannos: [],
-        annourls: ''
+        annourls: '',
+        textoverlay: shared.objectToNewObject(shared.textoverlay)
+      }
+    },
+    watch: {
+      'fullscreen': function(newval) {
+        this.buttons.fullscreen = newval ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
+      },
+      textoverlay: {
+        deep: true,
+        handler: function(){
+          for (var i=0; i<this.boardchildrenwithannos.length; i++){
+            var children =this.boardchildrenwithannos[i];
+            children.textoverlay = shared.objectToNewObject(this.textoverlay);
+          }
+        }
       }
     },
     mounted(){
@@ -208,6 +223,12 @@ export default {
         this.prev_inactive = data.prev_inactive;
         this.next_inactive = this.boardchildrenwithannos[lastboard].next_inactive;
       },
+      addBoardNumber: function() {
+        this.boardchildrenwithannos = this.boardchildren.filter(board => board.annotations.length > 0);
+        for (var ba=0; ba<this.boardchildrenwithannos.length; ba++){
+          this.boardchildrenwithannos[ba].boardnumber = ba;
+        }
+      },
       sendMessageSeperate(e) {
         if (e['args'] == 'next' || e['args'] == 'prev'){
           this.boardchildrenwithannos[this.boardnumber].sendMessage(e);
@@ -223,7 +244,9 @@ export default {
       },
       //Sends message to each storyboard viewer and each image viewer
       sendMessage(e) {
-        this.boardchildrenwithannos = this.boardchildrenwithannos.length > 0 ? this.boardchildrenwithannos : this.boardchildren.filter(board => board.annotations.length > 0);
+        if (this.boardchildrenwithannos.length < 1){
+          this.addBoardNumber();
+        }
         this.boardnumber == "updateme" ? this.boardnumber = this.boardchildrenwithannos.length - 1 : '';
         const seperateFunctions = ["next"]
         if (e['function'] == 'toggle_fullscreen'){
