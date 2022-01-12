@@ -102,7 +102,7 @@ export default {
       if (this.$parent.settings.transcription || this.isscrollview || this.$parent.leaflet){
         if (reset){
           this.scrollitems = [];
-          this.transciptions = [];
+          this.transcriptions = [];
         }
         for (var an=0; an<this.$parent.annotations.length; an++){
           const transcript = this.$parent.createAnnoContent(this.$parent.annotations[an]);

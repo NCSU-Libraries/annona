@@ -1,6 +1,6 @@
 <template>
 <span id="annotation_controls">
-    <button v-bind:aria-label="parent.shortcuts[key]['label']" v-bind:class="{ 'inactive' : (key == 'next' && sendparent.next_inactive) || (key == 'prev' && sendparent.prev_inactive) }" v-for="key in toolbarbuttons" :key="key" v-if="parent.shortcuts[key]" :id="key + '_button'" v-on:click="sendparent.sendMessage(parent.shortcuts[key]['function']);" class="annocontrols_button">
+    <button v-bind:aria-label="parent.shortcuts[key]['label']" v-bind:class="{ 'inactive' : (key == 'next' && sendparent.next_inactive) || (key == 'prev' && sendparent.prev_inactive) }" v-for="key in filterButtons" :key="key" :id="key + '_button'" v-on:click="sendparent.sendMessage(parent.shortcuts[key]['function']);" class="annocontrols_button">
       <span v-if="parent.buttons[key]" v-html="parent.buttons[key]"></span>
       <span v-else v-html="parent.shortcuts[key]['icon']"></span>
     </button>
@@ -24,6 +24,11 @@ export default {
     },
     created() {
        this.sendparent = this.parent.$parent.multi ? this.parent.$parent : this.parent;
+    },
+    computed: {
+        filterButtons: function() {
+            return this.toolbarbuttons.filter(elem => this.parent.shortcuts && this.parent.shortcuts[elem])
+        }
     }
 }
 </script>

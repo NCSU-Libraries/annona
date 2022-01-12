@@ -80,6 +80,8 @@ export default {
     if (this.basecompontent && this.basecompontent.range){
       if (!this.$parent.multi){
         this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
+      } else {
+        this.buttons.fullscreen = this.$parent.fullscreen ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
       }
       this.textoverlay = shared.objectToNewObject(this.basecompontent.textoverlay);
       this.booleanitems = shared.objectToNewObject(this.basecompontent.booleanitems);
@@ -129,14 +131,14 @@ export default {
     }
   },
   methods: {
-    loadAnnotation: function() {
+    loadAnnotation: function(newseadragon=true) {
       var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
       var isURL = shared.isURL(annotationurl, this.settings);
       this.seadragonid = 'storyboard_' + isURL['id'];
       this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
       if(isURL['isURL']){
         axios.get(`${annotationurl}?cb=${Date.now()}`).then(response => {
-          this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
+          this.parseAnnoData(response.data, annotationurl, isURL['isURL'], newseadragon)
         }).catch(() => {this.renderError(annotationurl)});
       }
     },
@@ -144,10 +146,15 @@ export default {
       if (this.basecompontent.range){
         this.basecompontent.compkey = `reload${this.basecompontent.compkey + 1}`;
       } else {
-        this.compkey += 1;
         this.annotations = [];
-        this.layerslist = [];
-        this.loadAnnotation();
+        this.currentanno = '';
+        var spinner = document.createElement('div');
+        spinner.id = "spinner";
+        spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
+        spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
+        const elemclass = this.$parent.multi ? 'storyboard_containers' : 'openseadragon-container';
+        document.getElementById(this.seadragonid).getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
+        this.loadAnnotation(false);
       }
     },
     checkForText: function(shown, annoContent) {
@@ -182,8 +189,7 @@ export default {
         this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
     },
-    parseAnnoData: function(annotation, annotationurl, isURL){
-      this.imagetitle = this.settings.title ? this.imagetitle : annotation.label;
+    parseAnnoData: function(annotation, annotationurl, isURL, newseadragon=true){
       var anno = shared.getAnnotations(annotation);
       //Get basic annotation information
       this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}
@@ -242,10 +248,21 @@ export default {
       }
       //If manifest link avaliable use getManifestData() function to match canvas to image.
       //Else use image link listed in the annotation.
-      if (manifestlink) {
-        this.getManifestData(manifestlink, canvas, canvasId);
+      if (newseadragon){
+        if (manifestlink) {
+          this.getManifestData(manifestlink, canvas, canvasId);
+        } else {
+          this.buildseadragon(canvas);
+        }
       } else {
-        this.buildseadragon(canvas);
+        this.onSeadragonOpen();
+      }
+      //Checks to see if there is a setting title, if not set the title to label
+      //If rangestoryboard with multiple pages, add annotation label to title
+      const label = annotation['label'] ? annotation['label'] : annotation['@label'];
+      this.imagetitle = this.settings.title ? this.imagetitle : label;
+      if (this.settings.perpage && this.settings.perpage > 1 && label) {
+        this.imagetitle += ` : ${label}`
       }
     },
     tagslistShortcuts: function() {
@@ -294,7 +311,13 @@ export default {
       });
       // on viewer open
       viewer.addHandler('open', function(){
-        if (vue.settings.imagecrop) {
+        vue.onSeadragonOpen();
+      });
+    },
+    onSeadragonOpen: function() {
+      var vue = this;
+      var fit = this.settings.fit == 'fill' ? true : false;
+      if (vue.settings.imagecrop) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
           var tiledImage = vue.viewer.world.getItemAt(0);
           tiledImage.setClip(new openseadragon.Rect(cropxywh[0], cropxywh[1], cropxywh[2], cropxywh[3]));
@@ -341,7 +364,10 @@ export default {
           vue.next(vue.position);
           vue.clickButton(shown);
         }
-      });
+        const spinner = document.getElementById("spinner");
+        if (spinner){
+          spinner.remove();
+        }
     },
     // reposition viewer to coordinates; This is for the multistoryboard and websocket viewers
     reposition: function(rect = false) {
@@ -1029,7 +1055,6 @@ export default {
        if (this.isautorunning){
         this.$parent.autoRunImages();
        }
-       this.$parent.boardnumber = this.boardnumber;
       }
       if (this.settings.transcription) {
         this.$nextTick(() => {
