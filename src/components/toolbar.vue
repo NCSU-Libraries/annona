@@ -1,6 +1,6 @@
 <template>
   <span id="header_toolbar" v-if="!$parent.settings.hide_toolbar && $parent.shortcuts" v-bind:class="menuclass">
-    <button v-bind:class="{ 'inactive' : (key == 'next' && $parent.next_inactive) || (key == 'prev' && $parent.prev_inactive) }" v-for="key in filteredButtons" :key="key" :id="key + 'Button'" v-on:click="$parent.sendMessage($parent.shortcuts[key]['function']);" class="toolbarButton">
+    <button v-bind:class="[{ 'inactive' : (key == 'next' && $parent.next_inactive) || (key == 'prev' && $parent.prev_inactive) }, $parent.toolbardisabled ? 'toolbardisabled': 'toolbaractive']" v-for="key in filteredButtons" :key="key" :id="key + 'Button'" v-on:click="$parent.sendMessage($parent.shortcuts[key]['function']);" class="toolbarButton">
       <span v-if="$parent.buttons[key]" v-html="$parent.buttons[key]"></span>
       <span v-else v-html="$parent.shortcuts[key]['icon']"></span>
       <span class="toolbartext">{{$parent.shortcuts[key].label}}</span>

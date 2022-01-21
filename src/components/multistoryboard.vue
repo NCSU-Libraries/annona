@@ -55,7 +55,8 @@ export default {
         boardnumber: 0,
         boardchildrenwithannos: [],
         annourls: '',
-        textoverlay: shared.objectToNewObject(shared.textoverlay)
+        textoverlay: shared.objectToNewObject(shared.textoverlay),
+        toolbardisabled: false
       }
     },
     watch: {
@@ -254,12 +255,15 @@ export default {
         } else if (this.settings.continousboard && seperateFunctions.indexOf(e['function']) > -1){
           this.sendMessageSeperate(e);
         } else {
+          const isshown = this.boardchildren.some(elem => elem.shown == e['args']);
           for (var i=0; i<this.boardchildren.length; i++){
             if (e['function'] == 'clickButton' && !this.boardchildren[i].shortcuts[e["args"]]){
               //pass
-            } else {
-              this.boardchildren[i].sendMessage(e);
+              if (isshown){
+                this.boardchildren[i].shown = e['args'];
+              }
             }
+            this.boardchildren[i].sendMessage(e);
           }
         }
         for (var k=0; k<this.viewers.length; k++){

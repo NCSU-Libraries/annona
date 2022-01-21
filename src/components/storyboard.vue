@@ -72,7 +72,8 @@ export default {
       basecompontent: '',
       rendered: '',
       leaflet: false,
-      boardnumber: 0
+      boardnumber: 0,
+      toolbardisabled: false
     }
   },
   created() {
@@ -146,8 +147,15 @@ export default {
       if (this.basecompontent.range){
         this.basecompontent.compkey = `reload${this.basecompontent.compkey + 1}`;
       } else {
+        this.toolbardisabled = true;
         this.annotations = [];
         this.currentanno = '';
+        this.annoinfo = {'text': '', 'annodata': []};
+        if (this.$parent.multi){
+          this.$parent.boardnumber = 0;
+          this.$parent.toolbardisabled = true;
+        }
+        this.next(-1);
         var spinner = document.createElement('div');
         spinner.id = "spinner";
         spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
@@ -255,7 +263,7 @@ export default {
           this.buildseadragon(canvas);
         }
       } else {
-        this.onSeadragonOpen();
+        this.onSeadragonOpen(false);
       }
       //Checks to see if there is a setting title, if not set the title to label
       //If rangestoryboard with multiple pages, add annotation label to title
@@ -274,10 +282,8 @@ export default {
       if (this.$parent.multi) {
         Object.keys(this.tagslist).length > 0 ? this.$parent.tags = true : '';
         this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent);
-        this.shortcuts = this.$parent.shortcuts;
-      } else {
-        this.shortcuts = shared.keyboardShortcuts('storyboard', this);
       }
+      this.shortcuts = shared.keyboardShortcuts('storyboard', this);
     },
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
@@ -314,17 +320,17 @@ export default {
         vue.onSeadragonOpen();
       });
     },
-    onSeadragonOpen: function() {
+    onSeadragonOpen: function(updateImage=true) {
       var vue = this;
       var fit = this.settings.fit == 'fill' ? true : false;
-      if (vue.settings.imagecrop) {
+      if (vue.settings.imagecrop && updateImage) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
           var tiledImage = vue.viewer.world.getItemAt(0);
           tiledImage.setClip(new openseadragon.Rect(cropxywh[0], cropxywh[1], cropxywh[2], cropxywh[3]));
           vue.zoom('home');
         }
         // add layers to viewer.
-        if (vue.layerslist && vue.layerslist.length > 0){
+        if (vue.layerslist && vue.layerslist.length > 0 && updateImage){
           vue.addLayers();
         }
         // Set view fit
@@ -366,6 +372,12 @@ export default {
         }
         const spinner = document.getElementById("spinner");
         if (spinner){
+          this.toolbardisabled = false;
+          if (this.$parent.multi){
+            if(this.$parent.boardchildren.every(elem => elem.toolbardisabled == false)){
+              this.$parent.toolbardisabled = false;
+            }
+          }
           spinner.remove();
         }
     },
@@ -903,7 +915,7 @@ export default {
           functions.goToArea(rect);
           functions.reposition(rect);
           //This is for multistoryboard views. updates the position and data.
-          if (functions.$parent.multi && !functions.settings.continousboard) {
+          if (functions.$parent.multi && (!functions.settings.continousboard || functions.settings.perpage == 1)) {
             var children = functions.$parent.boardchildren;
             functions.$parent.next_inactive = functions.next_inactive;
             functions.$parent.prev_inactive = functions.prev_inactive;

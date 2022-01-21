@@ -9,7 +9,7 @@
     <th>Icon</th>
     <th>Keyboard shortcuts</th>
     </tr>
-    <tr v-for="(value, key) in parent.shortcuts" v-bind:id="key + '_tags'" v-bind:key="key" class="keyboard">
+    <tr v-for="(value, key) in shortcuts" v-bind:id="key + '_tags'" v-bind:key="key" class="keyboard">
     <td>
         <span class="shortcuticon" v-html="value.icon + ' (' + value.label + ')'"></span>
     </td>
@@ -21,6 +21,14 @@
 <script>
 
 export default {
-    props: ['parent']
+    props: ['parent'],
+    data: function() {
+        return {
+            shortcuts: []
+        }
+    },
+    created() {
+        this.shortcuts = this.parent.$parent.multi ? this.parent.$parent.shortcuts : this.parent.shortcuts;
+    }
 }
 </script>
