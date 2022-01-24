@@ -66,7 +66,7 @@ export default {
   },
   watch: {
    '$parent.annotations': function(){
-      this.scrollContent();
+      this.scrollContent(this.$parent.annotations.length == 0);
     },
     '$parent.currentlang': function(){
       this.scrollContent(true);

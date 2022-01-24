@@ -160,7 +160,6 @@ export default {
         spinner.id = "spinner";
         spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
         spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
-        const elemclass = this.$parent.multi ? 'storyboard_containers' : 'openseadragon-container';
         document.getElementById(this.seadragonid).getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
         this.loadAnnotation(false);
       }

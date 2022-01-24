@@ -193,7 +193,8 @@ export default {
           } 
           var firstcanvas = canvas.images ? canvas.images[0] : canvas.items ? canvas.items[0].items[0] : undefined;
           if (canvas['thumbnail']){
-            thumbnail = shared.getId(canvas['thumbnail'][0])
+            const thumbDict = Array.isArray(canvas['thumbnail']) ? canvas['thumbnail'][0] : canvas['thumbnail'];
+            thumbnail = shared.getId(thumbDict)
           } else if(firstcanvas) {
             thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
           }

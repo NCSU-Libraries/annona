@@ -195,7 +195,7 @@ describe('Component', () => {
       await wrapper.vm.$nextTick();
       await flushPromises();
       var data = wrapper.vm.$data;
-      expect(wrapper.find('.toolbarButton').html()).toEqual('<button id="autorunButton" class="toolbarButton"><span><i class="fas fa-magic"></i></span> <span class="toolbartext">Start/Stop Autorun</span></button>')
+      expect(wrapper.find('.toolbarButton').html()).toEqual('<button id="autorunButton" class="toolbarButton toolbaractive"><span><i class="fas fa-magic"></i></span> <span class="toolbartext">Start/Stop Autorun</span></button>')
       expect(Object.keys(data.tagslist).length).toEqual(6)
       //expect(data.tagslist.church.checked).toBe(true)
       expect(data.seadragontile).toBe("https://repository.duke.edu/iipsrv/iipsrv.fcgi?IIIF=/srv/perkins/repo_deriv/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee/info.json")
