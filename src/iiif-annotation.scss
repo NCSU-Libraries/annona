@@ -8,7 +8,7 @@ $seadragon_width: 100%;
 $seadrgon_height: 600px;
 $mid_pin: $pin_size/3 + px;
 $pin_font: $pin_size + px;
-$active_color: lightgreen;
+$active_color: yellow;
 $borderwidth: 0px;
 $toolbarborder: 2px;
 $marginbottomtoolbar: 2px;
@@ -231,10 +231,15 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   fill: none;
 }
 .active > svg .svgactive {
-  stroke-width: 5px!important;
+  stroke-width: 8px!important;
   stroke: $active_color;
-  -webkit-transform: scale(.994);
-  transform: scale(.994);
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  stroke-dasharray: 1;
+}
+
+.overlay > svg > * {
+  stroke-width: 3px;
 }
 
 .rect {
@@ -495,16 +500,18 @@ figcaption {
 }
 
 .active.rect {
-  outline: 2px solid $active_color!important;
+  outline: 2px dotted $active_color!important;
   outline-offset: -4px;
 }
 
 .active.pin {
   -webkit-text-stroke: .1rem $active_color;
+  stroke-dasharray: 1;
 }
 
 .pin.overlay.active circle, rect {
   stroke: $active_color!important;
+  stroke-dasharray: 1;
 }
 
 .top, .bottom, .right, .left {
