@@ -2,27 +2,27 @@
 <div v-bind:id="rangeid" class="rangestoryboard annonaview" v-bind:class="[!settings.fullpage && !isfullscreen ? 'rangestoryboardview' : 'rangefullpage']">
   <span v-if="listtype == 'storyboardlist'" v-bind:key="position" style="width: 100vw">
     <span v-if="rangelist[position]['tag'] == 'iiif-storyboard'">
-      <storyboard :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers"></storyboard>
+      <storyboard v-bind:key="compkey" :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers"></storyboard>
     </span>
     <span v-else-if="rangelist[position]['tag'] == 'iiif-multistoryboard'">
-      <multistoryboard :annotationurls="annotationurl.annotationurls" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers" v-bind:images="annotationurl.images"></multistoryboard>
+      <multistoryboard v-bind:key="compkey" :annotationurls="annotationurl.annotationurls" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" v-bind:ws="annotationurl.ws" v-bind:layers="annotationurl.layers" v-bind:images="annotationurl.images"></multistoryboard>
     </span>
     <span v-else-if="rangelist[position]['tag'] == 'iiif-annotation'">
-      <iiifannotation :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" ></iiifannotation>
+      <iiifannotation v-bind:key="compkey" :annotationurl="annotationurl.annotationurl" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:manifesturl="annotationurl.manifesturl" v-bind:styling="stylingstring" ></iiifannotation>
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="position" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
-    <storyboard v-bind:key="position" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
+    <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
   <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
-    <span v-html="buttons.prev"></span>
+    <span v-html="buttons.rangeprev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
   <button id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
-    <span v-html="buttons.next"></span>
+    <span v-html="buttons.rangenext"></span>
     <span class="toolbartext">Next Page</span>
   </button>
 </div>
@@ -62,6 +62,7 @@ export default {
         prevPageInactive: true,
         nextPageInactive: false,
         rangeid: '',
+        compkey: 0,
         customlayers: '',
         isfullscreen: false,
         manifestcontents: '',
@@ -77,6 +78,9 @@ export default {
       }
     },
     watch: {
+      'fullscreen': function(newval) {
+        this.buttons.fullscreen = newval ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
+      },
       'position': function(newval) {
         this.prevPageInactive = false;
         this.nextPageInactive = false;
@@ -152,11 +156,21 @@ export default {
             }
           }
         }
+        if (otherContent.length > 1){
+          this.settings.perpage = this.settings.perpage ? this.settings.perpage : 1;
+          this.settings.continousboard = this.settings.continousboard ? this.settings.continousboard : true;
+        }
         for (var an=0; an<otherContent.length; an++){
           var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
-            for (var h=0; h<anno.length; h++){
-              this.addToLists(anno[h], this.$props.rangeurl, otherContent[an]['canvas']);
+            if (this.settings.listnumber) {
+              const listnumb = this.settings.listnumber - 1;
+              const list = anno[listnumb] ? anno[listnumb] : "https://nolist.com";
+              this.addToLists(list, this.$props.rangeurl, otherContent[an]['canvas'], anno);
+            } else {
+              for (var h=0; h<anno.length; h++){
+                this.addToLists(anno[h], this.$props.rangeurl, otherContent[an]['canvas']);
+              }
             }
           } else{
             this.addToLists(anno, this.$props.rangeurl, otherContent[an]['canvas']);
@@ -165,7 +179,7 @@ export default {
         this.setDefaults(manifest);
         this.manifestcontents = manifest;
       },
-      addToLists: function(anno, manifesturl, canvas) {
+      addToLists: function(anno, manifesturl, canvas, otherContent=false) {
         var thumbnail;
         if(anno.resources || anno.items || anno.body){
           var jsonanno = anno; 
@@ -179,7 +193,8 @@ export default {
           } 
           var firstcanvas = canvas.images ? canvas.images[0] : canvas.items ? canvas.items[0].items[0] : undefined;
           if (canvas['thumbnail']){
-            thumbnail = shared.getId(canvas['thumbnail'][0])
+            const thumbDict = Array.isArray(canvas['thumbnail']) ? canvas['thumbnail'][0] : canvas['thumbnail'];
+            thumbnail = shared.getId(thumbDict)
           } else if(firstcanvas) {
             thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
           }
@@ -187,12 +202,14 @@ export default {
         const position = this.rangelist.length;
         if (canvasid == this.startCanvas){
             this.position = position;
+            this.compkey = position;
         }
-        var toclabel = anno['label'] ? anno['label'] : canvas && canvas['label'] ? canvas['label'] : `Page ${position + 1}`;
+        const annolabel = this.getLabel(anno);
+        var toclabel = annolabel ? annolabel : canvas && canvas['label'] ? canvas['label'] : `Page ${position + 1}`;
         toclabel = shared.parseMetaFields(toclabel);
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
-        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel});
+        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, 'otherLists': otherContent});
         if (this.settings.perpage){
           const startpage = parseInt(position/this.settings.perpage)*this.settings.perpage;
           const endpage = startpage + this.settings.perpage;
@@ -203,12 +220,15 @@ export default {
           }
         }
       },
+      getLabel: function(item) {
+        return item['label'] ? item['label'] : item['@label'] ? item['@label'] : '';
+      },
       setDefaults: function(data) {
         var viewingDirection = data.viewingDirection;
         if(viewingDirection === 'right-to-left'){
           this.viewingDirection = 'rtl';
-          this.buttons.prev = this.buttons.next;
-          this.buttons.next = '<i class="fas fa-chevron-left"></i>';
+          this.buttons.rangeprev = shared.buttons['rangenext'];
+          this.buttons.rangenext = shared.buttons['rangeprev'];
         }
         this.annotationurl = this.rangelist[this.position];
         this.rangetitle = shared.parseMetaFields(data.label);
@@ -246,6 +266,7 @@ export default {
           }
           this.position = prevornext;
         }
+        this.compkey = this.position;
         this.annotationurl = this.rangelist[this.position];
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getTitle();
@@ -262,7 +283,7 @@ export default {
       },
       getTitle: function() {
         var title = this.rangetitle ? this.rangetitle : '';
-        if (this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') {
+        if ((this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') && (!this.settings.perpage || this.settings.perpage < 2)) {
           this.rangetitle && this.annotationurl.title ? title += ': ' : '';
           title += this.annotationurl.title ? this.annotationurl.title : '';
         }

@@ -2,6 +2,7 @@
 module.exports = {
 
   get: jest.fn((url) => {
+  url = url.split('?cb')[0]
   if (url === 'paragraph.json') {
         return Promise.resolve({
             data: {"resource":{"@type":"cnt:ContentAsText","format":"text/plain","chars":"Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A."},"on":{"@id":"https://wellcomelibrary.org/iiif/b1948799x/canvas/c0#xywh=310,1250,1850,1180","@type":"sc:Canvas","within":{"@id":"https://wellcomelibrary.org/iiif/b1948799x/manifest","@type":"sc:Manifest"}}}

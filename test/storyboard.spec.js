@@ -129,7 +129,7 @@ describe('Component', () => {
       expect(data.annotations[0]['tags'].length).toEqual(0)
       expect(data.annotations.length).toEqual(1)
       expect(data.annotations[0]['ocr'][0]).toContain('Jim Watson and I have probably made a')
-      wrapper.find('#textOverlayButton').trigger('click');
+      wrapper.find('#textoverlayButton').trigger('click');
       await wrapper.vm.$nextTick()
       await flushPromises();
       expect(data.shown).toEqual('textoverlay')
@@ -195,7 +195,7 @@ describe('Component', () => {
       await wrapper.vm.$nextTick();
       await flushPromises();
       var data = wrapper.vm.$data;
-      expect(wrapper.find('.toolbarButton').html()).toEqual('<button id="autoRunButton" class="toolbarButton"><span><i class="fas fa-magic"></i></span> <span class="toolbartext">Start/Stop Autorun</span></button>')
+      expect(wrapper.find('.toolbarButton').html()).toEqual('<button id="autorunButton" class="toolbarButton toolbaractive"><span><i class="fas fa-magic"></i></span> <span class="toolbartext">Start/Stop Autorun</span></button>')
       expect(Object.keys(data.tagslist).length).toEqual(6)
       //expect(data.tagslist.church.checked).toBe(true)
       expect(data.seadragontile).toBe("https://repository.duke.edu/iipsrv/iipsrv.fcgi?IIIF=/srv/perkins/repo_deriv/multires_image/40/58/a6/28/4058a628-c593-463e-9736-8a821e178fee/info.json")
@@ -238,7 +238,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Meet the Pack One Last Look</div></span>")
       expect(shared.createContent(data.annotations[1], null)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">Player proﬁles of all members of the Remember the exciting ﬁnal year of men’s and women’s basketball teams the “Fire & Ice” backoourt</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual( ["autorun", "info", "overlay", "zoomin", "textoverlay", "zoomout", "home", "prev", "next", "fullscreen", "close", "hide", "keyboard"].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual( ["autorun", "reload", "info", "overlay", "zoomin", "textoverlay", "zoomout", "home", "prev", "next", "fullscreen", "close", "hide", "keyboard"].sort())
       wrapper.destroy()
     })
     test('test storyboard with transcription', async ()  => {
@@ -269,7 +269,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       expect(shared.createContent(data.annotations[1], null)['anno']).toEqual("<span style=\"direction: ltr;\"><div id=\"ocr\">MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'next', 'overlay', 'prev', 'keyboard', 'transcription', 'textoverlay', 'zoomin', 'zoomout'].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'next', 'overlay', 'prev', 'keyboard', 'transcription', 'textoverlay', 'zoomin', 'zoomout'].sort())
       wrapper.setData({'position': 2, 'currentanno': data.annotations[2], 'shown': 'anno'});
       await wrapper.vm.$nextTick()
       expect(wrapper.vm._computedWatchers.annoContent.value['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span>")
@@ -283,6 +283,7 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       expect(wrapper.find('.content').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <div> <div> <div id=\"storyboard_recogito-map-0\" style=\"height: 180px; display: none;\"></div> </div> <div> <!----> </div> <div> <!----> </div> </div> </div>")
       expect(data.shown).toEqual('anno')
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'next', 'overlay', 'prev', 'keyboard', 'transcription', 'textoverlay', 'zoomin', 'zoomout'].sort())
     })
 
     test('test storyboard with regular image', async ()  => {
@@ -310,7 +311,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"authorship\">Written by: mary</div><div class=\"tags\">Tags: Dome, cathedral</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'reload','close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
     })
 
     test('test storyboard with nested tags and css styling', async ()  => {
@@ -339,7 +340,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
     })
 
     test('test storyboard with nested tags and css styling and styling override', async ()  => {
@@ -369,7 +370,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout', 'reload'].sort())
     })
 
     test('test storyboard with nested tags and css styling and non nested tags', async ()  => {
@@ -399,7 +400,7 @@ describe('Component', () => {
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: test variable</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout', 'reload'].sort())
     })
     test('test storyboard with mutliple settings', async ()  => {
 
@@ -428,6 +429,6 @@ describe('Component', () => {
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: test variable</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
-      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
+      expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout', 'reload'].sort())
     })
 })

@@ -1,7 +1,7 @@
 <template>
 <div id="storyboard_viewer" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'storyboard_viewer' : 'fullpage']">
   <div style="position:relative;" v-bind:class="[!settings.annoview || shown == false ? 'defaultview' : settings.annoview == 'sidebyside' || settings.annoview == 'scrollview' ? 'sidebyside' : 'collapse']">
-    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative">
+    <div v-bind:id="seadragonid" v-bind:class="[!settings.fullpage && !fullscreen ? 'seadragonbox' : 'seadragonboxfull', settings.toolbarposition && !$parent.multi ? settings.toolbarposition + '_menu_container' : 'default_menu_container']" style="position:relative" v-bind:key="compkey">
       <toolbar v-if="!$parent.multi"></toolbar>
       <div v-if="rendered" v-html="rendered" style="position: relative; top: 50%;text-align: center;"></div>
       <annotationbox v-if="settings.annoview != 'sidebyside' && settings.annoview != 'scrollview'"></annotationbox>
@@ -46,6 +46,7 @@ export default {
       seadragonid: '',
       annotations: [],
       currentanno: '',
+      compkey: 0,
       hastranscription: false,
       textposition: 'corner',
       prev_inactive: true,
@@ -70,7 +71,9 @@ export default {
       shortcuts: {},
       basecompontent: '',
       rendered: '',
-      leaflet: false
+      leaflet: false,
+      boardnumber: 0,
+      toolbardisabled: false
     }
   },
   created() {
@@ -78,32 +81,20 @@ export default {
     if (this.basecompontent && this.basecompontent.range){
       if (!this.$parent.multi){
         this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);
+      } else {
+        this.buttons.fullscreen = this.$parent.fullscreen ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
       }
       this.textoverlay = shared.objectToNewObject(this.basecompontent.textoverlay);
       this.booleanitems = shared.objectToNewObject(this.basecompontent.booleanitems);
     }
-    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
     this.settings = shared.getsettings(this, this.$parent.multi);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     isIE ? this.settings.tts = false : '';
     this.imagetitle = this.settings.title ? this.settings.title : '';
-    var isURL = shared.isURL(annotationurl, this.settings);
-    this.seadragonid = 'storyboard_' + isURL['id'];
-    this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
     this.settings.annoview == 'collapse' ? this.buttons.hide = '<i class="fas fa-caret-left"></i>' : '';
-    if(isURL['isURL']){
-      axios.get(annotationurl).then(response => {
-        this.parseAnnoData(response.data, annotationurl, isURL['isURL'])
-      }).catch(() => {this.renderError(annotationurl)});
-    }
+    this.loadAnnotation();
   },
   watch: {
-    annoContent: function(newVal) {
-      this.hastranscription = newVal['anno'] && newVal['transcription'] && newVal['anno'] != newVal['transcription'];
-      if ((newVal['anno'] == '' && newVal['transcription'] == '' && (this.shown == 'anno' || this.shown == 'transcription')) || (this.settings.hide_annotationtext)){
-        this.shown = false;
-      }
-    },
     booleanitems: {
       deep: true,
       handler: function(){
@@ -111,6 +102,9 @@ export default {
           this.basecompontent.booleanitems = shared.objectToNewObject(this.booleanitems);
         }
       }
+    },
+    fullscreen: function(newval) {
+      this.buttons.fullscreen = newval ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
     },
     textoverlay: {
       deep: true,
@@ -138,6 +132,54 @@ export default {
     }
   },
   methods: {
+    loadAnnotation: function(newseadragon=true) {
+      var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
+      var isURL = shared.isURL(annotationurl, this.settings);
+      this.seadragonid = 'storyboard_' + isURL['id'];
+      this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
+      if(isURL['isURL']){
+        axios.get(`${annotationurl}?cb=${Date.now()}`).then(response => {
+          this.parseAnnoData(response.data, annotationurl, isURL['isURL'], newseadragon)
+        }).catch(() => {this.renderError(annotationurl)});
+      }
+    },
+    reload: function(){
+      if (this.basecompontent.range){
+        this.basecompontent.compkey = `reload${this.basecompontent.compkey + 1}`;
+      } else {
+        this.toolbardisabled = true;
+        this.annotations = [];
+        this.currentanno = '';
+        this.annoinfo = {'text': '', 'annodata': []};
+        if (this.$parent.multi){
+          this.$parent.boardnumber = 0;
+          this.$parent.toolbardisabled = true;
+        }
+        this.next(-1);
+        var spinner = document.createElement('div');
+        spinner.id = "spinner";
+        spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
+        spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
+        document.getElementById(this.seadragonid).getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
+        this.loadAnnotation(false);
+      }
+    },
+    checkForText: function(shown, annoContent) {
+      if (this.settings.startenddisplay != shown){
+        const anno = annoContent['anno'];
+        const transcription = annoContent['transcription'];
+        this.hastranscription = anno && transcription && anno != transcription;
+        if ((anno == '' && transcription == '' && (shown == 'anno' || shown == 'transcription'))){
+          this.shown = false;
+        } else if(Object.keys(this.tagslist).length == 0 && this.shown == 'tags'){
+          this.shown = false;
+        } else if (this.settings.hide_annotationtext){
+          this.shown = false;
+        } else if (this.layerslist.length < 2 && this.shown == 'layers') {
+          this.shown = false;
+        }
+      }
+    },
     checksubgrouptags: function(key) {
       const groupdict = this.groupTagDict[key];
       const tagstotoggle = groupdict.tags;
@@ -154,8 +196,7 @@ export default {
         this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
     },
-    parseAnnoData: function(annotation, annotationurl, isURL){
-      this.imagetitle = this.settings.title ? this.imagetitle : annotation.label;
+    parseAnnoData: function(annotation, annotationurl, isURL, newseadragon=true){
       var anno = shared.getAnnotations(annotation);
       //Get basic annotation information
       this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}
@@ -166,7 +207,7 @@ export default {
         var ondict = shared.on_structure(anno[i]);
         var canvasId = shared.getCanvasId(anno[i]);
         var sections = [];
-        var content_data = shared.chars(anno[i]);
+        var content_data = shared.chars(anno[i], this.currentlang);
         var type = content_data['type'] ? content_data['type'] : 'rect';
         var svg_path = [];
         //get SVG paths for each canvas; add svg path to list for each annotation
@@ -208,16 +249,27 @@ export default {
       if(lang_drops.length > 0){
         var all_langs = shared.flatten(this.annotations.map(element => element.textual_body.map(els => els.language)));
         var lang = all_langs.filter(element => element != undefined && navigator.language.indexOf(element.toLowerCase()) > -1);
-        this.currentlang = lang.length > 0 ? lang[0] : all_langs[0];
+        this.currentlang = this.currentlang ? this.currentlang : lang.length > 0 ? lang[0] : all_langs[0];
         var all_drop = shared.flatten(lang_drops, 'languages');
         this.languages = Array.from(new Set(all_drop));
       }
       //If manifest link avaliable use getManifestData() function to match canvas to image.
       //Else use image link listed in the annotation.
-      if (manifestlink) {
-        this.getManifestData(manifestlink, canvas, canvasId);
+      if (newseadragon){
+        if (manifestlink) {
+          this.getManifestData(manifestlink, canvas, canvasId);
+        } else {
+          this.buildseadragon(canvas);
+        }
       } else {
-        this.buildseadragon(canvas);
+        this.onSeadragonOpen(false);
+      }
+      //Checks to see if there is a setting title, if not set the title to label
+      //If rangestoryboard with multiple pages, add annotation label to title
+      const label = annotation['label'] ? annotation['label'] : annotation['@label'];
+      this.imagetitle = this.settings.title ? this.imagetitle : label;
+      if (this.settings.perpage && this.settings.perpage > 1 && label) {
+        this.imagetitle += ` : ${label}`
       }
     },
     tagslistShortcuts: function() {
@@ -229,10 +281,8 @@ export default {
       if (this.$parent.multi) {
         Object.keys(this.tagslist).length > 0 ? this.$parent.tags = true : '';
         this.$parent.shortcuts = shared.keyboardShortcuts('multistoryboard', this.$parent);
-        this.shortcuts = this.$parent.shortcuts;
-      } else {
-        this.shortcuts = shared.keyboardShortcuts('storyboard', this);
       }
+      this.shortcuts = shared.keyboardShortcuts('storyboard', this);
     },
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
@@ -266,14 +316,20 @@ export default {
       });
       // on viewer open
       viewer.addHandler('open', function(){
-        if (vue.settings.imagecrop) {
+        vue.onSeadragonOpen();
+      });
+    },
+    onSeadragonOpen: function(updateImage=true) {
+      var vue = this;
+      var fit = this.settings.fit == 'fill' ? true : false;
+      if (vue.settings.imagecrop && updateImage) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
           var tiledImage = vue.viewer.world.getItemAt(0);
           tiledImage.setClip(new openseadragon.Rect(cropxywh[0], cropxywh[1], cropxywh[2], cropxywh[3]));
           vue.zoom('home');
         }
         // add layers to viewer.
-        if (vue.layerslist && vue.layerslist.length > 0){
+        if (vue.layerslist && vue.layerslist.length > 0 && updateImage){
           vue.addLayers();
         }
         // Set view fit
@@ -307,9 +363,22 @@ export default {
           vue.changeLang(vue.currentlang);
         }
         if (vue.settings.startposition != undefined) {
-          vue.next(vue.settings.startposition -1)
+          vue.next(vue.settings.startposition -1);
+        } else if (vue.position != -1) {
+          const shown = vue.shown;
+          vue.next(vue.position);
+          vue.clickButton(shown);
         }
-      });
+        const spinner = document.getElementById("spinner");
+        if (spinner){
+          this.toolbardisabled = false;
+          if (this.$parent.multi){
+            if(this.$parent.boardchildren.every(elem => elem.toolbardisabled == false)){
+              this.$parent.toolbardisabled = false;
+            }
+          }
+          spinner.remove();
+        }
     },
     // reposition viewer to coordinates; This is for the multistoryboard and websocket viewers
     reposition: function(rect = false) {
@@ -563,7 +632,7 @@ export default {
       this.setDefaultButtons();
     },
     setDefaultButtons: function() {
-      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay']
+      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay', 'perpage']
       for (var fi=0; fi<fields.length; fi++){
         this.buttons[fields[fi]] = shared.buttons[fields[fi]];
       }
@@ -845,7 +914,7 @@ export default {
           functions.goToArea(rect);
           functions.reposition(rect);
           //This is for multistoryboard views. updates the position and data.
-          if (functions.$parent.multi && !functions.settings.continousboard) {
+          if (functions.$parent.multi && (!functions.settings.continousboard || functions.settings.perpage == 1)) {
             var children = functions.$parent.boardchildren;
             functions.$parent.next_inactive = functions.next_inactive;
             functions.$parent.prev_inactive = functions.prev_inactive;
@@ -993,8 +1062,10 @@ export default {
       } else {
         this.prev_inactive = false;
       }
-      if (this.$parent.multi && this.isautorunning) {
-       this.$parent.autoRunImages()
+      if (this.$parent.multi) {
+       if (this.isautorunning){
+        this.$parent.autoRunImages();
+       }
       }
       if (this.settings.transcription) {
         this.$nextTick(() => {
@@ -1118,7 +1189,9 @@ export default {
         annocontent = createContent['anno'];
       }
       annocontent = annocontent ? annocontent : transcriptcontent;
-      return {'anno': annocontent, 'transcription': transcriptcontent };
+      const annoContent = {'anno': annocontent, 'transcription': transcriptcontent }
+      this.checkForText(this.shown, annoContent);
+      return annoContent;
     }
   },
   computed: {
