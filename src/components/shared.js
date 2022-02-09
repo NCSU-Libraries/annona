@@ -660,7 +660,7 @@ export default {
       id = settings.customid ? settings.customid : parseString['@id'] ? parseString['@id'] : parseString['id'] ? parseString['id'] : Math.random().toString(36).substring(7);
     }
     id = id.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","")
-    return {'isURL': isURL, 'json': parseString, 'id': id.replace(/[~`!@#$%^&*()+={}\[\];:\'\"<>.,\/\\\?-_]/g, '')};
+    return {'isURL': isURL, 'json': parseString, 'id': id.replace(/[~`!@#$%^&*()+={};:'"<>.,?]/g, '')};
   },
   parseInput: function(annotation) {
     try {
