@@ -22,7 +22,7 @@
     "babel-preset-env": "^1.7.0",
     "document-register-element": "^1.14.10",
     "iso-language-codes": "^1.0.7",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.2",
     "sass-loader": "^7.1.0",
