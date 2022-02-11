@@ -87,7 +87,7 @@ export default {
         if (newval <= 0){
           this.prevPageInactive = true;
         }
-        const onpage = this.settings.perpage ? newval + this.settings.perpage : newval;
+        const onpage = this.settings.perpage && this.settings.perpage != 1 ? newval + this.settings.perpage : newval;
         if (onpage >= this.rangelist.length-1){
           this.nextPageInactive = true;
         }
