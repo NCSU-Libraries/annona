@@ -2,12 +2,12 @@
 @import "css/textoverlay.scss";
 @import "css/toolbar.scss";
 
-$pin_size: 25;
+$pin_size: 25px;
 $overlay_color: lightblue;
 $seadragon_width: 100%;
 $seadrgon_height: 600px;
-$mid_pin: $pin_size/3 + px;
-$pin_font: $pin_size + px;
+$mid_pin: calc($pin_size/3);
+$pin_font: $pin_size;
 $active_color: yellow;
 $borderwidth: 0px;
 $toolbarborder: 2px;
@@ -578,7 +578,7 @@ figcaption {
 
 @media only screen and (max-width: 600px) {
   .defaultview .annotation:not(.right):not(.left):not(.bottom):not(.top) {
-    width: calc(100% - #{$borderwidth} - #{$borderwidth/2})!important;
+    width: calc(100% - #{$borderwidth}*1.5)!important;
     height: auto!important;
     max-height: 33%!important;
 

@@ -22,9 +22,9 @@
     "babel-preset-env": "^1.7.0",
     "document-register-element": "^1.14.10",
     "iso-language-codes": "^1.0.7",
-    "node-sass": "^4.14.1",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.2",
+    "sass": "^1.49.7",
     "sass-loader": "^7.1.0",
     "socket.io-client": "^2.4.0",
     "truncate-html": "^1.0.2",
@@ -33,6 +33,7 @@
     "webpack": "^4.46.0"
   },
   "devDependencies": {
+    "eslint-plugin-vue": "^8.4.1",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-service": "^3.8.0",
