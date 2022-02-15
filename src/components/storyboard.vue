@@ -189,9 +189,9 @@ export default {
         }
       }
     },
-    renderError: function(url) {
-      if (this.basecompontent.manifestcontents){
-        this.getManifestData(this.manifesturl)
+    renderError: function(url, stop=false) {
+      if ((this.basecompontent.manifestcontents || this.manifesturl) && !stop){
+        this.getManifestData(this.manifesturl);
       } else {
         this.rendered = `There was a error with <a href="${url}">${url}</a>`;
       }
@@ -697,12 +697,24 @@ export default {
           this.manifestDataFunctions(manifestlink, this.basecompontent.manifestcontents, canvas, canvasId)
         } else {
           axios.get(manifestlink).then(canvas_data => {
-            this.manifestDataFunctions(manifestlink, canvas_data.data, canvas, canvasId)
-          }).catch(() => {this.renderError(manifestlink)});
+            if (!canvas) {
+              var images = ''
+              var canvases = shared.getAllCanvases(canvas_data.data);
+              for (var ca=0; ca<canvases.length; ca++){
+                var annotationids = shared.getManifestAnnotations(canvases[ca]).map(elem => shared.getId(elem))
+                if (annotationids.indexOf(this.annotationurl) > -1){
+                  canvas = canvases[ca];
+                  images = canvas;
+                  canvasId = shared.getId(canvases[ca]);
+                }
+              }
+            }
+            this.manifestDataFunctions(manifestlink, canvas_data.data, canvas, canvasId, images)
+          }).catch(() => {this.renderError(manifestlink, true)});
         }
     },
     manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {
-      this.getImageInfo(canvas_data, manifestlink)
+      this.getImageInfo(canvas_data, manifestlink);
       var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images);
       this.imagetitle = get_canvas['title'];
       var canvsimgs = get_canvas['images'];

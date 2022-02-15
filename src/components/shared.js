@@ -709,6 +709,12 @@ export default {
     title = title && title !== imagetitle && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
     return {'images': images, 'title': title}
   },
+  getAllCanvases: function(manifest) {
+    return manifest['items'] ? this.flatten(manifest['items']) : this.flatten(manifest['sequences'].map(element => element['canvases']));
+  },
+  getManifestAnnotations: function(canvas) {
+    return canvas['otherContent'] ? canvas['otherContent'] : canvas['annotations'];
+  },
   matchCanvas: function(manifest, canvas, imagetitle, images) {
     var canvases = manifest.sequences ? manifest.sequences[0].canvases : manifest.items;
     var title = imagetitle;

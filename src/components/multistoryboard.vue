@@ -3,7 +3,7 @@
   <toolbar></toolbar>
   <span class="storyboard_containers">
     <div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifesturl"></storyboard>
+      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifests[index]"></storyboard>
     </div>
     <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
       <div v-bind:id="image.id" class="seadragonbox"></div>
@@ -40,6 +40,7 @@ export default {
         isws: '',
         prev_inactive: true,
         next_inactive: false,
+        manifests: [],
         anno_data: [],
         buttons: JSON.parse(JSON.stringify(shared.buttons)),
         settings: {},
@@ -90,6 +91,12 @@ export default {
       }
       this.annourls = this.annotationurls ? this.annotationurls : this.annotationlists;
       var annotations = this.annourls.split(";");
+      this.manifests = this.manifesturl ? this.manifesturl.split(";") : [''];
+      if (this.manifests.length < annotations.length){
+        for (var i=1; i<annotations.length; i++){
+          this.manifests.push(this.manifests[0])
+        }
+      }
       this.anno_data = annotations.filter(function (el) {
         return el != null && el != '';
       });

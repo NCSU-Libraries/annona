@@ -12,7 +12,7 @@
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.manifest"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
@@ -145,10 +145,10 @@ export default {
         if (manifest['sequences'] || manifest['items']){
           const startCanvas = manifest['items'] ? manifest['items']['start'] : manifest['sequences'][0]['startCanvas'];
           this.startCanvas = startCanvas ? shared.getId(startCanvas) : startCanvas;
-          var canvases = manifest['items'] ? shared.flatten(manifest['items']) : shared.flatten(manifest['sequences'].map(element => element['canvases']));
+          var canvases = shared.getAllCanvases(manifest);
           for (var cv=0; cv<canvases.length; cv++){
             var canvas = canvases[cv];
-            var annotationfield = canvas['otherContent'] ? canvas['otherContent'] : canvas['annotations'];
+            var annotationfield = shared.getManifestAnnotations(canvas);
             if (annotationfield){
               otherContent.push({'oc': annotationfield, 'canvas': canvas});
             } else {
@@ -215,7 +215,8 @@ export default {
           const endpage = startpage + this.settings.perpage;
           for (var sp=startpage; sp<endpage; sp++){
             if (this.rangelist[sp]){
-              this.rangelist[sp].annotationurls = this.rangelist.slice(startpage, endpage).map(elem => elem.anno).join(";")
+              this.rangelist[sp].annotationurls = this.rangelist.slice(startpage, endpage).map(elem => elem.anno).join(";");
+              this.rangelist[sp].allmanifests = this.rangelist.slice(startpage, endpage).map(elem => elem.manifest).join(";");
             }
           }
         }
