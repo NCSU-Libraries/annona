@@ -1,3 +1,5 @@
+import '@ungap/custom-elements'
+
 import Vue from 'vue'
 import app from './iiiflibrary.vue'
 

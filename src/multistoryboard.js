@@ -1,3 +1,4 @@
+import '@ungap/custom-elements'
 import Vue from 'vue'
 import vueCustomElement from 'vue-custom-element'
 import multistoryboard from './components/multistoryboard.vue'
