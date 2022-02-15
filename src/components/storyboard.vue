@@ -167,6 +167,7 @@ export default {
     removeSpinner: function() {
       const spinner = document.getElementById("spinner");
       if (spinner){
+        this.tagslistShortcuts();
         this.toolbardisabled = false;
         if (this.$parent.multi){
           if(this.$parent.boardchildren.every(elem => elem.toolbardisabled == false)){

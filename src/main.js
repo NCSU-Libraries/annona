@@ -1,6 +1,3 @@
-import "@babel/polyfill";
-import 'document-register-element/build/document-register-element';
-
 import Vue from 'vue'
 import app from './iiiflibrary.vue'
 
