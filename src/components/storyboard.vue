@@ -140,7 +140,7 @@ export default {
       if(isURL['isURL']){
         axios.get(`${annotationurl}?cb=${Date.now()}`).then(response => {
           this.parseAnnoData(response.data, annotationurl, isURL['isURL'], newseadragon)
-        }).catch(() => {this.renderError(annotationurl)});
+        }).catch(() => {if (newseadragon) {this.renderError(annotationurl) } else {this.removeSpinner();} });
       }
     },
     reload: function(){
@@ -162,6 +162,18 @@ export default {
         spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
         document.getElementById(this.seadragonid).getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
         this.loadAnnotation(false);
+      }
+    },
+    removeSpinner: function() {
+      const spinner = document.getElementById("spinner");
+      if (spinner){
+        this.toolbardisabled = false;
+        if (this.$parent.multi){
+          if(this.$parent.boardchildren.every(elem => elem.toolbardisabled == false)){
+            this.$parent.toolbardisabled = false;
+          }
+        }
+        spinner.remove();
       }
     },
     checkForText: function(shown, annoContent) {
@@ -369,16 +381,7 @@ export default {
           vue.next(vue.position);
           vue.clickButton(shown);
         }
-        const spinner = document.getElementById("spinner");
-        if (spinner){
-          this.toolbardisabled = false;
-          if (this.$parent.multi){
-            if(this.$parent.boardchildren.every(elem => elem.toolbardisabled == false)){
-              this.$parent.toolbardisabled = false;
-            }
-          }
-          spinner.remove();
-        }
+        this.removeSpinner();
     },
     // reposition viewer to coordinates; This is for the multistoryboard and websocket viewers
     reposition: function(rect = false) {
