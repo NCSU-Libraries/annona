@@ -751,7 +751,7 @@ module.exports = {
         ],
         "stylesheet": {
           "type": "CssStylesheet",
-          "value": ".tag .points {color: blue;}"
+          "value": ".tag .points {color: blue;} .tag .points3 {color: yellow;}"
         },
         "target": {
           "id": "/image/",

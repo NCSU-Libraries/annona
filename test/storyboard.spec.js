@@ -1,8 +1,8 @@
-import { mount } from '@vue/test-utils';
+import '@babel/polyfill'
 
+import { mount } from '@vue/test-utils';
 import storyboard from '../src/components/storyboard.vue';
 import shared from '../src/components/shared.js'
-
 import flushPromises from 'flush-promises';
 let consoleSpy;
 describe('Component', () => {
@@ -14,9 +14,10 @@ describe('Component', () => {
       height: 4586
       // whatever other props you need
     });
+
     const div = document.createElement('div');
     div.id = 'root'
-    document.body.appendChild(div)
+    document.body.appendChild(div);
   })
     test('test storyboard with mirador list', async ()  => {
       const wrapper =  mount(storyboard,{
@@ -284,6 +285,7 @@ describe('Component', () => {
       expect(wrapper.find('.content').html().replace(/[\r\n]/gm, " ").replace(/[  ]{2,}/gm, " ")).toEqual("<div id=\"annotation_text\" class=\"content\" style=\"\"><span><span style=\"direction: ltr;\"><div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div></span></span> <div> <div> <div id=\"storyboard_recogito-map-0\" style=\"height: 180px; display: none;\"></div> </div> <div> <!----> </div> <div> <!----> </div> </div> </div>")
       expect(data.shown).toEqual('anno')
       expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'next', 'overlay', 'prev', 'keyboard', 'transcription', 'textoverlay', 'zoomin', 'zoomout'].sort())
+      wrapper.destroy()
     })
 
     test('test storyboard with regular image', async ()  => {
@@ -312,20 +314,24 @@ describe('Component', () => {
       expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"authorship\">Written by: mary</div><div class=\"tags\">Tags: Dome, cathedral</div></span>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
       expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'reload','close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
+      wrapper.destroy()
     })
 
     test('test storyboard with nested tags and css styling', async ()  => {
-
       const wrapper =  mount(storyboard,{
         propsData: {
           annotationurl: 'cssnestedtags.json'
         },
         attachTo: document.getElementById('root')
       })
-      
-      await wrapper.vm.$nextTick()
-      await flushPromises()
-      var data = wrapper.vm.$data
+      var doc = document.implementation.createHTMLDocument(""),
+      styleElement = document.createElement("style");
+      styleElement.textContent = 'testing';
+      // the style will only be parsed once it is added to a document
+      doc.body.appendChild(styleElement);
+      await wrapper.vm.$nextTick();
+      await flushPromises();
+      var data = wrapper.vm.$data;
       data.booleanitems.annoinfoshown = true;
       expect(data.seadragontile).toBe("/image/info.json")
       expect(data.annotations[0]['section']).toEqual(["740,566,3997,4586"])
@@ -335,12 +341,13 @@ describe('Component', () => {
       expect(data.annotations[0]['tags'].length).toEqual(1)
       expect(data.annotations.length).toEqual(2)
       expect(data.currentanno).toEqual('')
-      expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
+      expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "yellow", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "blue", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
       var contentpos1 = shared.createContent(data.annotations[0], null);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
-      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;} .tag .points3 {color: yellow;}</style>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
       expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout'].sort())
+      wrapper.destroy()
     })
 
     test('test storyboard with nested tags and css styling and styling override', async ()  => {
@@ -352,7 +359,7 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      
+
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -368,13 +375,13 @@ describe('Component', () => {
       expect(data.tagslist).toEqual({"points3": {"checked": false, "color": "red", "count": 1, "group": "Points", "key": "points3", "label": "3"}, "points5": {"checked": false, "color": "white", "count": 1, "group": "Points", "key": "points5", "label": "5"}})
       var contentpos1 = shared.createContent(data.annotations[0], null);
       expect(contentpos1['anno']).not.toEqual(contentpos1['transcription'])
-      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;}</style>")
+      expect(contentpos1['anno']).toEqual("<span style=\"direction: ltr;\"><div class=\"tags\">Tags: 3</div></span><style>.tag .points {color: blue;} .tag .points3 {color: yellow;}</style>")
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
       expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout', 'reload'].sort())
+      wrapper.destroy();
     })
 
     test('test storyboard with nested tags and css styling and non nested tags', async ()  => {
-
       const wrapper =  mount(storyboard,{
         propsData: {
           annotationurl: 'cssnestedandnonested.json',
@@ -382,7 +389,6 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -402,6 +408,7 @@ describe('Component', () => {
       const shortcuts = shared.keyboardShortcuts('storyboard', wrapper.vm);
       expect(Object.keys(shortcuts).sort()).toEqual(['autorun', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'tags', 'zoomin', 'zoomout', 'reload'].sort())
     })
+
     test('test storyboard with mutliple settings', async ()  => {
 
       const wrapper =  mount(storyboard,{

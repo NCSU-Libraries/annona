@@ -131,21 +131,17 @@ export default {
     return (div.textContent || div.innerText || "").trim();
   },
   colorDict: function (styleContent, styleclass) {
-    var doc = document.implementation.createHTMLDocument(""),
-    styleElement = document.createElement("style");
-    styleElement.textContent = styleContent;
-    // the style will only be parsed once it is added to a document
-    doc.body.appendChild(styleElement);
-    var rules = styleElement.sheet.cssRules;
+    const regex = /([\s\S]*?){([\s\S]*?)}/gm;
+    const rules = [...styleContent.matchAll(regex)];
     var colordict = {}
     var stylesheet = ''
     for (var r=0; r<rules.length; r++){
       var reg="." + styleclass + "[. {]";
       var regextest = new RegExp(reg);
-      if (regextest.test(rules[r].cssText)){
-        const tag = rules[r].selectorText.replaceAll('.', '').replace(styleclass, "").trim();
-        colordict[tag] = rules[r].style.color;
-        stylesheet += rules[r].cssText;
+      if (regextest.test(rules[r][0]) && rules[r][0].indexOf('color') > -1){
+        const tag = rules[r][1].replaceAll('.', '').replace(styleclass, "").trim();
+        colordict[tag] = rules[r][2].match(/(?<=color:).*?(?=}|;)/)[0].trim();
+        stylesheet += rules[r][0];
       }
     }
     return {'colordict': colordict, 'stylesheet': stylesheet};

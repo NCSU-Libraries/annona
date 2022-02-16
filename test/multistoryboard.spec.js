@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import '@babel/polyfill'
 //import index from 'karma-chai'
 import { mount } from '@vue/test-utils';
 import { shallowMount } from '@vue/test-utils';
