@@ -324,11 +324,8 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-      var doc = document.implementation.createHTMLDocument(""),
-      styleElement = document.createElement("style");
-      styleElement.textContent = 'testing';
-      // the style will only be parsed once it is added to a document
-      doc.body.appendChild(styleElement);
+      const mockedFn = jest.spyOn(shared, 'colorDict');
+      mockedFn.mockReturnValue({'colordict': {points: "blue", points3: "yellow"}, 'stylesheet': '.tag .points {color: blue;} .tag .points3 {color: yellow;}'})
       await wrapper.vm.$nextTick();
       await flushPromises();
       var data = wrapper.vm.$data;
@@ -359,7 +356,8 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
-
+      const mockedFn = jest.spyOn(shared, 'colorDict');
+      mockedFn.mockReturnValue({'colordict': {points: "blue", points3: "yellow"}, 'stylesheet': '.tag .points {color: blue;} .tag .points3 {color: yellow;}'})
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -389,6 +387,9 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
+      const mockedFn = jest.spyOn(shared, 'colorDict');
+      mockedFn.mockReturnValue({'colordict': {points: "blue"}, 'stylesheet': '.tag .points {color: blue;}'})
+      
       await wrapper.vm.$nextTick()
       await flushPromises()
       var data = wrapper.vm.$data
@@ -418,6 +419,8 @@ describe('Component', () => {
         },
         attachTo: document.getElementById('root')
       })
+      const mockedFn = jest.spyOn(shared, 'colorDict');
+      mockedFn.mockReturnValue({'colordict': {points: "blue", points3: "yellow"}, 'stylesheet': '.tag .points {color: blue;} .tag .points3 {color: yellow;}'})
       
       await wrapper.vm.$nextTick()
       await flushPromises()
