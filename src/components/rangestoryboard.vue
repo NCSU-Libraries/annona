@@ -142,7 +142,7 @@ export default {
           this.prevPageInactive = true;
         }
         const lastitem = this.rangelist.slice(-1)[0];
-        const lastanno = lastitem.anno ? lastitem.anno : lastitem.annotationurl;
+        const lastanno = lastitem.anno ? lastitem.anno : lastitem.annotationurl ? lastitem.annotationurl : lastitem.annotationurls.split(';').slice(-1)[0];
         const currentlist = this.annotationurl.annotationurls ? this.annotationurl.annotationurls.split(';').slice(-1)[0] : this.annotationurl.anno;
         if (lastanno == currentlist){
           this.nextPageInactive = true;
