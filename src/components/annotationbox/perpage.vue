@@ -26,7 +26,8 @@ export default {
             const position = this.parent.basecompontent.position;
             this.parent.basecompontent.settings.perpage = this.perpage;
             this.parent.basecompontent.rangelist = [];
-            this.parent.basecompontent.manifestOrRange(this.parent.basecompontent.manifestcontents);            
+            this.parent.basecompontent.toc = [];
+            this.parent.basecompontent.manifestOrRange(this.parent.basecompontent.rangecontents);
             this.parent.basecompontent.ready = false;
             var vue = this;
             this.parent.basecompontent.position = parseInt(position/this.perpage)*this.perpage;
