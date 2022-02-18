@@ -293,18 +293,6 @@ export default {
         this.imagetitle += ` : ${label}`
       }
     },
-    getLongEdge: function(annocheck=false) {
-      const size = this.viewer.world.getItemAt(0).getContentSize();
-      const checkviewer = this.viewer.viewport.viewerElementToImageCoordinates(this.viewer.viewport.getContainerSize());
-      const newheight = checkviewer['x']/size['x']*size['y'];
-      if (size['y'] > size['x']) {
-        return 'vertical';
-      } else if(newheight - checkviewer['y'] > 0) {
-        return 'vertical'
-      } else {
-        return 'horizontal';
-      }
-    },
     tagslistShortcuts: function() {
       //get tags and set corresponding color
       var tags = shared.flatten(this.annotations, 'tags');
@@ -355,11 +343,11 @@ export default {
     onSeadragonOpen: function(updateImage=true) {
       var vue = this;
       if (!this.settings.fit){
-        this.settings.fit = this.getLongEdge();
+        this.settings.fit = shared.getLongEdge(this.viewer);
       }
       if (this.settings.sortannos){
         if (this.settings.sortannos == 'longedge') {
-          this.settings.sortannos = this.getLongEdge(true);
+          this.settings.sortannos = shared.getLongEdge(this.viewer);
         }
         const index = this.settings.sortannos == 'horizontal' ? 0 : 1;
         this.annotations = this.annotations.sort((a, b) => (parseFloat(a['section'][0].split(",")[index]) > parseFloat(b['section'][0].split(",")[index])) ? 1 : -1);
