@@ -141,10 +141,8 @@ export default {
         if (this.position <= 0){
           this.prevPageInactive = true;
         }
-        const lastitem = this.rangelist.slice(-1)[0];
-        const lastanno = lastitem.anno ? lastitem.anno : lastitem.annotationurl ? lastitem.annotationurl : lastitem.annotationurls.split(';').slice(-1)[0];
-        const currentlist = this.annotationurl.annotationurls ? this.annotationurl.annotationurls.split(';').slice(-1)[0] : this.annotationurl.anno;
-        if (lastanno == currentlist){
+        const onpage = this.settings.perpage && this.settings.perpage != 1 ? this.position + this.settings.perpage : this.position;
+        if (onpage >= this.rangelist.length-1){
           this.nextPageInactive = true;
         }
       },
