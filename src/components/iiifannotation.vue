@@ -203,8 +203,12 @@ export default {
         var context = canvas1.getContext('2d');
         canvas1.width = xywh[2]
         canvas1.height = xywh[3]
-        context.drawImage(img, -xywh[0], -xywh[1]); //draws background image
-      }, 1599);
+        const image = new Image();
+        image.src = img.src;
+        image.onload = function() {
+          context.drawImage(img, -xywh[0], -xywh[1]); //draws background image
+        }
+      }, 1);
     },
     //gets image by matching against manifest
     getManifestCanvas: function(canvasId, anno, dictionary, size){
