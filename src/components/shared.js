@@ -163,6 +163,18 @@ export default {
     var regex = "-?[_a-zA-Z]+[_a-zA-Z0-9-]*";
     return [...`${group ? group.toLowerCase() : group}`.matchAll(regex)].join("");
   },
+  getLongEdge: function(viewer) {
+    const size = viewer.world.getItemAt(0).getContentSize();
+    const checkviewer = viewer.viewport.viewerElementToImageCoordinates(viewer.viewport.getContainerSize());
+    const newheight = checkviewer['x']/size['x']*size['y'];
+    if (size['y'] > size['x']) {
+      return 'vertical';
+    } else if(newheight - checkviewer['y'] > 0) {
+      return 'vertical'
+    } else {
+      return 'horizontal';
+    }
+  },
   // Get ocr, text, tags, languages, authors, and type of annotation;
   //Will go through the annotation resource (oa) or body (w3 annotation) field to get various fields
   //Looks at type in resource field to define which item the resource belongs to.

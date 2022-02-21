@@ -188,7 +188,8 @@ export default {
           viewer.addHandler('open', function(){
             // Set view fit
             for (var v=0; v<vue.viewers.length; v++){
-              if (vue.settings.fit == 'horizontal') {
+              const settingsfit = vue.settings.fit ? vue.settings.fit : shared.getLongEdge(vue.viewers[v]);
+              if (settingsfit == 'horizontal') {
                 vue.viewers[v].viewport.fitHorizontally();
               } else if(!fit) {
                 vue.viewers[v].viewport.fitVertically();

@@ -74,23 +74,16 @@ export default {
         startCanvas: '',
         textoverlay: shared.objectToNewObject(shared.textoverlay),
         booleanitems: shared.objectToNewObject(shared.booleanitems),
-        leaflet: false
+        leaflet: false,
+        rangecontents: ''
       }
     },
     watch: {
       'fullscreen': function(newval) {
         this.buttons.fullscreen = newval ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
       },
-      'position': function(newval) {
-        this.prevPageInactive = false;
-        this.nextPageInactive = false;
-        if (newval <= 0){
-          this.prevPageInactive = true;
-        }
-        const onpage = this.settings.perpage && this.settings.perpage != 1 ? newval + this.settings.perpage : newval;
-        if (onpage >= this.rangelist.length-1){
-          this.nextPageInactive = true;
-        }
+      'position': function() {
+        this.checkNextRange();
       }
     },
     created(){
@@ -100,9 +93,11 @@ export default {
       var isURL = shared.isURL(this.$props.rangeurl, this.settings);
       if (isURL['isURL']){
         axios.get(this.$props.rangeurl).then(response => {
+          this.rangecontents = response.data;
           this.manifestOrRange(response.data);
         })
       } else {
+        this.rangecontents = isURL['json'];
         this.manifestOrRange(isURL['json']);
       }
       if (this.settings.perpage){
@@ -138,6 +133,17 @@ export default {
           this.setDefaults(contents);
         } else {
           this.getRangeData(contents);
+        }
+      },
+      checkNextRange: function() {
+        this.prevPageInactive = false;
+        this.nextPageInactive = false;
+        if (this.position <= 0){
+          this.prevPageInactive = true;
+        }
+        const onpage = this.settings.perpage && this.settings.perpage != 1 ? this.position + this.settings.perpage : this.position;
+        if (onpage >= this.rangelist.length-1){
+          this.nextPageInactive = true;
         }
       },
       getManifestData: function(manifest) {
@@ -240,8 +246,8 @@ export default {
         this.customlayers = this.$props.layers ? this.$props.layers : this.annotationurl.layers ? this.annotationurl.layers : '';
         this.annotationurl.section ? this.settings.imagecrop = this.annotationurl.section : '';
         this.getStylingString();
-        this.rangelist.length == 1 || this.rangelist.length <= this.settings.perpage ? this.nextPageInactive = true : '';
         this.ready = true;
+        this.checkNextRange();
       },
       getRangeData: function(rangelist) {
         var annos = rangelist.contentLayer ? rangelist.contentLayer.otherContent: rangelist.items;

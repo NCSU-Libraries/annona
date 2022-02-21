@@ -156,12 +156,20 @@ export default {
           this.$parent.toolbardisabled = true;
         }
         this.next(-1);
+        this.removeOverlay('overlay');
+        this.removeOverlay('textoverlay');
         var spinner = document.createElement('div');
         spinner.id = "spinner";
         spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
         spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
         document.getElementById(this.seadragonid).getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
         this.loadAnnotation(false);
+      }
+    },
+    removeOverlay: function(classname) {
+      const overlays = document.getElementsByClassName(classname);
+      for (var ov=0; ov<overlays.length; ov++){
+        this.viewer.removeOverlay(overlays[ov].id);
       }
     },
     removeSpinner: function() {
@@ -334,6 +342,16 @@ export default {
     },
     onSeadragonOpen: function(updateImage=true) {
       var vue = this;
+      if (!this.settings.fit){
+        this.settings.fit = shared.getLongEdge(this.viewer);
+      }
+      if (this.settings.sortannos){
+        if (this.settings.sortannos == 'longedge') {
+          this.settings.sortannos = shared.getLongEdge(this.viewer);
+        }
+        const index = this.settings.sortannos == 'horizontal' ? 0 : 1;
+        this.annotations = this.annotations.sort((a, b) => (parseFloat(a['section'][0].split(",")[index]) > parseFloat(b['section'][0].split(",")[index])) ? 1 : -1);
+      }
       var fit = this.settings.fit == 'fill' ? true : false;
       if (vue.settings.imagecrop && updateImage) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
