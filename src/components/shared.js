@@ -476,12 +476,17 @@ export default {
       on_structure = on_structure ? on_structure[0] : on_structure;
       var target_dict = anno['target'] ? anno['target'] : on_structure;
       if (target_dict){
-        var partof = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))];
+        var partoffield = Object.keys(target_dict)[Object.keys(target_dict).findIndex(element => element.toLowerCase().includes("partof"))];
+        var partof = partoffield ? target_dict[partoffield] : '';
         var partofmain = Object.keys(responsedata)[Object.keys(responsedata).findIndex(element => element.toLowerCase().includes("partof"))];
+        if (!partof && target_dict['source']) {
+          partoffield = Object.keys(target_dict['source'])[Object.keys(target_dict['source']).findIndex(element => element.toLowerCase().includes("partof"))];
+          var partof = partoffield ? target_dict['source'][partoffield] : '';
+        }
       }
-      var manifest_dict = partof ? target_dict[partof] : partofmain ? responsedata[partofmain] : on_structure ? on_structure['within']: undefined;
+      var manifest_dict = partof && Array.isArray(partof) ? partof[0] : partof ? partof : partofmain ? responsedata[partofmain] : on_structure ? on_structure['within']: undefined;
       manifest_dict = manifest_dict ? manifest_dict : responsedata['within'] ? responsedata['within']['within'] : '';
-      manifestlink = manifest_dict['id'] ? manifest_dict['id'] : manifest_dict['@id'] ?  manifest_dict['@id'] : manifest_dict;
+      manifestlink = this.getId(manifest_dict);
     } else {
       manifestlink = manifesturl;
     }
