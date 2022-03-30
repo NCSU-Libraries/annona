@@ -401,6 +401,8 @@ export default {
           vue.clickButton(shown);
         }
         this.removeSpinner();
+        var homeButton = document.getElementsByClassName("toolbaractive")[0];
+        homeButton.focus();
     },
     // reposition viewer to coordinates; This is for the multistoryboard and websocket viewers
     reposition: function(rect = false) {
