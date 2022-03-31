@@ -219,7 +219,7 @@ export default {
         var ondict = shared.on_structure(anno);
         ondict = ondict ? ondict[cn] : ondict;
         var canvasRegion = shared.canvasRegion(canvasItem, ondict);
-        var canvas = shared.matchCanvas(this.manifest, canvasRegion['canvasId'])['images'];
+        var canvas = shared.matchCanvas(this.manifest, canvasRegion['canvasId'], '', '', this.currentlang)['images'];
         var regionCanvas = canvasRegion['canvasRegion'];
         var baseImageUrl;
         if (!canvas) {

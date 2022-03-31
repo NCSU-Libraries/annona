@@ -717,12 +717,17 @@ export default {
     }
     return canvas_tile
   },
-  matchCanvasData: function(imagetitle, canvas, canvases) {
+  matchCanvasData: function(imagetitle, canvas, canvases, lang) {
     var title = imagetitle;
     var images = canvas.images ? canvas.images : this.flatten(canvas.items.map(element => element['items']));
     title = canvas.label;
     title = this.getValueField(title);
-    title = title && title !== imagetitle && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
+    if (title && title.constructor.name == 'Object'){
+      var lang = lang ? lang : Object.keys(title)[0];
+      title = title[lang]
+    }
+    title = Array.isArray(title) ? title[0] : title;
+    title = title && imagetitle.indexOf(title) == -1 && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
     return {'images': images, 'title': title}
   },
   getAllCanvases: function(manifest) {
@@ -731,18 +736,18 @@ export default {
   getManifestAnnotations: function(canvas) {
     return canvas['otherContent'] ? canvas['otherContent'] : canvas['annotations'];
   },
-  matchCanvas: function(manifest, canvas, imagetitle, images) {
+  matchCanvas: function(manifest, canvas, imagetitle, images, lang) {
     var canvases = manifest.sequences ? manifest.sequences[0].canvases : manifest.items;
     var title = imagetitle;
     if (images){
-      return this.matchCanvasData(imagetitle, images, canvases)
+      return this.matchCanvasData(imagetitle, images, canvases, lang)
     } else {
       for (var i = 0; i< canvases.length; i++){
         var cleancanvas = canvas.split('/canvas').slice(-1)[0];
         var canvregex = cleancanvas ? new RegExp(`${cleancanvas}$`,"g") : new RegExp(`${canvas}$`,"g");
         var cleanexisting = this.getId(canvases[i]).replace("https", "http").replace('/info.json', '');
         if (cleanexisting === canvas.replace("https", "http") || canvregex.test(cleanexisting)) {
-          return this.matchCanvasData(imagetitle, canvases[i], canvases)
+          return this.matchCanvasData(imagetitle, canvases[i], canvases, lang)
         }
       }
     }

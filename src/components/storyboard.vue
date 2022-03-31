@@ -738,7 +738,7 @@ export default {
     },
     manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {
       this.getImageInfo(canvas_data, manifestlink);
-      var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images);
+      var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images, this.currentlang);
       this.imagetitle = get_canvas['title'];
       var canvsimgs = get_canvas['images'];
       this.getLayerData(canvsimgs);
