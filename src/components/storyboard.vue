@@ -401,8 +401,7 @@ export default {
           vue.clickButton(shown);
         }
         this.removeSpinner();
-        var homeButton = document.getElementsByClassName("toolbaractive")[0];
-        homeButton.focus();
+        this.focusOnButton();
     },
     // reposition viewer to coordinates; This is for the multistoryboard and websocket viewers
     reposition: function(rect = false) {
@@ -1009,9 +1008,18 @@ export default {
         }
       }
     },
+    focusOnButton: function() {
+      if (this.fullscreen || this.settings.fullpage || this.basecompontent.isfullscreen){
+        var toolbarbutton = document.getElementsByClassName("toolbaractive");
+        if (toolbarbutton.length > 0){
+          toolbarbutton[0].focus();
+        }
+      }
+    },
     //on fullscreen change toggle button and set value;
     fullscreenChange (fullscreen) {
       this.fullscreen = fullscreen;
+      this.focusOnButton();
       if(this.basecompontent.range) {
         this.basecompontent.updateFullScreen(fullscreen);
       }
