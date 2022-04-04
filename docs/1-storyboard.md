@@ -65,6 +65,7 @@ View example below in Tag Builder</a>
 | Icon      | Keyboard Shortcut(s) | Purpose |
 | ----------- | ----------- | ----------- |
 | <i class="fas fa-magic"></i> | `b` or `1` | This button will automatically go through all the annotations and the sections associated with the annotation until stopped. When it is running it will be replaced with <i class="fas fa-stop-circle"></i> icon until it is pressed again. |
+| <i class="fas fa-redo"></i> | `j` or `shift+1` | This button will reload the annotations in the viewer. If there are new annotations added, this will add those. |
 |<i class="fas fa-info-circle"></i> | `i` or `2` | This button will display a list of the annotations available. It also displays manifest metadata if a manifest is provided. Also it will show specialized information loaded through the settings. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
 | <i class="fas fa-tag"></i> | `t` or `3` | This button will display all of the tags in the storyboard and allow the users to view overlays based on tags. It works with resources with multiple tags, however they will display on top of each other so only one color is visible at one time. <i class="fas fa-file-alt"></i> will appear when an annotation is clicked and will toggle back to the annotation. <i class="fas fa-window-close"></i> will appear when no annotation is clicked and will close the box. |
 | <i class="fas fa-toggle-on"></i> | `o` or `4` | This button will display the sections that are annotated. When toggled on, these sections are clickable. It is replaced with <i class="fas fa-toggle-off"></i> when the toggle is active |
@@ -75,7 +76,10 @@ View example below in Tag Builder</a>
 | <i class="fas fa-expand"></i> | `alt+f`(windows)/`option+f`(mac) or `;`| Will make viewer fullscreen, switches to <i class="fas fa-compress"></i> when full screen. |
 | <i class="fas fa-times"></i> | `x`, `6` | Will close the content box. Make sure to navigate to the viewer to use keyboard shortcuts.|
 | <i class="fas fa-caret-up"></i> <i class="fas fa-caret-down"></i> (<i class="fas fa-caret-left"></i> <i class="fas fa-caret-right"></i> with collapse setting)| `c`, `7`| Will truncate the length of the annotation. Make sure to navigate to the viewer to use keyboard shortcuts.|
+| <i class="fas fa-play"></i> <i class="fas fa-pause">| `v`, `9`| When text to speech(TTS) is enabled, this allows for playing/pausing the TTS. |
 | <i class="fas fa-keyboard"></i> | `s`, `8` | Will show keyboard shortcuts |
+|<i class="fas fa-align-justify"></i>| `g`, `alt+z`| Shows the text overlay view when there is transcription text in the annotations. |
+|<i class="fas fa-pen-nib"></i>| `e`, <code>`</code>| If there are transcription and annotations, switch between the two. |
 | OpenSeadragon viewer | [https://openseadragon.github.io/examples/ui-keyboard-navigation/](https://openseadragon.github.io/examples/ui-keyboard-navigation/) | The OpenSeadragon viewer also has keyboard navigation (the image section of the storyboard). See webpage for keyboard navigation like rotate and flip |
 
 # Settings

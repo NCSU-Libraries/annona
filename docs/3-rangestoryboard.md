@@ -28,6 +28,7 @@ See [toolbar icon](/{{site.baseurl}}/storyboard/#toolbar-icons) table for other 
 | ----------- | ----------- | ----------- |
 | <i class="fas fa-chevron-left"></i> | `alt+p`(window)/`option+p`(mac) or `alt+,`(windows)/`option+,`(mac) or  <code>alt+<i class="fas fa-arrow-left"></i></code>(window)/<code>option+<i class="fas fa-arrow-left"></i></code>(mac)| This will go to the next annotation in the list|
 | <i class="fas fa-chevron-right"></i> | `alt+n`(window)/`option+n`(mac) or `alt+.`(windows)/`option+.`(mac) or  <code>alt+<i class="fas fa-arrow-right"></i></code>(window)/<code>option+<i class="fas fa-arrow-right"></i></code>(mac) | This will go to the previous annotation in the list|
+| <i class="fas fa-book-open"></i>| `y`| Show the per page modal.|
 
 ## Manifest Examples
 
