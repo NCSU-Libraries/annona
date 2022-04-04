@@ -162,7 +162,7 @@ export default {
         spinner.id = "spinner";
         spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
         spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
-        document.getElementById(this.seadragonid).getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
+        this.anno_elem.getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
         this.loadAnnotation(false);
       }
     },
@@ -1010,7 +1010,7 @@ export default {
     },
     focusOnButton: function() {
       if (this.fullscreen || this.settings.fullpage || this.basecompontent.isfullscreen){
-        var toolbarbutton = document.getElementsByClassName("toolbaractive");
+        var toolbarbutton = this.anno_elem.getElementsByClassName("toolbaractive");
         if (toolbarbutton.length > 0){
           toolbarbutton[0].focus();
         }
