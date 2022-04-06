@@ -787,7 +787,6 @@ describe('Component', () => {
       await wrapper.vm.$nextTick()
       await flushPromises()
       var sbd = wrapper.vm.$children[0];
-      console.log(sbd.multi)
       expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
       expect(sbd.position).toBe(-1);
       expect(sbd.seadragonid).toBe("storyboard_list");
