@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - name: avviewer update
+      - name: update
         run: npm install && npm update
         
       - name: commit files
