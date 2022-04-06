@@ -202,7 +202,8 @@ export default {
             const thumbDict = Array.isArray(canvas['thumbnail']) ? canvas['thumbnail'][0] : canvas['thumbnail'];
             thumbnail = shared.getId(thumbDict)
           } else if(firstcanvas) {
-            thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,')['imageurl'];
+            var version = shared.getVersion(this.rangecontents);
+            thumbnail = shared.getImages(shared.getCanvasTile(firstcanvas)['canvas_tile'], 'full', '30,', version)['imageurl'];
           }
         }
         const position = this.rangelist.length;

@@ -42,7 +42,8 @@ export default {
       languages: [],
       annotationid: '',
       textoverlay: '',
-      leaflet: false
+      leaflet: false,
+      version: 2
     }
   },
   created() {
@@ -85,6 +86,7 @@ export default {
     getManifestData: function(){
       axios.get(this.manifestlink).then(response => {
         this.manifest = response.data;
+        this.version = shared.getVersion(this.manifest);
         this.annoloop(true);
       }).catch((error) => {this.rendered = false; console.log(error);})
     },
@@ -115,7 +117,7 @@ export default {
           for (var cn = 0; cn < canvasId.length; cn++){
             var canvasItem = canvasId[cn];
             var canvasRegion = shared.canvasRegion(canvasItem, undefined);
-            var imagedict = shared.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size);
+            var imagedict = shared.getImages(canvasRegion['canvasId'], canvasRegion['canvasRegion'], size, this.version);
             var imageurl = imagedict['imageurl'];
             dictionary['fullImage'] = imagedict['fullImage'];
             var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, cn);
@@ -233,7 +235,7 @@ export default {
         var resourceid = imgResource && imgResource['@id'] && shared.getId(imgResource).includes('/full') ? shared.getId(imgResource) : '';
         var jpgformat = resourceid ? resourceid.split("/").slice(-1)[0] : 'default.jpg';
         size = size != 'full' ? size : resourceid ? resourceid.split("/").slice(-3)[0] : 'full';
-        var imagedict = shared.getImages(baseImageUrl, regionCanvas, size, jpgformat);
+        var imagedict = shared.getImages(baseImageUrl, regionCanvas, size, this.version, jpgformat);
         fullImage = imagedict['fullImage'];
         //construct image URL
         var imageurl = imagedict['imageurl'];

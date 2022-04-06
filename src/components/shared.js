@@ -1,4 +1,4 @@
-import {by639_1} from 'iso-language-codes'
+import {by639_1} from 'iso-language-codes';
 import rtlDetect from 'rtl-detect';
 
 export default {
@@ -753,15 +753,21 @@ export default {
     }
     return {'images': images, 'title': title}
   },
+  getVersion: function(iiifcontent) {
+    return iiifcontent['@context'] && iiifcontent['@context'].indexOf('2') == -1 ? '3' : '2';
+  },
   //get full image URL
-  getImages: function(baseImageUrl, canvasRegion, size, jpgformat='default.jpg'){
+  getImages: function(baseImageUrl, canvasRegion, size, version='2', jpgformat='default.jpg'){
     var regExp = new RegExp("/+$");
+    var fullvalue = version == '2' ? 'full' : 'max';
     var imageurlsize = size.split(',').filter(Boolean).length > 1 ? `${size.split(',')[0]},` : size;
     baseImageUrl = baseImageUrl.replace(regExp, "")
     var extension = this.getExtension(baseImageUrl);
     if (canvasRegion.split(',').length > 1 && canvasRegion.indexOf('pct') == -1){
       canvasRegion = canvasRegion.split(',').map(elem => parseInt(elem)).join(",")
     }
+    size = size == 'full' ? fullvalue : size;
+    imageurlsize = imageurlsize == 'full' ? fullvalue : imageurlsize;
     var imageurl = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : `${baseImageUrl}/${canvasRegion}/${imageurlsize}/0/${jpgformat}`;
     var fullImage = this.imageextensions.indexOf(extension) > -1 ? baseImageUrl : canvasRegion !== "full" ? `${baseImageUrl}/full/${size}/0/${jpgformat}` : '';
     return {'fullImage':fullImage, 'imageurl': imageurl};
