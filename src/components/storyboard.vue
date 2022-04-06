@@ -1009,11 +1009,13 @@ export default {
       }
     },
     focusOnButton: function() {
-      if (this.fullscreen || this.settings.fullpage || this.basecompontent.isfullscreen){
-        var toolbarbutton = this.anno_elem.getElementsByClassName("toolbaractive");
-        if (toolbarbutton.length > 0){
-          toolbarbutton[0].focus();
-        }
+      var basecompontentfull = this.basecompontent.isfullscreen || this.basecompontent.settings.fullpage;
+      if (this.fullscreen || this.settings.fullpage || basecompontentfull){
+          var item = basecompontentfull ? this.basecompontent : this;
+          var toolbarbutton = item.$el.getElementsByClassName("toolbaractive");
+          if (toolbarbutton.length > 0){
+            toolbarbutton[0].focus();
+          }
       }
     },
     //on fullscreen change toggle button and set value;
