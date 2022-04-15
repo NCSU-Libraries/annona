@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '14'
       - name: update
-        run: npm install && npm update
+        run: npm install && npm update && npm audit fix
         
       - name: commit files
         run: |
