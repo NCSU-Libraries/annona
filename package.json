@@ -24,7 +24,7 @@
     "iso-language-codes": "^1.1.0",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.4",
-    "sass": "^1.50.0",
+    "sass": "^1.50.1",
     "sass-loader": "^9.0.3",
     "socket.io-client": "^2.4.0",
     "truncate-html": "^1.0.4",
