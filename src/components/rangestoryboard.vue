@@ -75,7 +75,8 @@ export default {
         textoverlay: shared.objectToNewObject(shared.textoverlay),
         booleanitems: shared.objectToNewObject(shared.booleanitems),
         leaflet: false,
-        rangecontents: ''
+        rangecontents: '',
+        collection: []
       }
     },
     watch: {
@@ -131,9 +132,27 @@ export default {
             this.toc.push({ 'position': rl, 'label': toclabel, 'thumbnail': content['thumbnail'], 'description': content['description']});
           }
           this.setDefaults(contents);
+        } else if (listtype.toLowerCase().indexOf('collection') > -1) {
+          this.collection = {'label': contents.label, 'manifests': [], 'metadata': shared.getHTMLMeta(contents, this.$props.rangeurl, 'Collection', this.settings)['text']}
+          for (var i=0; i<contents['manifests'].length; i++){
+            var manifest = contents['manifests'][i];
+            this.collection['manifests'].push({'id': shared.getId(manifest), 'thumbnail': shared.getId(manifest['thumbnail']), 'label': manifest['label']})
+          }
+          this.updateCollectionManifest(0);
         } else {
           this.getRangeData(contents);
         }
+      },
+      updateCollectionManifest: function(index){
+        this.rangelist = []
+        this.toc = []
+        var manifest = this.collection['manifests'][index];
+        manifest = shared.getId(manifest);
+        axios.get(manifest).then(response => {
+          this.rangecontents = response.data;
+          this.compkey = `reload${index}`;
+          this.manifestOrRange(response.data);
+        });
       },
       checkNextRange: function() {
         this.prevPageInactive = false;
@@ -166,20 +185,21 @@ export default {
           this.settings.perpage = this.settings.perpage ? this.settings.perpage : 1;
           this.settings.continousboard = this.settings.continousboard ? this.settings.continousboard : true;
         }
+        var manifesturl = this.collection.length > 0 ? shared.getId(manifest) : this.$props.rangeurl;
         for (var an=0; an<otherContent.length; an++){
           var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
             if (this.settings.listnumber) {
               const listnumb = this.settings.listnumber - 1;
               const list = anno[listnumb] ? anno[listnumb] : "https://nolist.com";
-              this.addToLists(list, this.$props.rangeurl, otherContent[an]['canvas'], anno);
+              this.addToLists(list, manifesturl, otherContent[an]['canvas'], anno);
             } else {
               for (var h=0; h<anno.length; h++){
-                this.addToLists(anno[h], this.$props.rangeurl, otherContent[an]['canvas']);
+                this.addToLists(anno[h], manifesturl, otherContent[an]['canvas']);
               }
             }
           } else{
-            this.addToLists(anno, this.$props.rangeurl, otherContent[an]['canvas']);
+            this.addToLists(anno, manifesturl, otherContent[an]['canvas']);
           }  
         }
         this.setDefaults(manifest);

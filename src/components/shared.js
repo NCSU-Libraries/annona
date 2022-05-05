@@ -40,7 +40,8 @@ export default {
     imageinfoshown: false,
     additionalinfoshown: false,
     tocshown: false,
-    istranscription: false
+    istranscription: false,
+    collectioninfoshown: false
   },
   objectToNewObject: function(object) {
     return JSON.parse(JSON.stringify(object));
@@ -505,11 +506,36 @@ export default {
   parseMetaFields: function(value) {
     var fieldvalue = '';
     if (value){
-      fieldvalue = Array.isArray(value) ? value.map(element => this.getValueField(element)).join("/") : value;
+      var language = window.navigator.language;
+      var splitlang = language ? language.split("-")[0] : '';
+      fieldvalue = Array.isArray(value) && language ? value.filter(elem => this.getField(elem, 'language') === language || this.getField(elem, 'language') === splitlang) : value;
+      fieldvalue = fieldvalue.length > 0 ? fieldvalue : value;
+      fieldvalue = Array.isArray(fieldvalue) ? fieldvalue.map(element => this.getValueField(element)).join("/") : fieldvalue;
       fieldvalue = this.getValueField(fieldvalue);
       fieldvalue = fieldvalue.constructor.name == 'Object' ? Object.values(fieldvalue).join(" ") : fieldvalue;
     }
     return fieldvalue;
+  },
+  getField: function(elem, field) {
+    return elem[`@${field}`] ? elem[`@${field}`] : elem[field] ? elem[field] : elem;
+  },
+  getHTMLMeta: function(canvas_data, link, label, settings){
+    var title = ''
+    var text = ''
+    var metadata = [{'label':label, 'value' : `<a href="${link}" target="_blank">${link}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': canvas_data.description},
+    {'label': 'attribution', 'value': canvas_data.attribution},{'label': 'license', 'value': canvas_data.license}]
+    metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
+    for (var j=0; j<metadata.length; j++){
+      var label = this.parseMetaFields(metadata[j]['label']);
+      var value = this.parseMetaFields(metadata[j]['value']);
+      if (label === 'title' && j == 1 && !settings.title){
+        title = value;
+      }
+      if (value && value !== ''){
+        text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+      }
+    }
+    return {'title': title, 'text': text}
   },
   getCanvasId: function(anno){
     var ondict = this.on_structure(anno);

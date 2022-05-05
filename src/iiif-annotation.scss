@@ -692,6 +692,10 @@ figcaption {
   text-decoration: none;
 }
 
+.collectioninfo :nth-child(even) .title, .tocinfo :nth-child(odd) .title {
+  background-color: lightgray!important;
+}
+
 .buttonlink img{
   padding-right: 10px;
 }

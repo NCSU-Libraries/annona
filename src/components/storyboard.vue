@@ -325,6 +325,14 @@ export default {
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
       var vue = this;
+      //If there is something wrong with the info.json, open the full image
+      viewer.addHandler('open-failed', function(event) {
+        if (vue.seadragontile.indexOf('info.json') > -1) {
+          vue.viewerFailure("/info.json", "/full/full/0/default.jpg")
+        } else if (vue.seadragontile.indexOf('full/full') > -1) {
+          vue.viewerFailure("/full/full/", "/full/max/")
+        }
+      });
       // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){
         vue.reposition();
@@ -339,6 +347,12 @@ export default {
       viewer.addHandler('open', function(){
         vue.onSeadragonOpen();
       });
+    },
+    viewerFailure: function(replace, replacewith) {
+      this.viewer.close()
+      this.seadragontile = this.seadragontile.replace(replace, replacewith);
+      var tilesource = shared.getTileFormat(this.seadragontile);
+      this.viewer.open(tilesource)
     },
     onSeadragonOpen: function(updateImage=true) {
       var vue = this;
@@ -430,23 +444,6 @@ export default {
             this.viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
           }
         })
-      }
-    },
-    // Get image info from manifest; This populates the info button for the image.
-    getImageInfo: function(canvas_data, manifestlink){
-      var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': canvas_data.description},
-      {'label': 'attribution', 'value': canvas_data.attribution},{'label': 'license', 'value': canvas_data.license}]
-      metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
-      canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1 ? this.imageinfo.label = 'Manifest information' : '';
-      for (var j=0; j<metadata.length; j++){
-        var label = shared.parseMetaFields(metadata[j]['label']);
-        var value = shared.parseMetaFields(metadata[j]['value']);
-        if (label === 'title' && j == 1 && !this.settings.title){
-          this.imagetitle = value;
-        }
-        if (value && value !== ''){
-          this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
-        }
       }
     },
     // Create TOC for each annotation; Gets a list of annotations and corresponding data
@@ -737,7 +734,10 @@ export default {
         }
     },
     manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {
-      this.getImageInfo(canvas_data, manifestlink);
+      var meta = shared.getHTMLMeta(canvas_data, manifestlink, 'Manifest', this.settings);
+      this.imageinfo.text = meta['text'];
+      this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
+      canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1 ? this.imageinfo.label = 'Manifest information' : '';
       var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images, this.currentlang);
       this.imagetitle = get_canvas['title'];
       var canvsimgs = get_canvas['images'];
