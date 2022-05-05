@@ -116,7 +116,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_longer-article-annos1");
+      expect(sbd.seadragonid).toBe("storyboard_objects_longer-article-annos1");
       expect(sbd.annotations).toEqual([{"section": ["1958,1907,113,51"], "geometry": {"coordinates": [-75.87877, 5.6561], "type": "Point"}, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Lodinv<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "styles": "", "itemclass": "", "stylesheet": undefined, "tags": [], "textual_body": ["<div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}, 
         {"styles": "", "itemclass": "", "stylesheet": undefined, "section": ["1537,579,382,352"], "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": [], "type": "rect"}, 
         {"section": ["1704,1509,319,123"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["BRITANIA INSVLA<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": ["<div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}]);
@@ -603,7 +603,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data.boardchildren[0];
       expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001-annotation-word");
+      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001_technician-basketballspecial-1991-11_0001-annotation-word");
       expect(sbd.annotations).toEqual([{"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 1"], "tags": [], "textual_body": []}, {"section": ["12288,16567,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 2"], "tags": [], "textual_body": []}]);
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -658,7 +658,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0];
       expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_list");
+      expect(sbd.seadragonid).toBe("storyboard_annotations_list");
       expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -732,7 +732,7 @@ describe('Component', () => {
       expect(wrapper.vm.$children[0].$children.map(elem=>elem.$options.name)).toEqual(["toolbar", "storyboard", "storyboard"])
       expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001-annotation-word");
+      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001_technician-basketballspecial-1991-11_0001-annotation-word");
       expect(sbd.annotations).toEqual([{"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 1"], "tags": [], "textual_body": []}, {"section": ["12288,16567,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 2"], "tags": [], "textual_body": []}]);
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -774,7 +774,7 @@ describe('Component', () => {
       expect(data.layerslist).toBe(false)
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
-      expect(data.stylingstring).toEqual("autorun_interval:3;title:Holbein's 'The Ambassadors': The Ambassadors;")
+      expect(data.stylingstring).toEqual("autorun_interval:3;title:Holbein's 'The Ambassadors';")
       expect(data.annotationurl).toEqual({"anno": "https://storiiies.cogapp.com/holbein/annotations/list.json", "otherLists": false, "canvas": "https://storiies.cogapp.com/holbein/canvas/c0", "images": {"@context": "http://iiif.io/api/presentation/2/context.json", "@id": "https://storiies.cogapp.com/holbein/canvas/c0", "@type": "sc:Canvas", "description": {"@language": "en", "@value": "The Ambassadors by Hans Holbein the Younger (National Gallery, London) was created in 1533, the year that Elizabeth I was born. A striking life-scale double portrait, it also depicts numerous meticulously rendered objects and includes a rare and much-cited example of anamorphosis. The meaning of the painting and the objects it depicts has been the cause of much debate."}, "height": 29560, "images": [{"@id": "https://storiies.cogapp.com/holbein/image/i0", "@type": "oa:Annotation", "motivation": "sc:painting", "on": "https://storiies.cogapp.com/holbein/canvas/c0", "resource": {"@id": "https://images.cogapp.com/iiif/holbein_big_p.tif/full/full/0/default.jpg", "@type": "dctypes:Image", "format": "image/jpeg", "height": 29560, "service": {"@context": "http://iiif.io/api/image/2/context.json", "@id": "https://images.cogapp.com/iiif/holbein_big_p.tif", "profile": "http://iiif.io/api/image/1/level2.json"}, "width": 30000}}], "label": {"@language": "en", "@value": "The Ambassadors"}, "otherContent": [{"@id": "https://storiiies.cogapp.com/holbein/annotations/list.json", "@type": "sc:AnnotationList"}], "width": 30000}, "jsonanno": undefined, "manifest": "https://storiiies.cogapp.com/holbein/manifest.json", "section": undefined, "title": "The Ambassadors"})
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
@@ -789,7 +789,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0];
       expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_list");
+      expect(sbd.seadragonid).toBe("storyboard_annotations_list");
       expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -801,7 +801,7 @@ describe('Component', () => {
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Holbein's 'The Ambassadors': The Ambassadors", "truncate_length": 2});
+      expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Holbein's 'The Ambassadors'", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
@@ -840,7 +840,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://framemark.vam.ac.uk/collections/2013GU2911/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_p1");
+      expect(sbd.seadragonid).toBe("storyboard_annopage_p1");
       expect(sbd.annotations[2]).toEqual({"styles": "", "itemclass": "", "stylesheet": undefined, "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": [], "section": ["2000,2800,400,400"], "svg_path": [undefined], "tags": [], "textual_body": ["<div class=\"describing\"><h2 class=\"annotatedzoom-annotation-detail__label\">First-class restaurant</h2><div class=\"annotatedzoom-annotation-detail__content\"><img class=\"annotatedzoom-annotation-detail__image\" src=\"https://media.vam.ac.uk/feature/annotatedzoom/O1023003/2017KE6204-Aquitania-restaurant-cropped.jpg\" width=300 height=250/><p>Dining on ocean liners was a radically different experience depending on the class of travel. In first class, the <i>Aquitania</i>&#39;s Louis XVI-style dining room offered seating in small isolated groups, echoing elegant restaurants on land. The ship&#39;s architect, Arthur Davis, explained that a &ldquo;cheerful room with comfortable surroundings&rdquo; was a necessary distraction from &ldquo;the often very unpleasant conditions&rdquo; at sea. </p><p class=\"annotatedzoom-annotation-detail__credit\">Photograph from <em>The New Art of Going Abroad</em>, 1929, US. National Art Library: 38041986015030. &copy; Victoria and Albert Museum, London</p></div></div>"], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);

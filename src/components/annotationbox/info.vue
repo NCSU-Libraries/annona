@@ -6,7 +6,7 @@
     <span v-if="!parent.booleanitems.isexcerpt">
     <button class="infolink buttonlink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="parent.settings.additionalinfo">{{parent.settings.additionalinfotitle}}</button>
     <div v-if="parent.booleanitems.additionalinfoshown" v-html="parent.settings.additionalinfo" class="imageinfo"></div>
-    <button class="infolink buttonlink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'collectioninfoshown'});" v-if="parent.basecompontent.range && parent.basecompontent.collection.length > 1">
+    <button class="infolink buttonlink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'collectioninfoshown'});" v-if="parent.basecompontent.range && parent.basecompontent.collection['manifests'].length > 1">
         Collection: {{parent.basecompontent.collection.label}}
     </button>
     <div class="collectioninfo" v-if="parent.booleanitems.collectioninfoshown">

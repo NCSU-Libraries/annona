@@ -12,7 +12,7 @@
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests" :jsonannotation="annotationurl.alljsons"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
@@ -76,7 +76,7 @@ export default {
         booleanitems: shared.objectToNewObject(shared.booleanitems),
         leaflet: false,
         rangecontents: '',
-        collection: []
+        collection: ''
       }
     },
     watch: {
@@ -136,7 +136,8 @@ export default {
           this.collection = {'label': contents.label, 'manifests': [], 'metadata': shared.getHTMLMeta(contents, this.$props.rangeurl, 'Collection', this.settings)['text']}
           for (var i=0; i<contents['manifests'].length; i++){
             var manifest = contents['manifests'][i];
-            this.collection['manifests'].push({'id': shared.getId(manifest), 'thumbnail': shared.getId(manifest['thumbnail']), 'label': manifest['label']})
+            var thumbnail = manifest['thumbnail'] ? shared.getId(manifest['thumbnail']) : '';
+            this.collection['manifests'].push({'id': shared.getId(manifest), 'thumbnail': thumbnail, 'label': manifest['label']})
           }
           this.updateCollectionManifest(0);
         } else {
@@ -144,8 +145,9 @@ export default {
         }
       },
       updateCollectionManifest: function(index){
-        this.rangelist = []
-        this.toc = []
+        this.rangelist = [];
+        this.toc = [];
+        this.position = 0;
         var manifest = this.collection['manifests'][index];
         manifest = shared.getId(manifest);
         axios.get(manifest).then(response => {
@@ -177,7 +179,7 @@ export default {
             if (annotationfield){
               otherContent.push({'oc': annotationfield, 'canvas': canvas});
             } else {
-              otherContent.push({'oc': `https://noannotation/${cv}`, 'canvas': canvas});
+              otherContent.push({'oc': `https://noannotation/${Math.random()}`, 'canvas': canvas});
             }
           }
         }
@@ -185,7 +187,7 @@ export default {
           this.settings.perpage = this.settings.perpage ? this.settings.perpage : 1;
           this.settings.continousboard = this.settings.continousboard ? this.settings.continousboard : true;
         }
-        var manifesturl = this.collection.length > 0 ? shared.getId(manifest) : this.$props.rangeurl;
+        var manifesturl = this.collection != '' ? shared.getId(manifest) : this.$props.rangeurl;
         for (var an=0; an<otherContent.length; an++){
           var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
@@ -209,9 +211,8 @@ export default {
         var thumbnail;
         if(anno.resources || anno.items || anno.body){
           var jsonanno = anno; 
-        } else {
-          var annourl = shared.getId(anno);
         }
+        var annourl = shared.getId(anno);
         if (canvas){
           var canvasid = shared.getId(canvas);
           if (canvasid.constructor.name === 'String' && canvasid.indexOf('#xywh') > -1){
@@ -243,6 +244,7 @@ export default {
           for (var sp=startpage; sp<endpage; sp++){
             if (this.rangelist[sp]){
               this.rangelist[sp].annotationurls = this.rangelist.slice(startpage, endpage).map(elem => elem.anno).join(";");
+              this.rangelist[sp].alljsons = this.rangelist.slice(startpage, endpage).map(elem => elem.jsonanno);
               this.rangelist[sp].allmanifests = this.rangelist.slice(startpage, endpage).map(elem => elem.manifest).join(";");
             }
           }
@@ -312,8 +314,9 @@ export default {
       getTitle: function() {
         var title = this.rangetitle ? this.rangetitle : '';
         if ((this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') && (!this.settings.perpage || this.settings.perpage < 2)) {
-          this.rangetitle && this.annotationurl.title ? title += ': ' : '';
-          title += this.annotationurl.title ? this.annotationurl.title : '';
+          if (this.rangetitle && this.annotationurl.title && this.rangetitle.indexOf(this.annotationurl.title) == -1){
+            title += `: ${this.annotationurl.title}`
+          }
         }
         this.settings.title = title;
       },

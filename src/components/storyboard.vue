@@ -125,7 +125,7 @@ export default {
   },
   mounted () {
     this.newSocket();
-    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
+    var annotationurl = this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
     var isURL = shared.isURL(annotationurl, '');
     if (!isURL['isURL']) {
       this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     loadAnnotation: function(newseadragon=true) {
-      var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
+      var annotationurl = this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
       var isURL = shared.isURL(annotationurl, this.settings);
       this.seadragonid = 'storyboard_' + isURL['id'];
       this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';

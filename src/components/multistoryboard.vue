@@ -2,8 +2,8 @@
 <div id="multistoryboard" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.toolbarposition ? settings.toolbarposition + '_menu_container' : 'top_menu_container']">
   <toolbar></toolbar>
   <span class="storyboard_containers">
-    <div v-for="(anno, index) in anno_data" v-bind:key="anno" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifests[index]"></storyboard>
+    <div v-for="(anno, index) in anno_data" v-bind:key="anno + index" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
+      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:jsonannotation="jsonannotation[index]" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifests[index]"></storyboard>
     </div>
     <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
       <div v-bind:id="image.id" class="seadragonbox"></div>
@@ -30,7 +30,8 @@ export default {
       'styling': String,
       'ws': String,
       'layers': String,
-      'images': String
+      'images': String,
+      'jsonannotation': Array
     },
     data: function() {
       return {
@@ -100,6 +101,7 @@ export default {
       this.anno_data = annotations.filter(function (el) {
         return el != null && el != '';
       });
+      this.jsonannotation = this.jsonannotation ? this.jsonannotation : []
       this.isreverse = this.$parent && this.$parent.viewingDirection == 'rtl' ? true : false;
       if (this.isreverse){
         this.boardnumber = "updateme";

@@ -697,11 +697,11 @@ export default {
   isURL: function(annotationurl, settings) {
     var parseString = this.parseInput(annotationurl);
     var isURL = parseString.constructor === String ? true : false;
-    var id = settings.customid ? settings.customid : annotationurl
+    var id = settings.customid ? settings.customid : annotationurl;
     if (!isURL) {
       id = settings.customid ? settings.customid : parseString['@id'] ? parseString['@id'] : parseString['id'] ? parseString['id'] : Math.random().toString(36).substring(7);
     }
-    id = id.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","")
+    id = id.replace(/\/\s*$/, "").split("/").slice(-2).join("_").replace("-list", "").replace(".json","")
     return {'isURL': isURL, 'json': parseString, 'id': id.replace(/[~`!@#$%^&*()+={};:'"<>.,?]/g, '')};
   },
   parseInput: function(annotation) {
