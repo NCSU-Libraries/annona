@@ -45,7 +45,7 @@ export default {
       var vue = this;
       var head = document.getElementsByTagName('head')[0];
       const leafletsrc = "https://unpkg.com/leaflet@1.7.1/dist/leaflet.js";
-      const leafletloaded = Array.from(head.children).some(elem => elem.src && elem.src.indexOf('leaflet'));
+      const leafletloaded = Array.from(head.children).some(elem => elem.src && elem.src.indexOf(leafletsrc) > -1);
       if (!leafletloaded) {
         var link = document.createElement('link');
         link.type = 'text/css';
@@ -55,7 +55,6 @@ export default {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = leafletsrc;
-
         if(script.readyState) {  // only required for IE <9
           script.onreadystatechange = function() {
           if ( script.readyState === "loaded" || script.readyState === "complete" ) {
