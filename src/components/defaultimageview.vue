@@ -13,7 +13,7 @@
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
       <div class="aftercontent" v-html="item.after" v-if="item.after && !settings.image_only && !settings.hide_beforeafter">
       </div>
-      <leaflet v-if="item['content'] && item['content']['geometry']" :position="index" :annotation="item['content']" :parent="$parent"></leaflet>
+      <leaflet v-if="item['content'] && item['content']['geometry'] && !settings.image_only && !settings.text_only" :position="index" :annotation="item['content']" :parent="$parent"></leaflet>
       <div id="tags" v-if="!settings.hide_tags && item.tags">
         <div v-for="tag in item.tags" v-bind:key="tag.key" class="tags">
           <div class="countkey">

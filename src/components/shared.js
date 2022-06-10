@@ -186,6 +186,7 @@ export default {
     var shapetype;
     var langs;
     var authors = [];
+    var geometry;
     var stylesheet;
     var styles = anno.stylesheet ? anno.stylesheet.value : '';
     var charclass = anno.target && anno.target.styleClass ? anno.target.styleClass : '';
@@ -206,6 +207,9 @@ export default {
       purpose = purpose ? purpose.toLowerCase() : purpose;
       if (res_data.selector){
         shapetype = res_data.selector.value;
+      }
+      if (res_data['geometry']) {
+        geometry = res_data['geometry'];
       }
       if (value) {
         var id = res_data['@id'] ? res_data['@id'] : res_data['id'] ? res_data['id'] : '';
@@ -257,7 +261,7 @@ export default {
       'tags':tags, 'type': shapetype, 'languages':langs,
       'label':label, 'language': res_data ? res_data['language'] : '',
       'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,
-      'itemclass': charclass, 'geometry': res_data ? res_data['geometry'] : ''};
+      'itemclass': charclass, 'geometry': geometry};
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
