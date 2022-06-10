@@ -730,6 +730,7 @@ export default {
   getCanvasTile: function(image, addinfo=false) {
     var imgResource = image.resource ? image.resource : image.body;
     const iiifimage = imgResource && JSON.stringify(imgResource).indexOf('http://iiif.io/api/image/') > -1 ? true : false;
+    imgResource = imgResource.constructor.name == 'Array' ? imgResource[0] : imgResource;
     var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ? this.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? this.getId(imgResource.service).split("/full/")[0] :this.getId(imgResource);
     canvas_tile = this.iiifOrImageCheck(canvas_tile, addinfo, iiifimage)
     return {'canvas_tile': canvas_tile, 'img_resource': imgResource};

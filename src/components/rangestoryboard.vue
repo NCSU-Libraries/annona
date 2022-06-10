@@ -12,16 +12,16 @@
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests" :jsonannotation="annotationurl.alljsons"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests" :jsonannotation="annotationurl.alljsons"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
-  <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
+  <button v-if="ready" id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.rangeprev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
-  <button id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
+  <button v-if="ready" id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
     <span v-html="buttons.rangenext"></span>
     <span class="toolbartext">Next Page</span>
   </button>
@@ -30,6 +30,7 @@
 <script>
 import storyboard from './storyboard';
 import iiifannotation from './iiifannotation';
+import info from './annotationbox/info.vue'
 import shared from './shared';
 import axios from 'axios';
 import multistoryboard from './multistoryboard.vue';
@@ -38,7 +39,8 @@ export default {
     components: {
         storyboard,
         multistoryboard,
-        iiifannotation
+        iiifannotation,
+        info
     },
     props: {
       'rangeurl':String,
@@ -76,7 +78,8 @@ export default {
         booleanitems: shared.objectToNewObject(shared.booleanitems),
         leaflet: false,
         rangecontents: '',
-        collection: ''
+        collection: '',
+        collectionkey: 0
       }
     },
     watch: {
@@ -133,27 +136,64 @@ export default {
           }
           this.setDefaults(contents);
         } else if (listtype.toLowerCase().indexOf('collection') > -1) {
-          this.collection = {'label': contents.label, 'manifests': [], 'metadata': shared.getHTMLMeta(contents, this.$props.rangeurl, 'Collection', this.settings)['text']}
-          for (var i=0; i<contents['manifests'].length; i++){
-            var manifest = contents['manifests'][i];
-            var thumbnail = manifest['thumbnail'] ? shared.getId(manifest['thumbnail']) : '';
-            this.collection['manifests'].push({'id': shared.getId(manifest), 'thumbnail': thumbnail, 'label': manifest['label']})
-          }
-          this.updateCollectionManifest(0);
+          this.collection = this.getCollectionList(contents);
+          this.updateCollectionManifest(this.collection['manifests'][0], true);
         } else {
           this.getRangeData(contents);
         }
       },
-      updateCollectionManifest: function(index){
-        this.rangelist = [];
-        this.toc = [];
-        this.position = 0;
-        var manifest = this.collection['manifests'][index];
-        manifest = shared.getId(manifest);
-        axios.get(manifest).then(response => {
-          this.rangecontents = response.data;
-          this.compkey = `reload${index}`;
-          this.manifestOrRange(response.data);
+      getCollectionList: function(contents) {
+        var collection = {'label': contents.label, 'manifests': [], 'metadata': shared.getHTMLMeta(contents, this.$props.rangeurl, 'Collection', this.settings)['text']}
+        var manifestfolder = contents['manifests'] ? contents['manifests'] : contents['members'] ? contents['members'] : contents['items'] ? contents['items'] : contents['collections'];
+        for (var i=0; i<manifestfolder.length; i++){
+          var manifest = manifestfolder[i];
+          var thumbnail = manifest['thumbnail'] ? shared.getId(manifest['thumbnail']) : '';
+          var type = shared.getField(manifest, 'type');
+          type = type && type.toLowerCase().indexOf('collection') > -1 ? 'collection' : type;
+          var items = {'id': shared.getId(manifest), 
+            'thumbnail': thumbnail, 
+            'label': manifest['label'] ? manifest['label'] : manifest['@label'],
+            'type': type
+            }
+          collection['manifests'].push(items)
+        }
+        return collection;
+      },
+      updateCollectionManifest: function(manifest, init=false, menu=false){
+        var manifestid = shared.getId(manifest);
+        var spinner = document.getElementById('spinner');
+        if (spinner && manifest['type'] != 'collection') {
+          spinner.style.display = 'block';
+        }
+        axios.get(manifestid).then(response => {
+          if (manifest['type'] == 'collection'){
+            var collectiondata = this.getCollectionList(response.data)['manifests'];
+            manifest['manifests'] = collectiondata;
+            if (init){
+              manifest = manifest['manifests'][0];
+              this.updateCollectionManifest(manifest, init)
+            }
+            if (menu){
+              menu.nodedata['manifests'] = manifest['manifests'];
+              menu.nodesdata = collectiondata;
+              var nodevalues = menu.nodesdata;
+              var menuitem = menu;
+              if (menuitem.depth != 1){
+                while (menuitem.depth != 1) {
+                  menuitem = menu.$parent;
+                }
+              }
+              this.collection['manifests'][menuitem.index] = menuitem.nodedata;
+            }
+            
+          } else {
+            this.rangelist = [];
+            this.toc = [];
+            this.position = 0;
+            this.rangecontents = response.data;
+            this.compkey = `reload${manifestid}`;
+            this.manifestOrRange(response.data);
+          }
         });
       },
       checkNextRange: function() {

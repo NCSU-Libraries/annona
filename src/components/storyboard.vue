@@ -158,11 +158,7 @@ export default {
         this.next(-1);
         this.removeOverlay('overlay');
         this.removeOverlay('textoverlay');
-        var spinner = document.createElement('div');
-        spinner.id = "spinner";
-        spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
-        spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
-        this.anno_elem.getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
+        this.switchSpinner('block');
         this.loadAnnotation(false);
       }
     },
@@ -182,7 +178,12 @@ export default {
             this.$parent.toolbardisabled = false;
           }
         }
-        spinner.remove();
+        this.switchSpinner('none');
+      }
+    },
+    switchSpinner: function(displaytype){
+      if (this.anno_elem){
+        this.anno_elem.querySelector('#spinner').style.display = displaytype;
       }
     },
     checkForText: function(shown, annoContent) {
@@ -367,6 +368,14 @@ export default {
         this.annotations = this.annotations.sort((a, b) => (parseFloat(a['section'][0].split(",")[index]) > parseFloat(b['section'][0].split(",")[index])) ? 1 : -1);
       }
       var fit = this.settings.fit == 'fill' ? true : false;
+      if (!document.getElementById('spinner')){
+        var spinner = document.createElement('div');
+        spinner.id = "spinner";
+        spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;;"
+        spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
+        vue.anno_elem.getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
+        vue.switchSpinner('none');
+      }
       if (vue.settings.imagecrop && updateImage) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
           var tiledImage = vue.viewer.world.getItemAt(0);
