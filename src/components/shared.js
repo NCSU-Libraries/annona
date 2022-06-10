@@ -208,6 +208,9 @@ export default {
       if (res_data.selector){
         shapetype = res_data.selector.value;
       }
+      if (res_data['geometry']) {
+        geometry = res_data['geometry'];
+      }
       if (value) {
         var id = res_data['@id'] ? res_data['@id'] : res_data['id'] ? res_data['id'] : '';
         value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
@@ -251,9 +254,6 @@ export default {
         textual_body.push(`<img src="${res_data['@id']}">
           <div class="attribution">${res_data['attribution']}</div>
           <div class="caption">${res_data['description']}</div>`);
-      }
-      if (res_data && res_data['geometry']) {
-        geometry = res_data['geometry'];
       }
     }
     authors = this.getAuthor(anno);
