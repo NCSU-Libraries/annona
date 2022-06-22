@@ -7,7 +7,7 @@
         </button>
     </div>
     <div class="additionaltext" v-html="nodedata.description" v-if="nodedata && nodedata.description"></div>
-    <collections v-for="(nodeitem, index) in nodesdata" v-bind:key="nodeitem.manifests ? nodeitem.manifests.length : nodeitem.label" v-show="showChildren || depth == 0"
+    <collections v-for="(nodeitem, index) in nodesdata" v-bind:key="depth + '-' +index" v-show="showChildren || depth == 0"
         :nodes="nodeitem.manifests"
         :label="nodeitem.label"
         :node="nodeitem"
@@ -33,7 +33,6 @@
         caretdirection: this.showChildren ? 'down' : 'up',
         parentDescription: '',
         parentTitle: '',
-        itemkey: this.label,
         active: false
       }
     },
@@ -53,7 +52,6 @@
           if (this.nodedata.id == this.parents.annotationurl['manifest']) {
             this.active = true;
             var topparent = this.$parent;
-            console.log(this.nodedata.id)
             for (var i=this.depth; i>0; i--){
               topparent.showChildren = true;
               topparent = topparent.$parent;

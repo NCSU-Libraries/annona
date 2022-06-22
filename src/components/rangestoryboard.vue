@@ -143,19 +143,25 @@ export default {
         }
       },
       getCollectionList: function(contents) {
-        var collection = {'label': contents.label, 'manifests': [], 'metadata': shared.getHTMLMeta(contents, this.$props.rangeurl, 'Collection', this.settings)['text']}
+        var collection = {'label': shared.parseMetaFields(this.getLabel(contents)), 'manifests': [], 'metadata': shared.getHTMLMeta(contents, this.$props.rangeurl, 'Collection', this.settings)['text']}
         var manifestfolder = contents['manifests'] ? contents['manifests'] : contents['members'] ? contents['members'] : contents['items'] ? contents['items'] : contents['collections'];
+        var ids = []
         for (var i=0; i<manifestfolder.length; i++){
           var manifest = manifestfolder[i];
-          var thumbnail = manifest['thumbnail'] ? shared.getId(manifest['thumbnail']) : '';
-          var type = shared.getField(manifest, 'type');
-          type = type && type.toLowerCase().indexOf('collection') > -1 ? 'collection' : type;
-          var items = {'id': shared.getId(manifest), 
-            'thumbnail': thumbnail, 
-            'label': manifest['label'] ? manifest['label'] : manifest['@label'],
-            'type': type
-            }
-          collection['manifests'].push(items)
+          const manifesturl = shared.getId(manifest);
+          if (ids.indexOf(manifesturl) == -1){
+            var thumbnail = Array.isArray(manifest['thumbnail']) ? manifest['thumbnail'][0] : manifest['thumbnail'];
+            thumbnail = thumbnail ? shared.getId(thumbnail) : '';
+            var type = shared.getField(manifest, 'type');
+            type = type && type.toLowerCase().indexOf('collection') > -1 ? 'collection' : type;
+            var items = {'id': manifesturl,
+              'thumbnail': thumbnail,
+              'label': shared.parseMetaFields(this.getLabel(manifest)),
+              'type': type
+              }
+            ids.push(manifesturl)
+            collection['manifests'].push(items)
+          }
         }
         return collection;
       },
@@ -176,7 +182,6 @@ export default {
             if (menu){
               menu.nodedata['manifests'] = manifest['manifests'];
               menu.nodesdata = collectiondata;
-              var nodevalues = menu.nodesdata;
               var menuitem = menu;
               if (menuitem.depth != 1){
                 while (menuitem.depth != 1) {
@@ -191,8 +196,8 @@ export default {
             this.toc = [];
             this.position = 0;
             this.rangecontents = response.data;
-            this.compkey = `reload${manifestid}`;
             this.manifestOrRange(response.data);
+            this.compkey = `reload${manifestid}`;
           }
         });
       },
