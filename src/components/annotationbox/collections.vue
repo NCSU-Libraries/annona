@@ -1,9 +1,18 @@
 <template>
   <ul class="tree-menu" v-bind:class="[{toplevel: depth == 0}, 'level-'+depth]" :data-label="label">
     <li>
-    <div class="title" v-if="nodedata" v-bind:class="[active ? 'activecollection' : '' ]">
+    <div class="title" v-if="nodedata" v-bind:class="[active ? 'activecollection' : className ]">
         <button class="buttonlink" v-on:click="checkCollapse(nodedata);" :id="nodedata.id">
-            <img v-bind:src="nodedata.thumbnail" v-if="nodedata.thumbnail" style="max-width: 30px;">{{nodedata.label}}
+            <img v-bind:src="nodedata.thumbnail" v-if="nodedata.thumbnail" style="max-width: 30px;">
+            <span v-if="nodedata.type == 'collection' && showChildren">
+              <i class="fas fa-chevron-up collectionicon"></i>
+            </span>
+            <span v-else-if="nodedata.type == 'collection' && !showChildren">
+              <i class="fas fa-chevron-down collectionicon"></i>
+            </span>{{nodedata.label}}
+            <span  v-if="nodedata.type != 'collection'">
+              <i class="fas fa-arrow-right collectionicon"></i>
+            </span>
         </button>
     </div>
     <div class="additionaltext" v-html="nodedata.description" v-if="nodedata && nodedata.description"></div>
@@ -46,6 +55,13 @@
       this.nodedata = this.node ? JSON.parse(JSON.stringify(this.node)) : '';
       this.nodesdata = this.nodes ? JSON.parse(JSON.stringify(this.nodes)) : [];
       this.updateActive();
+    },
+    computed: {
+      className: function() {
+        const index = this.$parent.index != undefined ? this.$parent.index + 1 + this.index : this.index;
+        const classname = index%2 ? 'odd': 'even';
+        return classname;
+      }
     },
     methods: {
         updateActive: function() {

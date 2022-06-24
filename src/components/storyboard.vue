@@ -368,13 +368,16 @@ export default {
         this.annotations = this.annotations.sort((a, b) => (parseFloat(a['section'][0].split(",")[index]) > parseFloat(b['section'][0].split(",")[index])) ? 1 : -1);
       }
       var fit = this.settings.fit == 'fill' ? true : false;
-      if (!document.getElementById('spinner')){
+      if (!vue.anno_elem.querySelector('#spinner')){
         var spinner = document.createElement('div');
         spinner.id = "spinner";
         spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;;"
         spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
         vue.anno_elem.getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
-        vue.switchSpinner('none');
+        setTimeout(() => {
+          vue.switchSpinner('none');
+        }, "500")
+
       }
       if (vue.settings.imagecrop && updateImage) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));

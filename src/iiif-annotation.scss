@@ -692,10 +692,13 @@ figcaption {
   text-decoration: none;
 }
 
-.tocinfo :nth-child(odd) .title {
-  background-color: grey!important;
+.even {
+  background-color: lightgrey;
 }
 
+.odd {
+  background-color: white;
+}
 .activecollection {
   background-color: aquamarine;
 }
@@ -944,4 +947,11 @@ table tr {
 .imageViewButton {
   width: 35px;
   height: 35px;
+}
+
+.collectionicon {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  font-size: 12px;
 }

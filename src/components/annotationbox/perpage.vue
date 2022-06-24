@@ -24,6 +24,7 @@ export default {
     methods: {
         updatePerPage: function() {
             const position = this.parent.basecompontent.position;
+            this.parent.basecompontent.compkey += 1;
             this.parent.basecompontent.settings.perpage = this.perpage;
             this.parent.basecompontent.rangelist = [];
             this.parent.basecompontent.toc = [];

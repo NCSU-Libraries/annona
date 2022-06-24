@@ -185,7 +185,7 @@ export default {
               var menuitem = menu;
               if (menuitem.depth != 1){
                 while (menuitem.depth != 1) {
-                  menuitem = menu.$parent;
+                  menuitem = menuitem.$parent;
                 }
               }
               this.collection['manifests'][menuitem.index] = menuitem.nodedata;
