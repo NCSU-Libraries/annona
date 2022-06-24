@@ -171,7 +171,6 @@ export default {
     removeSpinner: function() {
       const spinner = document.getElementById("spinner");
       if (spinner){
-        this.tagslistShortcuts();
         this.toolbardisabled = false;
         if (this.$parent.multi){
           if(this.$parent.boardchildren.every(elem => elem.toolbardisabled == false)){
@@ -388,6 +387,10 @@ export default {
         // add layers to viewer.
         if (vue.layerslist && vue.layerslist.length > 0 && updateImage){
           vue.addLayers();
+        }
+
+        if (!updateImage) {
+          vue.tagslistShortcuts();
         }
         // Set view fit
         if (vue.settings.fit == 'horizontal') {

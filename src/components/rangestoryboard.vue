@@ -12,7 +12,7 @@
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="compkey" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests" :jsonannotation="annotationurl.alljsons"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests" :jsonannotation="annotationurl.alljsons"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
@@ -358,10 +358,13 @@ export default {
       },
       getTitle: function() {
         var title = this.rangetitle ? this.rangetitle : '';
+        var check = true;
         if ((this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') && (!this.settings.perpage || this.settings.perpage < 2)) {
-          if (this.rangetitle && this.annotationurl.title && this.rangetitle.indexOf(this.annotationurl.title) == -1){
-            title += `: ${this.annotationurl.title}`
+          if (this.rangetitle && this.annotationurl.title && this.rangetitle.indexOf(this.annotationurl.title) > -1){
+            check = false;
           }
+          this.rangetitle && this.annotationurl.title && check ? title += ': ' : '';
+          title += this.annotationurl.title && check ? this.annotationurl.title : '';
         }
         this.settings.title = title;
       },

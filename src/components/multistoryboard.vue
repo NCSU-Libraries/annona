@@ -3,7 +3,7 @@
   <toolbar></toolbar>
   <span class="storyboard_containers">
     <div v-for="(anno, index) in anno_data" v-bind:key="anno + index" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
-      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:jsonannotation="jsonannotation[index]" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifests[index]"></storyboard>
+      <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:jsonannotation="annojson[index]" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifests[index]"></storyboard>
     </div>
     <div v-for="image in allimages" v-bind:key="image.id" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block; height: 600px">
       <div v-bind:id="image.id" class="seadragonbox"></div>
@@ -58,7 +58,8 @@ export default {
         boardchildrenwithannos: [],
         annourls: '',
         textoverlay: shared.objectToNewObject(shared.textoverlay),
-        toolbardisabled: false
+        toolbardisabled: false,
+        annojson: []
       }
     },
     watch: {
@@ -101,7 +102,7 @@ export default {
       this.anno_data = annotations.filter(function (el) {
         return el != null && el != '';
       });
-      this.jsonannotation = this.jsonannotation ? this.jsonannotation : []
+      this.annojson = this.jsonannotation ? this.jsonannotation : []
       this.isreverse = this.$parent && this.$parent.viewingDirection == 'rtl' ? true : false;
       if (this.isreverse){
         this.boardnumber = "updateme";
