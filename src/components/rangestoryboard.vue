@@ -30,7 +30,6 @@
 <script>
 import storyboard from './storyboard';
 import iiifannotation from './iiifannotation';
-import info from './annotationbox/info.vue'
 import shared from './shared';
 import axios from 'axios';
 import multistoryboard from './multistoryboard.vue';
@@ -39,8 +38,7 @@ export default {
     components: {
         storyboard,
         multistoryboard,
-        iiifannotation,
-        info
+        iiifannotation
     },
     props: {
       'rangeurl':String,
