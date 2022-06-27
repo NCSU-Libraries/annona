@@ -20,7 +20,6 @@ export default {
         const max = this.parent.basecompontent.rangelist.length;
         var perpage = this.parent.basecompontent.settings.perpage;
         if (max < this.parent.basecompontent.settings.perpage){
-            this.parent.basecompontent.settings.perpage = max;
             perpage = max;
         }
         this.perpage = perpage;
