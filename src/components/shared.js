@@ -168,11 +168,9 @@ export default {
     const size = viewer.world.getItemAt(0).getContentSize();
     const checkviewer = viewer.viewport.viewerElementToImageCoordinates(viewer.viewport.getContainerSize());
     const newheight = checkviewer['x']/size['x']*size['y'];
-    if (size['y'] > size['x']) {
+    if (size['y'] > size['x'] && newheight - checkviewer['y'] > 0) {
       return 'vertical';
-    } else if(newheight - checkviewer['y'] > 0) {
-      return 'vertical'
-    } else {
+    }  else {
       return 'horizontal';
     }
   },

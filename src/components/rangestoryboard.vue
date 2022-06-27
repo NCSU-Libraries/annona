@@ -179,6 +179,9 @@ export default {
             }
             if (menu){
               menu.nodedata['manifests'] = manifest['manifests'];
+              if (menu.$parent && menu.$parent.depth != 0){
+                menu.$parent.nodedata['manifests'][menu.index]['manifests'] = manifest['manifests'];
+              }
               menu.nodesdata = collectiondata;
               var menuitem = menu;
               if (menuitem.depth != 1){
@@ -186,7 +189,7 @@ export default {
                   menuitem = menuitem.$parent;
                 }
               }
-              this.collection['manifests'][menuitem.index] = manifest;
+              this.collection['manifests'][menuitem.index] = menuitem.nodedata;
             }
             
           } else {
