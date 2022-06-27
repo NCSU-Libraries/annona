@@ -186,7 +186,7 @@ export default {
                   menuitem = menuitem.$parent;
                 }
               }
-              this.collection['manifests'][menuitem.index] = menuitem.nodedata;
+              this.collection['manifests'][menuitem.index] = manifest;
             }
             
           } else {

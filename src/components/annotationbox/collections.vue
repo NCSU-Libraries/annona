@@ -83,8 +83,3 @@
     }
   }
 </script>
-<style>
-.level-0, .level-1 {
-    padding: 0;
-}
-</style>
