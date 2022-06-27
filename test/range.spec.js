@@ -807,7 +807,7 @@ describe('Component', () => {
       expect(sbd.fullscreen).toBe(false);
       expect(sbd.tagslist).toEqual({});
       expect(sbd.imageinfo).toEqual({"label": "Image information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://images.cogapp.com/iiif/holbein_big_p.tif/info.json\" target=\"_blank\">https://images.cogapp.com/iiif/holbein_big_p.tif/info.json</a></div>"});
-      expect(sbd.imagetitle).toBe("Holbein's 'The Ambassadors': The Ambassadors");
+      expect(sbd.imagetitle).toBe("Holbein's 'The Ambassadors'");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://images.cogapp.com/iiif/holbein_big_p.tif/info.json", "xywh": ""}]);
       expect(Object.keys(sbd.shortcuts).sort()).toEqual(['autorun', 'reload', 'textoverlay', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'zoomin', 'zoomout'].sort());
       wrapper.destroy()
@@ -861,6 +861,61 @@ describe('Component', () => {
       expect(sbd.imagetitle).toBe("Cunard Line - to all parts of the world: Object image 0");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://framemark.vam.ac.uk/collections/2013GU2911/info.json", "xywh": ""}]);
       expect(Object.keys(sbd.shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'zoomin', 'zoomout'].sort());
+      wrapper.destroy()
+    })
+
+    test('test nested collection', async ()  => {
+      const wrapper =  mount(rangestoryboard,{
+        propsData: {
+          rangeurl: 'https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json'
+        },
+        attachTo: '#root'
+      });
+      
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      expect(data.tags).toBe(false)
+      expect(data.layerslist).toBe(false)
+      expect(data.range).toBe(true)
+      expect(data.toctitle).toEqual("Range Pages")
+      expect(data.stylingstring).toEqual("perpage:1;continousboard:true;autorun_interval:3;title:In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px);")
+      expect(data.position).toEqual(0)
+      expect(data.prevPageInactive).toBe(true)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('rangestoryboard_ng-projects.json')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.toc.length).toEqual(6)
+      expect(data.collection.manifests.length).toEqual(4)
+      expect(data.collection.manifests[0].manifests.length).toEqual(6)
+      expect(data.collection.manifests[0].manifests[0].manifests.length).toEqual(2)
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels'");
+      var sbd = wrapper.vm.$children[0].$children[1].$el['__vue__']._data;
+      await flushPromises()
+      expect(sbd.seadragontile).toEqual("https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json")
+      expect(sbd.position).toBe(-1);
+      expect(sbd.seadragonid.indexOf('storyboard_noannotation') > -1).toEqual(true);
+      expect(sbd.annotations.length).toEqual(0);
+      expect(sbd.currentanno).toBe("");
+      expect(sbd.transcription).toBe(undefined);
+      expect(sbd.textposition).toBe("corner");
+      expect(sbd.prev_inactive).toBe(true);
+      expect(sbd.next_inactive).toBe(false);
+      expect(sbd.toolbar_id).toBe("");
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
+      expect(sbd.shown).toBe(false);
+      expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
+      expect(sbd.isautorunning).toBe("");
+      expect(sbd.settings).toEqual({"autorun_interval": 3,"continousboard": true,"index": 0,"perpage": 1, "title": "In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px)", "truncate_length": 2});
+      expect(sbd.currentlang).toBe("");
+      expect(sbd.languages).toEqual([]);
+      expect(sbd.fullscreen).toBe(false);
+      expect(sbd.tagslist).toEqual({});
+      expect(sbd.imageinfo).toEqual({"label": "Manifest information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://research.ng-london.org.uk/iiif-projects/json/dunkerton_syson2010.json\" target=\"_blank\">https://research.ng-london.org.uk/iiif-projects/json/dunkerton_syson2010.json</a></div><div id=\"title\"><b>Title: </b>In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels'</div><div id=\"description\"><b>Description: </b>Selection of high resolution infrared images in support of the Dunkerton and Syson article from Technical Bulletin Volume 31</div><div id=\"Manifest Author\"><b>Manifest Author: </b>Scientific Department (NG)</div><div id=\"Related Projects\"><b>Related Projects: </b><a href=\"https://research.ng-london.org.uk/iiif-projects/json/iiif_collection_explorer.json\">iiif_collection_explorer</a>,<a href=\"https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json\">ng-projects</a>,<a href=\"https://research.ng-london.org.uk/iiif-projects/json/technical-bulletin.json\">technical-bulletin</a>,<a href=\"https://research.ng-london.org.uk/iiif-projects/json/vol-31.json\">vol-31</a></div><div id=\"Additional Links\"><b>Additional Links: </b><a href=\"https://www.nationalgallery.org.uk/research/research-resources/technical-bulletin/technical-bulletin-volume-31\">Technical Bulletin Vol. 31</a>,<a href=\"https://www.nationalgallery.org.uk/technical-bulletin-vol-31/dunkerton_syson2010\">Dunkerton and Syson article</a></div><div id=\"Related PDF\"><b>Related PDF: </b>https://research.ng-london.org.uk/ngws/upload/pdf/Dunkerton_Syson_2010b.pdf</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json\" target=\"_blank\">https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json</a></div>"});
+      expect(sbd.imagetitle).toBe("In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px)");
+      expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json", "xywh": ""}]);
+      expect(Object.keys(sbd.shortcuts).sort()).toEqual(['reload', 'close', 'fullscreen', 'hide', 'home', 'info', 'keyboard', 'zoomin', 'zoomout', 'perpage'].sort());
       wrapper.destroy()
     })
 })

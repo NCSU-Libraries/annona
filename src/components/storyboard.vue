@@ -752,7 +752,7 @@ export default {
       var meta = shared.getHTMLMeta(canvas_data, manifestlink, 'Manifest', this.settings);
       this.imageinfo.text = meta['text'];
       this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
-      canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1 ? this.imageinfo.label = 'Manifest information' : '';
+      (canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1) || (canvas_data.items && canvas_data.items.length > 1) ? this.imageinfo.label = 'Manifest information' : '';
       var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images, this.currentlang);
       this.imagetitle = get_canvas['title'];
       var canvsimgs = get_canvas['images'];

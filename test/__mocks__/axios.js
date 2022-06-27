@@ -856,5 +856,200 @@ module.exports = {
   if (url === 'bees2.json'){
     return Promise.reject()
   }
+  if (url === 'https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json'){
+    return Promise.resolve({data:{"@context":"http:\/\/iiif.io\/api\/presentation\/3\/context.json","id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/ng-projects","type":"Collection","logo":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_80H.png","type":"Image","format":"image\/png"}],"label":{"en":["National Gallery high-resolution image resources"]},"summary":{"en":["These resources display high-resolution images and data \n\t related to National Gallery projects and publications. The details of the various groups of images are organised into IIIF Collections and Manifests, details of each \"Collection\" are presented as traditional webpages and the images listed with the IIIF Manifests are presented directly with the IIIF compliant viewer Mirador. When the presented images directly relate to an available PDF, the PDF will also be displayed next tot he images. For further information \n\t about using National Gallery images please contact the \n\t <a href=\"http:\/\/www.nationalgalleryimages.co.uk\">National Gallery Picture Library<\/a>."]},"rights":"http:\/\/rightsstatements.org\/vocab\/InC\/1.0\/","metadata":[{"label":{"en":["Manifest Author"]},"value":{"en":["Scientific Department (NG)"]}},{"label":{"en":["Related Projects"]},"value":{"en":["<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/iiif_collection_explorer.json\">iiif_collection_explorer<\/a>"]}}],"requiredStatement":{"label":{"en":["Attribution"]},"value":{"en":["2022 \u00a9 Copyright The National Gallery, London"]}},"items":[{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/technical-bulletin.json","type":"Collection","label":{"en":["Technical Bulletin"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/catalogues.json","type":"Collection","label":{"en":["The National Gallery catalogues"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/external.json","type":"Collection","label":{"en":["External Projects"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/exhibitions.json","type":"Collection","label":{"en":["Exhibitions"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]}]}});
+  }
+  if (url === 'https://research.ng-london.org.uk/iiif-projects/json/technical-bulletin.json'){
+    return Promise.resolve({data: {"@context":"http:\/\/iiif.io\/api\/presentation\/3\/context.json","id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/technical-bulletin","type":"Collection","logo":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ngtb_logo_tr_140.png","type":"Image","format":"image\/png"}],"label":{"en":["Technical Bulletin"]},"summary":{"en":["The National Gallery Technical Bulletin, first published in 1977, has achieved a leading position in the study of the materials and techniques of painting, and the scientific examination of paintings; it is essential reading for conservators, conservation scientists, art historians, collectors and curators. Drawing on the combined expertise of curators, scientists and conservators, it brings together a wealth of information about artists\u2019 materials, practices and techniques. "]},"rights":"http:\/\/rightsstatements.org\/vocab\/InC\/1.0\/","metadata":[{"label":{"en":["Manifest Author"]},"value":{"en":["Scientific Department (NG)"]}},{"label":{"en":["Related Projects"]},"value":{"en":["<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/iiif_collection_explorer.json\">iiif_collection_explorer<\/a>","<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/ng-projects.json\">ng-projects<\/a>"]}},{"label":{"en":["NG Technical Bulletin"]},"value":{"en":["<a href=\"https:\/\/www.nationalgallery.org.uk\/research\/research-resources\/technical-bulletin\">LINK<\/a>"]}}],"requiredStatement":{"label":{"en":["Attribution"]},"value":{"en":["2022 \u00a9 Copyright The National Gallery, London"]}},"items":[{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-31.json","type":"Collection","label":{"en":["Volume 31 - Close Examination: Fakes, Mistakes and Discoveries "]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-32.json","type":"Collection","label":{"en":["Volume 32 - Leonardo da Vinci: Pupil, Painter and Master"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-33.json","type":"Collection","label":{"en":["Volume 33 - Various Articles 2012 "]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-34.json","type":"Collection","label":{"en":["Volume 34 - Titian's Painting Technique Before 1540"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-35.json","type":"Collection","label":{"en":["Volume 35 - Joshua Reynolds in the National Gallery and the Wallace Collection"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-36.json","type":"Collection","label":{"en":["Volume 36 - Titian's Painting Technique From 1540"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]}]}});
+  }
+  if (url === 'https://research.ng-london.org.uk/iiif-projects/json/vol-31.json'){
+    return Promise.resolve({data: {"@context":"http:\/\/iiif.io\/api\/presentation\/3\/context.json","id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-31","type":"Collection","logo":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/NGTB-31.jpg","type":"Image","format":"image\/jpg"}],"label":{"en":["Volume 31 - Various Articles 2010"]},"summary":{"en":["Volume 31 of the Technical Bulletin, edited by Ashok Roy, in addition to the articles supported by this resource Vol. 31 also includes the following articles:<br \/><br \/><ul><li>Giorgione and not Giorgione: The Conservation History and Technical Examination of Il Tramonto<\/li><li>Two Copies of Perugino's Baptism of Christ<\/li><li>Rembrandt's Portrait(s?) of Frederik Rihel<\/li><li>Mastic and Megilp in Reynold's Lord Heathfield of Gibraltar: A Challenge for Conservation<\/li><\/ul>"]},"rights":"http:\/\/rightsstatements.org\/vocab\/InC\/1.0\/","metadata":[{"label":{"en":["Manifest Author"]},"value":{"en":["Scientific Department (NG)"]}},{"label":{"en":["Related Projects"]},"value":{"en":["<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/iiif_collection_explorer.json\">iiif_collection_explorer<\/a>","<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/ng-projects.json\">ng-projects<\/a>","<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/technical-bulletin.json\">technical-bulletin<\/a>"]}},{"label":{"en":["NG Technical Bulletin"]},"value":{"en":["<a href=\"https:\/\/www.nationalgallery.org.uk\/research\/research-resources\/technical-bulletin\">LINK<\/a>"]}},{"label":{"en":["Technical Bulletin Vol. 31"]},"value":{"en":["<a href=\"https:\/\/www.nationalgallery.org.uk\/research\/research-resources\/technical-bulletin\/technical-bulletin-volume-31\">LINK<\/a>"]}}],"requiredStatement":{"label":{"en":["Attribution"]},"value":{"en":["2022 \u00a9 Copyright The National Gallery, London"]}},"items":[{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/dunkerton_syson2010.json","type":"Manifest","label":{"en":["In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels'"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]},{"id":"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/roy_mancini2010.json","type":"Manifest","label":{"en":["The Virgin and Child with an Angel', after Francia: A History of Error"]},"thumbnail":[{"id":"https:\/\/research.ng-london.org.uk\/ng\/graphics\/ng_logo_tr_125.png","type":"Image","format":"image\/jpeg"}]}]}});
+  }
+  if (url.indexOf("https://noannotation") > -1){
+    return Promise.reject();
+  }
+  if (url === 'https://research.ng-london.org.uk/iiif-projects/json/dunkerton_syson2010.json'){
+    return Promise.resolve({data: {  
+      "@context":"http://iiif.io/api/presentation/3/context.json",
+      "id":"https://research.ng-london.org.uk/iiif-projects/json/dunkerton_syson2010.json",
+      "type":"Manifest",
+      "label": { "en": [ "In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels'" ]},
+      "logo": "https://research.ng-london.org.uk/ng/graphics/ng_logo_tr_125.png",
+      "summary": { "en": [ "Selection of high resolution infrared images in support of the Dunkerton and Syson article from Technical Bulletin Volume 31" ] },
+      "rights": "http://rightsstatements.org/vocab/InC/1.0/",
+      "metadata": [
+        {"label":{"en":["Manifest Author"]},"value":{"en":["Scientific Department (NG)"]}},
+        {"label":{"en":["Related Projects"]},"value":{"en":["<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/iiif_collection_explorer.json\">iiif_collection_explorer<\/a>","<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/ng-projects.json\">ng-projects<\/a>","<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/technical-bulletin.json\">technical-bulletin<\/a>","<a href=\"https:\/\/research.ng-london.org.uk\/iiif-projects\/json\/vol-31.json\">vol-31<\/a>"]}},
+        {"label":{"en":["Additional Links"]},"value":{"en":["<a href=\"https:\/\/www.nationalgallery.org.uk\/research\/research-resources\/technical-bulletin\/technical-bulletin-volume-31\">Technical Bulletin Vol. 31<\/a>","<a href=\"https:\/\/www.nationalgallery.org.uk\/technical-bulletin-vol-31\/dunkerton_syson2010\">Dunkerton and Syson article<\/a>"]}},
+        {"label":{"en":["Related PDF"]},"value":{"en":["https:\/\/research.ng-london.org.uk\/ngws\/upload\/pdf\/Dunkerton_Syson_2010b.pdf"]}}  ],
+     
+     "provider": [
+       {
+         "id": "https://www.nationalgallery.org.uk/about-us",
+         "type": "Agent",
+         "label": { "en": [ "The National Gallery" ] },
+         "homepage": [
+           {
+             "id": "https://www.nationalgallery.org.uk/",
+             "type": "Text",
+             "label": { "en": [ "The National Gallery Homepage" ] },
+             "format": "text/html"
+           }
+         ],
+         "logo": [
+           {
+             "id": "https://research.ng-london.org.uk/ng/graphics/ng_logo_tr_125.png",
+             "type": "Image",
+             "format": "image/png"
+           }
+         ]
+       }
+     ],
+     
+      "requiredStatement": {
+       "label": { "en": [ "Attribution" ] },
+       "value": { "en": [ "&copy; The National Gallery, London" ] }
+       },
+      "description": "Selection of high resolution infrared images in support of the Dunkerton and Syson article from Technical Bulletin Volume 31",
+      "viewingDirection":"left-to-right",
+      "viewingHint":"individuals",
+      "items":[       		
+        {  
+         "id":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/canvas",
+         "type":"Canvas",
+         "label": { "en": [ "Infrared reflectogram (OSIRIS) (4036x3100px)" ] },
+         "thumbnail": [{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_0_a_AT-PYR.tif\/full\/387,504\/0\/default.jpg","type":"Image","width":387,"height":504,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_0_a_AT-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":775,"height":1009,"sizes":[[{"width":193,"height":252},{"width":387,"height":504},{"width":775,"height":1009}]]}]}],
+         "height":4036,
+         "width":3100,
+         "items":[  
+           {  
+           "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/page",
+           "type":"AnnotationPage",
+           "items":[  
+               {  
+               "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif",
+               "type":"Annotation",
+               "motivation":"painting",
+               "body":[{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_0_a_AT-PYR.tif\/full\/1550,2018\/0\/default.jpg","type":"Image","width":1550,"height":2018,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_0_a_AT-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":3100,"height":4036,"sizes":[[{"width":193,"height":252},{"width":387,"height":504},{"width":775,"height":1009},{"width":1550,"height":2018}]]}]}],
+               "target":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/canvas"
+               }
+             ]
+           }]
+         }		,
+        {  
+         "id":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_01-PYR.tif/canvas",
+         "type":"Canvas",
+         "label": { "en": [ "Detail of infrared reflectogram (OSIRIS) (4096x4096px)" ] },
+         "thumbnail": [{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_01-PYR.tif\/full\/512,512\/0\/default.jpg","type":"Image","width":512,"height":512,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_01-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":1024,"height":1024,"sizes":[[{"width":256,"height":256},{"width":512,"height":512},{"width":1024,"height":1024}]]}]}],
+         "height":4096,
+         "width":4096,
+         "items":[  
+           {  
+           "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_01-PYR.tif/page",
+           "type":"AnnotationPage",
+           "items":[  
+               {  
+               "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_01-PYR.tif",
+               "type":"Annotation",
+               "motivation":"painting",
+               "body":[{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_01-PYR.tif\/full\/2048,2048\/0\/default.jpg","type":"Image","width":2048,"height":2048,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_01-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":4096,"height":4096,"sizes":[[{"width":256,"height":256},{"width":512,"height":512},{"width":1024,"height":1024},{"width":2048,"height":2048}]]}]}],
+               "target":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_01-PYR.tif/canvas"
+               }
+             ]
+           }]
+         }		,
+        {  
+         "id":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_03-PYR.tif/canvas",
+         "type":"Canvas",
+         "label": { "en": [ "Detail of infrared reflectogram (OSIRIS) (4096x3992px)" ] },
+         "thumbnail": [{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_03-PYR.tif\/full\/499,512\/0\/default.jpg","type":"Image","width":499,"height":512,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_03-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":998,"height":1024,"sizes":[[{"width":249,"height":256},{"width":499,"height":512},{"width":998,"height":1024}]]}]}],
+         "height":4096,
+         "width":3992,
+         "items":[  
+           {  
+           "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_03-PYR.tif/page",
+           "type":"AnnotationPage",
+           "items":[  
+               {  
+               "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_03-PYR.tif",
+               "type":"Annotation",
+               "motivation":"painting",
+               "body":[{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_03-PYR.tif\/full\/1996,2048\/0\/default.jpg","type":"Image","width":1996,"height":2048,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_03-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":3992,"height":4096,"sizes":[[{"width":249,"height":256},{"width":499,"height":512},{"width":998,"height":1024},{"width":1996,"height":2048}]]}]}],
+               "target":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_03-PYR.tif/canvas"
+               }
+             ]
+           }]
+         }		,
+        {  
+         "id":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_04-PYR.tif/canvas",
+         "type":"Canvas",
+         "label": { "en": [ "Detail of infrared reflectogram (OSIRIS) (4096x4012px)" ] },
+         "thumbnail": [{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_04-PYR.tif\/full\/501,512\/0\/default.jpg","type":"Image","width":501,"height":512,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_04-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":1003,"height":1024,"sizes":[[{"width":250,"height":256},{"width":501,"height":512},{"width":1003,"height":1024}]]}]}],
+         "height":4096,
+         "width":4012,
+         "items":[  
+           {  
+           "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_04-PYR.tif/page",
+           "type":"AnnotationPage",
+           "items":[  
+               {  
+               "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_04-PYR.tif",
+               "type":"Annotation",
+               "motivation":"painting",
+               "body":[{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_04-PYR.tif\/full\/2006,2048\/0\/default.jpg","type":"Image","width":2006,"height":2048,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_04-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":4012,"height":4096,"sizes":[[{"width":250,"height":256},{"width":501,"height":512},{"width":1003,"height":1024},{"width":2006,"height":2048}]]}]}],
+               "target":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_04-PYR.tif/canvas"
+               }
+             ]
+           }]
+         }		,
+        {  
+         "id":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_05-PYR.tif/canvas",
+         "type":"Canvas",
+         "label": { "en": [ "Detail of infrared reflectogram (OSIRIS) (4096x4096px)" ] },
+         "thumbnail": [{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_05-PYR.tif\/full\/512,512\/0\/default.jpg","type":"Image","width":512,"height":512,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_05-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":1024,"height":1024,"sizes":[[{"width":256,"height":256},{"width":512,"height":512},{"width":1024,"height":1024}]]}]}],
+         "height":4096,
+         "width":4096,
+         "items":[  
+           {  
+           "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_05-PYR.tif/page",
+           "type":"AnnotationPage",
+           "items":[  
+               {  
+               "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_05-PYR.tif",
+               "type":"Annotation",
+               "motivation":"painting",
+               "body":[{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_05-PYR.tif\/full\/2048,2048\/0\/default.jpg","type":"Image","width":2048,"height":2048,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_05-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":4096,"height":4096,"sizes":[[{"width":256,"height":256},{"width":512,"height":512},{"width":1024,"height":1024},{"width":2048,"height":2048}]]}]}],
+               "target":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_05-PYR.tif/canvas"
+               }
+             ]
+           }]
+         }		,
+        {  
+         "id":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_06-PYR.tif/canvas",
+         "type":"Canvas",
+         "label": { "en": [ "Detail of infrared reflectogram (OSIRIS) (4096x4096px)" ] },
+         "thumbnail": [{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_06-PYR.tif\/full\/512,512\/0\/default.jpg","type":"Image","width":512,"height":512,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_06-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":1024,"height":1024,"sizes":[[{"width":256,"height":256},{"width":512,"height":512},{"width":1024,"height":1024}]]}]}],
+         "height":4096,
+         "width":4096,
+         "items":[  
+           {  
+           "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_06-PYR.tif/page",
+           "type":"AnnotationPage",
+           "items":[  
+               {  
+               "id": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_06-PYR.tif",
+               "type":"Annotation",
+               "motivation":"painting",
+               "body":[{"id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_06-PYR.tif\/full\/2048,2048\/0\/default.jpg","type":"Image","width":2048,"height":2048,"format":"image\/jpeg","service":[{"@id":"https:\/\/research.ng-london.org.uk\/iiif\/pics\/pyramids\/technicalbulletin\/volume_31\/N-0296_dirrO_AT_D_06-PYR.tif","@type":"type","profile":"http:\/\/iiif.io\/api\/image\/2\/level1.json","width":4096,"height":4096,"sizes":[[{"width":256,"height":256},{"width":512,"height":512},{"width":1024,"height":1024},{"width":2048,"height":2048}]]}]}],
+               "target":"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_AT_D_06-PYR.tif/canvas"
+               }
+             ]
+           }]
+         }         
+         
+      ]
+   }
+   });
+  }
 })
 }
