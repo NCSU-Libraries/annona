@@ -75,6 +75,21 @@ The JSON should reflect the example in the link above.
 <iiif-rangestoryboard rangeurl="{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-rangestoryboard>
 
 
+## Collection Examples
+The range storyboard allows for you to load a IIIF collection into the viewer.
+
+### National Gallery: Multiple nested Collection
+```<iiif-rangestoryboard rangeurl="https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json"></iiif-rangestoryboard>```
+
+<iiif-rangestoryboard rangeurl="https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json"></iiif-rangestoryboard>
+
+### From the Page: Example of collections with Annotations
+
+```<iiif-rangestoryboard rangeurl="https://fromthepage.com/iiif/collection/jeremiah-white-graves-diaries"></iiif-rangestoryboard>```
+
+<iiif-rangestoryboard rangeurl="https://fromthepage.com/iiif/collection/jeremiah-white-graves-diaries"></iiif-rangestoryboard>
+
+
 ## Notes about creating a range
 - Currently the application expects that if the `canvases` field exists it is the same length as the annotation list.
 - `canvases` is not a required field assuming the annotation already has the manifest defined in the annotation.
