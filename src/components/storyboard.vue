@@ -289,14 +289,11 @@ export default {
       //If rangestoryboard with multiple pages, add annotation label to title
       const label = annotation['label'] ? annotation['label'] : annotation['@label'];
       this.imagetitle = this.settings.title ? this.imagetitle : label;
-      if (this.basecompontent.range && label) {
-        const index = this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) + this.basecompontent.position;
+      if (label && this.basecompontent.range) {
+        const index = this.$parent.multi ? this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) : 0 + this.basecompontent.position;
         if (this.basecompontent.toc[index]['label'].indexOf(label) == -1){
           this.basecompontent.toc[index]['label'] += `: ${label}`
         }
-      }
-      if (this.settings.perpage && this.settings.perpage > 1 && label) {
-        this.imagetitle += ` : ${label}`
       }
     },
     tagslistShortcuts: function() {
