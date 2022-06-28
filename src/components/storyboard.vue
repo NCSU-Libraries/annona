@@ -290,7 +290,8 @@ export default {
       const label = annotation['label'] ? annotation['label'] : annotation['@label'];
       this.imagetitle = this.settings.title ? this.imagetitle : label;
       if (label && this.basecompontent.range) {
-        const index = this.$parent.multi ? this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) : 0 + this.basecompontent.position;
+        var boardnumber = this.$parent.multi ? this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) : 0;
+        const index = boardnumber + this.basecompontent.position;
         if (this.basecompontent.toc[index]['label'].indexOf(label) == -1){
           this.basecompontent.toc[index]['label'] += `: ${label}`
         }
