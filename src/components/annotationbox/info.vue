@@ -1,7 +1,7 @@
 <template>
 <div id="information" style="height: auto;" class="info content">
     <div class="imagetitle">
-    <h1>{{parent.imagetitle}}</h1>
+    <h1 v-html="title"></h1>
     </div>
     <span v-if="!parent.booleanitems.isexcerpt">
     <button class="infolink buttonlink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'additionalinfoshown'});" v-if="parent.settings.additionalinfo">{{parent.settings.additionalinfotitle}}</button>
@@ -29,19 +29,25 @@
         </div>
     </div>
 
-    <button class="infolink buttonlink annoinfolink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="parent.annoinfo.text">Annotation information</button>
+    <button class="infolink buttonlink annoinfolink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annotations.length > 0">Annotation information</button>
     <div v-if="parent.booleanitems.annoinfoshown" class="annoinfo">
-        <span v-html="parent.annoinfo.text"></span>
+        <span v-for="(annotationinfo, index) in annotations" v-bind:key="annotationinfo.annodata.position">
+        <h2 v-if="annotationinfo.text && annotations.length > 1" class="boardnumber">Board {{index+1}}</h2>
+        <span v-html="annotationinfo.text"></span>
         <div class="annotationslist">
-        <div v-for="annoinfo in parent.annoinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
-            <div class="title"><button class="buttonlink" v-on:click="parent.sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</button></div>
-            <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
+            <div v-for="annoinfo in annotationinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
+                <div class="title"><button class="buttonlink" v-on:click="annotationinfo.parent.sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</button></div>
+                <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
+            </div>
         </div>
-        </div>
+        </span>
     </div>
 
-    <button class="infolink buttonlink imageinfolink" v-if="parent.imageinfo.text" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{parent.imageinfo.label}}</button>
-    <div v-if="parent.booleanitems.imageinfoshown" v-html="parent.imageinfo.text" class="imageinfo"></div>
+    <button class="infolink buttonlink imageinfolink" v-if="imageinfo.length > 0" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'imageinfoshown'});">{{parent.imageinfo.label}}</button>
+    <div v-if="parent.booleanitems.imageinfoshown" v-for="(info, index) in imageinfo" v-bind:key="index">
+        <h2 v-if="imageinfo.length > 1" class="boardnumber">Board {{index+1}}</h2>
+        <div v-html="info.text" class="imageinfo"></div>
+    </div>
     </span>
 </div>
 </template>
@@ -50,6 +56,59 @@ import collections from './collections.vue'
 
 export default {
     props: ['parent'],
-    components: {collections}
+    components: {collections},
+    data: function() {
+        return {
+            title: [],
+            annotations: [],
+            imageinfo: ''
+        }
+    },
+    created() {
+        this.title = [this.parent.imagetitle];
+        var annoinfo = this.parent.annoinfo;
+        if (annoinfo.text){
+            annoinfo['parent'] = this.parent;
+            this.annotations = [annoinfo];
+        }
+        this.imageinfo = [this.parent.imageinfo];
+        if (this.parent.$parent.multi) {
+            if (this.parent.basecompontent.range) {
+                this.title = [this.parent.settings.title]
+                const start = this.parent.basecompontent.position;
+                const end = this.parent.basecompontent.position+this.parent.basecompontent.settings.perpage;
+                if (start != end && this.parent.settings.perpage > 1){
+                    this.title = this.title.concat(this.parent.basecompontent.toc.slice(start,end).map(elem => elem.label));
+                }
+            } else {
+                this.title = []
+            }
+            var boardchildren = this.parent.$parent.boardchildren;
+            this.imageinfo = []
+            this.annotations = []
+            for (var bct=0; bct<boardchildren.length; bct++){
+                if (!this.parent.basecompontent.range){
+                    var title = boardchildren[bct].imagetitle;
+                    this.title.push(title)
+                }
+                const links = this.imageinfo.map(elem => elem.link);
+                if (links.indexOf(boardchildren[bct].imageinfo.link) == -1){
+                    this.imageinfo.push(boardchildren[bct].imageinfo)
+                }
+                if (boardchildren[bct].annoinfo) {
+                    var boardinfo = boardchildren[bct].annoinfo;
+                    if (boardinfo.text){
+                        boardinfo['parent'] = boardchildren[bct];
+                        this.annotations.push(boardinfo)
+                    }
+                }
+            }
+            if(this.parent.$parent.isreverse) {
+                this.imageinfo = this.imageinfo.reverse()
+                this.annotations = this.annotations.reverse()
+            }
+        }
+        this.title = this.title.join("<br>")
+    }
 }
 </script>

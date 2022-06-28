@@ -279,8 +279,20 @@ export default {
             this.compkey = position;
         }
         const annolabel = this.getLabel(anno);
-        var toclabel = annolabel ? annolabel : canvas && canvas['label'] ? canvas['label'] : `Page ${position + 1}`;
-        toclabel = shared.parseMetaFields(toclabel);
+        var toclabel = []
+        if (canvas) {
+          const cvlabel = shared.parseMetaFields(this.getLabel(canvas));
+          if (cvlabel && cvlabel.constructor.name == 'String') {
+            toclabel.push(cvlabel);
+          }
+        }
+        if (annolabel){
+          toclabel.push(shared.parseMetaFields(annolabel))
+        }
+        if (toclabel.length == 0){
+          toclabel.push(`Page ${position + 1}`)
+        }
+        toclabel = toclabel.join(": ")
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
         this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, 'otherLists': otherContent});

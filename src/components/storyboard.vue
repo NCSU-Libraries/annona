@@ -289,6 +289,12 @@ export default {
       //If rangestoryboard with multiple pages, add annotation label to title
       const label = annotation['label'] ? annotation['label'] : annotation['@label'];
       this.imagetitle = this.settings.title ? this.imagetitle : label;
+      if (this.basecompontent.range && label) {
+        const index = this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) + this.basecompontent.position;
+        if (this.basecompontent.toc[index]['label'].indexOf(label) == -1){
+          this.basecompontent.toc[index]['label'] += `: ${label}`
+        }
+      }
       if (this.settings.perpage && this.settings.perpage > 1 && label) {
         this.imagetitle += ` : ${label}`
       }
@@ -297,7 +303,11 @@ export default {
       //get tags and set corresponding color
       var tags = shared.flatten(this.annotations, 'tags');
       var checked = this.settings.toggleoverlay ? true : false;
-      this.tagslist = shared.getTagDict(tags, this.settings, checked);
+      var existingtaglist = this.$parent.multi ? this.$parent.tagslist : false;
+      this.tagslist = shared.getTagDict(tags, this.settings, checked, existingtaglist);
+      if(this.$parent.multi) {
+        this.$parent.tagslist = Object.assign(this.$parent.tagslist, this.tagslist);
+      }
       this.booleanitems.istranscription = this.settings.transcription && !this.settings.textfirst ? true : false;
       if (this.$parent.multi) {
         Object.keys(this.tagslist).length > 0 ? this.$parent.tags = true : '';
@@ -751,6 +761,7 @@ export default {
     manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {
       var meta = shared.getHTMLMeta(canvas_data, manifestlink, 'Manifest', this.settings);
       this.imageinfo.text = meta['text'];
+      this.imageinfo.link = manifestlink;
       this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
       (canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1) || (canvas_data.items && canvas_data.items.length > 1) ? this.imageinfo.label = 'Manifest information' : '';
       var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images, this.currentlang);

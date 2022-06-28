@@ -72,7 +72,7 @@ export default {
       this.scrollContent(true);
     },
     '$parent.shown': function(newval) {
-      const single = ['perpage', 'textoverlay', 'keyboard']
+      const single = ['perpage', 'textoverlay', 'keyboard', 'info']
       if (this.$parent.$parent && this.$parent.$parent.multi && single.indexOf(newval) > -1){
         this.show = this.$parent.$parent.boardchildren[0].seadragonid == this.$parent.seadragonid;
       } else {

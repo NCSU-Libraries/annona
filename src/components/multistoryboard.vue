@@ -55,6 +55,7 @@ export default {
         boardchildren: {},
         leaflet: false,
         boardnumber: 0,
+        tagslist: {},
         boardchildrenwithannos: [],
         annourls: '',
         textoverlay: shared.objectToNewObject(shared.textoverlay),

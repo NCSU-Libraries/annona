@@ -585,15 +585,20 @@ export default {
     }
     return [... new Set(authors)].join(', ');
   },
-  getTagDict: function(tags, settings, checked) {
+  getTagDict: function(tags, settings, checked, existingtaglist=false) {
     var tagdict = {}
     for (var tc=0; tc<tags.length; tc++){
       var tagvalue = tags[tc].value ? tags[tc].value : tags[tc];
       var group = tags[tc].group ? this.groupToClass(tags[tc].group) : '';
+      var set_color;
       if (tagvalue != '' && tagvalue){
         var tagclassvalue = this.tagsToClass(tags[tc]);
+        if(existingtaglist) {
+          set_color = existingtaglist[tagclassvalue];
+          set_color = set_color ? set_color.color : existingtaglist[group] ? existingtaglist[group].color : false;
+        }
         if (settings.tagscolor) {
-          var set_color = settings.tagscolor[tagclassvalue];
+          set_color = settings.tagscolor[tagclassvalue];
           set_color = set_color ? set_color : settings.tagscolor[group];
         }
         var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
