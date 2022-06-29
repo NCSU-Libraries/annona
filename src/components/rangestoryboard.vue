@@ -76,8 +76,7 @@ export default {
         booleanitems: shared.objectToNewObject(shared.booleanitems),
         leaflet: false,
         rangecontents: '',
-        collection: '',
-        collectionkey: 0
+        collection: ''
       }
     },
     watch: {
