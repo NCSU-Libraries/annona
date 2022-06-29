@@ -208,8 +208,8 @@ export default {
         if (this.position <= 0){
           this.prevPageInactive = true;
         }
-        const onpage = this.settings.perpage && this.settings.perpage != 1 ? this.position + this.settings.perpage : this.position;
-        if (onpage >= this.rangelist.length-1){
+        const onpage = this.settings.perpage && this.settings.perpage != 1 ? this.position + this.settings.perpage : this.position + 1;
+        if (onpage >= this.rangelist.length){
           this.nextPageInactive = true;
         }
       },

@@ -295,6 +295,8 @@ export default {
         if (this.basecompontent.toc[index]['label'].indexOf(label) == -1){
           this.basecompontent.toc[index]['label'] += `: ${label}`
         }
+      } else if(label) {
+        this.imagetitle += `: ${label}`;
       }
     },
     tagslistShortcuts: function() {
