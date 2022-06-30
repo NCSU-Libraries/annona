@@ -125,7 +125,7 @@ export default {
   },
   mounted () {
     this.newSocket();
-    var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
+    var annotationurl = this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
     var isURL = shared.isURL(annotationurl, '');
     if (!isURL['isURL']) {
       this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
@@ -133,7 +133,7 @@ export default {
   },
   methods: {
     loadAnnotation: function(newseadragon=true) {
-      var annotationurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : this.jsonannotation;
+      var annotationurl = this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
       var isURL = shared.isURL(annotationurl, this.settings);
       this.seadragonid = 'storyboard_' + isURL['id'];
       this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
@@ -158,11 +158,7 @@ export default {
         this.next(-1);
         this.removeOverlay('overlay');
         this.removeOverlay('textoverlay');
-        var spinner = document.createElement('div');
-        spinner.id = "spinner";
-        spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;"
-        spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
-        this.anno_elem.getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
+        this.switchSpinner('block');
         this.loadAnnotation(false);
       }
     },
@@ -175,14 +171,18 @@ export default {
     removeSpinner: function() {
       const spinner = document.getElementById("spinner");
       if (spinner){
-        this.tagslistShortcuts();
         this.toolbardisabled = false;
         if (this.$parent.multi){
           if(this.$parent.boardchildren.every(elem => elem.toolbardisabled == false)){
             this.$parent.toolbardisabled = false;
           }
         }
-        spinner.remove();
+        this.switchSpinner('none');
+      }
+    },
+    switchSpinner: function(displaytype){
+      if (this.anno_elem){
+        this.anno_elem.querySelector('#spinner').style.display = displaytype;
       }
     },
     checkForText: function(shown, annoContent) {
@@ -289,15 +289,25 @@ export default {
       //If rangestoryboard with multiple pages, add annotation label to title
       const label = annotation['label'] ? annotation['label'] : annotation['@label'];
       this.imagetitle = this.settings.title ? this.imagetitle : label;
-      if (this.settings.perpage && this.settings.perpage > 1 && label) {
-        this.imagetitle += ` : ${label}`
+      if (label && this.basecompontent.range) {
+        var boardnumber = this.$parent.multi ? this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) : 0;
+        const index = boardnumber + this.basecompontent.position;
+        if (this.basecompontent.toc[index]['label'].indexOf(label) == -1){
+          this.basecompontent.toc[index]['label'] += `: ${label}`
+        }
+      } else if(label) {
+        this.imagetitle += `: ${label}`;
       }
     },
     tagslistShortcuts: function() {
       //get tags and set corresponding color
       var tags = shared.flatten(this.annotations, 'tags');
       var checked = this.settings.toggleoverlay ? true : false;
-      this.tagslist = shared.getTagDict(tags, this.settings, checked);
+      var existingtaglist = this.$parent.multi ? this.$parent.tagslist : false;
+      this.tagslist = shared.getTagDict(tags, this.settings, checked, existingtaglist);
+      if(this.$parent.multi) {
+        this.$parent.tagslist = Object.assign(this.$parent.tagslist, this.tagslist);
+      }
       this.booleanitems.istranscription = this.settings.transcription && !this.settings.textfirst ? true : false;
       if (this.$parent.multi) {
         Object.keys(this.tagslist).length > 0 ? this.$parent.tags = true : '';
@@ -325,6 +335,14 @@ export default {
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
       var vue = this;
+      //If there is something wrong with the info.json, open the full image
+      viewer.addHandler('open-failed', function(event) {
+        if (vue.seadragontile.indexOf('info.json') > -1) {
+          vue.viewerFailure("/info.json", "/full/full/0/default.jpg")
+        } else if (vue.seadragontile.indexOf('full/full') > -1) {
+          vue.viewerFailure("/full/full/", "/full/max/")
+        }
+      });
       // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){
         vue.reposition();
@@ -340,6 +358,12 @@ export default {
         vue.onSeadragonOpen();
       });
     },
+    viewerFailure: function(replace, replacewith) {
+      this.viewer.close()
+      this.seadragontile = this.seadragontile.replace(replace, replacewith);
+      var tilesource = shared.getTileFormat(this.seadragontile);
+      this.viewer.open(tilesource)
+    },
     onSeadragonOpen: function(updateImage=true) {
       var vue = this;
       if (!this.settings.fit){
@@ -353,6 +377,17 @@ export default {
         this.annotations = this.annotations.sort((a, b) => (parseFloat(a['section'][0].split(",")[index]) > parseFloat(b['section'][0].split(",")[index])) ? 1 : -1);
       }
       var fit = this.settings.fit == 'fill' ? true : false;
+      if (!vue.anno_elem.querySelector('#spinner')){
+        var spinner = document.createElement('div');
+        spinner.id = "spinner";
+        spinner.style = "position: relative; top: 50%;text-align: center;z-index: 10000;;"
+        spinner.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size:3em"></i>'
+        vue.anno_elem.getElementsByClassName('openseadragon-container')[0].appendChild(spinner);
+        setTimeout(() => {
+          vue.switchSpinner('none');
+        }, "500")
+
+      }
       if (vue.settings.imagecrop && updateImage) {
           var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
           var tiledImage = vue.viewer.world.getItemAt(0);
@@ -362,6 +397,10 @@ export default {
         // add layers to viewer.
         if (vue.layerslist && vue.layerslist.length > 0 && updateImage){
           vue.addLayers();
+        }
+
+        if (!updateImage) {
+          vue.tagslistShortcuts();
         }
         // Set view fit
         if (vue.settings.fit == 'horizontal') {
@@ -430,23 +469,6 @@ export default {
             this.viewer.viewport.fitBoundsWithConstraints(conversion).ensureVisible();
           }
         })
-      }
-    },
-    // Get image info from manifest; This populates the info button for the image.
-    getImageInfo: function(canvas_data, manifestlink){
-      var metadata = [{'label': 'Manifest', 'value' : `<a href="${manifestlink}" target="_blank">${manifestlink}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': canvas_data.description},
-      {'label': 'attribution', 'value': canvas_data.attribution},{'label': 'license', 'value': canvas_data.license}]
-      metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
-      canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1 ? this.imageinfo.label = 'Manifest information' : '';
-      for (var j=0; j<metadata.length; j++){
-        var label = shared.parseMetaFields(metadata[j]['label']);
-        var value = shared.parseMetaFields(metadata[j]['value']);
-        if (label === 'title' && j == 1 && !this.settings.title){
-          this.imagetitle = value;
-        }
-        if (value && value !== ''){
-          this.imageinfo.text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
-        }
       }
     },
     // Create TOC for each annotation; Gets a list of annotations and corresponding data
@@ -737,7 +759,11 @@ export default {
         }
     },
     manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {
-      this.getImageInfo(canvas_data, manifestlink);
+      var meta = shared.getHTMLMeta(canvas_data, manifestlink, 'Manifest', this.settings);
+      this.imageinfo.text = meta['text'];
+      this.imageinfo.link = manifestlink;
+      this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
+      (canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1) || (canvas_data.items && canvas_data.items.length > 1) ? this.imageinfo.label = 'Manifest information' : '';
       var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images, this.currentlang);
       this.imagetitle = get_canvas['title'];
       var canvsimgs = get_canvas['images'];

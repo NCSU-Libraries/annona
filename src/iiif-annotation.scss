@@ -692,6 +692,17 @@ figcaption {
   text-decoration: none;
 }
 
+.even {
+  background-color: lightgrey;
+}
+
+.odd {
+  background-color: white;
+}
+.activecollection {
+  background-color: aquamarine;
+}
+
 .buttonlink img{
   padding-right: 10px;
 }
@@ -936,4 +947,24 @@ table tr {
 .imageViewButton {
   width: 35px;
   height: 35px;
+}
+
+.collectionicon {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  font-size: 12px;
+}
+
+.level-0, .level-1 {
+    padding: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.boardnumber {
+  padding:0px;
+  margin:3px;
+  text-decoration: underline;
+  font-size:1.2em;
 }

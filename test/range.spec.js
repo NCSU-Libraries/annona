@@ -116,7 +116,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_longer-article-annos1");
+      expect(sbd.seadragonid).toBe("storyboard_objects_longer-article-annos1");
       expect(sbd.annotations).toEqual([{"section": ["1958,1907,113,51"], "geometry": {"coordinates": [-75.87877, 5.6561], "type": "Point"}, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Lodinv<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "styles": "", "itemclass": "", "stylesheet": undefined, "tags": [], "textual_body": ["<div class=\"identifying\">http://pleiades.stoa.org/places/79574<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}, 
         {"styles": "", "itemclass": "", "stylesheet": undefined, "section": ["1537,579,382,352"], "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["MARE HIBERNICVM<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": [], "type": "rect"}, 
         {"section": ["1704,1509,319,123"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["BRITANIA INSVLA<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div>"], "tags": [], "textual_body": ["<div class=\"commenting\">The British Isles<div class=\"authorship\">Written by: https://recogito.pelagios.org/rainer</div></div>"], "type": "rect"}]);
@@ -126,7 +126,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -157,453 +157,129 @@ describe('Component', () => {
       expect(data.layerslist).toBe(false)
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
-      expect(data.stylingstring).toEqual("perpage:1;continousboard:true;autorun_interval:3;title:Technician Basketball Special, November 1991: Text of this page (word level);")
+      expect(data.stylingstring).toEqual("perpage:1;continousboard:true;autorun_interval:3;title:Technician Basketball Special, November 1991: [1]: Text of this page (word level);")
       // expect(data.annotationurl).toEqual({"anno": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-word.json", "annotationurls": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-word.json", "canvas": "https://d.lib.ncsu.edu/collections/canvas/technician-basketballspecial-1991-11_0001", "images": {"@id": "https://d.lib.ncsu.edu/collections/canvas/technician-basketballspecial-1991-11_0001", "@type": "sc:Canvas", "height": 4356, "images": [{"@id": "https://d.lib.ncsu.edu/collections/canvas/technician-basketballspecial-1991-11_0001/image", "@type": "oa:Annotation", "motivation": "sc:painting", "on": "https://d.lib.ncsu.edu/collections/canvas/technician-basketballspecial-1991-11_0001", "resource": {"@id": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/1170,/0/default.jpg", "@type": "dctypes:Image", "height": 4356, "service": {"@context": "http://iiif.io/api/image/2/context.json", "@id": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001", "profile": "http://iiif.io/api/image/2/level2.json"}, "width": 3560}}], "label": "[1]", "otherContent": [{"@id": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-word.json", "@type": "sc:AnnotationList", "label": "Text of this page (word level)"}, {"@id": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-line.json", "@type": "sc:AnnotationList", "label": "Text of this page (line level)"}, {"@id": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-paragraph.json", "@type": "sc:AnnotationList", "label": "Text of this page (paragraph level)"}], "seeAlso": [{"@id": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001.hocr", "format": "text/vnd.hocr+html", "label": "hOCR", "profile": "https://github.com/kba/hocr-spec/blob/master/hocr-spec.md"}, {"@id": "https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001.txt", "format": "text/plain", "label": "plain text OCR"}], "width": 3560}, "jsonanno": undefined, "manifest": "https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest", "section": undefined, "title": "Text of this page (word level)"})
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(false)
       expect(data.rangeid).toBe('rangestoryboard_manifest')
       expect(data.isfullscreen).toBe(false)
-      expect(data.toc).toEqual([
+      expect(data.toc.length).toBe(72)
+      expect(data.toc.slice(0, 18)).toEqual([
         {
           "position": 0,
-          "label": "Text of this page (word level)",
+          "label": "[1]: Text of this page (word level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 1,
-          "label": "Text of this page (line level)",
+          "label": "[1]: Text of this page (line level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 2,
-          "label": "Text of this page (paragraph level)",
+          "label": "[1]: Text of this page (paragraph level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 3,
-          "label": "Text of this page (word level)",
+          "label": "[2]: Text of this page (word level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 4,
-          "label": "Text of this page (line level)",
+          "label": "[2]: Text of this page (line level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 5,
-          "label": "Text of this page (paragraph level)",
+          "label": "[2]: Text of this page (paragraph level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0002/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 6,
-          "label": "Text of this page (word level)",
+          "label": "[3]: Text of this page (word level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 7,
-          "label": "Text of this page (line level)",
+          "label": "[3]: Text of this page (line level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 8,
-          "label": "Text of this page (paragraph level)",
+          "label": "[3]: Text of this page (paragraph level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0003/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 9,
-          "label": "Text of this page (word level)",
+          "label": "[4]: Text of this page (word level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 10,
-          "label": "Text of this page (line level)",
+          "label": "[4]: Text of this page (line level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 11,
-          "label": "Text of this page (paragraph level)",
+          "label": "[4]: Text of this page (paragraph level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0004/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 12,
-          "label": "Text of this page (word level)",
+          "label": "[5]: Text of this page (word level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 13,
-          "label": "Text of this page (line level)",
+          "label": "[5]: Text of this page (line level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 14,
-          "label": "Text of this page (paragraph level)",
+          "label": "[5]: Text of this page (paragraph level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0005/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 15,
-          "label": "Text of this page (word level)",
+          "label": "[6]: Text of this page (word level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 16,
-          "label": "Text of this page (line level)",
+          "label": "[6]: Text of this page (line level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg",
           "description": ""
         },
         {
           "position": 17,
-          "label": "Text of this page (paragraph level)",
+          "label": "[6]: Text of this page (paragraph level)",
           "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0006/full/30,/0/default.jpg",
           "description": ""
-        },
-        {
-          "position": 18,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 19,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 20,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0007/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 21,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 22,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 23,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0008/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 24,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 25,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 26,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0009/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 27,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 28,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 29,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0010/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 30,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 31,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 32,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0011/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 33,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 34,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 35,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0012/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 36,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 37,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 38,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0013/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 39,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 40,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 41,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0014/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 42,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 43,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 44,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0015/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 45,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 46,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 47,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0016/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 48,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 49,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 50,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0017/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 51,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 52,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 53,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0018/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 54,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 55,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 56,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0019/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 57,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 58,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 59,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0020/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 60,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 61,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 62,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0021/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 63,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 64,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 65,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0022/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 66,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 67,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 68,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0023/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 69,
-          "label": "Text of this page (word level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 70,
-          "label": "Text of this page (line level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg",
-          "description": ""
-        },
-        {
-          "position": 71,
-          "label": "Text of this page (paragraph level)",
-          "thumbnail": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0024/full/30,/0/default.jpg",
-          "description": ""
-        }
-      ])
+        } ])
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("Technician Basketball Special, November 1991");
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data.boardchildren[0];
       expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001-annotation-word");
+      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001_technician-basketballspecial-1991-11_0001-annotation-word");
       expect(sbd.annotations).toEqual([{"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 1"], "tags": [], "textual_body": []}, {"section": ["12288,16567,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 2"], "tags": [], "textual_body": []}]);
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -611,17 +287,17 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.settings).toEqual({"autorun_interval": 3,"continousboard": true, "index": 0, "perpage": 1, "title": "Technician Basketball Special, November 1991: Text of this page (word level)", "truncate_length": 2});
+      expect(sbd.settings).toEqual({"autorun_interval": 3,"continousboard": true, "index": 0, "perpage": 1, "title": "Technician Basketball Special, November 1991: [1]: Text of this page (word level)", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
       expect(sbd.tagslist).toEqual({});
-      expect(sbd.imageinfo).toEqual({"label": "Manifest information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest\" target=\"_blank\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest</a></div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"attribution\"><b>Attribution: </b>Technician (Raleigh, N.C.) (LH1 .N6 T4), Special Collections Research Center at NC State University Libraries</div><div id=\"license\"><b>License: </b>https://d.lib.ncsu.edu/collections/about#rights_and_use</div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"Creator\"><b>Creator: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog?f%5Bnames_facet%5D%5B%5D=Technician+%28Raleigh%2C+N.C.%29\">Technician (Raleigh, N.C.)</a> (Publisher)</span></div><div id=\"Created Date\"><b>Created Date: </b>1991-11</div><div id=\"URL\"><b>URL: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11</a></span></div><div id=\"\"></b><span><a title=\"IIIF drag &amp; drop\" href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11?manifest=https%3A%2F%2Fd.lib.ncsu.edu%2Fcollections%2Fcatalog%2Ftechnician-basketballspecial-1991-11%2Fmanifest.json\">IIIF drag &amp; drop</a> (<a href=\"https://d.lib.ncsu.edu/collections/about-iiif\">About IIIF</a>)</span></div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json\" target=\"_blank\">https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json</a></div>"});
-      expect(sbd.imagetitle).toBe("Technician Basketball Special, November 1991: Text of this page (word level): [1]");
+      expect(sbd.imageinfo).toEqual({"label": "Manifest information","link": "https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest\" target=\"_blank\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest</a></div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"attribution\"><b>Attribution: </b>Technician (Raleigh, N.C.) (LH1 .N6 T4), Special Collections Research Center at NC State University Libraries</div><div id=\"license\"><b>License: </b>https://d.lib.ncsu.edu/collections/about#rights_and_use</div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"Creator\"><b>Creator: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog?f%5Bnames_facet%5D%5B%5D=Technician+%28Raleigh%2C+N.C.%29\">Technician (Raleigh, N.C.)</a> (Publisher)</span></div><div id=\"Created Date\"><b>Created Date: </b>1991-11</div><div id=\"URL\"><b>URL: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11</a></span></div><div id=\"\"></b><span><a title=\"IIIF drag &amp; drop\" href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11?manifest=https%3A%2F%2Fd.lib.ncsu.edu%2Fcollections%2Fcatalog%2Ftechnician-basketballspecial-1991-11%2Fmanifest.json\">IIIF drag &amp; drop</a> (<a href=\"https://d.lib.ncsu.edu/collections/about-iiif\">About IIIF</a>)</span></div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json\" target=\"_blank\">https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json</a></div>"});
+      expect(sbd.imagetitle).toBe("Technician Basketball Special, November 1991: [1]: Text of this page (word level)");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json", "xywh": ""}]);
       expect(Object.keys(wrapper.vm.$children[0].shortcuts).sort()).toEqual(['autorun', 'perpage', 'reload', 'close', 'textoverlay', 'fullscreen', 'hide', 'home', 'info', 'next', 'nextanno', 'overlay', 'prev', 'prevanno', 'keyboard', 'zoomin', 'zoomout'].sort());
       wrapper.destroy()
@@ -658,7 +334,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0];
       expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_list");
+      expect(sbd.seadragonid).toBe("storyboard_annotations_list");
       expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -666,7 +342,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": true, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": true, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -675,7 +351,7 @@ describe('Component', () => {
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
       expect(sbd.tagslist).toEqual({});
-      expect(sbd.imageinfo).toEqual({"label": "Image information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://images.cogapp.com/iiif/holbein_big_p.tif/info.json\" target=\"_blank\">https://images.cogapp.com/iiif/holbein_big_p.tif/info.json</a></div>"});
+      expect(sbd.imageinfo).toEqual({"label": "Image information","link": "https://storiiies.cogapp.com/holbein/manifest.json", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://images.cogapp.com/iiif/holbein_big_p.tif/info.json\" target=\"_blank\">https://images.cogapp.com/iiif/holbein_big_p.tif/info.json</a></div>"});
       expect(sbd.imagetitle).toBe("Bayeux Tapestry test");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://images.cogapp.com/iiif/holbein_big_p.tif/info.json"}]);
       expect(Object.keys(sbd.shortcuts).sort()).toEqual(['autorun', 'reload', 'textoverlay', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'nextanno', 'overlay', 'prev', 'prevanno', 'keyboard', 'zoomin', 'zoomout'].sort());
@@ -732,7 +408,7 @@ describe('Component', () => {
       expect(wrapper.vm.$children[0].$children.map(elem=>elem.$options.name)).toEqual(["toolbar", "storyboard", "storyboard"])
       expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001-annotation-word");
+      expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001_technician-basketballspecial-1991-11_0001-annotation-word");
       expect(sbd.annotations).toEqual([{"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 1"], "tags": [], "textual_body": []}, {"section": ["12288,16567,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "type": "rect", "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["Annotation 2"], "tags": [], "textual_body": []}]);
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -740,7 +416,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -749,7 +425,7 @@ describe('Component', () => {
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
       expect(sbd.tagslist).toEqual({});
-      expect(sbd.imageinfo).toEqual({"label": "Manifest information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest\" target=\"_blank\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest</a></div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"attribution\"><b>Attribution: </b>Technician (Raleigh, N.C.) (LH1 .N6 T4), Special Collections Research Center at NC State University Libraries</div><div id=\"license\"><b>License: </b>https://d.lib.ncsu.edu/collections/about#rights_and_use</div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"Creator\"><b>Creator: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog?f%5Bnames_facet%5D%5B%5D=Technician+%28Raleigh%2C+N.C.%29\">Technician (Raleigh, N.C.)</a> (Publisher)</span></div><div id=\"Created Date\"><b>Created Date: </b>1991-11</div><div id=\"URL\"><b>URL: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11</a></span></div><div id=\"\"></b><span><a title=\"IIIF drag &amp; drop\" href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11?manifest=https%3A%2F%2Fd.lib.ncsu.edu%2Fcollections%2Fcatalog%2Ftechnician-basketballspecial-1991-11%2Fmanifest.json\">IIIF drag &amp; drop</a> (<a href=\"https://d.lib.ncsu.edu/collections/about-iiif\">About IIIF</a>)</span></div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json\" target=\"_blank\">https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json</a></div>"});
+      expect(sbd.imageinfo).toEqual({"label": "Manifest information", "link": "https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest\" target=\"_blank\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest</a></div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"attribution\"><b>Attribution: </b>Technician (Raleigh, N.C.) (LH1 .N6 T4), Special Collections Research Center at NC State University Libraries</div><div id=\"license\"><b>License: </b>https://d.lib.ncsu.edu/collections/about#rights_and_use</div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"Creator\"><b>Creator: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog?f%5Bnames_facet%5D%5B%5D=Technician+%28Raleigh%2C+N.C.%29\">Technician (Raleigh, N.C.)</a> (Publisher)</span></div><div id=\"Created Date\"><b>Created Date: </b>1991-11</div><div id=\"URL\"><b>URL: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11</a></span></div><div id=\"\"></b><span><a title=\"IIIF drag &amp; drop\" href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11?manifest=https%3A%2F%2Fd.lib.ncsu.edu%2Fcollections%2Fcatalog%2Ftechnician-basketballspecial-1991-11%2Fmanifest.json\">IIIF drag &amp; drop</a> (<a href=\"https://d.lib.ncsu.edu/collections/about-iiif\">About IIIF</a>)</span></div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json\" target=\"_blank\">https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json</a></div>"});
       expect(sbd.imagetitle).toBe("Technician Basketball Special, November 1991: [1]");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json", "xywh": ""}]);
       expect(Object.keys(wrapper.vm.$children[0].shortcuts).sort()).toEqual(['close', 'reload', 'textoverlay', 'fullscreen', 'hide', 'home', 'info', 'next', 'nextanno', 'overlay', 'prev', 'prevanno', 'keyboard', 'zoomin', 'zoomout', 'perpage'].sort());
@@ -774,7 +450,7 @@ describe('Component', () => {
       expect(data.layerslist).toBe(false)
       expect(data.range).toBe(true)
       expect(data.toctitle).toEqual("Range Pages")
-      expect(data.stylingstring).toEqual("autorun_interval:3;title:Holbein's 'The Ambassadors': The Ambassadors;")
+      expect(data.stylingstring).toEqual("autorun_interval:3;title:Holbein's 'The Ambassadors';")
       expect(data.annotationurl).toEqual({"anno": "https://storiiies.cogapp.com/holbein/annotations/list.json", "otherLists": false, "canvas": "https://storiies.cogapp.com/holbein/canvas/c0", "images": {"@context": "http://iiif.io/api/presentation/2/context.json", "@id": "https://storiies.cogapp.com/holbein/canvas/c0", "@type": "sc:Canvas", "description": {"@language": "en", "@value": "The Ambassadors by Hans Holbein the Younger (National Gallery, London) was created in 1533, the year that Elizabeth I was born. A striking life-scale double portrait, it also depicts numerous meticulously rendered objects and includes a rare and much-cited example of anamorphosis. The meaning of the painting and the objects it depicts has been the cause of much debate."}, "height": 29560, "images": [{"@id": "https://storiies.cogapp.com/holbein/image/i0", "@type": "oa:Annotation", "motivation": "sc:painting", "on": "https://storiies.cogapp.com/holbein/canvas/c0", "resource": {"@id": "https://images.cogapp.com/iiif/holbein_big_p.tif/full/full/0/default.jpg", "@type": "dctypes:Image", "format": "image/jpeg", "height": 29560, "service": {"@context": "http://iiif.io/api/image/2/context.json", "@id": "https://images.cogapp.com/iiif/holbein_big_p.tif", "profile": "http://iiif.io/api/image/1/level2.json"}, "width": 30000}}], "label": {"@language": "en", "@value": "The Ambassadors"}, "otherContent": [{"@id": "https://storiiies.cogapp.com/holbein/annotations/list.json", "@type": "sc:AnnotationList"}], "width": 30000}, "jsonanno": undefined, "manifest": "https://storiiies.cogapp.com/holbein/manifest.json", "section": undefined, "title": "The Ambassadors"})
       expect(data.position).toEqual(0)
       expect(data.prevPageInactive).toBe(true)
@@ -789,7 +465,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0];
       expect(sbd.seadragontile).toEqual("https://images.cogapp.com/iiif/holbein_big_p.tif/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_list");
+      expect(sbd.seadragonid).toBe("storyboard_annotations_list");
       expect(sbd.annotations[0]).toEqual({"section": ["6270,3903,2250,2250"], "styles": "", "itemclass": "", "stylesheet": undefined, "svg_path": [undefined], "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": ["When this double portrait was painted, Jean de Dinteville, Seigneur de Polisy, was ambassador to London from the court of the French king, François I."], "tags": [], "textual_body": [], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -797,17 +473,17 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Holbein's 'The Ambassadors': The Ambassadors", "truncate_length": 2});
+      expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Holbein's 'The Ambassadors'", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
       expect(sbd.tagslist).toEqual({});
-      expect(sbd.imageinfo).toEqual({"label": "Image information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://images.cogapp.com/iiif/holbein_big_p.tif/info.json\" target=\"_blank\">https://images.cogapp.com/iiif/holbein_big_p.tif/info.json</a></div>"});
-      expect(sbd.imagetitle).toBe("Holbein's 'The Ambassadors': The Ambassadors");
+      expect(sbd.imageinfo).toEqual({"label": "Image information", "link": "https://storiiies.cogapp.com/holbein/manifest.json", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://storiiies.cogapp.com/holbein/manifest.json\" target=\"_blank\">https://storiiies.cogapp.com/holbein/manifest.json</a></div><div id=\"title\"><b>Title: </b>Holbein's 'The Ambassadors'</div><div id=\"description\"><b>Description: </b>Let's explore some of the symbolism and features in this iconic painting</div><div id=\"attribution\"><b>Attribution: </b>Copyright National Gallery, London; used under license.</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://images.cogapp.com/iiif/holbein_big_p.tif/info.json\" target=\"_blank\">https://images.cogapp.com/iiif/holbein_big_p.tif/info.json</a></div>"});
+      expect(sbd.imagetitle).toBe("Holbein's 'The Ambassadors'");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://images.cogapp.com/iiif/holbein_big_p.tif/info.json", "xywh": ""}]);
       expect(Object.keys(sbd.shortcuts).sort()).toEqual(['autorun', 'reload', 'textoverlay', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'zoomin', 'zoomout'].sort());
       wrapper.destroy()
@@ -840,7 +516,7 @@ describe('Component', () => {
       var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://framemark.vam.ac.uk/collections/2013GU2911/info.json")
       expect(sbd.position).toBe(-1);
-      expect(sbd.seadragonid).toBe("storyboard_p1");
+      expect(sbd.seadragonid).toBe("storyboard_annopage_p1");
       expect(sbd.annotations[2]).toEqual({"styles": "", "itemclass": "", "stylesheet": undefined, "authors": "", "label": undefined, "language": undefined, "languages": undefined, "ocr": [], "section": ["2000,2800,400,400"], "svg_path": [undefined], "tags": [], "textual_body": ["<div class=\"describing\"><h2 class=\"annotatedzoom-annotation-detail__label\">First-class restaurant</h2><div class=\"annotatedzoom-annotation-detail__content\"><img class=\"annotatedzoom-annotation-detail__image\" src=\"https://media.vam.ac.uk/feature/annotatedzoom/O1023003/2017KE6204-Aquitania-restaurant-cropped.jpg\" width=300 height=250/><p>Dining on ocean liners was a radically different experience depending on the class of travel. In first class, the <i>Aquitania</i>&#39;s Louis XVI-style dining room offered seating in small isolated groups, echoing elegant restaurants on land. The ship&#39;s architect, Arthur Davis, explained that a &ldquo;cheerful room with comfortable surroundings&rdquo; was a necessary distraction from &ldquo;the often very unpleasant conditions&rdquo; at sea. </p><p class=\"annotatedzoom-annotation-detail__credit\">Photograph from <em>The New Art of Going Abroad</em>, 1929, US. National Art Library: 38041986015030. &copy; Victoria and Albert Museum, London</p></div></div>"], "type": "rect"});
       expect(sbd.currentanno).toBe("");
       expect(sbd.transcription).toBe(undefined);
@@ -848,7 +524,7 @@ describe('Component', () => {
       expect(sbd.prev_inactive).toBe(true);
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
-      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false});
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
@@ -857,10 +533,65 @@ describe('Component', () => {
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
       expect(sbd.tagslist).toEqual({});
-      expect(sbd.imageinfo).toEqual({"label": "Image information", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://stephenwf.github.io/ocean-liners.json\" target=\"_blank\">https://stephenwf.github.io/ocean-liners.json</a></div><div id=\"title\"><b>Title: </b>Cunard Line - to all parts of the world</div><div id=\"Museum number\"><b>Museum number: </b>E.1829-2004</div><div id=\"title\"><b>Title: </b>Cunard Line - to all parts of the world</div><div id=\"Descriptive Line\"><b>Descriptive Line: </b>Chromolithograph travel poster for \"Cunard Line - to all parts of the world\", depicting a cross section of the Aquitania at sea, printed by Thos. Forman & Sons, Nottingham, ca. 1920.</div><div id=\"Collection\"><b>Collection: </b>PDP</div><div id=\"Place\"><b>Place: </b>Nottingham (printed)</div><div id=\"Materials & Techniques\"><b>Materials & Techniques: </b>chromolithograph</div><div id=\"Date\"><b>Date: </b>ca. 1920 (made)</div><div id=\"Categories\"><b>Categories: </b>Posters;Boats and ships;Tourism & Travel</div><div id=\"Description\"><b>Description: </b>Chromolithograph travel poster for \"Cunard Line - to all parts of the world\", depicting a cross section of the Aquitania at sea, printed by Thos. Forman & Sons, Nottingham, ca. 1920.</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://framemark.vam.ac.uk/collections/2013GU2911/info.json\" target=\"_blank\">https://framemark.vam.ac.uk/collections/2013GU2911/info.json</a></div>"});
+      expect(sbd.imageinfo).toEqual({"label": "Image information", "link": "https://stephenwf.github.io/ocean-liners.json","text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://stephenwf.github.io/ocean-liners.json\" target=\"_blank\">https://stephenwf.github.io/ocean-liners.json</a></div><div id=\"title\"><b>Title: </b>Cunard Line - to all parts of the world</div><div id=\"Museum number\"><b>Museum number: </b>E.1829-2004</div><div id=\"title\"><b>Title: </b>Cunard Line - to all parts of the world</div><div id=\"Descriptive Line\"><b>Descriptive Line: </b>Chromolithograph travel poster for \"Cunard Line - to all parts of the world\", depicting a cross section of the Aquitania at sea, printed by Thos. Forman & Sons, Nottingham, ca. 1920.</div><div id=\"Collection\"><b>Collection: </b>PDP</div><div id=\"Place\"><b>Place: </b>Nottingham (printed)</div><div id=\"Materials & Techniques\"><b>Materials & Techniques: </b>chromolithograph</div><div id=\"Date\"><b>Date: </b>ca. 1920 (made)</div><div id=\"Categories\"><b>Categories: </b>Posters;Boats and ships;Tourism & Travel</div><div id=\"Description\"><b>Description: </b>Chromolithograph travel poster for \"Cunard Line - to all parts of the world\", depicting a cross section of the Aquitania at sea, printed by Thos. Forman & Sons, Nottingham, ca. 1920.</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://framemark.vam.ac.uk/collections/2013GU2911/info.json\" target=\"_blank\">https://framemark.vam.ac.uk/collections/2013GU2911/info.json</a></div>"});
       expect(sbd.imagetitle).toBe("Cunard Line - to all parts of the world: Object image 0");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://framemark.vam.ac.uk/collections/2013GU2911/info.json", "xywh": ""}]);
       expect(Object.keys(sbd.shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'zoomin', 'zoomout'].sort());
+      wrapper.destroy()
+    })
+
+    test('test nested collection', async ()  => {
+      const wrapper =  mount(rangestoryboard,{
+        propsData: {
+          rangeurl: 'https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json'
+        },
+        attachTo: '#root'
+      });
+      
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$data
+      expect(data.tags).toBe(false)
+      expect(data.layerslist).toBe(false)
+      expect(data.range).toBe(true)
+      expect(data.toctitle).toEqual("Range Pages")
+      expect(data.stylingstring).toEqual("perpage:1;continousboard:true;autorun_interval:3;title:In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px);")
+      expect(data.position).toEqual(0)
+      expect(data.prevPageInactive).toBe(true)
+      expect(data.nextPageInactive).toBe(false)
+      expect(data.rangeid).toBe('rangestoryboard_ng-projects.json')
+      expect(data.isfullscreen).toBe(false)
+      expect(data.toc.length).toEqual(6)
+      expect(data.collection.manifests.length).toEqual(4)
+      expect(data.collection.manifests[0].manifests.length).toEqual(6)
+      expect(data.collection.manifests[0].manifests[0].manifests.length).toEqual(2)
+      expect(data.viewingDirection).toBe('ltr')
+      expect(data.rangetitle).toBe("In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels'");
+      var sbd = wrapper.vm.$children[0].$children[1].$el['__vue__']._data;
+      await flushPromises()
+      expect(sbd.seadragontile).toEqual("https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json")
+      expect(sbd.position).toBe(-1);
+      expect(sbd.seadragonid.indexOf('storyboard_noannotation') > -1).toEqual(true);
+      expect(sbd.annotations.length).toEqual(0);
+      expect(sbd.currentanno).toBe("");
+      expect(sbd.transcription).toBe(undefined);
+      expect(sbd.textposition).toBe("corner");
+      expect(sbd.prev_inactive).toBe(true);
+      expect(sbd.next_inactive).toBe(false);
+      expect(sbd.toolbar_id).toBe("");
+      expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
+      expect(sbd.shown).toBe(false);
+      expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
+      expect(sbd.isautorunning).toBe("");
+      expect(sbd.settings).toEqual({"autorun_interval": 3,"continousboard": true,"index": 0,"perpage": 1, "title": "In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px)", "truncate_length": 2});
+      expect(sbd.currentlang).toBe("");
+      expect(sbd.languages).toEqual([]);
+      expect(sbd.fullscreen).toBe(false);
+      expect(sbd.tagslist).toEqual({});
+      expect(sbd.imageinfo).toEqual({"label": "Manifest information", "link": "https://research.ng-london.org.uk/iiif-projects/json/dunkerton_syson2010.json","text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://research.ng-london.org.uk/iiif-projects/json/dunkerton_syson2010.json\" target=\"_blank\">https://research.ng-london.org.uk/iiif-projects/json/dunkerton_syson2010.json</a></div><div id=\"title\"><b>Title: </b>In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels'</div><div id=\"description\"><b>Description: </b>Selection of high resolution infrared images in support of the Dunkerton and Syson article from Technical Bulletin Volume 31</div><div id=\"Manifest Author\"><b>Manifest Author: </b>Scientific Department (NG)</div><div id=\"Related Projects\"><b>Related Projects: </b><a href=\"https://research.ng-london.org.uk/iiif-projects/json/iiif_collection_explorer.json\">iiif_collection_explorer</a>,<a href=\"https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json\">ng-projects</a>,<a href=\"https://research.ng-london.org.uk/iiif-projects/json/technical-bulletin.json\">technical-bulletin</a>,<a href=\"https://research.ng-london.org.uk/iiif-projects/json/vol-31.json\">vol-31</a></div><div id=\"Additional Links\"><b>Additional Links: </b><a href=\"https://www.nationalgallery.org.uk/research/research-resources/technical-bulletin/technical-bulletin-volume-31\">Technical Bulletin Vol. 31</a>,<a href=\"https://www.nationalgallery.org.uk/technical-bulletin-vol-31/dunkerton_syson2010\">Dunkerton and Syson article</a></div><div id=\"Related PDF\"><b>Related PDF: </b>https://research.ng-london.org.uk/ngws/upload/pdf/Dunkerton_Syson_2010b.pdf</div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json\" target=\"_blank\">https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json</a></div>"});
+      expect(sbd.imagetitle).toBe("In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px)");
+      expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "tile": "https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json", "xywh": ""}]);
+      expect(Object.keys(sbd.shortcuts).sort()).toEqual(['reload', 'close', 'fullscreen', 'hide', 'home', 'info', 'keyboard', 'zoomin', 'zoomout', 'perpage'].sort());
       wrapper.destroy()
     })
 })

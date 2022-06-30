@@ -18,7 +18,11 @@ export default {
     },
     created() {
         const max = this.parent.basecompontent.rangelist.length;
-        this.perpage = this.parent.basecompontent.settings.perpage;
+        var perpage = this.parent.basecompontent.settings.perpage;
+        if (max < this.parent.basecompontent.settings.perpage){
+            perpage = max;
+        }
+        this.perpage = perpage;
         this.arraylist = Array(max).keys();
     },
     methods: {

@@ -40,7 +40,8 @@ export default {
     imageinfoshown: false,
     additionalinfoshown: false,
     tocshown: false,
-    istranscription: false
+    istranscription: false,
+    collectioninfoshown: false
   },
   objectToNewObject: function(object) {
     return JSON.parse(JSON.stringify(object));
@@ -167,11 +168,9 @@ export default {
     const size = viewer.world.getItemAt(0).getContentSize();
     const checkviewer = viewer.viewport.viewerElementToImageCoordinates(viewer.viewport.getContainerSize());
     const newheight = checkviewer['x']/size['x']*size['y'];
-    if (size['y'] > size['x']) {
+    if (size['y']-checkviewer['y'] > size['x']-checkviewer['x'] && newheight - checkviewer['y'] > 0) {
       return 'vertical';
-    } else if(newheight - checkviewer['y'] > 0) {
-      return 'vertical'
-    } else {
+    }  else {
       return 'horizontal';
     }
   },
@@ -509,11 +508,36 @@ export default {
   parseMetaFields: function(value) {
     var fieldvalue = '';
     if (value){
-      fieldvalue = Array.isArray(value) ? value.map(element => this.getValueField(element)).join("/") : value;
+      var language = window.navigator.language;
+      var splitlang = language ? language.split("-")[0] : '';
+      fieldvalue = Array.isArray(value) && language ? value.filter(elem => this.getField(elem, 'language') === language || this.getField(elem, 'language') === splitlang) : value;
+      fieldvalue = fieldvalue.length > 0 ? fieldvalue : value;
+      fieldvalue = Array.isArray(fieldvalue) ? fieldvalue.map(element => this.getValueField(element)).join("/") : fieldvalue;
       fieldvalue = this.getValueField(fieldvalue);
       fieldvalue = fieldvalue.constructor.name == 'Object' ? Object.values(fieldvalue).join(" ") : fieldvalue;
     }
     return fieldvalue;
+  },
+  getField: function(elem, field) {
+    return elem[`@${field}`] ? elem[`@${field}`] : elem[field] ? elem[field] : elem;
+  },
+  getHTMLMeta: function(canvas_data, link, label, settings){
+    var title = ''
+    var text = ''
+    var metadata = [{'label':label, 'value' : `<a href="${link}" target="_blank">${link}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': canvas_data.description},
+    {'label': 'attribution', 'value': canvas_data.attribution},{'label': 'license', 'value': canvas_data.license}]
+    metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
+    for (var j=0; j<metadata.length; j++){
+      var label = this.parseMetaFields(metadata[j]['label']);
+      var value = this.parseMetaFields(metadata[j]['value']);
+      if (label === 'title' && j == 1 && !settings.title){
+        title = value;
+      }
+      if (value && value !== ''){
+        text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
+      }
+    }
+    return {'title': title, 'text': text}
   },
   getCanvasId: function(anno){
     var ondict = this.on_structure(anno);
@@ -565,15 +589,20 @@ export default {
     }
     return [... new Set(authors)].join(', ');
   },
-  getTagDict: function(tags, settings, checked) {
+  getTagDict: function(tags, settings, checked, existingtaglist=false) {
     var tagdict = {}
     for (var tc=0; tc<tags.length; tc++){
       var tagvalue = tags[tc].value ? tags[tc].value : tags[tc];
       var group = tags[tc].group ? this.groupToClass(tags[tc].group) : '';
+      var set_color;
       if (tagvalue != '' && tagvalue){
         var tagclassvalue = this.tagsToClass(tags[tc]);
+        if(existingtaglist) {
+          set_color = existingtaglist[tagclassvalue];
+          set_color = set_color ? set_color.color : existingtaglist[group] ? existingtaglist[group].color : false;
+        }
         if (settings.tagscolor) {
-          var set_color = settings.tagscolor[tagclassvalue];
+          set_color = settings.tagscolor[tagclassvalue];
           set_color = set_color ? set_color : settings.tagscolor[group];
         }
         var randomcolor = set_color ? set_color : '#'+Math.random().toString(16).substr(-6);
@@ -675,11 +704,11 @@ export default {
   isURL: function(annotationurl, settings) {
     var parseString = this.parseInput(annotationurl);
     var isURL = parseString.constructor === String ? true : false;
-    var id = settings.customid ? settings.customid : annotationurl
+    var id = settings.customid ? settings.customid : annotationurl;
     if (!isURL) {
       id = settings.customid ? settings.customid : parseString['@id'] ? parseString['@id'] : parseString['id'] ? parseString['id'] : Math.random().toString(36).substring(7);
     }
-    id = id.replace(/\/\s*$/, "").split("/").pop().replace("-list", "").replace(".json","")
+    id = id.replace(/\/\s*$/, "").split("/").slice(-2).join("_").replace("-list", "").replace(".json","")
     return {'isURL': isURL, 'json': parseString, 'id': id.replace(/[~`!@#$%^&*()+={};:'"<>.,?]/g, '')};
   },
   parseInput: function(annotation) {
@@ -708,6 +737,7 @@ export default {
   getCanvasTile: function(image, addinfo=false) {
     var imgResource = image.resource ? image.resource : image.body;
     const iiifimage = imgResource && JSON.stringify(imgResource).indexOf('http://iiif.io/api/image/') > -1 ? true : false;
+    imgResource = imgResource.constructor.name == 'Array' ? imgResource[0] : imgResource;
     var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ? this.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? this.getId(imgResource.service).split("/full/")[0] :this.getId(imgResource);
     canvas_tile = this.iiifOrImageCheck(canvas_tile, addinfo, iiifimage)
     return {'canvas_tile': canvas_tile, 'img_resource': imgResource};

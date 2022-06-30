@@ -12,16 +12,16 @@
     </span>
   </span>
   <span v-else-if="settings.perpage" style="width: 100vw">
-    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests"></multistoryboard>
+    <multistoryboard v-bind:key="compkey" v-if="ready" :annotationurls="annotationurl.annotationurls" v-bind:styling="stylingstring" :manifesturl="annotationurl.allmanifests" :jsonannotation="annotationurl.alljsons"></multistoryboard>
   </span>
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
-  <button id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
+  <button v-if="ready" id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
     <span v-html="buttons.rangeprev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
-  <button id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
+  <button v-if="ready" id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
     <span v-html="buttons.rangenext"></span>
     <span class="toolbartext">Next Page</span>
   </button>
@@ -75,7 +75,8 @@ export default {
         textoverlay: shared.objectToNewObject(shared.textoverlay),
         booleanitems: shared.objectToNewObject(shared.booleanitems),
         leaflet: false,
-        rangecontents: ''
+        rangecontents: '',
+        collection: ''
       }
     },
     watch: {
@@ -131,9 +132,74 @@ export default {
             this.toc.push({ 'position': rl, 'label': toclabel, 'thumbnail': content['thumbnail'], 'description': content['description']});
           }
           this.setDefaults(contents);
+        } else if (listtype.toLowerCase().indexOf('collection') > -1) {
+          this.collection = this.getCollectionList(contents);
+          this.updateCollectionManifest(this.collection['manifests'][0], true);
         } else {
           this.getRangeData(contents);
         }
+      },
+      getCollectionList: function(contents) {
+        var collection = {'label': shared.parseMetaFields(this.getLabel(contents)), 'manifests': [], 'metadata': shared.getHTMLMeta(contents, this.$props.rangeurl, 'Collection', this.settings)['text']}
+        var manifestfolder = contents['manifests'] ? contents['manifests'] : contents['members'] ? contents['members'] : contents['items'] ? contents['items'] : contents['collections'];
+        var ids = []
+        for (var i=0; i<manifestfolder.length; i++){
+          var manifest = manifestfolder[i];
+          const manifesturl = shared.getId(manifest);
+          if (ids.indexOf(manifesturl) == -1){
+            var thumbnail = Array.isArray(manifest['thumbnail']) ? manifest['thumbnail'][0] : manifest['thumbnail'];
+            thumbnail = thumbnail ? shared.getId(thumbnail) : '';
+            var type = shared.getField(manifest, 'type');
+            type = type && type.toLowerCase().indexOf('collection') > -1 ? 'collection' : type;
+            var items = {'id': manifesturl,
+              'thumbnail': thumbnail,
+              'label': shared.parseMetaFields(this.getLabel(manifest)),
+              'type': type
+              }
+            ids.push(manifesturl)
+            collection['manifests'].push(items)
+          }
+        }
+        return collection;
+      },
+      updateCollectionManifest: function(manifest, init=false, menu=false){
+        var manifestid = shared.getId(manifest);
+        var spinner = document.getElementById('spinner');
+        if (spinner && manifest['type'] != 'collection') {
+          spinner.style.display = 'block';
+        }
+        axios.get(manifestid).then(response => {
+          if (manifest['type'] == 'collection'){
+            var collectiondata = this.getCollectionList(response.data)['manifests'];
+            manifest['manifests'] = collectiondata;
+            if (init){
+              manifest = manifest['manifests'][0];
+              this.updateCollectionManifest(manifest, init)
+            }
+            if (menu){
+              menu.nodedata['manifests'] = manifest['manifests'];
+              if (menu.$parent && menu.$parent.depth != 0){
+                menu.$parent.nodedata['manifests'][menu.index]['manifests'] = manifest['manifests'];
+              }
+              menu.nodesdata = collectiondata;
+              var menuitem = menu;
+              if (menuitem.depth != 1){
+                while (menuitem.depth != 1) {
+                  menuitem = menuitem.$parent;
+                }
+              }
+              this.collection['manifests'][menuitem.index] = menuitem.nodedata;
+            }
+            
+          } else {
+            this.rangelist = [];
+            this.toc = [];
+            this.position = 0;
+            this.rangecontents = response.data;
+            this.manifestOrRange(response.data);
+            this.compkey = `reload${manifestid}`;
+          }
+        });
       },
       checkNextRange: function() {
         this.prevPageInactive = false;
@@ -141,8 +207,8 @@ export default {
         if (this.position <= 0){
           this.prevPageInactive = true;
         }
-        const onpage = this.settings.perpage && this.settings.perpage != 1 ? this.position + this.settings.perpage : this.position;
-        if (onpage >= this.rangelist.length-1){
+        const onpage = this.settings.perpage && this.settings.perpage != 1 ? this.position + this.settings.perpage : this.position + 1;
+        if (onpage >= this.rangelist.length){
           this.nextPageInactive = true;
         }
       },
@@ -158,7 +224,7 @@ export default {
             if (annotationfield){
               otherContent.push({'oc': annotationfield, 'canvas': canvas});
             } else {
-              otherContent.push({'oc': `https://noannotation/${cv}`, 'canvas': canvas});
+              otherContent.push({'oc': `https://noannotation/${Math.random()}`, 'canvas': canvas});
             }
           }
         }
@@ -166,20 +232,21 @@ export default {
           this.settings.perpage = this.settings.perpage ? this.settings.perpage : 1;
           this.settings.continousboard = this.settings.continousboard ? this.settings.continousboard : true;
         }
+        var manifesturl = this.collection != '' ? shared.getId(manifest) : this.$props.rangeurl;
         for (var an=0; an<otherContent.length; an++){
           var anno = otherContent[an]['oc'];
           if (anno.constructor.name == 'Array') { 
             if (this.settings.listnumber) {
               const listnumb = this.settings.listnumber - 1;
               const list = anno[listnumb] ? anno[listnumb] : "https://nolist.com";
-              this.addToLists(list, this.$props.rangeurl, otherContent[an]['canvas'], anno);
+              this.addToLists(list, manifesturl, otherContent[an]['canvas'], anno);
             } else {
               for (var h=0; h<anno.length; h++){
-                this.addToLists(anno[h], this.$props.rangeurl, otherContent[an]['canvas']);
+                this.addToLists(anno[h], manifesturl, otherContent[an]['canvas']);
               }
             }
           } else{
-            this.addToLists(anno, this.$props.rangeurl, otherContent[an]['canvas']);
+            this.addToLists(anno, manifesturl, otherContent[an]['canvas']);
           }  
         }
         this.setDefaults(manifest);
@@ -189,9 +256,8 @@ export default {
         var thumbnail;
         if(anno.resources || anno.items || anno.body){
           var jsonanno = anno; 
-        } else {
-          var annourl = shared.getId(anno);
         }
+        var annourl = shared.getId(anno);
         if (canvas){
           var canvasid = shared.getId(canvas);
           if (canvasid.constructor.name === 'String' && canvasid.indexOf('#xywh') > -1){
@@ -212,8 +278,20 @@ export default {
             this.compkey = position;
         }
         const annolabel = this.getLabel(anno);
-        var toclabel = annolabel ? annolabel : canvas && canvas['label'] ? canvas['label'] : `Page ${position + 1}`;
-        toclabel = shared.parseMetaFields(toclabel);
+        var toclabel = []
+        if (canvas) {
+          const cvlabel = shared.parseMetaFields(this.getLabel(canvas));
+          if (cvlabel && cvlabel.constructor.name == 'String') {
+            toclabel.push(cvlabel);
+          }
+        }
+        if (annolabel){
+          toclabel.push(shared.parseMetaFields(annolabel))
+        }
+        if (toclabel.length == 0){
+          toclabel.push(`Page ${position + 1}`)
+        }
+        toclabel = toclabel.join(": ")
         var description = anno['description'] ?  anno['description'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
         this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, 'otherLists': otherContent});
@@ -223,6 +301,7 @@ export default {
           for (var sp=startpage; sp<endpage; sp++){
             if (this.rangelist[sp]){
               this.rangelist[sp].annotationurls = this.rangelist.slice(startpage, endpage).map(elem => elem.anno).join(";");
+              this.rangelist[sp].alljsons = this.rangelist.slice(startpage, endpage).map(elem => elem.jsonanno);
               this.rangelist[sp].allmanifests = this.rangelist.slice(startpage, endpage).map(elem => elem.manifest).join(";");
             }
           }
@@ -291,9 +370,13 @@ export default {
       },
       getTitle: function() {
         var title = this.rangetitle ? this.rangetitle : '';
+        var check = true;
         if ((this.rangelist.length > 1 || this.annotationurl.title.substring(0, 4) != 'Page') && (!this.settings.perpage || this.settings.perpage < 2)) {
-          this.rangetitle && this.annotationurl.title ? title += ': ' : '';
-          title += this.annotationurl.title ? this.annotationurl.title : '';
+          if (this.rangetitle && this.annotationurl.title && this.rangetitle.indexOf(this.annotationurl.title) > -1){
+            check = false;
+          }
+          this.rangetitle && this.annotationurl.title && check ? title += ': ' : '';
+          title += this.annotationurl.title && check ? this.annotationurl.title : '';
         }
         this.settings.title = title;
       },
