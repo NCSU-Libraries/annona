@@ -93,7 +93,7 @@ export default {
         this.$parent.updateFullScreen(this.fullscreen);
       }
       this.annourls = this.annotationurls ? this.annotationurls : this.annotationlists;
-      var annotations = this.annourls.split(";");
+      var annotations = this.annourls.split(";").map(elem => elem.replace('repwithsemicolon', ';'));
       this.manifests = this.manifesturl ? this.manifesturl.split(";") : [''];
       if (this.manifests.length < annotations.length){
         for (var i=1; i<annotations.length; i++){

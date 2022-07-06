@@ -201,7 +201,7 @@ export default {
       var res_data = res[i];
       var typefield = Object.keys(res_data)[Object.keys(res_data).findIndex(element => element.includes("type"))];
       var type = res_data[typefield];
-      var value = res_data['value'] ? res_data['value'] : res_data['chars'];
+      var value = res_data['value'] ? res_data['value'] : res_data['@value'] ? res_data['@value'] : res_data['chars'];
       var purpose = res_data['purpose'] ? res_data['purpose'].split("#").slice(-1)[0] : anno['motivation'] && !Array.isArray(anno['motivation']) ? anno['motivation'] : type;
       purpose = purpose ? purpose.toLowerCase() : purpose;
       if (res_data.selector){
@@ -245,7 +245,7 @@ export default {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
       } else if (type === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}"${currentlang.indexOf(element['language']) > -1 || navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${by639_1[element['language']] && by639_1[element['language']]['nativeName'] ? by639_1[element['language']]['nativeName'] : element['language']}</option>`);
+        langs = res_data['items'].map(element => `<option value="${element['language']}"${currentlang.indexOf(element['language']) > -1 || navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${this.getLangLabel(element['language'])}</option>`);
         var values = [];
         res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
@@ -261,6 +261,9 @@ export default {
       'label':label, 'language': res_data ? res_data['language'] : '',
       'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,
       'itemclass': charclass, 'geometry': geometry};
+  },
+  getLangLabel: function(lang) {
+    return by639_1[lang] && by639_1[lang]['nativeName'] ? by639_1[lang]['nativeName'] : lang;
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -505,12 +508,13 @@ export default {
       return element['@value'] ? element['@value'] : element['value'] ? element['value'] : element;
     }
   },
-  parseMetaFields: function(value) {
+  parseMetaFields: function(value, lang=false) {
     var fieldvalue = '';
     if (value){
-      var language = window.navigator.language;
+      var language = lang ? lang : window.navigator.language.split("-")[0];
       var splitlang = language ? language.split("-")[0] : '';
       fieldvalue = Array.isArray(value) && language ? value.filter(elem => this.getField(elem, 'language') === language || this.getField(elem, 'language') === splitlang) : value;
+      fieldvalue = fieldvalue.constructor.name == 'Object' && fieldvalue[language] ? fieldvalue[language] : fieldvalue;
       fieldvalue = fieldvalue.length > 0 ? fieldvalue : value;
       fieldvalue = Array.isArray(fieldvalue) ? fieldvalue.map(element => this.getValueField(element)).join("/") : fieldvalue;
       fieldvalue = this.getValueField(fieldvalue);
@@ -521,19 +525,29 @@ export default {
   getField: function(elem, field) {
     return elem[`@${field}`] ? elem[`@${field}`] : elem[field] ? elem[field] : elem;
   },
-  getHTMLMeta: function(canvas_data, link, label, settings){
+  getHTMLMeta: function(canvas_data, link, label, settings, lang=false, ignoretitle=false){
     var title = ''
     var text = ''
-    var metadata = [{'label':label, 'value' : `<a href="${link}" target="_blank">${link}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': canvas_data.description},
-    {'label': 'attribution', 'value': canvas_data.attribution},{'label': 'license', 'value': canvas_data.license}]
+    var description = canvas_data.description ? canvas_data.description : canvas_data.summary;
+    var attribution = canvas_data.attribution ? canvas_data.attribution : canvas_data.requiredStatement;
+    var metadata = [{'label':label, 'value' : `<a href="${link}" target="_blank">${link}</a>`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': description },
+    {'label': 'attribution', 'value': attribution},{'label': 'license', 'value': canvas_data.license}, {'label': 'rights', 'value': canvas_data.rights}]
     metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
+    metadata = canvas_data.seeAlso ? metadata.concat(canvas_data.seeAlso) : metadata;
+    metadata = canvas_data.rendering ? metadata.concat(canvas_data.rendering) : metadata;
     for (var j=0; j<metadata.length; j++){
-      var label = this.parseMetaFields(metadata[j]['label']);
-      var value = this.parseMetaFields(metadata[j]['value']);
+      var labelvalue = metadata[j]['value'] && metadata[j]['value']['label'] ?  metadata[j]['value']['label'] : metadata[j]['label'];
+      var label = this.parseMetaFields(labelvalue, lang);
+      var value = this.parseMetaFields(metadata[j]['value'], lang);
+      if (metadata[j]['type'] == 'Dataset' || metadata[j]['format']) {
+        value = this.getId(metadata[j])
+        value = value ? `<a href="${value}">${value}</a>` : '';
+      }
       if (label === 'title' && j == 1 && !settings.title){
         title = value;
       }
-      if (value && value !== ''){
+      var titlecheck = ignoretitle ? label !== 'title' : true;
+      if (value && value !== '' && titlecheck){
         text += `<div id="${label}">${label ? `<b>${label.charAt(0).toUpperCase() + label.slice(1)}: ` : `` }</b>${value}</div>`
       }
     }
@@ -735,7 +749,8 @@ export default {
     }
   },
   getCanvasTile: function(image, addinfo=false) {
-    var imgResource = image.resource ? image.resource : image.body;
+    var imgResource = image.resource ? image.resource : image.body ? image.body : image;
+    imgResource = imgResource.items ? imgResource.items : imgResource;
     const iiifimage = imgResource && JSON.stringify(imgResource).indexOf('http://iiif.io/api/image/') > -1 ? true : false;
     imgResource = imgResource.constructor.name == 'Array' ? imgResource[0] : imgResource;
     var canvas_tile = imgResource.service && imgResource.service.constructor.name == 'Array' ? this.getId(imgResource.service[0]).split("/full/")[0] : imgResource.service ? this.getId(imgResource.service).split("/full/")[0] :this.getId(imgResource);
@@ -754,6 +769,7 @@ export default {
   matchCanvasData: function(imagetitle, canvas, canvases, lang) {
     var title = imagetitle;
     var images = canvas.images ? canvas.images : this.flatten(canvas.items.map(element => element['items']));
+    images = images[0].body && images[0].body.items ? this.flatten(images.map(elem => elem['body']['items'])) : images;
     title = canvas.label;
     title = this.getValueField(title);
     if (title && title.constructor.name == 'Object'){
@@ -795,7 +811,7 @@ export default {
     var regExp = new RegExp("/+$");
     var fullvalue = version == '2' ? 'full' : 'max';
     var imageurlsize = size.split(',').filter(Boolean).length > 1 ? `${size.split(',')[0]},` : size;
-    baseImageUrl = baseImageUrl.replace(regExp, "")
+    baseImageUrl = baseImageUrl.replace(regExp, "");
     var extension = this.getExtension(baseImageUrl);
     if (canvasRegion.split(',').length > 1 && canvasRegion.indexOf('pct') == -1){
       canvasRegion = canvasRegion.split(',').map(elem => parseInt(elem)).join(",")
@@ -852,9 +868,9 @@ export default {
     }
 
     if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
-      shortcuts['prevanno'] = {'icon': '<i class="fa fa-chevron-left"></i>', 'label': 'Previous Annotation', 
+      shortcuts['prevanno'] = {'icon': vueinfo.$parent.buttons.rangeprev, 'label': 'Previous Annotation', 
         'shortcut': ['alt+p', 'alt+,', 'alt+ArrowLeft'], 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
-      shortcuts['nextanno'] = {'icon': '<i class="fa fa-chevron-right"></i>', 'label': 'Next Annotation', 
+      shortcuts['nextanno'] = {'icon': vueinfo.$parent.buttons.rangenext, 'label': 'Next Annotation', 
         'shortcut': ['alt+n', 'alt+.', 'alt+ArrowRight'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
     }
     var annotation = type == 'storyboard' ? vueinfo.annotations : this.flatten(vueinfo.$children.map(board => board.annotations));

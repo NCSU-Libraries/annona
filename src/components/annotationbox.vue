@@ -4,7 +4,7 @@
     <div id="layers" v-if="$parent.shown == 'layers'" class="content">
       <div v-for="layer in $parent.layerslist" v-bind:key="layer.tile">
         <input type="checkbox" class="tagscheck" v-on:click="$parent.sendMessage({'function': 'setOpacity', 'args': layer });" v-model="layer.checked">
-        <span v-html="layer.label"></span>
+        <span v-html="layerLang(layer.label)"></span>
         <div class="slidecontainer">Opacity: <input v-on:change="$parent.sendMessage({'function': 'setOpacity', 'args': {'event': $event, 'layer': layer} })" type="range" min="0" max="100" v-bind:value="layer.opacity*100" class="slider"></div>
       </div>
     </div>
@@ -111,6 +111,20 @@ export default {
           this.scrollitems.push(transcript['anno']);
         }
       }
+    },
+    layerLang: function(lang) {
+      var currentlang = this.$parent.currentlang;
+      var isobj = lang.constructor.name == 'Object';
+      var returnlang = lang;
+      if (isobj){
+        if (!currentlang || Object.keys(lang).indexOf(currentlang) == -1){
+          returnlang = lang[Object.keys(lang)[0]];
+        } else {
+          returnlang = lang[currentlang];
+        }
+      }
+      returnlang = Array.isArray(returnlang) ? returnlang.join(" | ") : returnlang;
+      return returnlang;
     },
     handleScroll: function() {
       if (this.$parent.shown == 'transcription' || this.$parent.shown == 'anno'){

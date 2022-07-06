@@ -768,14 +768,23 @@ figcaption {
   position: absolute;
 }
 
-.floatleft {
+.rtl#previousPageButton, .ltr#nextPageButton {
   left: 95%;
 }
 
-.floatright {
+.rtl#nextPageButton, .ltr#previousPageButton {
   left: 0;
 }
 
+.ttb.pageButton, .btt.pageButton {
+  top: 85%;
+}
+.ttb#nextPageButton, .btt#previousPageButton {
+  left: 50%;
+}
+.ttb#previousPageButton, .btt#nextPageButton {
+  right: 50%;
+}
 .pageinactive {
   display: none;
 }
