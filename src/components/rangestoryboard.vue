@@ -219,7 +219,7 @@ export default {
           var labelfield = this.getLabel(manifest.metadata[0]);
           var labelitems = [];
           labelitems = labelfield && Array.isArray(labelfield) ? labelfield.map(elem => shared.getField(elem, 'language')) : labelfield && labelfield.constructor.name == 'String' ? [] : Object.keys(labelfield);
-          var others = Array.isArray(labelfield) ? [] : Object.keys(shared.getValueField(manifest.metadata[0]));
+          var others = labelfield.constructor.name != 'Object' ? [] : Object.keys(shared.getValueField(manifest.metadata[0]));
           var langs = labelitems.concat(others);
           langs = [...new Set(langs)].filter(elem => elem && elem != 'none');
           this.langs = langs.map(element => `<option value="${element}"${navigator.language.indexOf(element) > -1 ? ' selected' : ''}>${shared.getLangLabel(element)}</option>`);
@@ -312,11 +312,11 @@ export default {
         if (toclabel.length == 0){
           toclabel.push(`Page ${position + 1}`)
         }
-        toclabel = toclabel.join(": ")
-        var cv_meta = canvas.metadata ? shared.getHTMLMeta(canvas, '', '', this.settings, this.currentlang, true) : '';
-        var description = anno['description'] ?  anno['description'] + cv_meta['text'] : cv_meta['text'];
+        toclabel = toclabel.join(": ");
+        var cv_meta = canvas && canvas.metadata ? shared.getHTMLMeta(canvas, '', '', this.settings, this.currentlang, true) : {'text': ''};
+        var description = anno['description'] ?  anno['description'] + cv_meta['text'] : cv_meta['text'] ? cv_meta['text'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
-        this.rangelist.push({'canvas': canvasid, 'hint': canvas['viewingHint'], 'images': firstcanvas ? canvas : '', 'anno': annourl.replace(';', 'repwithsemicolon'), 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, 'otherLists': otherContent});
+        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl.replace(';', 'repwithsemicolon'), 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, 'otherLists': otherContent});
         if (this.settings.perpage){
           const startpage = parseInt(position/this.settings.perpage)*this.settings.perpage;
           const endpage = startpage + this.settings.perpage;

@@ -134,11 +134,13 @@ export default {
   },
   methods: {
     otherLists: function() {
-      var otherLists = this.basecompontent.annotationurl.allOtherLists ? this.basecompontent.annotationurl.allOtherLists[this.boardnumber] : this.basecompontent/this.annotationurl.otherLists;
-      if (otherLists.length > 0){
-        for (var aot=0; aot<otherLists.length; aot++){
-          var otherlist = shared.getId(otherLists[aot]);
-          this.loadAnnotation(false, otherlist)
+      if (this.basecompontent.range){
+        var otherLists = this.basecompontent.annotationurl.allOtherLists ? this.basecompontent.annotationurl.allOtherLists[this.boardnumber] : this.basecompontent.annotationurl.otherLists;
+        if (otherLists && otherLists.length > 0){
+          for (var aot=0; aot<otherLists.length; aot++){
+            var otherlist = shared.getId(otherLists[aot]);
+            this.loadAnnotation(false, otherlist)
+          }
         }
       }
     },
