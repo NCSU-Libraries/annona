@@ -287,7 +287,8 @@ export default {
         }
         const position = this.rangelist.length;
         if (canvasid == this.startCanvas){
-            this.position = position;
+            const startpage = this.settings.perpage ? parseInt(position/this.settings.perpage)*this.settings.perpage : position;
+            this.position = startpage;
             this.compkey = position;
         }
         var annolabel = shared.parseMetaFields(this.getLabel(anno));
