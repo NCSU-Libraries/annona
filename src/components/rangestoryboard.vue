@@ -17,11 +17,11 @@
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
-  <button v-if="ready" id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'rtl' ? 'floatleft' : 'floatright' ]">
+  <button v-if="ready" id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection]">
     <span v-html="buttons.rangeprev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
-  <button v-if="ready" id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection == 'ltr' ? 'floatleft' : 'floatright']">
+  <button v-if="ready" id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection]">
     <span v-html="buttons.rangenext"></span>
     <span class="toolbartext">Next Page</span>
   </button>
@@ -76,7 +76,8 @@ export default {
         booleanitems: shared.objectToNewObject(shared.booleanitems),
         leaflet: false,
         rangecontents: '',
-        collection: ''
+        collection: '',
+        langs: []
       }
     },
     watch: {
@@ -214,8 +215,17 @@ export default {
       },
       getManifestData: function(manifest) {
         var otherContent = [];
+        if (manifest.metadata && manifest.metadata.length > 0){
+          var labelfield = this.getLabel(manifest.metadata[0]);
+          var labelitems = [];
+          labelitems = labelfield && Array.isArray(labelfield) ? labelfield.map(elem => shared.getField(elem, 'language')) : labelfield && labelfield.constructor.name == 'String' ? [] : Object.keys(labelfield);
+          var others = labelfield.constructor.name != 'Object' ? [] : Object.keys(shared.getValueField(manifest.metadata[0]));
+          var langs = labelitems.concat(others);
+          langs = [...new Set(langs)].filter(elem => elem && elem != 'none');
+          this.langs = langs.map(element => `<option value="${element}"${navigator.language.indexOf(element) > -1 ? ' selected' : ''}>${shared.getLangLabel(element)}</option>`);
+        }
         if (manifest['sequences'] || manifest['items']){
-          const startCanvas = manifest['items'] ? manifest['items']['start'] : manifest['sequences'][0]['startCanvas'];
+          const startCanvas = manifest['start'] ? manifest['start'] : manifest['items'] ? manifest['items']['start'] : manifest['sequences'][0]['startCanvas'];
           this.startCanvas = startCanvas ? shared.getId(startCanvas) : startCanvas;
           var canvases = shared.getAllCanvases(manifest);
           for (var cv=0; cv<canvases.length; cv++){
@@ -241,9 +251,9 @@ export default {
               const list = anno[listnumb] ? anno[listnumb] : "https://nolist.com";
               this.addToLists(list, manifesturl, otherContent[an]['canvas'], anno);
             } else {
-              for (var h=0; h<anno.length; h++){
-                this.addToLists(anno[h], manifesturl, otherContent[an]['canvas']);
-              }
+              //for (var h=0; h<anno.length; h++){
+                this.addToLists(anno[0], manifesturl, otherContent[an]['canvas'], anno.slice(1,));
+              ///}
             }
           } else{
             this.addToLists(anno, manifesturl, otherContent[an]['canvas']);
@@ -255,7 +265,10 @@ export default {
       addToLists: function(anno, manifesturl, canvas, otherContent=false) {
         var thumbnail;
         if(anno.resources || anno.items || anno.body){
-          var jsonanno = anno; 
+          var islistitem = anno.resources && anno.resources[0].motivation && anno.resources[0].motivation.indexOf('painting') > -1 ? true : false;
+          if (!islistitem){
+            var jsonanno = anno; 
+          }
         }
         var annourl = shared.getId(anno);
         if (canvas){
@@ -274,10 +287,11 @@ export default {
         }
         const position = this.rangelist.length;
         if (canvasid == this.startCanvas){
-            this.position = position;
+            const startpage = this.settings.perpage ? parseInt(position/this.settings.perpage)*this.settings.perpage : position;
+            this.position = startpage;
             this.compkey = position;
         }
-        const annolabel = this.getLabel(anno);
+        var annolabel = shared.parseMetaFields(this.getLabel(anno));
         var toclabel = []
         if (canvas) {
           const cvlabel = shared.parseMetaFields(this.getLabel(canvas));
@@ -286,15 +300,24 @@ export default {
           }
         }
         if (annolabel){
-          toclabel.push(shared.parseMetaFields(annolabel))
+          if (otherContent) {
+            for (var ocl=0; ocl<otherContent.length; ocl++){
+              var ocllabel = shared.parseMetaFields(this.getLabel(otherContent[ocl]));
+              if (ocllabel){
+                annolabel += ` / ${ocllabel}`
+              }
+            }
+          }
+          toclabel.push(annolabel)
         }
         if (toclabel.length == 0){
           toclabel.push(`Page ${position + 1}`)
         }
-        toclabel = toclabel.join(": ")
-        var description = anno['description'] ?  anno['description'] : '';
+        toclabel = toclabel.join(": ");
+        var cv_meta = canvas && canvas.metadata ? shared.getHTMLMeta(canvas, '', '', this.settings, this.currentlang, true) : {'text': ''};
+        var description = anno['description'] ?  anno['description'] + cv_meta['text'] : cv_meta['text'] ? cv_meta['text'] : '';
         this.toc.push({ 'position' :position, 'label' : toclabel, 'thumbnail': thumbnail, 'description': description});
-        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl, 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, 'otherLists': otherContent});
+        this.rangelist.push({'canvas': canvasid, 'images': firstcanvas ? canvas : '', 'anno': annourl.replace(';', 'repwithsemicolon'), 'jsonanno': jsonanno, 'manifest': manifesturl, 'section': xywh, 'title': toclabel, 'otherLists': otherContent});
         if (this.settings.perpage){
           const startpage = parseInt(position/this.settings.perpage)*this.settings.perpage;
           const endpage = startpage + this.settings.perpage;
@@ -303,6 +326,7 @@ export default {
               this.rangelist[sp].annotationurls = this.rangelist.slice(startpage, endpage).map(elem => elem.anno).join(";");
               this.rangelist[sp].alljsons = this.rangelist.slice(startpage, endpage).map(elem => elem.jsonanno);
               this.rangelist[sp].allmanifests = this.rangelist.slice(startpage, endpage).map(elem => elem.manifest).join(";");
+              this.rangelist[sp].allOtherLists = this.rangelist.slice(startpage, endpage).map(elem => elem.otherLists);
             }
           }
         }
@@ -316,6 +340,14 @@ export default {
           this.viewingDirection = 'rtl';
           this.buttons.rangeprev = shared.buttons['rangenext'];
           this.buttons.rangenext = shared.buttons['rangeprev'];
+        } else if (viewingDirection == 'top-to-bottom') {
+          this.viewingDirection = 'ttb';
+          this.buttons.rangeprev = '<i class="fa fa-chevron-up"></i>'
+          this.buttons.rangenext = '<i class="fa fa-chevron-down"></i>'
+        } else if (viewingDirection == 'bottom-to-top') {
+          this.viewingDirection = 'btt';
+          this.buttons.rangeprev = '<i class="fa fa-chevron-down"></i>'
+          this.buttons.rangenext = '<i class="fa fa-chevron-up"></i>'
         }
         this.annotationurl = this.rangelist[this.position];
         this.rangetitle = shared.parseMetaFields(data.label);

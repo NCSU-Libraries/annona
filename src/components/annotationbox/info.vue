@@ -31,11 +31,12 @@
 
     <button class="infolink buttonlink annoinfolink" v-on:click="parent.sendMessage({'function':'switchShown', 'args': 'annoinfoshown'});" v-if="annotations.length > 0">Annotation information</button>
     <div v-if="parent.booleanitems.annoinfoshown" class="annoinfo">
-        <span v-for="(annotationinfo, index) in annotations" v-bind:key="annotationinfo.annodata.position">
+        <span v-for="(annotationinfo, index) in annotations" v-bind:key="index + '_' + annotationinfo.annodata.position">
         <h2 v-if="annotationinfo.text && annotations.length > 1" class="boardnumber">Board {{index+1}}</h2>
         <span v-html="annotationinfo.text"></span>
+        <span v-if="index == annotations.length-1"><b>Number of Annotations:</b> {{annotationinfo.annodata.length}}</span>
         <div class="annotationslist">
-            <div v-for="annoinfo in annotationinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + annoinfo.position">
+            <div v-for="annoinfo in annotationinfo.annodata" v-bind:key="annoinfo.position" v-bind:id="'data_' + index + '_' + annoinfo.position">
                 <div class="title"><button class="buttonlink" v-on:click="annotationinfo.parent.sendMessage({'function': 'next', 'args': annoinfo.position});">{{annoinfo.title}}</button></div>
                 <div class="additionaltext" v-html="annoinfo.additionaltext"></div>
             </div>

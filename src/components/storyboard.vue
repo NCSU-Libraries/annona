@@ -73,7 +73,8 @@ export default {
       rendered: '',
       leaflet: false,
       boardnumber: 0,
-      toolbardisabled: false
+      toolbardisabled: false,
+      manifestinfo: ''
     }
   },
   created() {
@@ -132,8 +133,19 @@ export default {
     }
   },
   methods: {
-    loadAnnotation: function(newseadragon=true) {
-      var annotationurl = this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
+    otherLists: function() {
+      if (this.basecompontent.range){
+        var otherLists = this.basecompontent.annotationurl.allOtherLists ? this.basecompontent.annotationurl.allOtherLists[this.boardnumber] : this.basecompontent.annotationurl.otherLists;
+        if (otherLists && otherLists.length > 0){
+          for (var aot=0; aot<otherLists.length; aot++){
+            var otherlist = shared.getId(otherLists[aot]);
+            this.loadAnnotation(false, otherlist)
+          }
+        }
+      }
+    },
+    loadAnnotation: function(newseadragon=true, url=false) {
+      var annotationurl = url ? url : this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
       var isURL = shared.isURL(annotationurl, this.settings);
       this.seadragonid = 'storyboard_' + isURL['id'];
       this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
@@ -220,8 +232,7 @@ export default {
     parseAnnoData: function(annotation, annotationurl, isURL, newseadragon=true){
       var anno = shared.getAnnotations(annotation);
       //Get basic annotation information
-      this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}
-      <b>Number of Annotations:</b> ${anno.length}</div>`
+      this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}`
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], annotation);
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
@@ -261,7 +272,7 @@ export default {
           }
           this.settings.tagscolor = this.settings.tagscolor ? Object.assign(content_data['styles'], this.settings.tagscolor) : content_data['styles'];
         }
-        this.getAnnoInfo(content_data, i);
+        this.getAnnoInfo(content_data, this.annotations.length-1);
       }
       //Looks at all language options (if existing)
       //gets all languages, sees if browser language is option for languages; otherwise sets language to first in list.
@@ -289,14 +300,20 @@ export default {
       //If rangestoryboard with multiple pages, add annotation label to title
       const label = annotation['label'] ? annotation['label'] : annotation['@label'];
       this.imagetitle = this.settings.title ? this.imagetitle : label;
+      this.boardnumber = this.$parent.multi && this.$parent.boardchildren.length > 0 ? this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) : 0;
       if (label && this.basecompontent.range) {
-        var boardnumber = this.$parent.multi ? this.$parent.boardchildren.map(elem => elem.seadragontile).indexOf(this.seadragontile) : 0;
-        const index = boardnumber + this.basecompontent.position;
+        const index = this.boardnumber + this.basecompontent.position;
         if (this.basecompontent.toc[index]['label'].indexOf(label) == -1){
           this.basecompontent.toc[index]['label'] += `: ${label}`
         }
       } else if(label) {
         this.imagetitle += `: ${label}`;
+      }
+      if (this.annotationurl == annotationurl){
+        var vue = this;
+        setTimeout(() => {
+          vue.otherLists();
+        }, "100")
       }
     },
     tagslistShortcuts: function() {
@@ -487,6 +504,11 @@ export default {
       var lang = event.target ? event.target.value : event;
       this.currentlang = lang;
       this.annoinfo.annodata = [];
+      var manifestdata = this.basecompontent && this.basecompontent.manifestcontents ? this.basecompontent.manifestcontents : this.manifestinfo;
+      var meta = shared.getHTMLMeta(manifestdata, this.imageinfo.link, 'Manifest', this.settings, this.currentlang);
+      this.imageinfo.text = meta['text'] + `<div id="imageurl"><b>Image URL: </b><a href="${this.seadragontile}" target="_blank">${this.seadragontile}</a></div>`
+      this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
+
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
       }
@@ -754,12 +776,13 @@ export default {
                 }
               }
             }
+            this.manifestinfo = canvas_data.data;
             this.manifestDataFunctions(manifestlink, canvas_data.data, canvas, canvasId, images)
           }).catch(() => {this.renderError(manifestlink, true)});
         }
     },
     manifestDataFunctions: function(manifestlink, canvas_data, canvas, canvasId, images='') {
-      var meta = shared.getHTMLMeta(canvas_data, manifestlink, 'Manifest', this.settings);
+      var meta = shared.getHTMLMeta(canvas_data, manifestlink, 'Manifest', this.settings, this.currentlang);
       this.imageinfo.text = meta['text'];
       this.imageinfo.link = manifestlink;
       this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
@@ -800,7 +823,7 @@ export default {
         var get_ct = shared.getCanvasTile(images[i], true);
         var canvas_tile = get_ct['canvas_tile'];
         var imgResource = get_ct['img_resource'];
-        const resourceid = images[i].resource ? shared.getId(images[i].resource) : '';
+        const resourceid = images[i].resource ? shared.getId(images[i].resource) : images[i].target ? shared.getId(images[i].target) : '';
         var xywh = resourceid && resourceid.constructor.name === 'String' && resourceid.indexOf('xywh') > -1 ? resourceid : shared.on_structure(images[i]) && shared.on_structure(images[i])[0].constructor.name === 'String' ? shared.on_structure(images[i])[0] : '';
         xywh = xywh ? xywh.split("xywh=").slice(-1)[0].split(",") : xywh;
         xywh = xywh.length > 1 ? xywh : ''

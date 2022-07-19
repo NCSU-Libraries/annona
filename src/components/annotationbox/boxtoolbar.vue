@@ -10,6 +10,9 @@
     <span class="lang-icon" id="lang_button" v-if="parent.languages.length > 0">
         <select aria-label="change language dropdown" class="lang_drop" v-on:change="sendparent.sendMessage({'function': 'changeLang', 'args': $event });" v-html="parent.languages.join('')"></select>
     </span>
+    <span class="lang-icon" id="lang_button" v-if="parent.basecompontent && parent.basecompontent.langs && parent.basecompontent.langs.length > 1 && parent.shown == 'info'">
+        <select aria-label="change language dropdown" class="lang_drop" v-on:change="parent.sendMessage({'function': 'changeLang', 'args': $event });" v-html="parent.basecompontent.langs.join('')"></select>
+    </span>
 </span>
 </template>
 <script>
