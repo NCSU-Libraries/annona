@@ -777,7 +777,8 @@ figcaption {
 }
 
 .ttb.pageButton, .btt.pageButton {
-  top: 85%;
+  top: initial;
+  bottom: 1%;
 }
 .ttb#nextPageButton, .btt#previousPageButton {
   left: 50%;
