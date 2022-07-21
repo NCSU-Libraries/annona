@@ -147,9 +147,9 @@ export default {
       }
     },
     // Create SVG elements and corresponding image
-    createimagehtml: function(imageurl, canvasRegion, dictionary, cn) {
+    createimagehtml: function(imageurl, canvasRegion, dictionary, cn, isderivative=false) {
       var imagehtml;
-      var isderivative = imageurl.indexOf('img/derivatives') > -1;
+      isderivative = isderivative ? isderivative : imageurl.indexOf('img/derivatives') > -1;
       var extension = shared.getExtension(canvasRegion['canvasId']);
       var path = canvasRegion['svg'];
       const xywh = canvasRegion['canvasRegion'].split(',').map(elem => parseFloat(elem.trim()))
@@ -158,7 +158,7 @@ export default {
       }
       isderivative ? imageurl = dictionary['fullImage'].split('/full/')[0] + '/full/full/0/default.jpg' : '';
       if ((path || this.textoverlay) && !isderivative) {
-        imagehtml = this.createSVG(imageurl, canvasRegion['canvasRegion'], dictionary, path, cn)
+        imagehtml = this.createSVG(imageurl, canvasRegion, dictionary, path, cn)
       } else {
         imagehtml = document.createElement("img");
         imagehtml.setAttribute('src', imageurl);
@@ -167,7 +167,7 @@ export default {
       if (shared.imageextensions.includes(extension) || isderivative) {
        var canv = document.createElement('canvas');
        canv.id = `${dictionary['id']}_canvas_img${cn}`
-       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id);
+       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
        imagehtml = canv;
       }
       for (var key in this.settings.imagesettings){
@@ -175,10 +175,10 @@ export default {
       }
       return imagehtml.outerHTML;
     },
-    createSVG: function(imageurl, regionCanvas, dictionary, path, position) {
+    createSVG: function(imageurl, canvasRegion, dictionary, path, position) {
       var id = dictionary['id'] + '-' + position;
       var pathhtml = '';
-      var xywh = regionCanvas.split(",");
+      var xywh = canvasRegion['canvasRegion'].split(",");
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.setAttribute('viewBox', xywh.join(" "));
       svg.setAttribute('aria-label', dictionary['altText']);
@@ -196,9 +196,23 @@ export default {
         pathhtml = path.outerHTML;
       }
       svg.innerHTML = inner + pathhtml + this.textoverlay;
+      const image = svg.getElementsByTagName('image');
+      if (image.length > 0) {
+        var vue = this;
+        for(var img=0; img<image.length; img++){
+          image[img].onerror = function() {
+            var imagehtml = vue.createimagehtml(imageurl, canvasRegion, dictionary, position, true);
+            const indexitem = vue.annotation_items.map(elem => elem['id']).indexOf(dictionary['id'])
+            const items = vue.annotation_items[indexitem]['image']
+            items[position] = imagehtml;
+            vue.annotation_items[indexitem]['image'] = [];
+            vue.annotation_items[indexitem]['image'] = items;
+          };
+        }
+      }
       return svg;
     },
-    writecanvas: function(img, xywh, id) {
+    writecanvas: function(img, xywh, id, path=false) {
       setTimeout(function(){
         xywh = xywh.split(',')
         var canvas1 = document.getElementById(id); //find new canvas we created
@@ -208,7 +222,14 @@ export default {
         const image = new Image();
         image.src = img.src;
         image.onload = function() {
-          context.drawImage(img, -xywh[0], -xywh[1]); //draws background image
+          if (path && path.getAttribute('d')){
+            context.translate(-xywh[0],-xywh[1]);
+            const p = new Path2D(path.getAttribute('d'));
+            context.clip(p, 'nonzero')
+            context.drawImage(img,0,0); //draws background image
+          } else {
+            context.drawImage(img,-xywh[0],-xywh[1]); //draws background image
+          }
         }
       }, 1);
     },
