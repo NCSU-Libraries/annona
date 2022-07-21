@@ -222,10 +222,22 @@ export default {
         const image = new Image();
         image.src = img.src;
         image.onload = function() {
-          if (path && path.getAttribute('d')){
+          path = path.tagName == 'polygon' ? shared.polyToPath(path) : path;
+          const covSVG = ['ellipse', 'path', 'circle']
+          if (path && covSVG.indexOf(path.tagName) > -1){
             context.translate(-xywh[0],-xywh[1]);
-            const p = new Path2D(path.getAttribute('d'));
-            context.clip(p, 'nonzero')
+            if (path.tagName != 'path'){
+              context.beginPath();
+              if (path.tagName == 'circle') {
+                context.arc(path.getAttribute('cx'), path.getAttribute('cy'), path.getAttribute('r'), 0, 2 * Math.PI)
+              } else {
+                context.ellipse(path.getAttribute('cx'), path.getAttribute('cy'), path.getAttribute('rx'),  path.getAttribute('ry'), Math.PI / 4, 0, 2 * Math.PI);
+              }
+              context.clip();
+            } else {
+              const p = new Path2D(path.getAttribute('d'));
+              context.clip(p, 'nonzero')
+            }
             context.drawImage(img,0,0); //draws background image
           } else {
             context.drawImage(img,-xywh[0],-xywh[1]); //draws background image
