@@ -505,10 +505,16 @@ export default {
       this.currentlang = lang;
       this.annoinfo.annodata = [];
       var manifestdata = this.basecompontent && this.basecompontent.manifestcontents ? this.basecompontent.manifestcontents : this.manifestinfo;
+      if (this.basecompontent.range){
+        this.basecompontent.rangetitle = shared.parseMetaFields(manifestdata.label, this.currentlang);
+        this.basecompontent.getTitle();
+        const titlebefore = this.settings.title;
+        this.settings.title = this.basecompontent.settings.title;
+        this.imagetitle = this.imagetitle.replace(titlebefore, this.basecompontent.settings.title)
+      }
       var meta = shared.getHTMLMeta(manifestdata, this.imageinfo.link, 'Manifest', this.settings, this.currentlang);
       this.imageinfo.text = meta['text'] + `<div id="imageurl"><b>Image URL: </b><a href="${this.seadragontile}" target="_blank">${this.seadragontile}</a></div>`
       this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
-
       for (var ai=0; ai<this.annotations.length; ai++){
         this.getAnnoInfo(this.annotations[ai], ai);
       }
@@ -821,6 +827,7 @@ export default {
       images = images ? images : [];
       for (var i=0; i<images.length; i++){
         var get_ct = shared.getCanvasTile(images[i], true);
+        var layertoggled = images[i].motivation && images[i].motivation.indexOf('painting') > -1 ? true : false;
         var canvas_tile = get_ct['canvas_tile'];
         var imgResource = get_ct['img_resource'];
         const resourceid = images[i].resource ? shared.getId(images[i].resource) : images[i].target ? shared.getId(images[i].target) : '';
@@ -828,8 +835,8 @@ export default {
         xywh = xywh ? xywh.split("xywh=").slice(-1)[0].split(",") : xywh;
         xywh = xywh.length > 1 ? xywh : ''
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
-        var checked = this.settings.togglelayers || i == 0 ? true : false;
-        var opacity = this.settings.togglelayers || i == 0 ? 1 : 0;
+        var checked = this.settings.togglelayers || i == 0 || layertoggled ? true : false;
+        var opacity = this.settings.togglelayers || i == 0 || layertoggled ? 1 : 0;
         this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
       }
       this.layerslist.length > 0 ? this.seadragontile =  this.layerslist[0].tile : '';
