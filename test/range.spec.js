@@ -399,7 +399,6 @@ describe('Component', () => {
       expect(data.annotationurl.annotationurls).toEqual("https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0001/technician-basketballspecial-1991-11_0001-annotation-list-word.json;https://ocr.lib.ncsu.edu/ocr/te/technician-basketballspecial-1991-11_0002/technician-basketballspecial-1991-11_0002-annotation-list-word.json")
       expect(data.annotationurl.annotationurls.split(";").length).toEqual(2)
       expect(data.position).toEqual(0)
-      console.log(data.position)
       expect(data.prevPageInactive).toBe(true)
       expect(data.nextPageInactive).toBe(false)
       expect(data.rangeid).toBe('rangestoryboard_manifest')
@@ -425,7 +424,6 @@ describe('Component', () => {
       expect(sbd.toolbar_id).toBe("");
       expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
       expect(sbd.shown).toBe(false);
-      console.log(data.position)
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
       expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Technician Basketball Special, November 1991", "truncate_length": 2, "perpage": 2, "continousboard": true, "index": 0});
