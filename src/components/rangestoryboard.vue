@@ -218,9 +218,9 @@ export default {
         if (manifest.metadata && manifest.metadata.length > 0){
           var labelfield = this.getLabel(manifest.metadata[0]);
           var labelitems = [];
-          labelitems = labelfield && Array.isArray(labelfield) ? labelfield.map(elem => shared.getField(elem, 'language')) : labelfield && labelfield.constructor.name == 'String' ? [] : Object.keys(labelfield);
+          labelitems = labelfield && Array.isArray(labelfield) ? labelfield.map(elem => shared.getField(elem, 'language')) : labelfield && labelfield.constructor.name == 'String' ? [] : shared.getField(labelfield, 'language').constructor.name == 'String' ? [shared.getField(labelfield, 'language')] : Object.keys(labelfield);
           var others = labelfield.constructor.name != 'Object' ? [] : Object.keys(shared.getValueField(manifest.metadata[0]));
-          var langs = labelitems.concat(others);
+          var langs = others[0] == "0" ? labelitems : labelitems.concat(others);
           langs = [...new Set(langs)].filter(elem => elem && elem != 'none');
           this.langs = langs.map(element => `<option value="${element}"${navigator.language.indexOf(element) > -1 ? ' selected' : ''}>${shared.getLangLabel(element)}</option>`);
         }
