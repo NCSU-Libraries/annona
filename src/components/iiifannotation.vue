@@ -217,8 +217,8 @@ export default {
         xywh = xywh.split(',')
         var canvas1 = document.getElementById(id); //find new canvas we created
         var context = canvas1.getContext('2d');
-        canvas1.width = xywh[2]
-        canvas1.height = xywh[3]
+        canvas1.width = xywh[2];
+        canvas1.height = xywh[3];
         const image = new Image();
         image.src = img.src;
         image.onload = function() {
@@ -231,7 +231,7 @@ export default {
               if (path.tagName == 'circle') {
                 context.arc(path.getAttribute('cx'), path.getAttribute('cy'), path.getAttribute('r'), 0, 2 * Math.PI)
               } else {
-                context.ellipse(path.getAttribute('cx'), path.getAttribute('cy'), path.getAttribute('rx'),  path.getAttribute('ry'), Math.PI / 4, 0, 2 * Math.PI);
+                context.ellipse(path.getAttribute('cx'), path.getAttribute('cy'), path.getAttribute('rx'), path.getAttribute('ry'), 0, 0, 2 * Math.PI);
               }
               context.clip();
             } else {

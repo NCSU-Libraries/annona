@@ -65,51 +65,61 @@ export default {
             imageinfo: ''
         }
     },
-    created() {
-        this.title = [this.parent.imagetitle];
-        var annoinfo = this.parent.annoinfo;
-        if (annoinfo.text){
-            annoinfo['parent'] = this.parent;
-            this.annotations = [annoinfo];
+    watch: {
+        'parent.imagetitle': function() {
+            this.buildTitles();
         }
-        this.imageinfo = [this.parent.imageinfo];
-        if (this.parent.$parent.multi) {
-            if (this.parent.basecompontent.range) {
-                this.title = [this.parent.settings.title]
-                const start = this.parent.basecompontent.position;
-                const end = this.parent.basecompontent.position+this.parent.basecompontent.settings.perpage;
-                if (start != end && this.parent.settings.perpage > 1){
-                    this.title = this.title.concat(this.parent.basecompontent.toc.slice(start,end).map(elem => elem.label));
-                }
-            } else {
-                this.title = []
+    },
+    created() {
+        this.buildTitles();
+    },
+    methods: {
+        buildTitles: function(){
+            this.title = [this.parent.imagetitle];
+            var annoinfo = this.parent.annoinfo;
+            if (annoinfo.text){
+                annoinfo['parent'] = this.parent;
+                this.annotations = [annoinfo];
             }
-            var boardchildren = this.parent.$parent.boardchildren;
-            this.imageinfo = []
-            this.annotations = []
-            for (var bct=0; bct<boardchildren.length; bct++){
-                if (!this.parent.basecompontent.range){
-                    var title = boardchildren[bct].imagetitle;
-                    this.title.push(title)
+            this.imageinfo = [this.parent.imageinfo];
+            if (this.parent.$parent.multi) {
+                if (this.parent.basecompontent.range) {
+                    this.title = [this.parent.settings.title]
+                    const start = this.parent.basecompontent.position;
+                    const end = this.parent.basecompontent.position+this.parent.basecompontent.settings.perpage;
+                    if (start != end && this.parent.settings.perpage > 1){
+                        this.title = this.title.concat(this.parent.basecompontent.toc.slice(start,end).map(elem => elem.label));
+                    }
+                } else {
+                    this.title = []
                 }
-                const links = this.imageinfo.map(elem => elem.link);
-                if (links.indexOf(boardchildren[bct].imageinfo.link) == -1){
-                    this.imageinfo.push(boardchildren[bct].imageinfo)
-                }
-                if (boardchildren[bct].annoinfo) {
-                    var boardinfo = boardchildren[bct].annoinfo;
-                    if (boardinfo.text){
-                        boardinfo['parent'] = boardchildren[bct];
-                        this.annotations.push(boardinfo)
+                var boardchildren = this.parent.$parent.boardchildren;
+                this.imageinfo = []
+                this.annotations = []
+                for (var bct=0; bct<boardchildren.length; bct++){
+                    if (!this.parent.basecompontent.range){
+                        var title = boardchildren[bct].imagetitle;
+                        this.title.push(title)
+                    }
+                    const links = this.imageinfo.map(elem => elem.link);
+                    if (links.indexOf(boardchildren[bct].imageinfo.link) == -1){
+                        this.imageinfo.push(boardchildren[bct].imageinfo)
+                    }
+                    if (boardchildren[bct].annoinfo) {
+                        var boardinfo = boardchildren[bct].annoinfo;
+                        if (boardinfo.text){
+                            boardinfo['parent'] = boardchildren[bct];
+                            this.annotations.push(boardinfo)
+                        }
                     }
                 }
+                if(this.parent.$parent.isreverse) {
+                    this.imageinfo = this.imageinfo.reverse()
+                    this.annotations = this.annotations.reverse()
+                }
             }
-            if(this.parent.$parent.isreverse) {
-                this.imageinfo = this.imageinfo.reverse()
-                this.annotations = this.annotations.reverse()
-            }
+            this.title = this.title.join("<br>")
         }
-        this.title = this.title.join("<br>")
     }
 }
 </script>
