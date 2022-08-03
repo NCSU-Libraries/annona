@@ -74,7 +74,8 @@ export default {
       leaflet: false,
       boardnumber: 0,
       toolbardisabled: false,
-      manifestinfo: ''
+      manifestinfo: '',
+      isurl: true
     }
   },
   created() {
@@ -128,6 +129,7 @@ export default {
     this.newSocket();
     var annotationurl = this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
     var isURL = shared.isURL(annotationurl, '');
+    this.isurl = isURL['isURL'];
     if (!isURL['isURL']) {
       this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
     }
@@ -147,6 +149,7 @@ export default {
     loadAnnotation: function(newseadragon=true, url=false) {
       var annotationurl = url ? url : this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
       var isURL = shared.isURL(annotationurl, this.settings);
+      this.isurl = isURL['isURL'];
       this.seadragonid = 'storyboard_' + isURL['id'];
       this.settings.index ? this.seadragonid += `_${this.settings.index}` : '';
       if(isURL['isURL']){

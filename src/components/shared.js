@@ -716,6 +716,10 @@ export default {
     return tilesource;
   },
   isURL: function(annotationurl, settings) {
+    if (annotationurl.indexOf('json;') > -1){
+      var stripdata = annotationurl.split('json;').slice(-1)[0].split('base64,').slice(-1)[0]
+      annotationurl = JSON.parse(atob(stripdata))
+    }
     var parseString = this.parseInput(annotationurl);
     var isURL = parseString.constructor === String ? true : false;
     var id = settings.customid ? settings.customid : annotationurl;
@@ -900,6 +904,9 @@ export default {
       }
     } else if (vueinfo.settings.continousboard){
       delete shortcuts['autorun'];
+    }
+    if (!vueinfo.isurl) {
+      delete shortcuts['reload']
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
     for (var hd=0; hd<removefields.length; hd++){
