@@ -201,9 +201,14 @@ export default {
         var vue = this;
         for(var img=0; img<image.length; img++){
           image[img].onerror = function() {
-            var imagehtml = vue.createimagehtml(imageurl, canvasRegion, dictionary, position, true);
+            var imagehtml;
             const indexitem = vue.annotation_items.map(elem => elem['id']).indexOf(dictionary['id'])
             const items = vue.annotation_items[indexitem]['image']
+            if (items[position].indexOf('full')) {
+              imagehtml = items[position].replace('full', 'max');
+            } else {
+              imagehtml = vue.createimagehtml(imageurl, canvasRegion, dictionary, position, true);
+            }
             items[position] = imagehtml;
             vue.annotation_items[indexitem]['image'] = [];
             vue.annotation_items[indexitem]['image'] = items;

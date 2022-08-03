@@ -7,7 +7,7 @@
       <span v-for="(image, index) in item.image" :key="index">
         <span v-html="image" class="annoimage"></span>
       </span>
-      <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+      <img v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" v-bind:src="item.fullImage" style="display:none;" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']" @error="fullImageBackup">
       <div class="beforecontent" v-html="item.before" v-if="item.before && !settings.image_only && !settings.hide_beforeafter">
       </div>
       <div id="content" v-if="item.rendered_content && item.rendered_content !== '' && settings.image_only !== true" v-html="item.rendered_content"></div>
@@ -93,6 +93,15 @@ export default {
           this.textoverlaybutton = this.textoverlayicon;
         }
       }
+    },
+    fullImageBackup: function(e) {
+      var src = e.target.src;
+      if (src.indexOf('full/full') > -1) {
+        src = src.replace('full/full', 'full/max');
+      } else {
+        src = src.replace('full/max', 'full/full');
+      }
+      e.target.src = src;
     },
     getFullObject: function() {
       var manifest = this.compdata['manifest'];

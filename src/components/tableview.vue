@@ -27,7 +27,7 @@
           </div>
         </td>
         <td v-if="item.fullImage && !settings.image_only && !settings.hide_viewlarger" >
-          <img v-bind:src="item.fullImage" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']">
+          <img v-bind:src="item.fullImage" id="fullimage" v-bind:alt="manifest['label']" v-bind:style="[settings.imagesettings !== undefined ? settings.imagesettings : '']" @error="fullImageBackup">
         </td>
         <td id="link_to_object" v-if="!settings.hide_fullobject && full_object && full_object !== '' && !settings.image_only && !settings.text_only">
           <a v-bind:href="full_object" target="_blank">{{manifest["label"]}}</a>
@@ -76,6 +76,15 @@ export default {
     this.getFullObject();
   },
   methods: {
+    fullImageBackup: function(e) {
+      var src = e.target.src;
+      if (src.indexOf('full/full') > -1) {
+        src = src.replace('full/full', 'full/max');
+      } else {
+        src = src.replace('full/max', 'full/full');
+      }
+      e.target.src = src;
+    },
     getFullObject: function() {
       var manifest = this.compdata['manifest'];
       var keys = Object.keys(manifest);

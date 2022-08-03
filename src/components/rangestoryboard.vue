@@ -77,7 +77,8 @@ export default {
         leaflet: false,
         rangecontents: '',
         collection: '',
-        langs: []
+        langs: [],
+        isurl: true
       }
     },
     watch: {
@@ -93,6 +94,7 @@ export default {
       this.rangeid = "rangestoryboard_" + this.$props.rangeurl.split("/").slice(-1)[0];
       this.settings = shared.getsettings(this);
       var isURL = shared.isURL(this.$props.rangeurl, this.settings);
+      this.isurl = isURL['isURL'];
       if (isURL['isURL']){
         axios.get(this.$props.rangeurl).then(response => {
           this.rangecontents = response.data;

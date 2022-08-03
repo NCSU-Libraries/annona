@@ -277,7 +277,7 @@ export default {
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.id = 'getBounds';
       svg.appendChild(svg_overlay)
-      var element = document.getElementsByClassName('annonaview')[0];
+      var element = document.getElementsByTagName('div')[0];
       element.appendChild(svg);
       const bounds = document.getElementById('getBounds').getBBox();
       element.removeChild(svg)
@@ -716,7 +716,7 @@ export default {
     return tilesource;
   },
   isURL: function(annotationurl, settings) {
-    if (annotationurl.indexOf('json;') > -1){
+    if (annotationurl.constructor == String && annotationurl.indexOf('json;') > -1){
       var stripdata = annotationurl.split('json;').slice(-1)[0].split('base64,').slice(-1)[0]
       annotationurl = JSON.parse(atob(stripdata))
     }
@@ -905,7 +905,8 @@ export default {
     } else if (vueinfo.settings.continousboard){
       delete shortcuts['autorun'];
     }
-    if (!vueinfo.isurl) {
+    var isurl = vueinfo.basecompontent && vueinfo.basecompontent.range ? vueinfo.basecompontent.isurl : vueinfo.isurl;
+    if (isurl == false) {
       delete shortcuts['reload']
     }
     var removefields = Object.keys(vueinfo.settings).filter(element => element.indexOf('hide_') > -1);
