@@ -716,8 +716,8 @@ export default {
     return tilesource;
   },
   isURL: function(annotationurl, settings) {
-    if (annotationurl.constructor == String && annotationurl.indexOf('json;') > -1){
-      var stripdata = annotationurl.split('json;').slice(-1)[0].split('base64,').slice(-1)[0]
+    if (annotationurl.constructor == String && annotationurl.indexOf('base64,') > -1){
+      var stripdata = annotationurl.split('base64,').slice(-1)[0]
       annotationurl = JSON.parse(atob(stripdata))
     }
     var parseString = this.parseInput(annotationurl);
