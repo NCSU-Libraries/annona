@@ -277,7 +277,8 @@ export default {
       var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       svg.id = 'getBounds';
       svg.appendChild(svg_overlay)
-      var element = document.getElementsByTagName('body')[0];
+      var element = document.getElementsByClassName('annonaview');
+      element = element.length > 0 ? element[0] : document.getElementsByTagName('body')[0];
       element.appendChild(svg);
       const bounds = document.getElementById('getBounds').getBBox();
       element.removeChild(svg)
