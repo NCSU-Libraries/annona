@@ -1166,7 +1166,7 @@ code {
 <iiif-storyboard annotationurl="gr1b4nhz2mkvmfs33p9mke"></iiif-storyboard>
 
 ## Using base64 encoded Data URI 
-You can convert your JSON to a dataURI with one of the following online tools: https://dopiaza.org/tools/datauri/index.php. This is one of the first ones I found on Google. I am sure there are others that work.
+You can convert your JSON to a dataURI with one of the following online tools: [https://dopiaza.org/tools/datauri/index.php](https://dopiaza.org/tools/datauri/index.php). This is one of the first ones I found on Google. I am sure there are others that work.
 
 
 <div markdown="1" class="scriptcode2 highlighter-rouge" style="background:#eef">
