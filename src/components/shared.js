@@ -516,10 +516,10 @@ export default {
       var splitlang = language ? language.split("-")[0] : '';
       fieldvalue = Array.isArray(value) && language ? value.filter(elem => this.getField(elem, 'language') === language || this.getField(elem, 'language') === splitlang) : value;
       fieldvalue = fieldvalue.constructor.name == 'Object' && fieldvalue[language] ? fieldvalue[language] : fieldvalue;
-      fieldvalue = fieldvalue.length > 0 ? fieldvalue : value;
+      fieldvalue = fieldvalue && fieldvalue.length > 0 ? fieldvalue : value;
       fieldvalue = Array.isArray(fieldvalue) ? fieldvalue.map(element => this.getValueField(element)).join("/") : fieldvalue;
       fieldvalue = this.getValueField(fieldvalue);
-      fieldvalue = fieldvalue.constructor.name == 'Object' ? Object.values(fieldvalue).join(" ") : fieldvalue;
+      fieldvalue = fieldvalue && fieldvalue.constructor.name == 'Object' ? Object.values(fieldvalue).join(" ") : fieldvalue;
     }
     return fieldvalue;
   },
