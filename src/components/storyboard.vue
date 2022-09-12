@@ -841,7 +841,7 @@ export default {
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         var checked = this.settings.togglelayers || i == 0 || layertoggled ? true : false;
         var opacity = this.settings.togglelayers || i == 0 || layertoggled ? 1 : 0;
-        var rotation = images[i]['body'] && images[i]['body']['selector']  && images[i]['body']['selector']['rotation'] ? images[i]['body']['selector']['rotation'] : 0;
+        var rotation = images[i]['rotation'] ?  images[i]['rotation'] : 0;
         this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity, 'rotation': rotation});
       }
       this.layerslist.length > 0 ? this.seadragontile =  this.layerslist[0].tile : '';
