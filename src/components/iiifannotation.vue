@@ -4,8 +4,9 @@
     <div v-if="rendered === 'emptylist'">
       Could not find any annotations for "{{annotationurl}}"
     </div>
-    <defaultimageview v-bind:compdata="this.$data" v-else-if="rendered && !settings.table_view"></defaultimageview>
+    <defaultimageview v-bind:compdata="this.$data" v-else-if="rendered && !settings.table_view && !settings.flashcards"></defaultimageview>
     <tableview v-bind:compdata="this.$data" v-else-if="rendered && settings.table_view"></tableview>
+    <flashcardview v-bind:compdata="this.$data" v-else-if="rendered && settings.flashcards"></flashcardview>
     <div v-else-if="rendered === false">
       "{{annotationurl}}" did not render. Please ensure your annotation link is correct.<br>
       Make sure the annotation contains a link to a working manifest. If it does not add manifest url to tag using the "manifesturl" property.<br>
@@ -18,12 +19,14 @@ import axios from 'axios';
 import shared from './shared';
 import defaultimageview from './defaultimageview';
 import tableview from './tableview';
+import flashcardview from './flashcardview';
 
 export default {
   name: 'iiifannotation',
   components: {
     defaultimageview,
-    tableview
+    tableview,
+    flashcardview
   },
   props: {
     'annotationurl': {type: String, required: false},
