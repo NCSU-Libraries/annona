@@ -1,11 +1,9 @@
 <template>
-<div>
+<div class="flashcards">
     <div>You have answered <b>{{correct.length}}</b> questions out of <b>{{this.compdata.annotation_items.length}}</b> correctly.</div>
     <div v-if="currentquestion" class="card-container" v-on:click="image = !image">
     <div class="answer" v-if="!image">
-        <p>
-        {{this.currentquestion.content.text}}
-        </p>
+        <p v-html="currentquestion.rendered_content"></p>
         <div>
             <button v-on:click="nextItem(true)" class="next correct"><i class="fas fa-check"></i></button>
             <button v-on:click="nextItem(false)" class="next incorrect"><i class="fas fa-times"></i></button>
@@ -38,7 +36,6 @@ export default {
   created() {
     this.incorrect = JSON.parse(JSON.stringify(this.compdata.annotation_items));
     this.currentquestion = this.incorrect[0];
-
   },
   methods: {
     startOver: function() {
@@ -60,41 +57,3 @@ export default {
   }
 }
 </script>
-<style>
-.image > *{
-    height: 100%;
-}
-.card-container  {
-    height: 400px;
-    outline: 2px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.answer > p {
-    font-size: 2em;
-    margin: 0px;
-}
-.next {
-    background: none;
-	border: none;
-	padding: 0;
-	font: inherit;
-	cursor: pointer;
-	outline: inherit;
-    font-size: 2em;
-    margin: 10px;
-    width: 50px;
-    height: 50px;
-}
-
-.incorrect{
-    background: red;
-    color: white;
-}
-.correct {
-    background: green;
-    color: white;
-}
-</style>

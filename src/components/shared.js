@@ -215,7 +215,6 @@ export default {
         value = decodeURIComponent(escape(unescape(encodeURIComponent(value))));
         id ? value = `<a href="${id}" target="_blank">${value}</a?>` : '';
         value = this.parseCharValue(value);
-        var valuebeforeauthorship = value;
         if (res_data.creator || res_data['annotatedBy'] || res_data['oa:annotatedBy']){
           var sectionauthor = this.getAuthor(res_data).split(", ");
           value += purpose != 'tagging' && type !== 'oa:Tag' ? `<div class="authorship">Written by: ${[... new Set(sectionauthor)].join(", ")}</div>` : '';
@@ -261,7 +260,7 @@ export default {
       'tags':tags, 'type': shapetype, 'languages':langs,
       'label':label, 'language': res_data ? res_data['language'] : '',
       'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,
-      'itemclass': charclass, 'geometry': geometry, 'text': valuebeforeauthorship};
+      'itemclass': charclass, 'geometry': geometry};
   },
   getLangLabel: function(lang) {
     return by639_1[lang] && by639_1[lang]['nativeName'] ? by639_1[lang]['nativeName'] : lang;
