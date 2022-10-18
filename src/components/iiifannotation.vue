@@ -46,7 +46,8 @@ export default {
       annotationid: '',
       textoverlay: '',
       leaflet: false,
-      version: 2
+      version: 2,
+      later_load: {}
     }
   },
   created() {
@@ -170,7 +171,11 @@ export default {
       if (shared.imageextensions.includes(extension) || isderivative) {
        var canv = document.createElement('canvas');
        canv.id = `${dictionary['id']}_canvas_img${cn}`
-       canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
+       if (!this.settings.flashcards){
+        canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
+       } else {
+        this.later_load[canv.id] = [imagehtml, canvasRegion['canvasRegion'], canv.id, path]
+       }
        imagehtml = canv;
       }
       for (var key in this.settings.imagesettings){
@@ -281,7 +286,6 @@ export default {
         //construct image URL
         var imageurl = imagedict['imageurl'];
         dictionary['fullImage'] = fullImage;
-
         var imagehtml = this.createimagehtml(imageurl, canvasRegion, dictionary, cn);
         images.push(imagehtml)
       }
