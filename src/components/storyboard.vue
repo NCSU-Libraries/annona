@@ -350,7 +350,8 @@ export default {
             showNavigationControl: false,
             homeFillsViewer: fit,
             constrainDuringPan: true,
-            visibilityRatio: 1
+            visibilityRatio: 1,
+            degrees: this.layerslist[0].rotation
       };
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
@@ -840,7 +841,8 @@ export default {
         var label = imgResource.label ? imgResource.label : `Layer ${i + 1}`;
         var checked = this.settings.togglelayers || i == 0 || layertoggled ? true : false;
         var opacity = this.settings.togglelayers || i == 0 || layertoggled ? 1 : 0;
-        this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity});
+        var rotation = images[i]['rotation'] ?  images[i]['rotation'] : 0;
+        this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity, 'rotation': rotation});
       }
       this.layerslist.length > 0 ? this.seadragontile =  this.layerslist[0].tile : '';
       if (this.$props.layers) {
