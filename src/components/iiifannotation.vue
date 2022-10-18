@@ -157,7 +157,7 @@ export default {
         this.textoverlay = shared.textOverlayHTML(xywh, dictionary['content']['ocr'], path);
       }
       isderivative ? imageurl = dictionary['fullImage'].split('/full/')[0] + '/full/full/0/default.jpg' : '';
-      if ((path || this.textoverlay) && !isderivative) {
+      if ((path || this.textoverlay) && !isderivative && !shared.imageextensions.includes(extension)) {
         imagehtml = this.createSVG(imageurl, canvasRegion, dictionary, path, cn)
       } else {
         imagehtml = document.createElement("img");
