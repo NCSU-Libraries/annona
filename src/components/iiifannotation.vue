@@ -172,7 +172,7 @@ export default {
        var canv = document.createElement('canvas');
        canv.id = `${dictionary['id']}_canvas_img${cn}`
        if (!this.settings.flashcards){
-        canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path);
+        canv.onload = this.writecanvas(imagehtml, canvasRegion['canvasRegion'], canv.id, path, this.settings.fullimage);
        } else {
         this.later_load[canv.id] = [imagehtml, canvasRegion['canvasRegion'], canv.id, path]
        }
@@ -225,7 +225,38 @@ export default {
       }
       return svg;
     },
-    writecanvas: function(img, xywh, id, path=false) {
+    writecanvasfullimage: function(img, id, paths){
+      var canvas1 = document.getElementById(id); 
+      const image = new Image(60, 45);
+      var context = canvas1.getContext('2d');
+      image.src = img.src;
+      image.onload = function() {
+        canvas1.width = this.naturalWidth;
+        canvas1.height = this.naturalHeight;
+        context.drawImage(img,0,0); //draws background image
+
+        for (var pa=0; pa<paths.length; pa++){
+          var path = paths[pa];
+          context.strokeStyle = path.getAttribute('stroke');
+          context.lineWidth = path.getAttribute('stroke-width');
+          if (path.tagName != 'path'){
+            if (path.tagName == 'circle') {
+              context.arc(path.getAttribute('cx'), path.getAttribute('cy'), path.getAttribute('r'), 0, 2 * Math.PI)
+            } else {
+              context.ellipse(path.getAttribute('cx'), path.getAttribute('cy'), path.getAttribute('rx'), path.getAttribute('ry'), 0, 0, 2 * Math.PI);
+            }
+            context.stroke();
+          } else {
+            var p = new Path2D(path.getAttribute('d'))
+            p.strokeStyle = "blue";
+            context.stroke(p);
+          }
+        }
+        // ;
+        // 
+      }
+    },
+    writecanvas: function(img, xywh, id, path=false, fullimage=false) {
       setTimeout(function(){
         xywh = xywh.split(',')
         var canvas1 = document.getElementById(id); //find new canvas we created

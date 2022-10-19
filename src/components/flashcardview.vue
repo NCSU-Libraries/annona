@@ -9,8 +9,11 @@
             <button v-on:click="nextItem(false)" class="next incorrect"><i class="fas fa-times"></i></button>
         </div>
     </div>
-    <div v-else v-for="(image, index) in this.currentquestion.image" :key="index" v-bind:style="'max-width:' + 99/currentquestion.image.length + '%'" style="height:auto;">
+    <div v-else-if="!compdata.settings.fullimage" v-for="(image, index) in this.currentquestion.image" :key="index" v-bind:style="'max-width:' + 99/currentquestion.image.length + '%'" style="height:auto;">
         <div class="image" v-html="image" style="height: 100%" ></div>
+    </div>
+    <div v-else-if="compdata.settings.fullimage">
+        <div class="image" v-html="currentquestion.image[0]" style="height: 100%" ></div>
     </div>
     </div>
     <div v-else class="card-container">
@@ -42,7 +45,13 @@ export default {
         var canvases = document.getElementsByTagName('canvas');
         for (var i=0; i<canvases.length; i++){
             var canvasdata = vue.compdata.later_load[canvases[i].id];
-            vue.$parent.writecanvas(canvasdata[0], canvasdata[1], canvasdata[2], canvasdata[3])
+            if (vue.compdata.settings.fullimage){
+              var ids = Object.keys(vue.compdata.later_load).filter(elem => elem.split('_img')[0] == canvases[i].id.split('_img')[0]);
+              var paths = ids.map(elem => vue.compdata.later_load[elem][3]);
+              vue.$parent.writecanvasfullimage(canvasdata[0], canvases[i].id, paths)
+            } else {
+              vue.$parent.writecanvas(canvasdata[0], canvasdata[1], canvasdata[2], canvasdata[3], canvasdata[4], canvasdata[5]);
+            }
         }
         }, 1);
     }
@@ -70,3 +79,9 @@ export default {
   }
 }
 </script>
+<style>
+canvas {
+  width: auto;
+  max-height: 400px;
+}
+</style>
