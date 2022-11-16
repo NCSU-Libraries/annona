@@ -1,6 +1,5 @@
 <template>
 <span>
-    {{type}}
     <span v-if="type && type == 'storyboard'">
         <storyboard :annotationurl="inputurl" v-bind:jsonannotation="jsondata" v-bind:manifesturl="manifesturl" v-bind:styling="styling" v-bind:ws="ws" v-bind:layers="layers"></storyboard>
     </span>
@@ -54,6 +53,7 @@ export default {
         } else {
             this.type = 'rangestoryboard'
         }
+        window.annonatype = this.type;
     }
   },
   created() {
