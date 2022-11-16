@@ -44,7 +44,8 @@ export default {
       'rangeurl':String,
       'styling': String,
       'ws': String,
-      'layers': String
+      'layers': String,
+      'json': Object
     },
     data: function() {
       return {
@@ -93,7 +94,8 @@ export default {
       // get annotation urls in list
       this.rangeid = "rangestoryboard_" + this.$props.rangeurl.split("/").slice(-1)[0];
       this.settings = shared.getsettings(this);
-      var isURL = shared.isURL(this.$props.rangeurl, this.settings);
+      const getData = this.json ? this.json : this.rangeurl;
+      var isURL = shared.isURL(getData, this.settings);
       this.isurl = isURL['isURL'];
       if (isURL['isURL']){
         axios.get(this.$props.rangeurl).then(response => {
