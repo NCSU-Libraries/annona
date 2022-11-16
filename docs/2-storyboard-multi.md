@@ -44,23 +44,23 @@ Matchclick is the settings that only applies to multi storyboards. See [settings
 
 ## Without matchclick
 ```
-<iiif-multistoryboard annotationurls="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
+<iiif-storyboard url="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-storyboard>
 ```
 
-<iiif-multistoryboard annotationurls="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-multistoryboard>
+<iiif-storyboard url="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json"></iiif-storyboard>
 
 ## With matchclick
 ```
-<iiif-multistoryboard annotationurls="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json" styling="matchclick: true;customid:matchclick;"></iiif-multistoryboard>
+<iiif-storyboard url="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json" styling="matchclick: true;customid:matchclick;"></iiif-storyboard>
 ```
 
-<iiif-multistoryboard annotationurls="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json" styling="matchclick: true;customid:matchclick;"></iiif-multistoryboard>
+<iiif-storyboard url="{{site.url}}{{site.baseurl}}/webannotations/mc00084-001-te0159-000-001-0001-list.json;{{site.url}}{{site.baseurl}}/webannotations/ua023-015-003-bx0002-004-026-list.json" styling="matchclick: true;customid:matchclick;"></iiif-storyboard>
 
 # With Images
 This setting works similarly to layers in the storyboard viewer. This will load the image next to the annotation(s). **Note** The annotation is on the image [https://data.getty.edu/museum/api/iiif/366589/info.json](https://data.getty.edu/museum/api/iiif/366589/info.json) which has a width 5127 and height of 6513. The loaded image is [https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json](https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json) and has a width of 3864 and height of 5076. Due to the height differentials, zooming on the smaller image will move to a different section than the larger image. It can not be avoided but should be kept in mind when using this functionality.
 
 ```
-<iiif-multistoryboard annotationurls='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-multistoryboard>
+<iiif-storyboard url='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-storyboard>
 ```
 
-<iiif-multistoryboard annotationurls='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-multistoryboard>
+<iiif-storyboard url='https://dnoneill.github.io/annotate/annotations/04fbbb28-d5a7-4408-b7da-800c4e65eda3-list.json' images='https://dlcs.io/iiif-img/3/2/8034eb5b-9c90-4471-ad68-52124232ec0c/info.json'></iiif-storyboard>

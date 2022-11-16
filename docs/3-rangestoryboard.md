@@ -17,7 +17,7 @@ code {
 <link rel="stylesheet" type="text/css" href="{{site.url}}{{site.baseurl}}/latest/annona.css">
 | Props      | Values |
 | ----------- | ----------- |
-| **rangeurl** | URL for the **range** of annotations **or** a **manifest** with at least one annotation link or embedded annotation. In the manifest annotations should be in the OtherContent (v2.0) or items (v3.0) field. that are going to be loaded into the viewer.|
+| **url** | URL for the **range** of annotations **or** a **manifest** with at least one annotation link or embedded annotation. In the manifest annotations should be in the OtherContent (v2.0) or items (v3.0) field. that are going to be loaded into the viewer.|
 | styling | string structured styling. See [settings table](/annona/storyboard/#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |
 
@@ -33,34 +33,34 @@ See [toolbar icon](/{{site.baseurl}}/storyboard/#toolbar-icons) table for other 
 ## Manifest Examples
 
 ```
-<iiif-rangestoryboard rangeurl="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-rangestoryboard>
+<iiif-storyboard url="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-storyboard>
 ```
 **fols. 2b and 3a & fols. 32b and 33a are particularly cool**
 
-<iiif-rangestoryboard rangeurl="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-rangestoryboard>
+<iiif-storyboard url="https://iiif.bodleian.ox.ac.uk/iiif/manifest/748a9d50-5a3a-440e-ab9d-567dd68b6abb.json" styling="overlaynext: true"></iiif-storyboard>
 
 
 ```
-<iiif-rangestoryboard rangeurl="https://wd-image-positions.toolforge.org/iiif/Q64686074/P18/manifest.json"></iiif-rangestoryboard>
+<iiif-storyboard url="https://wd-image-positions.toolforge.org/iiif/Q64686074/P18/manifest.json"></iiif-storyboard>
 ```
 This manifest has only one annotation so it appears as a regular storyboard.
 
-<iiif-rangestoryboard rangeurl="https://wd-image-positions.toolforge.org/iiif/Q64686074/P18/manifest.json"></iiif-rangestoryboard>
+<iiif-storyboard url="https://wd-image-positions.toolforge.org/iiif/Q64686074/P18/manifest.json"></iiif-storyboard>
 
 
 
 ## Range Examples
 
 ```
-<iiif-rangestoryboard rangeurl="https://tomcrane.github.io/iiif-collector/objects/longer-article.json"></iiif-rangestoryboard>
+<iiif-storyboard url="https://tomcrane.github.io/iiif-collector/objects/longer-article.json"></iiif-storyboard>
 ```
-<iiif-rangestoryboard rangeurl="https://tomcrane.github.io/iiif-collector/objects/longer-article.json" styling="overlay"></iiif-rangestoryboard>
+<iiif-storyboard url="https://tomcrane.github.io/iiif-collector/objects/longer-article.json" styling="overlay"></iiif-storyboard>
 
 ```
-<iiif-rangestoryboard rangeurl="{{site.url}}{{site.baseurl}}/webannotations/range.json" styling="togglelayers: true;"></iiif-rangestoryboard>
+<iiif-storyboard url="{{site.url}}{{site.baseurl}}/webannotations/range.json" styling="togglelayers: true;"></iiif-storyboard>
 ```
 
-<iiif-rangestoryboard rangeurl="{{site.baseurl}}/webannotations/range.json" styling="togglelayers: true;"></iiif-rangestoryboard>
+<iiif-storyboard url="{{site.baseurl}}/webannotations/range.json" styling="togglelayers: true;"></iiif-storyboard>
 
 
 ## Custom List of storyboards
@@ -70,24 +70,24 @@ An [empty template]({{site.url}}{{site.baseurl}}/webannotations/template.json) i
 
 The JSON should reflect the example in the link above.
 
-```<iiif-rangestoryboard rangeurl="{{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-rangestoryboard>```
+```<iiif-storyboard url="{{site.url}}{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-storyboard>```
 
-<iiif-rangestoryboard rangeurl="{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-rangestoryboard>
+<iiif-storyboard url="{{site.baseurl}}/webannotations/storyboardlist.json"></iiif-storyboard>
 
 
 ## Collection Examples
 The range storyboard allows for you to load a IIIF collection into the viewer.
 
 ### National Gallery: Multiple nested Collection
-```<iiif-rangestoryboard rangeurl="https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json"></iiif-rangestoryboard>```
+```<iiif-storyboard url="https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json"></iiif-storyboard>```
 
-<iiif-rangestoryboard rangeurl="https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json"></iiif-rangestoryboard>
+<iiif-storyboard url="https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json"></iiif-storyboard>
 
 ### From the Page: Example of collections with Annotations
 
-```<iiif-rangestoryboard rangeurl="https://fromthepage.com/iiif/collection/jeremiah-white-graves-diaries"></iiif-rangestoryboard>```
+```<iiif-storyboard url="https://fromthepage.com/iiif/collection/jeremiah-white-graves-diaries"></iiif-storyboard>```
 
-<iiif-rangestoryboard rangeurl="https://fromthepage.com/iiif/collection/jeremiah-white-graves-diaries"></iiif-rangestoryboard>
+<iiif-storyboard url="https://fromthepage.com/iiif/collection/jeremiah-white-graves-diaries"></iiif-storyboard>
 
 
 ## Notes about creating a range
