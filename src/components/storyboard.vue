@@ -128,10 +128,11 @@ export default {
   mounted () {
     this.newSocket();
     var annotationurl = this.jsonannotation ? this.jsonannotation : this.annotationurl ? this.annotationurl : this.annotationlist;
+    const hasurl = this.annotationurl ? this.annotationurl : this.annotationlist ? this.annotationlist : isURL['isURL'];
     var isURL = shared.isURL(annotationurl, '');
     this.isurl = isURL['isURL'];
     if (!isURL['isURL']) {
-      this.parseAnnoData(isURL['json'], annotationurl, isURL['isURL'])
+      this.parseAnnoData(isURL['json'], hasurl, hasurl)
     }
   },
   methods: {
@@ -174,7 +175,7 @@ export default {
         this.removeOverlay('overlay');
         this.removeOverlay('textoverlay');
         this.switchSpinner('block');
-        this.loadAnnotation(false);
+        this.loadAnnotation(false, this.annotationurl);
       }
     },
     removeOverlay: function(classname) {

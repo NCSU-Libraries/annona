@@ -39,9 +39,10 @@ export default {
   },
   data: function() {
     return {
-        'jsondata': [],
+        'jsondata': '',
         'type': '',
-        'inputurl': ''
+        'inputurl': '',
+        'isurl': false
     }
   },
   methods: {
@@ -61,6 +62,7 @@ export default {
     this.inputurl = this.url ? this.url : this.annotationurl ? this.annotationurl : this.annotationlist;
     var isURL = shared.isURL(annotationurl, '');
     var vue = this;
+    this.isurl = isURL['isURL'];
     if (this.inputurl.split(';').length > 1 || this.images){
         this.type = 'multistoryboard';
         window.annonatype = this.type;
@@ -68,7 +70,7 @@ export default {
         axios.get(`${annotationurl}?cb=${Date.now()}`).then(response => {
             vue.jsondata = response.data;
             vue.getType(response.data);
-        }).catch((error) => {console.log(error)});
+        }).catch((error) => {console.log(error);vue.type = 'multistoryboard';});
     } else {
         this.jsondata = this.json ? JSON.parse(this.json) : this.jsonannotation ? JSON.parse(this.jsonannotation): isURL['json'];
         this.getType(this.jsondata)

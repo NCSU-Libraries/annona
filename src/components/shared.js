@@ -911,7 +911,9 @@ export default {
     } else if (vueinfo.settings.continousboard){
       delete shortcuts['autorun'];
     }
-    var isurl = vueinfo.basecompontent && vueinfo.basecompontent.range ? vueinfo.basecompontent.isurl : vueinfo.isurl;
+    var checkhere = vueinfo.basecompontent && vueinfo.basecompontent.range ? vueinfo.basecompontent : vueinfo;
+    checkhere = checkhere.$parent && checkhere.$parent.$options.name == 'storyboard2' ? checkhere.$parent : checkhere;
+    var isurl = checkhere.isurl;
     if (isurl == false) {
       delete shortcuts['reload']
     }
