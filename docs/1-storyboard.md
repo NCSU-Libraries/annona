@@ -20,12 +20,13 @@ code {
 
 
 
-# Props
+# Props (variables you can set in the tags)
 
 | Props      | Values |
 | ----------- | ----------- |
-| annotationurl | URl to the annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
-| annotationlist | **This has been moved to annotationurl. If you want to recreate the previous look of annotationurl that is now doable with the settings.** ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
+| url | url for range, annotation, manifest, collection link. If you want to display multiple annotations seperate the urls by a `;` and the application will correctly build the view for you. Can also use datauri values for this variable (see [Raw JSON page]({{site.baseurl}}/nourls) for details on using datauris. |
+| annotationurl (**deprecated**, replaced with url)| URl to the annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-001.json](https://dnoneill.github.io/annotate/annotations/segins-004-001.json)|
+| annotationlist (**deprecated**, replaced with url) | **This has been moved to annotationurl. If you want to recreate the previous look of annotationurl that is now doable with the settings.** ListAnnotation or PageAnnotation. See "@type" or "type" in annotation. i.e. [https://dnoneill.github.io/annotate/annotations/segins-004-list.json](https://dnoneill.github.io/annotate/annotations/segins-004-list.json) |
 | manifesturl | iiif manifest url, only required when annotation does not contain manifest |
 | styling | string structured styling. See [settings table](#settings) for more options |
 | ws | link to web socket. Should have a wss:// or ws:/ preceding instead of https:// or http://. See [web sockets](#web-sockets) section about how to set up |

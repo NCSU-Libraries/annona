@@ -109,3 +109,12 @@ Item here: [all settings example]({{site.baseurl}}/imageviewer_settings)
 
 ### Rendering multiple annotations
 The example show on the [multitext page]({{site.baseurl}}/multipage) can be done with any set of annotations and any set of settings. This is a simple JavaScript application. The reason we are showing an application with text only is it is a good example of one of the many ways this application can be used.
+
+## Other views
+### Table view
+Allows you to view annotations in a table.
+```
+<iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json' styling='table_view:true'></iiif-annotation>
+```
+
+<iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json' styling='table_view:true'></iiif-annotation>
