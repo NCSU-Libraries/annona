@@ -118,11 +118,3 @@ Allows you to view annotations in a table.
 ```
 
 <iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/wh234bz9013-0001-list.json' styling='table_view:true'></iiif-annotation>
-
-### Flashcards
-
-```
-<iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/fullbayeux-list.json' styling='flashcards:true'></iiif-annotation>
-```
-
-<iiif-annotation annotationurl='https://dnoneill.github.io/annotate/annotations/fullbayeux-list.json' styling='flashcards:true'></iiif-annotation>
