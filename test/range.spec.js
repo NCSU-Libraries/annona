@@ -4,6 +4,7 @@ import { mount } from '@vue/test-utils';
 import { shallowMount } from '@vue/test-utils';
 import '@babel/polyfill'
 import rangestoryboard from '../src/components/rangestoryboard.vue';
+import storyboard2 from '../src/components/storyboard2.vue';
 import shared from '../src/components/shared.js'
 
 import flushPromises from 'flush-promises';
@@ -56,16 +57,18 @@ describe('Component', () => {
     })
 
     test('test range list without canvases', async ()  => {
-      const wrapper =  shallowMount(rangestoryboard,{
+      const wrapper =  mount(storyboard2,{
         propsData: {
-          rangeurl: 'range2.json'
+          url: 'range2.json'
         },
         attachTo: '#root'
       })
       
       await wrapper.vm.$nextTick()
       await flushPromises()
-      var data = wrapper.vm.$data
+      await wrapper.vm.$children[0].$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$children[0].$data;
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
       expect(data.isws).toBe("")
@@ -87,9 +90,9 @@ describe('Component', () => {
     })
 
     test('test range list without canvases and settings', async ()  => {
-      const wrapper =  mount(rangestoryboard,{
+      const wrapper =  mount(storyboard2,{
         propsData: {
-          rangeurl: 'range2.json',
+          url: 'range2.json',
           layers: '[{"label":"View from Arles", "xywh": "200,200,4750,6513", "image":"https://tools.wmflabs.org/zoomviewer/iipsrv.fcgi/?iiif=cache/8937e1777945b722457fac2cde0cf61b.tif/info.json"}]',
           ws: "wss://echo",
           styling: "autorun_interval:4; panorzoom: pan"
@@ -98,7 +101,9 @@ describe('Component', () => {
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
-      var data = wrapper.vm.$data;
+      await wrapper.vm.$children[0].$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$children[0].$data;
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
       expect(data.isws).toBe("wss://echo")
@@ -116,7 +121,7 @@ describe('Component', () => {
       expect(data.toc).toEqual([{"description": "", "label": "Page 1", "position": 0}])
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("A Profound Warrior For Us All")
-      var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
+      var sbd = wrapper.vm.$children[0].$children[0].$el['__vue__']._data;
       expect(sbd.seadragontile).toEqual("https://iiif.bodleian.ox.ac.uk/iiif/image/467a8da6-02b6-4643-a376-4b0afaff6ab7/info.json")
       expect(sbd.position).toBe(-1);
       expect(sbd.seadragonid).toBe("storyboard_objects_longer-article-annos1");
@@ -146,16 +151,18 @@ describe('Component', () => {
     })
 
     test('test manifesturl range', async ()  => {
-      const wrapper =  mount(rangestoryboard,{
+      const wrapper =  mount(storyboard2,{
         propsData: {
-          rangeurl: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
+          url: 'https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest'
         },
         attachTo: '#root'
       });
       
       await wrapper.vm.$nextTick()
       await flushPromises()
-      var data = wrapper.vm.$data
+      await wrapper.vm.$children[0].$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$children[0].$data;
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
       expect(data.range).toBe(true)
@@ -279,7 +286,7 @@ describe('Component', () => {
         } ])
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("Technician Basketball Special, November 1991");
-      var sbd = wrapper.vm.$children[0].$el['__vue__']._data.boardchildren[0];
+      var sbd = wrapper.vm.$children[0].$children[0].$el['__vue__']._data.boardchildren[0];
       expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
       expect(sbd.position).toBe(-1);
       expect(sbd.seadragonid).toBe("storyboard_technician-basketballspecial-1991-11_0001_technician-basketballspecial-1991-11_0001-annotation-word");
@@ -302,7 +309,7 @@ describe('Component', () => {
       expect(sbd.imageinfo).toEqual({"label": "Manifest information","link": "https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest", "text": "<div id=\"Manifest\"><b>Manifest: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest\" target=\"_blank\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/manifest</a></div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"attribution\"><b>Attribution: </b>Technician (Raleigh, N.C.) (LH1 .N6 T4), Special Collections Research Center at NC State University Libraries</div><div id=\"license\"><b>License: </b>https://d.lib.ncsu.edu/collections/about#rights_and_use</div><div id=\"title\"><b>Title: </b>Technician Basketball Special, November 1991</div><div id=\"Creator\"><b>Creator: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog?f%5Bnames_facet%5D%5B%5D=Technician+%28Raleigh%2C+N.C.%29\">Technician (Raleigh, N.C.)</a> (Publisher)</span></div><div id=\"Created Date\"><b>Created Date: </b>1991-11</div><div id=\"URL\"><b>URL: </b><span><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11</a></span></div><div id=\"\"></b><span><a title=\"IIIF drag &amp; drop\" href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11?manifest=https%3A%2F%2Fd.lib.ncsu.edu%2Fcollections%2Fcatalog%2Ftechnician-basketballspecial-1991-11%2Fmanifest.json\">IIIF drag &amp; drop</a> (<a href=\"https://d.lib.ncsu.edu/collections/about-iiif\">About IIIF</a>)</span></div><div id=\"Dublin Core XML via OAI-PMH\"><b>Dublin Core XML via OAI-PMH: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/oai?identifier=ncsul%2Ftechnician-basketballspecial-1991-11&metadataPrefix=oai_dc&verb=GetRecord\">https://d.lib.ncsu.edu/collections/catalog/oai?identifier=ncsul%2Ftechnician-basketballspecial-1991-11&metadataPrefix=oai_dc&verb=GetRecord</a></div><div id=\"Schema.org metadata as JSON-LD\"><b>Schema.org metadata as JSON-LD: </b><a href=\"https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/schemaorg.json\">https://d.lib.ncsu.edu/collections/catalog/technician-basketballspecial-1991-11/schemaorg.json</a></div><div id=\"imageurl\"><b>Image URL: </b><a href=\"https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json\" target=\"_blank\">https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json</a></div>"});
       expect(sbd.imagetitle).toBe("Technician Basketball Special, November 1991: [1]: Text of this page (word level) / Text of this page (line level) / Text of this page (paragraph level)");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "rotation": 0, "opacity": 1, "tile": "https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json", "xywh": ""}]);
-      expect(Object.keys(wrapper.vm.$children[0].shortcuts).sort()).toEqual(['autorun', 'perpage', 'reload', 'close', 'textoverlay', 'fullscreen', 'hide', 'home', 'info', 'next', 'nextanno', 'overlay', 'prev', 'prevanno', 'keyboard', 'zoomin', 'zoomout'].sort());
+      expect(Object.keys(wrapper.vm.$children[0].$children[0].shortcuts).sort()).toEqual(['autorun', 'perpage', 'reload', 'close', 'textoverlay', 'fullscreen', 'hide', 'home', 'info', 'next', 'nextanno', 'overlay', 'prev', 'prevanno', 'keyboard', 'zoomin', 'zoomout'].sort());
       wrapper.destroy()
     })
 

@@ -3,6 +3,7 @@ import '@babel/polyfill'
 //import index from 'karma-chai'
 import { mount } from '@vue/test-utils';
 import { shallowMount } from '@vue/test-utils';
+import storyboard2 from '../src/components/storyboard2.vue';
 
 import multistoryboard from '../src/components/multistoryboard.vue';
 import shared from '../src/components/shared.js'
@@ -24,21 +25,23 @@ describe('Component', () => {
     document.body.appendChild(div)
   })
     test('test multistoryboard with mirador and page list', async ()  => {
-      const wrapper =  mount(multistoryboard,{
+      const wrapper =  mount(storyboard2,{
         propsData: {
-          annotationurls: 'mc00240.json;page.json'
+          url: 'mc00240.json;page.json'
         },
         attachTo: '#root'
       })
       const saveMock = jest.fn()
-      var children = wrapper.vm.boardchildren;
+      var children = wrapper.vm.$children[0].boardchildren;
       for (var i=0; i<children.length; i++){
         children[i].createViewer = saveMock;
       }
       await wrapper.vm.$nextTick()
       await flushPromises()
+      await wrapper.vm.$children[0].$nextTick()
+      await flushPromises()
 
-      var data = wrapper.vm.$data
+      var data = wrapper.vm.$children[0].$data
       expect(data.anno_data).toEqual(["mc00240.json", "page.json"])
       expect(data.boardchildren.length).toEqual(2)
       expect(data.stylingstring).toEqual("autorun_interval:3;")

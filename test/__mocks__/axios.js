@@ -2,7 +2,7 @@
 module.exports = {
 
   get: jest.fn((url) => {
-  url = url.split('?cb')[0]
+  url = url.split('?cb')[0];
   if (url === 'paragraph.json') {
         return Promise.resolve({
             data: {"resource":{"@type":"cnt:ContentAsText","format":"text/plain","chars":"Jim Watson and I have probably made a\nmost important discovery. We have built a model for\nthe structure of des-oxy-ribose-nucleic-acid (read it\ncarefully) called D.N.A. for short. You may remember\nthat the genes of the chromosomes - which carry the\nhereditary factors - are made up of protein and\nD.N.A."},"on":{"@id":"https://wellcomelibrary.org/iiif/b1948799x/canvas/c0#xywh=310,1250,1850,1180","@type":"sc:Canvas","within":{"@id":"https://wellcomelibrary.org/iiif/b1948799x/manifest","@type":"sc:Manifest"}}}
@@ -87,6 +87,7 @@ module.exports = {
   if (url == 'range2.json') {
     return Promise.resolve({data:{"@context":"http://iiif.io/api/presentation/2/context.json","@id":"https://tomcrane.github.io/iiif-collector/objects/longer-article.json","@type":"sc:Range","contentLayer":{"@id":"https://tomcrane.github.io/iiif-collector/objects/longer-article-contentlayer","@type":"sc:Layer","label":"Content of 'A Profound Warrior For Us All' article","otherContent":["https://tomcrane.github.io/iiif-collector/objects/longer-article-annos1.json"]},"description":"<p><a href='https://d.lib.ncsu.edu/collections/catalog/nubian-message-1995-04-01#?c=0&m=0&s=0&cv=0&z=749.6929%2C3307.2622%2C4049.5239%2C3514.5534'>See this in place across two pages</a></p>","label":"A Profound Warrior For Us All"}})
   }
+
 
   if (url == 'recogito.json' || url == 'https://tomcrane.github.io/iiif-collector/objects/longer-article-annos1.json') {
     return Promise.resolve({data:[ { "@context" : "http://www.w3.org/ns/anno.jsonld", "id" : "https://recogito.pelagios.org/annotation/5350510e-65a9-46e9-b29c-e889695528f1", "type" : "Annotation", "generator" : { "id" : "https://recogito.pelagios.org/", "type" : "Software", "name" : "Recogito", "homepage" : "https://recogito.pelagios.org/" }, "generated" : "2019-11-15T16:44:23+00:00", "body" : [ { "type" : "TextualBody", "value" : "Lodinv", "creator" : "https://recogito.pelagios.org/rainer", "modified" : "2019-09-19T13:00:14+00:00", "purpose" : "transcribing" }, { "type" : "SpecificResource", "value" : "http://pleiades.stoa.org/places/79574", "creator" : "https://recogito.pelagios.org/rainer", "modified" : "2019-09-19T13:00:14+00:00", "purpose" : "identifying" },{
@@ -852,7 +853,7 @@ module.exports = {
         "type": "Annotation"
       }]}})
   }
-  if (url === 'bees2.json'){
+  if (url === 'bees2.json' || url.indexOf('https://noannotation/') > 0){
     return Promise.reject()
   }
   if (url === 'https://research.ng-london.org.uk/iiif-projects/json/ng-projects.json'){

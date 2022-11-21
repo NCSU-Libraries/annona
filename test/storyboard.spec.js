@@ -3,6 +3,8 @@ import '@babel/polyfill'
 import { mount } from '@vue/test-utils';
 import storyboard from '../src/components/storyboard.vue';
 import shared from '../src/components/shared.js'
+import storyboard2 from '../src/components/storyboard2.vue';
+
 import flushPromises from 'flush-promises';
 let consoleSpy;
 describe('Component', () => {
@@ -20,24 +22,26 @@ describe('Component', () => {
     document.body.appendChild(div);
   })
     test('test storyboard with mirador list', async ()  => {
-      const wrapper =  mount(storyboard,{
+      const wrapper =  mount(storyboard2,{
         propsData: {
-          annotationurl: 'mc00240.json',
+          url: 'mc00240.json',
           styling: 'tagscolor: {"balcony":"white", "railing": "green", "partition": "red"}'
         },
         attachTo: document.getElementById('root')
       })
       await wrapper.vm.$nextTick()
       await flushPromises()
-      var data = wrapper.vm.$data;
+      await wrapper.vm.$children[0].$nextTick()
+      await flushPromises()
+      var data = wrapper.vm.$children[0].$data;
       expect(data.seadragontile).toBe("https://iiif.lib.ncsu.edu/iiif/mc00240-001-ff0093-001-001_0010/info.json")
       expect(data.annotations.length).toEqual(3)
       expect(data.annotations[0]['section']).toEqual(["740,566,3997,4586", "740,566,3997,4586"])
       expect(data.annotations[0]['type']).toEqual("rectangle")
       expect(data.annotations[0]['svg_path'][0].outerHTML).toEqual("<path xmlns=\"http://www.w3.org/2000/svg\" d=\"M740.00502,566.97616l1998.77039,0l0,0l1998.77039,0l0,2293.02384l0,2293.02384l-1998.77039,0l-1998.77039,0l0,-2293.02384z\" data-paper-data=\"{&quot;defaultStrokeValue&quot;:1,&quot;editStrokeValue&quot;:5,&quot;currentStrokeValue&quot;:5,&quot;rotation&quot;:0,&quot;annotation&quot;:null,&quot;editable&quot;:true}\" id=\"rectangle_dcc88375-b2ff-4b41-b061-6d9b5f6b81fc\" fill-opacity=\"0.00001\" fill=\"#00bfff\" fill-rule=\"nonzero\" stroke=\"#00bfff\" stroke-width=\"17.94228\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" stroke-miterlimit=\"10\" stroke-dasharray=\"\" stroke-dashoffset=\"0\" font-family=\"none\" font-weight=\"none\" font-size=\"none\" text-anchor=\"none\" style=\"mix-blend-mode: normal\"></path>")
       expect(data.annotations[0]['svg_path'].length).toEqual(2)
-      expect(data.position).toEqual(-1)
-      expect(data.seadragonid).toBe('storyboard_mc00240')
+      expect(data.position).toEqual(-1);
+      expect(data.seadragonid).toBe('storyboard_annotations_mc00240-001-ff0093-001-001-0010')
       expect(data.annotations[1]['tags'].length).toEqual(2)
       expect(data.annotations[1]['tags'][1]['value']).toBe('railing')
       expect(data.annotations.length).toEqual(3)
