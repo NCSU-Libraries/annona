@@ -774,7 +774,12 @@ export default {
   matchCanvasData: function(imagetitle, canvas, canvases, lang) {
     var title = imagetitle;
     var images = canvas.images ? canvas.images : this.flatten(canvas.items.map(element => element['items']));
-    images = images[0].body && images[0].body.items ? this.flatten(images.map(elem => elem['body']['items'])) : images;
+    var allimages = images[0].body && images[0].body.items ? this.flatten(images.map(elem => elem['body']['items'])) : images[0].body && images[0].body.source ? this.flatten(images.map(elem => elem['body']['source'])) : images;
+    for (var i=0; i<images.length; i++){
+      if (images[i]['body'] && images[i]['body']['selector']) {
+        allimages[i]['rotation'] = images[i]['body']['selector']['rotation'];
+      }
+    }
     title = canvas.label;
     title = this.getValueField(title);
     if (title && title.constructor.name == 'Object'){
@@ -783,7 +788,7 @@ export default {
     }
     title = Array.isArray(title) ? title[0] : title;
     title = title && imagetitle.indexOf(title) == -1 && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
-    return {'images': images, 'title': title}
+    return {'images': allimages, 'title': title}
   },
   getAllCanvases: function(manifest) {
     return manifest['items'] ? this.flatten(manifest['items']) : this.flatten(manifest['sequences'].map(element => element['canvases']));
