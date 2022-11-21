@@ -39,7 +39,7 @@ export default {
   },
   data: function() {
     return {
-        'jsondata': '',
+        'jsondata': undefined,
         'type': '',
         'inputurl': '',
         'isurl': false
