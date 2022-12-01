@@ -30,7 +30,8 @@ export default {
     'rangenext': '<i class="fas fa-chevron-right"></i>',
     'perpage': '<i class="fas fa-book-open"></i>',
     'fullscreen': '<i class="fas fa-expand"></i>',
-    'fullscreenoff': '<i class="fas fa-compress"></i>'
+    'fullscreenoff': '<i class="fas fa-compress"></i>',
+    'settings': '<i class="fas fa-cog"></i>'
   },
   booleanitems: {
     isexcerpt: false,
@@ -838,7 +839,7 @@ export default {
     // k, q, u, w are open
     var shortcuts = {
       'autorun': {'icon': buttons['autorun'], 'label': 'Start/Stop Autorun',
-        'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': vueinfo.settings.autorun_interval}},
+        'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': ''}},
       'reload': {'icon': buttons['reload'], 'label': 'Reload',
         'shortcut': ['j', 'shift+1'], 'function': {'function':'reload', 'args': ''}},
       'info': {'icon': buttons['info'], 'label': 'View source image information',
@@ -857,6 +858,8 @@ export default {
         'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
       'keyboard' : {'icon': buttons['keyboard'], 'label': 'Toggle Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}},
+      'settings': {'icon': buttons['settings'], 'label': 'Change settings',
+        'function': {'function': 'clickButton', 'args': 'settings'}, 'shortcut': ['toset'],},
       'fullscreen' : {'icon': buttons['fullscreen'], 'label': 'Toggle Fullscreen',
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
       'hide' : {'icon': buttons['hide'], 'label': 'Collapse text',

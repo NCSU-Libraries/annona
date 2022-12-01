@@ -34,7 +34,7 @@ export default {
     'manifesturl':String,
     'annotationurl': String,
     'annotationlist': String,
-    'jsonannotation': Object,
+    'jsonannotation': [Object, Array],
     'styling': String,
     'ws': String,
     'layers': String
@@ -710,7 +710,7 @@ export default {
       this.setDefaultButtons();
     },
     setDefaultButtons: function() {
-      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay', 'perpage']
+      const fields = ['info', 'layers', 'tags', 'keyboard', 'textoverlay', 'perpage', 'settings']
       for (var fi=0; fi<fields.length; fi++){
         this.buttons[fields[fi]] = shared.buttons[fields[fi]];
       }
@@ -1254,6 +1254,7 @@ export default {
     },
     //Autorun through annotations
     autoRun: function(interval){
+      interval = interval ? interval : this.settings.autorun_interval;
       interval = interval * 1000;
       var length = this.annotations.length;
       if (this.isautorunning === ''){

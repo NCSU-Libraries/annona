@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     getType: function(jsondata) {
+        jsondata = jsondata.constructor.name === 'Array' ? jsondata[0] : jsondata;
         var type = jsondata['type'] ? jsondata['type'] : jsondata['@type'];
         type = type ? type.toLowerCase() : type;
         if (type.indexOf('annotation') > -1) {

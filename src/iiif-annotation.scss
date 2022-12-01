@@ -67,6 +67,10 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   resize: none;
 }
 
+#settings input, #settings select {
+  max-width: 95%;
+}
+
 .fullpage .collapse .annotation {
   height: calc(100vh - #{$borderwidth}*7 - #{$marginbottomtoolbar} - #{$toolbarfontsize});
   max-height: calc(100vh - #{$borderwidth}*7 - #{$marginbottomtoolbar} - #{$toolbarfontsize});

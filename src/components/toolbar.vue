@@ -15,7 +15,7 @@ export default {
   data: function() {
     return {
       menuclass: 'default_menu',
-      toolbarbuttons: ['autorun', 'reload', 'info', 'tags', 'overlay', 'textoverlay', 'layers', 'zoomin', 'zoomout', 'home', 'prev', 'next', 'keyboard', 'perpage', 'fullscreen'],
+      toolbarbuttons: ['autorun', 'reload', 'info', 'tags', 'overlay', 'textoverlay', 'layers', 'zoomin', 'zoomout', 'home', 'prev', 'next', 'keyboard', 'perpage', 'settings', 'fullscreen'],
     }
   },
   mounted() {
@@ -40,6 +40,10 @@ export default {
   },
   methods: {
     keydownListener: function(event) {
+      const disableListener = event.target.className && event.target.className == 'settings' ? true : false;
+      if (disableListener){
+        return 0;
+      }
       var keycombo = event.code.replace('Key', '').replace('Digit', '').toLowerCase();
       var addon = event.altKey ? 'alt+' : event.shiftKey ? 'shift+' : event.metaKey ? 'cmd+' : ''
       keycombo = addon + keycombo;
