@@ -982,3 +982,32 @@ table tr {
   text-decoration: underline;
   font-size:1.2em;
 }
+
+
+.settingsinfo .settingsabout {
+  width: 120px;
+  background-color: black;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 2px 0;
+  position: absolute;
+  z-index: 1;
+  margin-left: 10px;
+}
+
+.settingsinfo {
+    padding-right: 3px;
+    padding-left: 3px;
+}
+.settingsinfo .settingsabout::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  right: 100%;
+  margin-top: 0px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}
