@@ -836,7 +836,7 @@ export default {
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
     //openseadragon : a, f, s, d, r, R, w, arrows, 0, -, shift w, shift s,s shift up/down arrows
-    // k, q, u, w are open
+    //u, w are open
     var shortcuts = {
       'autorun': {'icon': buttons['autorun'], 'label': 'Start/Stop Autorun',
         'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': ''}},
@@ -859,7 +859,7 @@ export default {
       'keyboard' : {'icon': buttons['keyboard'], 'label': 'Toggle Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}},
       'settings': {'icon': buttons['settings'], 'label': 'Change settings',
-        'function': {'function': 'clickButton', 'args': 'settings'}, 'shortcut': ['toset'],},
+      'shortcut': ['k', 'q'], 'function': {'function': 'clickButton', 'args': 'settings'}},
       'fullscreen' : {'icon': buttons['fullscreen'], 'label': 'Toggle Fullscreen',
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
       'hide' : {'icon': buttons['hide'], 'label': 'Collapse text',

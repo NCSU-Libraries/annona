@@ -21,7 +21,7 @@ export default {
     props: ['parent'],
     data: function() {
         return {
-            toolbarbuttons: ['close', 'hide', 'playpause', 'tags', 'info', 'prev', 'next'],
+            toolbarbuttons: ['close', 'hide', 'playpause', 'tags', 'info', 'prev', 'next', 'settings'],
             sendparent: ''
         }
     },
