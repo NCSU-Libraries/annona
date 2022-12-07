@@ -987,27 +987,24 @@ table tr {
 .settingsinfo .settingsabout {
   width: 120px;
   background-color: black;
-  font-size: 12px;
   color: #fff;
+  font-size: 12px;
   text-align: center;
-  border-radius: 2px;
-  padding: 2px 0;
+  border-radius: 6px;
+  padding: 5px 0;
   position: absolute;
   z-index: 1;
-  margin-left: 10px;
+  top: auto;
+  left: 10%;
 }
 
 .settingsinfo {
     padding-right: 3px;
     padding-left: 3px;
 }
-.settingsinfo .settingsabout::after {
-  content: "";
-  position: absolute;
-  top: 10%;
-  right: 100%;
-  margin-top: 0px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: transparent black transparent transparent;
+
+.setting {
+  border-bottom: 1px solid lightgrey;
+  padding-bottom:4px;
+  padding-top:4px;
 }

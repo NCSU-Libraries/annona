@@ -1,6 +1,6 @@
 <template>
 <div id="settings" class="content">
-    <div v-for="setting in settingfields" v-bind:key="setting">
+    <div v-for="setting in settingfields" v-bind:key="setting" class="setting">
         <span v-if="settings[setting]['type'] == 'boolean'">
         <input class="settings" type="checkbox" v-model="settings[setting]['value']" v-bind:id="setting" v-on:change="updateSettings(setting)"/>
         <label v-bind:for="setting"> {{settings[setting]['label']}}</label>
@@ -12,7 +12,7 @@
         </i>
         </span>
         <span v-else-if="settings[setting]['type'] == 'text'">
-        <label v-bind:for="setting"> {{settings[setting]['label']}}</label>
+        <label v-bind:for="setting">{{settings[setting]['label']}}</label>
         <i class="fas fa-info-circle settingsinfo"
             v-on:click="settings[setting]['descshown'] = !settings[setting]['descshown']"
             v-on:mouseover="settings[setting]['descshown'] = true"
@@ -103,17 +103,17 @@ export default {
                 'description': 'Change the color that highlights the current annotation selected.',
                 'descshown': false
             },
-            'textposition': {'type': 'choice', 'value': 'none', 'choices': ['none', 'top', 'bottom', 'left', 'right'] , 'label': 'Annotation position',
-                'description': 'Change the position of the annotation box. By default it is in upper right hand corner. This choice will place the annotation to the top, bottom, left, right of the annotated area.',
-                'descshown': false
-            },
             'toolbarposition':{'type': 'choice', 'value': 'top', 'choices': ['top', 'bottom'] , 'label': 'Toolbar position',
                 'description': 'Position of the toolbar',
                 'descshown': false
             },
+            'textposition': {'type': 'choice', 'value': 'none', 'choices': ['none', 'top', 'bottom', 'left', 'right'] , 'label': 'Info related to image',
+                'description': 'Change the position of the annotation box. By default it is in upper right hand corner. This choice will place the annotation to the top, bottom, left, right of the annotated area.',
+                'descshown': false
+            },
             'annoview': {'type': 'choice', 'value': 'default', 'choices': ['default', 'sidebyside', 'collapse', 'scrollview'],
-            'label': 'Annotation View', 'descshown': false,
-            'description': 'Types of views avaliable outide of the default.'
+            'label': 'Sidebar View', 'descshown': false,
+            'description': 'Types of sidebar views avaliable outide of the default.'
             },
             'startenddisplay': {'type': 'choice', 'value': 'none', 'choices': ["none", "tags","info","transcription","keyboard", "settings"], 'label': 'Start/End display',
                 'description': 'When annotations are not visible set a default annotation view.',
