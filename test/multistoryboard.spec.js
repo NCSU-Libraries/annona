@@ -49,7 +49,7 @@ describe('Component', () => {
       expect(data.multi).toBe(true)
       expect(data.tags).toBe(true)
       expect(data.layerslist).toBe(false)
-      expect(Object.keys(data.shortcuts).sort()).toEqual(['tags', 'reload', 'close', 'home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev'].sort())
+      expect(Object.keys(data.shortcuts).sort()).toEqual(['tags', 'reload', 'close', 'home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'settings'].sort())
       wrapper.destroy()
     })
     test('test multistoryboard 2', async ()  => {
@@ -75,7 +75,7 @@ describe('Component', () => {
       expect(data.multi).toBe(true)
       expect(data.tags).toBe(true)
       expect(data.layerslist).toBe(false)
-      expect(Object.keys(data.shortcuts).sort()).toEqual(['tags', 'reload', 'close', 'home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'textoverlay'].sort())
+      expect(Object.keys(data.shortcuts).sort()).toEqual(['tags', 'reload', 'close', 'home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'textoverlay', 'settings'].sort())
       wrapper.destroy()
     })
     test('test multistoryboard 3', async ()  => {
@@ -101,7 +101,7 @@ describe('Component', () => {
       expect(data.multi).toBe(true)
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
-      expect(Object.keys(data.shortcuts).sort()).toEqual(['close','reload', 'home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'textoverlay'].sort())
+      expect(Object.keys(data.shortcuts).sort()).toEqual(['close','reload', 'home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'textoverlay', 'settings'].sort())
       wrapper.destroy()
     })
     test('test multistoryboard 4', async ()  => {
@@ -127,7 +127,7 @@ describe('Component', () => {
       expect(data.multi).toBe(true)
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
-      expect(Object.keys(data.shortcuts).sort()).toEqual(['close', 'reload','home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'textoverlay', 'transcription'].sort())
+      expect(Object.keys(data.shortcuts).sort()).toEqual(['close', 'reload','home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'textoverlay', 'transcription', 'settings'].sort())
       wrapper.destroy()
     })
 })

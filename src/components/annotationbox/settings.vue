@@ -201,6 +201,8 @@ export default {
                     this.$parent.updated[field] = true;
                     if (field == 'overlaycolor'){
                         this.$parent.updated['tagscolor'] = true;
+                        this.parent.settings['activecolor'] = this.settings['activecolor']['value'];
+                        this.$parent.updated['activecolor'] = true;
                     }
                 }
                 this.$parent.$forceUpdate();
