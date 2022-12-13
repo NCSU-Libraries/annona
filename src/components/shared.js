@@ -1,5 +1,5 @@
-import {by639_1} from 'iso-language-codes';
 import rtlDetect from 'rtl-detect';
+import constants from './constants';
 
 export default {
   textoverlay:{
@@ -246,7 +246,7 @@ export default {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
       } else if (type === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}"${currentlang.indexOf(element['language']) > -1 || navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${this.getLangLabel(element['language'])}</option>`);
+        langs = res_data['items'].map(element => `<option value="${element['language']}"${currentlang.indexOf(element['language']) > -1 || navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${constants.getLangLabel(element['language'])}</option>`);
         var values = [];
         res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
@@ -262,9 +262,6 @@ export default {
       'label':label, 'language': res_data ? res_data['language'] : '',
       'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,
       'itemclass': charclass, 'geometry': geometry};
-  },
-  getLangLabel: function(lang) {
-    return by639_1[lang] && by639_1[lang]['nativeName'] ? by639_1[lang]['nativeName'] : lang;
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -677,7 +674,7 @@ export default {
         if(correctdata.length > 0){
           text = `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
         } else {
-          var langtranslation = by639_1[currentlang]['nativeName'];
+          var langtranslation = constants.getLangLabel(currentlang);
           text = `Translation not avaliable in "${langtranslation ? langtranslation : currentlang}"`;
         }
       } else {
