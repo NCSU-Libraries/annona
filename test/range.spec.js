@@ -416,7 +416,8 @@ describe('Component', () => {
       expect(data.annotationurl.annotationurls.split(";").length).toEqual(2)
       expect(wrapper.vm.$children[0].$options.name).toBe('multistoryboard')
       expect(wrapper.vm.$children.length).toBe(1)
-      var sbd = wrapper.vm.$children[0].$children[1].$el['__vue__']._data;
+      var storyboardboard = wrapper.vm.$children[0].$children[1].$el['__vue__'];
+      var sbd = storyboardboard._data;
       expect(wrapper.vm.$children[0].$children.length).toBe(3)
       expect(wrapper.vm.$children[0].$children.map(elem=>elem.$options.name)).toEqual(["toolbar", "storyboard", "storyboard"])
       expect(sbd.seadragontile).toEqual("https://iiif.lib.ncsu.edu/iiif/technician-basketballspecial-1991-11_0001/info.json")
@@ -529,7 +530,8 @@ describe('Component', () => {
       expect(data.toc).toEqual([{"label": "Object image 0", "position": 0, "thumbnail": "https://framemark.vam.ac.uk/collections/2013GU2911/full/30,/0/default.jpg", "description": ""}])
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("Cunard Line - to all parts of the world");
-      var sbd = wrapper.vm.$children[0].$el['__vue__']._data;
+      var storyboardboard = wrapper.vm.$children[0].$el['__vue__'];
+      var sbd = storyboardboard._data;
       expect(sbd.seadragontile).toEqual("https://framemark.vam.ac.uk/collections/2013GU2911/info.json")
       expect(sbd.position).toBe(-1);
       expect(sbd.seadragonid).toBe("storyboard_annopage_p1");
@@ -553,6 +555,25 @@ describe('Component', () => {
       expect(sbd.imagetitle).toBe("Cunard Line - to all parts of the world: Object image 0");
       expect(sbd.layerslist).toEqual([{"checked": true, "label": "Layer 1", "opacity": 1, "rotation": 0, "tile": "https://framemark.vam.ac.uk/collections/2013GU2911/info.json", "xywh": ""}]);
       expect(Object.keys(sbd.shortcuts).sort()).toEqual(['autorun', 'reload', 'close', 'fullscreen', 'hide', 'home', 'info', 'next', 'overlay', 'prev', 'keyboard', 'zoomin', 'zoomout', 'settings'].sort());
+      wrapper.find("#settingsButton").trigger('click');
+      expect(sbd.shown).toBe('settings');
+      await flushPromises()
+      expect(Object.keys(storyboardboard.$children[1].$children[1].settings)).toEqual([
+        "overlaynext",
+        "tts",
+        "fit",
+        "panorzoom",
+        "fontsize",
+        "autorun_interval",
+        "overlaycolor",
+        "activecolor",
+        "toolbarposition",
+        "textposition",
+        "annoview",
+        "startenddisplay",
+        "tagscolor"
+      ])
+      expect(wrapper.find("#fit").exists()).toEqual(true)
       wrapper.destroy()
     })
 
@@ -584,8 +605,12 @@ describe('Component', () => {
       expect(data.collection.manifests[0].manifests[0].manifests.length).toEqual(2)
       expect(data.viewingDirection).toBe('ltr')
       expect(data.rangetitle).toBe("In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels'");
-      var sbd = wrapper.vm.$children[0].$children[1].$el['__vue__']._data;
+      wrapper.find("#settingsButton").trigger('click');
+      var storyboardboard = wrapper.vm.$children[0].$children[1].$el['__vue__'];
+      var sbd = storyboardboard._data;
       await flushPromises()
+      expect(Object.keys(storyboardboard.$children[0].$children[1].settings)).toEqual(['fit', 'fontsize', 'toolbarposition', 'tagscolor' ])
+      expect(wrapper.find("#fit").exists()).toEqual(true)
       expect(sbd.seadragontile).toEqual("https://research.ng-london.org.uk/iiif/pics/pyramids/technicalbulletin/volume_31/N-0296_dirrO_0_a_AT-PYR.tif/info.json")
       expect(sbd.position).toBe(-1);
       expect(sbd.seadragonid.indexOf('storyboard_noannotation') > -1).toEqual(true);
@@ -597,7 +622,7 @@ describe('Component', () => {
       expect(sbd.next_inactive).toBe(false);
       expect(sbd.toolbar_id).toBe("");
       expect(sbd.booleanitems).toEqual({"additionalinfoshown": false, "annoinfoshown": false, "imageinfoshown": false, "isexcerpt": false, "isoverlaytoggled": false, "istextoverlaytoggled": false, "istranscription": false, "tocshown": false, "collectioninfoshown": false});
-      expect(sbd.shown).toBe(false);
+      expect(sbd.shown).toBe('settings');
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
       expect(sbd.settings).toEqual({"autorun_interval": 3,"continousboard": true,"index": 0,"perpage": 1, "title": "In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px)", "truncate_length": 2});

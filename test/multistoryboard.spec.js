@@ -102,6 +102,29 @@ describe('Component', () => {
       expect(data.tags).toBe(false)
       expect(data.layerslist).toBe(false)
       expect(Object.keys(data.shortcuts).sort()).toEqual(['close','reload', 'home', 'zoomin', 'info', 'fullscreen', 'hide', 'overlay', 'zoomout', 'keyboard', 'next', 'autorun', 'prev', 'textoverlay', 'settings'].sort())
+      wrapper.find("#settingsButton").trigger('click');
+      var storyboardboard = wrapper.vm.boardchildren[0];
+      expect(storyboardboard.shown).toBe('settings');
+      await flushPromises()
+      console.log(storyboardboard.$children[0].$children.map(elem => elem.$options.name))
+      console.group(Object.keys(storyboardboard.$children[0].$children[1].settings))
+      expect(Object.keys(storyboardboard.$children[0].$children[1].settings)).toEqual([
+        "overlaynext",
+        "matchclick",
+        "tts",
+        "fit",
+        "panorzoom",
+        "fontsize",
+        "autorun_interval",
+        "overlaycolor",
+        "activecolor",
+        "toolbarposition",
+        "textposition",
+        "annoview",
+        "startenddisplay",
+        "tagscolor"
+      ])
+      // expect(wrapper.find("#fit").exists()).toEqual(true)
       wrapper.destroy()
     })
     test('test multistoryboard 4', async ()  => {
