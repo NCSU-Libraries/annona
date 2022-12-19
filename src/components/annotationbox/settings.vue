@@ -199,7 +199,7 @@ export default {
             }
         },
         updateSettings: function(field) {
-            const board = this.parent.basecompontent && !this.parent.basecompontent.range ? this.parent.basecompontent : this.parent;
+            const board = this.parent.$parent && this.parent.$parent.$options.name == 'multistoryboard' ? this.parent.$parent : this.parent;
             var deletetp = false;
             if (this.settings[field]['value'] == 'none' || this.settings[field]['value'] == 'default'){
                 delete this.parent.settings[field];
