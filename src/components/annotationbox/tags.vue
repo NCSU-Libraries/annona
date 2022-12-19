@@ -29,6 +29,7 @@
 <script>
 
 export default {
-    props: ['parent']
+    props: ['parent'],
+    name: 'tags'
 }
 </script>

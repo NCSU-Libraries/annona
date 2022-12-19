@@ -745,11 +745,7 @@ export default {
     }
   },
   flatten: function(array, element) {
-    if (element) {
-      return array.reduce((acc, val) => acc.concat(val[element]), []).filter(Boolean);
-    } else {
-      return array.reduce((acc, val) => acc.concat(val), []).filter(Boolean);
-    }
+    return constants.flatten(array, element);
   },
   getCanvasTile: function(image, addinfo=false) {
     var imgResource = image.resource ? image.resource : image.body ? image.body : image;

@@ -63,6 +63,7 @@
 import constants from '../constants';
 export default {
     props: ['parent'],
+    name: 'settings',
     data: function() {
         return {
             forceupdate: ['toolbarposition', 'fontsize', 'annoview', 'textposition', 'tagscolor'],
@@ -146,7 +147,7 @@ export default {
         if (this.parent.basecompontent.$options.name !== 'multistoryboard'){
             delete this.settings['matchclick']
         }
-        var annotation = this.parent.$options.name == 'multistoryboard' ? this.flatten(this.parent.basecompontent.boardchildren.map(board => board.annotations)): this.parent.annotations;
+        var annotation = this.parent.$parent.$options.name == 'multistoryboard' ? constants.flatten(this.parent.$parent.boardchildren.map(board => board.annotations)): this.parent.annotations;
         if (annotation.length == 0){
             delete this.settings['tts'];
             delete this.settings['overlaynext'];
