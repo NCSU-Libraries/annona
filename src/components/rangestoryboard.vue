@@ -48,6 +48,7 @@ export default {
       'layers': String,
       'json': Object
     },
+    name: 'rangestoryboard',
     data: function() {
       return {
         tags: false,

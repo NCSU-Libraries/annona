@@ -64,7 +64,7 @@ export default {
     var isURL = shared.isURL(annotationurl, '');
     var vue = this;
     this.isurl = isURL['isURL'];
-    if (this.inputurl.split(';').length > 1 || this.images){
+    if ((this.inputurl.split(';').length > 1 && this.isurl)|| this.images){
         this.type = 'multistoryboard';
         window.annonatype = this.type;
     } else if (isURL['isURL']){

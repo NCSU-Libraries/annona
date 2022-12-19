@@ -126,11 +126,37 @@ export default {
             settingfields: []
         }
     },
+    watch: {
+        'parent.currentlang': function() {
+            if (this.parent.settings.tts) {
+                this.settings['tts']['value'] = this.parent.currentlang;
+            }
+        }
+    },
     created() {
         const choices = Object.keys(constants.languages()).map(elem => JSON.parse(`{"value": "${elem}", "label": "${constants.getLangLabel(elem)}"}`));
         this.settings['tts']['choices'] = this.settings['tts']['choices'].concat(choices);
+        if (this.parent.languages){
+            const regex = /<option value="(.*)">(.*)<\/option>/gm;
+            for (var i=0; i<this.parent.languages.length; i++){
+                const rg = this.regexmatch(regex, this.parent.languages[i].replace(' selected', ''));
+                this.settings['tts']['choices'].push({"value": rg[1].split('"')[0], "label": rg[2]})
+            }
+        }
         if (this.parent.basecompontent.$options.name !== 'multistoryboard'){
             delete this.settings['matchclick']
+        }
+        var annotation = this.parent.$options.name == 'multistoryboard' ? this.flatten(this.parent.basecompontent.boardchildren.map(board => board.annotations)): this.parent.annotations;
+        if (annotation.length == 0){
+            delete this.settings['tts'];
+            delete this.settings['overlaynext'];
+            delete this.settings['autorun_interval'];
+            delete this.settings['overlaycolor'];
+            delete this.settings['activecolor'];
+            delete this.settings['textposition'];
+            delete this.settings['annoview'];
+            delete this.settings['startenddisplay'];
+            delete this.settings['panorzoom'];
         }
         for (var i in this.settings){
             if (Object.keys(this.parent.settings).indexOf(i) > -1){
@@ -152,6 +178,10 @@ export default {
         this.settingfields = Object.keys(this.settings)
     },
     methods: {
+        regexmatch: function(regex, item) {
+            const newregex = new RegExp(regex)
+            return newregex.exec(item)
+        },
         colorToHex: function(color) {
             const colours = constants.hexDict();
             return colours[color] ? colours[color] : color;
@@ -168,7 +198,7 @@ export default {
             }
         },
         updateSettings: function(field) {
-            const board = this.parent.basecompontent && this.parent.basecompontent ? this.parent.basecompontent : this.parent;
+            const board = this.parent.basecompontent && !this.parent.basecompontent.range ? this.parent.basecompontent : this.parent;
             var deletetp = false;
             if (this.settings[field]['value'] == 'none' || this.settings[field]['value'] == 'default'){
                 delete this.parent.settings[field];

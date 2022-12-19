@@ -1,13 +1,13 @@
 export default {
 getLangLabel: function(lang) {
-    var getLabel = true;
-    if (lang.length == 2) {
-        lang = Object.keys(this.languages()).filter(elem => elem.split('-')[0] == lang)[0];
-        getLabel = false;
-    }
-    const currentlang = this.languages()[lang];
-    const returnvalue = currentlang && getLabel ? currentlang['label'] : currentlang ? currentlang['lang'] : lang;
-    return returnvalue;
+  var getLabel = true;
+  if (lang.length == 2) {
+      lang = Object.keys(this.languages()).filter(elem => elem.split('-')[0] == lang)[0];
+      getLabel = false;
+  }
+  const currentlang = this.languages()[lang];
+  const returnvalue = currentlang && getLabel ? currentlang['label'] : currentlang ? currentlang['lang'] : lang;
+  return returnvalue;
 },
 hexDict: function() {
     return {"aliceblue":"#f0f8ff","antiquewhite":"#faebd7","aqua":"#00ffff","aquamarine":"#7fffd4","azure":"#f0ffff",
