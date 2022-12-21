@@ -47,6 +47,7 @@ export default {
   },
   methods: {
     getType: function(jsondata) {
+        jsondata = jsondata.constructor.name === 'Array' ? jsondata[0] : jsondata;
         var type = jsondata['type'] ? jsondata['type'] : jsondata['@type'];
         type = type ? type.toLowerCase() : type;
         if (type.indexOf('annotation') > -1) {
@@ -63,7 +64,7 @@ export default {
     var isURL = shared.isURL(annotationurl, '');
     var vue = this;
     this.isurl = isURL['isURL'];
-    if (this.inputurl.split(';').length > 1 || this.images){
+    if ((this.inputurl.split(';').length > 1 && this.isurl)|| this.images){
         this.type = 'multistoryboard';
         window.annonatype = this.type;
     } else if (isURL['isURL']){

@@ -15,10 +15,10 @@ $marginbottomtoolbar: 2px;
 $toolbarfontsize: 1.5rem;
 $phonetoolbarfontsize: .79rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidth}*3.5 + #{$marginbottomtoolbar});
-$topphone: calc(#{$phonetoolbarfontsize} + #{$borderwidth}*3.2 + #{$marginbottomtoolbar});
 $annocontrolsize: 16px;
 $collapseheight: calc(#{$seadrgon_height} - #{$borderwidth});
-$sidebyside: calc(#{$seadrgon_height} + #{$toolbarfontsize} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
+$toolbarheight: 35px;
+$sidebyside: calc(#{$seadrgon_height} + #{$toolbarheight} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
 $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borderwidth}*2 + #{$marginbottomtoolbar});
 
 .toolbarButton {
@@ -65,6 +65,11 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   font-size: 18px;
   max-height: $collapseheight;
   resize: none;
+  top: $toolbarheight;
+}
+
+#settings input, #settings select {
+  max-width: 95%;
 }
 
 .fullpage .collapse .annotation {
@@ -93,6 +98,10 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
   font-size:  $annocontrolsize*2;
   height: auto;
   width: $annocontrolsize*2;
+}
+
+.collapse .excerpt #hide_button span {
+  overflow: hidden;
 }
 .annonaview .collapse .excerpt .content {
   display: none;
@@ -148,6 +157,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
 .collapse .no_toolbar_annotation,  .sidebyside .no_toolbar_annotation{
   height: calc(100% - 4px);
   max-height: calc(100% - 4px);
+  top: 0px;
 }
 
 .annotation {
@@ -598,7 +608,7 @@ figcaption {
 
 
   .collapse .annotation { 
-    top: $topphone;
+    top: $toolbarheight;
   }
 
   .fullpage .collapse .annotation {
@@ -651,6 +661,7 @@ figcaption {
 #header_toolbar {
   width: 100%;
   display: flex;
+  height: $toolbarheight;
 }
 
 #header_toolbar > .toolbarButton:not(:last-child) {
@@ -977,4 +988,30 @@ table tr {
   margin:3px;
   text-decoration: underline;
   font-size:1.2em;
+}
+
+
+.settingsinfo .settingsabout {
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  top: auto;
+  left: 10%;
+}
+
+.settingsinfo {
+    padding-right: 3px;
+    padding-left: 3px;
+}
+
+.setting div{
+  border-bottom: 1px solid lightgrey;
+  padding-bottom:4px;
+  padding-top:4px;
 }

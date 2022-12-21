@@ -12,6 +12,7 @@
     <shortcuts v-if="$parent.shown == 'keyboard'" :parent="$parent"></shortcuts>
     <tags v-if="$parent.shown == 'tags'" :parent="$parent"></tags>
     <info v-if="$parent.shown == 'info'" :parent="$parent"></info>
+    <settings v-if="$parent.shown == 'settings'" :parent="$parent"></settings>
     <perpage v-if="$parent.shown == 'perpage' && show" :parent="$parent"></perpage>
     <div id='transcription' v-if="$parent.shown == 'transcription'" class="content" v-bind:class="$parent.currentanno.itemclass">
       <span v-if="!$parent.booleanitems.isexcerpt && !$parent.settings.transcription && !isscrollview" v-html="$parent.annoContent['transcription']"></span>
@@ -32,6 +33,9 @@
         </div>
       </div>
     </div>
+    <span v-for="updatevalue,updatekey in updated" v-bind:key="updatekey" v-bind:id="updatekey">
+      <span v-if="$parent.settings[updatekey] && updatevalue" v-html="customCSS(updatekey)"></span>
+    </span>
     <span v-if="$parent.shortcuts['textoverlay']" v-html="customStyle"></span>
   </div>
 </template>
@@ -43,7 +47,7 @@ import shortcuts from './annotationbox/shortcuts.vue'
 import tags from './annotationbox/tags.vue'
 import info from './annotationbox/info.vue'
 import perpage from './annotationbox/perpage.vue'
-
+import settings from './annotationbox/settings.vue'
 export default {
   name: 'annotationbox',
   data: function() {
@@ -52,7 +56,8 @@ export default {
       scrollitems: [],
       isscrollview: false,
       updatedto: '',
-      show: true
+      show: true,
+      updated: {'tagscolor': false, 'fontsize': false, 'overlaycolor': false, 'activecolor': false}
     }
   },
   components: {
@@ -62,7 +67,8 @@ export default {
     shortcuts,
     tags,
     info,
-    perpage
+    perpage,
+    settings
   },
   watch: {
    '$parent.annotations': function(){
@@ -72,7 +78,7 @@ export default {
       this.scrollContent(true);
     },
     '$parent.shown': function(newval) {
-      const single = ['perpage', 'textoverlay', 'keyboard', 'info']
+      const single = ['perpage', 'textoverlay', 'keyboard', 'info', 'settings']
       if (this.$parent.$parent && this.$parent.$parent.multi && single.indexOf(newval) > -1){
         this.show = this.$parent.$parent.boardchildren[0].seadragonid == this.$parent.seadragonid;
       } else {
@@ -93,6 +99,7 @@ export default {
     if (this.$parent.settings.annoview == 'scrollview'){
       this.$el.addEventListener('scroll', this.handleScroll);
     }
+    this.scrollContent(this.$parent.annotations.length == 0);
   },
   created() {
     this.isscrollview = this.$parent.settings.annoview == 'scrollview';
@@ -126,6 +133,54 @@ export default {
       returnlang = Array.isArray(returnlang) ? returnlang.join(" | ") : returnlang;
       return returnlang;
     },
+    customCSS:function(field) {
+      return `<style type="text/css">`+ this[`custom${field}`]() + `</style>`;
+    },
+    customtagkey: function(tag, color) {
+      return `#${this.cssID} #${tag}_tags .tagscount{
+        background: ${color}!important;
+      }
+      `
+    },
+    customtagscolor: function() {
+      var style = ''
+      for (var tc in this.$parent.settings.tagscolor){
+        const newcolor = this.$parent.settings.tagscolor[tc];
+        style += this.customoverlaycolor(tc, newcolor)
+        style += this.customtagkey(tc, newcolor);
+      }
+      return style;
+    },
+    customactivecolor: function() {
+      return `#${this.cssID} .active > svg .svgactive {
+        stroke: ${this.$parent.settings['activecolor']}!important;
+      }
+      #${this.cssID} .active.rect {
+        outline-color: ${this.$parent.settings['activecolor']}!important;
+      }
+      #${this.cssID} .active.pin {
+        -webkit-text-stroke: ${this.$parent.settings['activecolor']}!important;
+      }
+      #${this.cssID} .pin.overlay.active circle, rect {
+        stroke: ${this.$parent.settings['activecolor']}!important;
+      }
+      `
+    },
+    customoverlaycolor: function(tag=false, customcolor=false) {
+      const id = tag ? `#${this.cssID} .${tag}` : `#${this.cssID} `
+      const color = customcolor ? customcolor : this.$parent.settings['overlaycolor'];
+      return `${id}.overlay > svg > * {
+        stroke: ${color}!important;
+      } ${id}.rect {
+        border-color: ${color}!important;
+      } ${id}.pin {
+        color: ${color}!important;
+      }`
+    },
+    customfontsize: function() {
+      const fontsize = this.$parent.settings.fontsize.length > 2 ? '' : 'px';
+      return `#${this.cssID} .content {font-size: ${this.$parent.settings.fontsize}${fontsize}!important}`
+    },
     handleScroll: function() {
       if (this.$parent.shown == 'transcription' || this.$parent.shown == 'anno'){
         for (var key in this.$refs){
@@ -151,18 +206,21 @@ export default {
     padding: function(){
       return (this.$refs['1'][0].offsetTop - this.$refs['0'][0].offsetTop)/1.1;
     },
+    cssID: function() {
+      return this.$parent.$parent && this.$parent.$parent.storyboardcontainerid ? this.$parent.$parent.storyboardcontainerid : this.$parent.seadragonid;
+    },
     customStyle: function(){
-      return `<style type="text/css">#${this.$parent.seadragonid} .textoverlay { fill: ${this.$parent.textoverlay.fontcolor};
+      return `<style type="text/css">#${this.cssID} .textoverlay { fill: ${this.$parent.textoverlay.fontcolor};
       background: ${this.$parent.textoverlay.background};
       opacity: ${this.$parent.textoverlay.opacity/100};
       }
-      #${this.$parent.seadragonid} .textoverlaywithpath {
+      #${this.cssID} .textoverlaywithpath {
         background: none;
       }
-      #${this.$parent.seadragonid} .svgBackground { fill: ${this.$parent.textoverlay.background};
+      #${this.cssID} .svgBackground { fill: ${this.$parent.textoverlay.background};
       opacity: ${this.$parent.textoverlay.opacity/100};
-      }
-      </style>`;
+      }</style>
+      `;
     }
   }
 }

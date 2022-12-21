@@ -22,6 +22,7 @@
 
 export default {
     props: ['parent'],
+    name: 'shortcuts',
     data: function() {
         return {
             shortcuts: []

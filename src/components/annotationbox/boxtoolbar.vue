@@ -19,9 +19,10 @@
 
 export default {
     props: ['parent'],
+    name: 'boxtoolbar',
     data: function() {
         return {
-            toolbarbuttons: ['close', 'hide', 'playpause', 'tags', 'info', 'prev', 'next'],
+            toolbarbuttons: ['close', 'hide', 'playpause', 'tags', 'info', 'prev', 'next', 'settings'],
             sendparent: ''
         }
     },

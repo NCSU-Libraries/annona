@@ -10,6 +10,7 @@
 <script>
 export default {
     props: ['parent'],
+    name: 'perpage',
     data: function() {
         return {
             arraylist: false,

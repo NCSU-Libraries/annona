@@ -1,7 +1,7 @@
 <template>
 <div id="multistoryboard" class="annonaview" v-bind:class="[!settings.fullpage && !fullscreen ? 'multistoryboard' : 'multifullpage', settings.toolbarposition ? settings.toolbarposition + '_menu_container' : 'top_menu_container']">
   <toolbar></toolbar>
-  <span class="storyboard_containers">
+  <span class="storyboard_containers" v-bind:id="storyboardcontainerid">
     <div v-for="(anno, index) in anno_data" v-bind:key="anno + index" v-bind:style="{'width': widthvar}" style="position: relative; display: inline-block">
       <storyboard v-if="annourls" v-bind:annotationurl="anno" v-bind:jsonannotation="annojson[index]" v-bind:styling="stylingstring + 'index: ' + indexNumber(index)" v-bind:ws="isws" v-bind:layers="customlayers" v-bind:manifesturl="manifests[index]"></storyboard>
     </div>
@@ -46,6 +46,7 @@ export default {
         buttons: JSON.parse(JSON.stringify(shared.buttons)),
         settings: {},
         stylingstring: "",
+        storyboardcontainerid: "",
         widthvar: "",
         multi: true,
         allimages: [],
@@ -92,6 +93,7 @@ export default {
         this.fullscreen = this.$parent.isfullscreen;
         this.$parent.updateFullScreen(this.fullscreen);
       }
+      this.storyboardcontainerid = Math.random().toString(36).substring(2,7);
       this.annourls = this.annotationurls ? this.annotationurls : this.annotationlists;
       var annotations = this.annourls.split(";").map(elem => elem.replace('repwithsemicolon', ';'));
       this.manifests = this.manifesturl ? this.manifesturl.split(";") : [''];

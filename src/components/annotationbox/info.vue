@@ -58,6 +58,7 @@ import collections from './collections.vue'
 export default {
     props: ['parent'],
     components: {collections},
+    name: 'info',
     data: function() {
         return {
             title: [],

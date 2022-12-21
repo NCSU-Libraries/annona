@@ -1,5 +1,5 @@
-import {by639_1} from 'iso-language-codes';
 import rtlDetect from 'rtl-detect';
+import constants from './constants';
 
 export default {
   textoverlay:{
@@ -30,7 +30,8 @@ export default {
     'rangenext': '<i class="fas fa-chevron-right"></i>',
     'perpage': '<i class="fas fa-book-open"></i>',
     'fullscreen': '<i class="fas fa-expand"></i>',
-    'fullscreenoff': '<i class="fas fa-compress"></i>'
+    'fullscreenoff': '<i class="fas fa-compress"></i>',
+    'settings': '<i class="fas fa-cog"></i>'
   },
   booleanitems: {
     isexcerpt: false,
@@ -245,7 +246,7 @@ export default {
           textual_body.push(`<div class="${purpose}">${value}</div>`);
         }
       } else if (type === 'Choice') {
-        langs = res_data['items'].map(element => `<option value="${element['language']}"${currentlang.indexOf(element['language']) > -1 || navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${this.getLangLabel(element['language'])}</option>`);
+        langs = res_data['items'].map(element => `<option value="${element['language']}"${currentlang.indexOf(element['language']) > -1 || navigator.language.indexOf(element['language']) > -1 ? ' selected' : ''}>${constants.getLangLabel(element['language'])}</option>`);
         var values = [];
         res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
@@ -261,9 +262,6 @@ export default {
       'label':label, 'language': res_data ? res_data['language'] : '',
       'authors': authors, 'styles': styles, 'stylesheet':  stylesheet,
       'itemclass': charclass, 'geometry': geometry};
-  },
-  getLangLabel: function(lang) {
-    return by639_1[lang] && by639_1[lang]['nativeName'] ? by639_1[lang]['nativeName'] : lang;
   },
   createItemsDict: function(purpose, element) {
     var value = decodeURIComponent(escape(unescape(encodeURIComponent(element['value']))));
@@ -676,7 +674,7 @@ export default {
         if(correctdata.length > 0){
           text = `<div class="${correctdata[0]['purpose']}">${correctdata[0]['value']}</div>`
         } else {
-          var langtranslation = by639_1[currentlang]['nativeName'];
+          var langtranslation = constants.getLangLabel(currentlang);
           text = `Translation not avaliable in "${langtranslation ? langtranslation : currentlang}"`;
         }
       } else {
@@ -747,11 +745,7 @@ export default {
     }
   },
   flatten: function(array, element) {
-    if (element) {
-      return array.reduce((acc, val) => acc.concat(val[element]), []).filter(Boolean);
-    } else {
-      return array.reduce((acc, val) => acc.concat(val), []).filter(Boolean);
-    }
+    return constants.flatten(array, element);
   },
   getCanvasTile: function(image, addinfo=false) {
     var imgResource = image.resource ? image.resource : image.body ? image.body : image;
@@ -835,10 +829,10 @@ export default {
   keyboardShortcuts: function(type, vueinfo){
     var buttons = vueinfo.buttons;
     //openseadragon : a, f, s, d, r, R, w, arrows, 0, -, shift w, shift s,s shift up/down arrows
-    // k, q, u, w are open
+    //u, w are open
     var shortcuts = {
       'autorun': {'icon': buttons['autorun'], 'label': 'Start/Stop Autorun',
-        'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': vueinfo.settings.autorun_interval}},
+        'shortcut': ['b', '1'], 'function': {'function':'autoRun', 'args': ''}},
       'reload': {'icon': buttons['reload'], 'label': 'Reload',
         'shortcut': ['j', 'shift+1'], 'function': {'function':'reload', 'args': ''}},
       'info': {'icon': buttons['info'], 'label': 'View source image information',
@@ -857,6 +851,8 @@ export default {
         'shortcut': ['o', '4'], 'function': {'function': 'createOverlay', 'args': ''}},
       'keyboard' : {'icon': buttons['keyboard'], 'label': 'Toggle Keyboard Shortcuts',
         'shortcut': ['s', '8'], 'function': {'function': 'clickButton', 'args': 'keyboard'}},
+      'settings': {'icon': buttons['settings'], 'label': 'Change settings',
+      'shortcut': ['k', 'q'], 'function': {'function': 'clickButton', 'args': 'settings'}},
       'fullscreen' : {'icon': buttons['fullscreen'], 'label': 'Toggle Fullscreen',
         'shortcut': ['alt+f', ';'], 'function': {'function': 'toggle_fullscreen', 'args': ''}},
       'hide' : {'icon': buttons['hide'], 'label': 'Collapse text',

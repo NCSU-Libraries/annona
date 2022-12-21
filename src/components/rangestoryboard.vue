@@ -31,6 +31,7 @@
 import storyboard from './storyboard';
 import iiifannotation from './iiifannotation';
 import shared from './shared';
+import constants from './constants';
 import axios from 'axios';
 import multistoryboard from './multistoryboard.vue';
 
@@ -47,6 +48,7 @@ export default {
       'layers': String,
       'json': Object
     },
+    name: 'rangestoryboard',
     data: function() {
       return {
         tags: false,
@@ -226,7 +228,7 @@ export default {
           var others = labelfield.constructor.name != 'Object' ? [] : Object.keys(shared.getValueField(manifest.metadata[0]));
           var langs = others[0] == "0" ? labelitems : labelitems.concat(others);
           langs = [...new Set(langs)].filter(elem => elem && elem != 'none');
-          this.langs = langs.map(element => `<option value="${element}"${navigator.language.indexOf(element) > -1 ? ' selected' : ''}>${shared.getLangLabel(element)}</option>`);
+          this.langs = langs.map(element => `<option value="${element}"${navigator.language.indexOf(element) > -1 ? ' selected' : ''}>${constants.getLangLabel(element)}</option>`);
         }
         if (manifest['sequences'] || manifest['items']){
           const startCanvas = manifest['start'] ? manifest['start'] : manifest['items'] ? manifest['items']['start'] : manifest['sequences'][0]['startCanvas'];

@@ -20,6 +20,7 @@
 <script>
 export default {
     props: ['parent'],
+    name: 'textoverlay',
     data: function() {
         return {
             sendparent: ''
