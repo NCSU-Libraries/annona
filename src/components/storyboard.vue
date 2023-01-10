@@ -365,6 +365,9 @@ export default {
           vue.viewerFailure("/full/full/", "/full/max/")
         }
       });
+      viewer.addHandler('zoom', function(){
+        window.annonazoom = vue.viewer.viewport.getZoom();
+      })
       // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){
         vue.reposition();
@@ -920,7 +923,6 @@ export default {
       } else {
         return 0;
       }
-      window.annonazoom = this.viewer.viewport.getZoom();
     },
     //call TTS for current annotation
     tts: function(text){
