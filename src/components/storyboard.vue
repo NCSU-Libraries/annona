@@ -430,6 +430,9 @@ export default {
         } else if(!fit) {
           vue.viewer.viewport.fitVertically();
         }
+        if (vue.settings.zoom) {
+          vue.viewer.viewport.zoomTo(vue.settings.zoom);
+        }
         // If autorun on load start autorun
         if(vue.settings.autorun_onload){
           vue.autoRun(vue.settings.autorun_interval);
@@ -917,6 +920,7 @@ export default {
       } else {
         return 0;
       }
+      window.annonazoom = this.viewer.viewport.getZoom();
     },
     //call TTS for current annotation
     tts: function(text){
