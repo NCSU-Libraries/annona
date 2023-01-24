@@ -100,6 +100,8 @@ export default {
     booleanitems: {
       deep: true,
       handler: function(){
+        window.annonasettings['toggleoverlay'] = this.booleanitems.isoverlaytoggled;
+        window.annonasettings['toggletextoverlay'] = this.booleanitems.istextoverlaytoggled;
         if (this.basecompontent.range) {
           this.basecompontent.booleanitems = shared.objectToNewObject(this.booleanitems);
         }
@@ -115,6 +117,12 @@ export default {
           this.basecompontent.textoverlay = shared.objectToNewObject(this.textoverlay);
         }
       }
+    },
+    shown: function() {
+      window.annonasettings['startenddisplay'] = this.shown;
+    },
+    position: function() {
+      window.annonasettings['startposition'] = this.position;
     },
     buttons: {
       deep: true,
@@ -367,7 +375,7 @@ export default {
       });
       viewer.addHandler('zoom', function(){
         const bounds = vue.viewer.viewport.viewportToImageRectangle(vue.viewer.viewport.getBounds());
-        window.annonazoom = `${bounds['x']},${bounds['y']},${bounds['width']},${bounds['height']}`
+        window.annonasettings['zoom'] = `${bounds['x']},${bounds['y']},${bounds['width']},${bounds['height']}`
       })
       // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){

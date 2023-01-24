@@ -59,6 +59,7 @@ export default {
     }
   },
   created() {
+    window.annonasettings = window.annonasettings ? window.annonasettings : {};
     const annotationurl = this.json ? this.json : this.jsonannotation ? this.jsonannotation : this.url ? this.url : this.annotationurl ? this.annotationurl : this.annotationlist;
     this.inputurl = this.url ? this.url : this.annotationurl ? this.annotationurl : this.annotationlist;
     var isURL = shared.isURL(annotationurl, '');

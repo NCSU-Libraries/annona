@@ -26,6 +26,17 @@ export default {
             sendparent: ''
         }
     },
+    watch: {
+        'sendparent.textoverlay': {
+            deep: true,
+            handler: function(){
+                const fields = ['background', 'fontcolor', 'opacity']
+                for (var fi=0; fi<fields.length; fi++){
+                    window.annonasettings[`textoverlay${fields[fi]}`] = this.sendparent.textoverlay[fields[fi]]
+                }
+            }
+        }
+    },
     created() {
        this.sendparent = this.parent.$parent && this.parent.$parent.multi ? this.parent.$parent : this.parent;
     }

@@ -89,6 +89,7 @@ export default {
         this.buttons.fullscreen = newval ? shared.buttons['fullscreenoff'] : shared.buttons['fullscreen'];
       },
       'position': function() {
+        window.annonasettings['startCanvas'] = this.position+1;
         this.checkNextRange();
       }
     },
@@ -231,9 +232,9 @@ export default {
           this.langs = langs.map(element => `<option value="${element}"${navigator.language.indexOf(element) > -1 ? ' selected' : ''}>${constants.getLangLabel(element)}</option>`);
         }
         if (manifest['sequences'] || manifest['items']){
-          const startCanvas = manifest['start'] ? manifest['start'] : manifest['items'] ? manifest['items']['start'] : manifest['sequences'][0]['startCanvas'];
-          this.startCanvas = startCanvas ? shared.getId(startCanvas) : startCanvas;
           var canvases = shared.getAllCanvases(manifest);
+          const startCanvas = this.settings.startCanvas ? canvases[this.settings.startCanvas-1] : manifest['start'] ? manifest['start'] : manifest['items'] ? manifest['items']['start'] : manifest['sequences'][0]['startCanvas'];
+          this.startCanvas = startCanvas ? shared.getId(startCanvas) : startCanvas;
           for (var cv=0; cv<canvases.length; cv++){
             var canvas = canvases[cv];
             var annotationfield = shared.getManifestAnnotations(canvas);
