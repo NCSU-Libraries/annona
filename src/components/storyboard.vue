@@ -122,7 +122,7 @@ export default {
       window.annonasettings['startenddisplay'] = this.shown;
     },
     position: function() {
-      window.annonasettings['startposition'] = this.position;
+      window.annonasettings['startposition'] = this.position + 1;
     },
     buttons: {
       deep: true,
