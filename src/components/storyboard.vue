@@ -374,8 +374,8 @@ export default {
         }
       });
       viewer.addHandler('zoom', function(){
-        const bounds = vue.viewer.viewport.viewportToImageRectangle(vue.viewer.viewport.getBounds());
-        window.annonasettings['zoom'] = `${bounds['x']},${bounds['y']},${bounds['width']},${bounds['height']}`
+        var bounds = vue.viewer.world.getItemAt(0).viewportToImageRectangle(vue.viewer.viewport.getConstrainedBounds());
+        window.annonasettings['zoom'] = `${bounds['x']},${bounds['y']},${bounds['width']},${bounds['height']}`;
       })
       // Listeners for changes in OpenSeadragon view
       viewer.addHandler('canvas-click', function(){
@@ -444,13 +444,9 @@ export default {
         }
         if (vue.settings.zoom) {
           var zoom = vue.settings.zoom;
-          if (zoom.split(',').length == 4){
-            const xywh = vue.settings.zoom.split(',').map(elem => parseFloat(elem));
-            zoom = vue.viewer.world.getItemAt(0).imageToViewportRectangle(xywh[0], xywh[1], xywh[2], xywh[3]);
-            this.viewer.viewport.fitBoundsWithConstraints(zoom).ensureVisible();
-          } else {
-            vue.viewer.viewport.zoomTo(zoom);
-          }
+          const xywh = vue.settings.zoom.split(',').map(elem => parseFloat(elem));
+          zoom = vue.viewer.viewport.imageToViewportRectangle(xywh[0], xywh[1], xywh[2], xywh[3]);
+          vue.viewer.viewport.fitBoundsWithConstraints(zoom).ensureVisible();
         }
         // If autorun on load start autorun
         if(vue.settings.autorun_onload){
@@ -936,6 +932,7 @@ export default {
         } else {
           this.viewer.viewport.fitVertically();
         }
+        window.annonasettings['zoom'] = false;
       } else {
         return 0;
       }
