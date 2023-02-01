@@ -932,7 +932,6 @@ export default {
         } else {
           this.viewer.viewport.fitVertically();
         }
-        window.annonasettings['zoom'] = false;
       } else {
         return 0;
       }
