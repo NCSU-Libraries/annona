@@ -95,6 +95,7 @@ export default {
     },
     created(){
       // get annotation urls in list
+      window.annonasettings = window.annonasettings ? window.annonasettings : {};
       this.rangeid = "rangestoryboard_" + this.$props.rangeurl.split("/").slice(-1)[0];
       this.settings = shared.getsettings(this);
       const getData = this.json ? this.json : this.rangeurl;

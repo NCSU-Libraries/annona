@@ -80,6 +80,7 @@ export default {
   },
   created() {
     this.basecompontent = this.$parent.$parent && this.$parent.$parent.range ? this.$parent.$parent : this.$parent.range || this.$parent.multi ? this.$parent : this;
+    window.annonasettings = window.annonasettings ? window.annonasettings : {};
     if (this.basecompontent && this.basecompontent.range){
       if (!this.$parent.multi){
         this.basecompontent.updateFullScreen(this.basecompontent.isfullscreen);

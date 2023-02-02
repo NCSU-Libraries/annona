@@ -489,6 +489,7 @@ export default {
           var partof = partoffield ? target_dict['source'][partoffield] : '';
         }
       }
+      partof = partof ? partof : anno['partOf'];
       var manifest_dict = partof && Array.isArray(partof) ? partof[0] : partof ? partof : partofmain ? responsedata[partofmain] : on_structure ? on_structure['within']: undefined;
       manifest_dict = manifest_dict ? manifest_dict : responsedata['within'] ? responsedata['within']['within'] : '';
       manifestlink = this.getId(manifest_dict);

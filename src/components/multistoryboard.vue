@@ -89,6 +89,7 @@ export default {
     },
     created(){
       // get annotation urls
+      window.annonasettings = window.annonasettings ? window.annonasettings : {};
       if(this.$parent.range) {
         this.fullscreen = this.$parent.isfullscreen;
         this.$parent.updateFullScreen(this.fullscreen);
