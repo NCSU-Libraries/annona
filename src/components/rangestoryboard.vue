@@ -242,7 +242,7 @@ export default {
             if (annotationfield){
               otherContent.push({'oc': annotationfield, 'canvas': canvas});
             } else {
-              otherContent.push({'oc': {'id': `${Math.random()}`, 'type': 'annotation'}, 'canvas': canvas});
+              otherContent.push({'oc': {'id': `${Math.random()}`, 'type': 'annotation', 'items': []}, 'canvas': canvas});
             }
           }
         }
@@ -256,7 +256,7 @@ export default {
           if (anno.constructor.name == 'Array') { 
             if (this.settings.listnumber) {
               const listnumb = this.settings.listnumber - 1;
-              const list = anno[listnumb] ? anno[listnumb] : {'id': `${Math.random()}`, 'type': 'annotation'};
+              const list = anno[listnumb] ? anno[listnumb] : {'id': `${Math.random()}`, 'type': 'annotation', 'items': []};
               this.addToLists(list, manifesturl, otherContent[an]['canvas'], anno);
             } else {
               //for (var h=0; h<anno.length; h++){

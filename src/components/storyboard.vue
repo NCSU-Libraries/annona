@@ -245,7 +245,6 @@ export default {
     parseAnnoData: function(annotation, annotationurl, isURL, newseadragon=true){
       var anno = shared.getAnnotations(annotation);
       //Get basic annotation information
-      this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}`
       var manifestlink = shared.manifestlink(this.manifesturl, anno[0], annotation);
       //loop through list of annotations
       for (var i = 0; i < anno.length; i++){
@@ -284,6 +283,9 @@ export default {
             this.settings.activecolor = content_data['styles']['activecolor'];
           }
           this.settings.tagscolor = this.settings.tagscolor ? Object.assign(content_data['styles'], this.settings.tagscolor) : content_data['styles'];
+        }
+        if (this.annotations.length > 0){
+          this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}`
         }
         this.getAnnoInfo(content_data, this.annotations.length-1);
       }
