@@ -773,6 +773,7 @@ export default {
     for (var i=0; i<images.length; i++){
       if (images[i]['body'] && images[i]['body']['selector']) {
         allimages[i]['rotation'] = images[i]['body']['selector']['rotation'];
+        allimages[i]['section'] = images[i]['body']['selector']['region'] ? images[i]['body']['selector']['region'].split(',').map(elem => parseInt(elem)) : '';
       }
     }
     title = canvas.label;

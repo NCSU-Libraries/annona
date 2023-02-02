@@ -423,10 +423,10 @@ export default {
         }, "500")
 
       }
-      if (vue.settings.imagecrop && updateImage) {
-          var cropxywh = vue.settings.imagecrop.split(",").map(elem => parseInt(elem));
+      const imagecrop = vue.settings.imagecrop ? vue.settings.imagecrop.split(",").map(elem => parseInt(elem)) : vue.layerslist[0].section ? vue.layerslist[0].section : '';
+      if (imagecrop && updateImage) {
           var tiledImage = vue.viewer.world.getItemAt(0);
-          tiledImage.setClip(new openseadragon.Rect(cropxywh[0], cropxywh[1], cropxywh[2], cropxywh[3]));
+          tiledImage.setClip(new openseadragon.Rect(imagecrop[0], imagecrop[1], imagecrop[2], imagecrop[3]));
           vue.zoom('home');
         }
         // add layers to viewer.
@@ -862,7 +862,8 @@ export default {
         var checked = this.settings.togglelayers || i == 0 || layertoggled ? true : false;
         var opacity = this.settings.togglelayers || i == 0 || layertoggled ? 1 : 0;
         var rotation = images[i]['rotation'] ?  images[i]['rotation'] : 0;
-        this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity, 'rotation': rotation});
+        var section = images[i]['section'] ? images[i]['section'] : '';
+        this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity, 'rotation': rotation, 'section': section});
       }
       this.layerslist.length > 0 ? this.seadragontile =  this.layerslist[0].tile : '';
       if (this.$props.layers) {
