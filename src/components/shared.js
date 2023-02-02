@@ -532,9 +532,10 @@ export default {
     var attribution = canvas_data.attribution ? canvas_data.attribution : canvas_data.requiredStatement;
     var metadata = [{'label':label, 'value' : `${ link ? `<a href="${link}" target="_blank">${link}</a>` : ''}`},{'label':'title', 'value': canvas_data.label}, {'label':'description', 'value': description },
     {'label': 'attribution', 'value': attribution},{'label': 'license', 'value': canvas_data.license}, {'label': 'rights', 'value': canvas_data.rights}]
-    metadata = canvas_data.metadata ? metadata.concat(canvas_data.metadata) : metadata;
-    metadata = canvas_data.seeAlso ? metadata.concat(canvas_data.seeAlso) : metadata;
-    metadata = canvas_data.rendering ? metadata.concat(canvas_data.rendering) : metadata;
+    const metafields = ['metadata', 'seeAlso', 'rendering', 'homepage']
+    for (var mf=0; mf<metafields.length; mf++){
+      metadata = canvas_data[metafields[mf]] ? metadata.concat(canvas_data[metafields[mf]]) : metadata;
+    }
     for (var j=0; j<metadata.length; j++){
       var labelvalue = metadata[j]['value'] && metadata[j]['value']['label'] ?  metadata[j]['value']['label'] : metadata[j]['label'];
       var label = this.parseMetaFields(labelvalue, lang);
