@@ -106,8 +106,6 @@ describe('Component', () => {
       var storyboardboard = wrapper.vm.boardchildren[0];
       expect(storyboardboard.shown).toBe('settings');
       await flushPromises()
-      console.log(storyboardboard.$children[0].$children.map(elem => elem.$options.name))
-      console.group(Object.keys(storyboardboard.$children[0].$children[1].settings))
       expect(Object.keys(storyboardboard.$children[0].$children[1].settings)).toEqual([
         "overlaynext",
         "matchclick",
