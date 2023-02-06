@@ -284,10 +284,10 @@ export default {
           }
           this.settings.tagscolor = this.settings.tagscolor ? Object.assign(content_data['styles'], this.settings.tagscolor) : content_data['styles'];
         }
-        if (this.annotations.length > 0){
-          this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}`
-        }
         this.getAnnoInfo(content_data, this.annotations.length-1);
+      }
+      if (this.annotations.length > 0){
+        this.annoinfo.text += `<div class="listinfo">${isURL ? `<b>Annotation Url: </b><a href="${annotationurl}" target="_blank">${annotationurl}</a><br>` : ``}`
       }
       //Looks at all language options (if existing)
       //gets all languages, sees if browser language is option for languages; otherwise sets language to first in list.
@@ -864,7 +864,7 @@ export default {
         var checked = this.settings.togglelayers || i == 0 || layertoggled ? true : false;
         var opacity = this.settings.togglelayers || i == 0 || layertoggled ? 1 : 0;
         var rotation = images[i]['rotation'] ?  images[i]['rotation'] : 0;
-        var section = images[i]['section'] ? images[i]['section'] : '';
+        var section = images[i]['section'] ? images[i]['section'] : "";
         this.layerslist.push({'tile': canvas_tile, 'xywh':xywh, 'label': label, checked: checked, 'opacity': opacity, 'rotation': rotation, 'section': section});
       }
       this.layerslist.length > 0 ? this.seadragontile =  this.layerslist[0].tile : '';
