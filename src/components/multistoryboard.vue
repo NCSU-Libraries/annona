@@ -111,6 +111,7 @@ export default {
       if (this.isreverse){
         this.boardnumber = "updateme";
         this.anno_data = this.anno_data.reverse();
+        this.annojson.reverse();
       }
       // Get settings and create styling string
       this.settings = shared.getsettings(this);

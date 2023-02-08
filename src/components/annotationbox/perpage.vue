@@ -28,6 +28,7 @@ export default {
     },
     methods: {
         updatePerPage: function() {
+            window.annonasettings['perpage'] = this.perpage;
             const position = this.parent.basecompontent.position;
             this.parent.basecompontent.settings.perpage = this.perpage;
             this.parent.basecompontent.rangelist = [];
