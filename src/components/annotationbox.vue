@@ -103,6 +103,11 @@ export default {
   },
   created() {
     this.isscrollview = this.$parent.settings.annoview == 'scrollview';
+    for (var ukey in this.updated) {
+      if (this.$parent.settings[ukey]) {
+        this.updated[ukey] = true;
+      }
+    }
   },
   methods: {
     scrollContent: function(reset=false) {
@@ -179,7 +184,7 @@ export default {
     },
     customfontsize: function() {
       const fontsize = this.$parent.settings.fontsize.length > 2 ? '' : 'px';
-      return `#${this.cssID} .content {font-size: ${this.$parent.settings.fontsize}${fontsize}!important}`
+      return `#${this.cssID} .content, #${this.cssID} .content > *, #${this.cssID} .content > * > *{font-size: ${this.$parent.settings.fontsize}${fontsize}!important}`
     },
     handleScroll: function() {
       if (this.$parent.shown == 'transcription' || this.$parent.shown == 'anno'){
