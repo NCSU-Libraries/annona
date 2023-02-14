@@ -935,7 +935,6 @@ export default {
         } else if (this.settings.fit == 'horizontal') {
           this.viewer.viewport.fitHorizontally();
         } else if (this.settings.homezoom){
-          console.log(this.settings.homezoom)
           this.viewer.viewport.fitBoundsWithConstraints(this.settings.homezoom).ensureVisible();
         } else {
           this.viewer.viewport.fitVertically();
