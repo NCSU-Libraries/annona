@@ -75,7 +75,8 @@ export default {
       boardnumber: 0,
       toolbardisabled: false,
       manifestinfo: '',
-      isurl: true
+      isurl: true,
+      homezoom: false
     }
   },
   created() {
@@ -449,7 +450,7 @@ export default {
           var zoom = vue.settings.zoom;
           const xywh = vue.settings.zoom.split(',').map(elem => parseFloat(elem));
           zoom = vue.viewer.viewport.imageToViewportRectangle(xywh[0], xywh[1], xywh[2], xywh[3]);
-          vue.settings.homezoom = zoom;
+          vue.homezoom = zoom;
           vue.viewer.viewport.fitBoundsWithConstraints(zoom).ensureVisible();
         }
         // If autorun on load start autorun
@@ -934,8 +935,8 @@ export default {
           this.viewer.viewport.fitBounds(this.viewer.viewport.getHomeBounds());
         } else if (this.settings.fit == 'horizontal') {
           this.viewer.viewport.fitHorizontally();
-        } else if (this.settings.homezoom){
-          this.viewer.viewport.fitBoundsWithConstraints(this.settings.homezoom).ensureVisible();
+        } else if (this.homezoom){
+          this.viewer.viewport.fitBoundsWithConstraints(this.homezoom).ensureVisible();
         } else {
           this.viewer.viewport.fitVertically();
         }
