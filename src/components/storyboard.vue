@@ -838,7 +838,7 @@ export default {
       this.settings.truncate_length = this.settings.truncate_length ? this.settings.truncate_length : 2;
       if (this.seadragontile === ""){
         var tile = Array.isArray(canvasId) ? canvasId[0] : canvasId;
-        tile = tile.split("#")[0];
+        tile = tile.split("#")[0].split('/full/')[0];
         this.seadragontile = shared.iiifOrImageCheck(tile, true);
         this.layerslist.push({'tile': this.seadragontile, 'label': 'Layer 1', checked: true, 'opacity': 1});
         this.getLayerData([]);
