@@ -13,13 +13,13 @@ $borderwidth: 0px;
 $toolbarborder: 2px;
 $marginbottomtoolbar: 2px;
 $toolbarfontsize: 1.5rem;
-$phonetoolbarfontsize: .79rem;
+$phonetoolbarfontsize: 1rem;
 $top: calc(#{$toolbarfontsize} + #{$borderwidth}*3.5 + #{$marginbottomtoolbar});
 $annocontrolsize: 16px;
 $collapseheight: calc(#{$seadrgon_height} - #{$borderwidth});
 $toolbarheight: 35px;
 $sidebyside: calc(#{$seadrgon_height} + #{$toolbarheight} + #{$borderwidth}*3 + #{$marginbottomtoolbar});
-$sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borderwidth}*2 + #{$marginbottomtoolbar});
+$sidebysidephone: calc(#{$seadrgon_height} + #{$toolbarheight} + #{$borderwidth}*2 + #{$marginbottomtoolbar});
 
 .toolbarButton {
   font-size: $toolbarfontsize;
@@ -73,8 +73,8 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$phonetoolbarfontsize} + #{$borde
 }
 
 .fullpage .collapse .annotation {
-  height: calc(100vh - #{$borderwidth}*7 - #{$marginbottomtoolbar} - #{$toolbarfontsize});
-  max-height: calc(100vh - #{$borderwidth}*7 - #{$marginbottomtoolbar} - #{$toolbarfontsize});
+  height: calc(100vh - #{$toolbarheight});
+  max-height: calc(100vh - #{$toolbarheight});
 }
 
 .fullpage .sidebyside .annotation {
@@ -595,7 +595,7 @@ figcaption {
   }
 
   .defaultview .annotation:not(.right):not(.left):not(.bottom):not(.top):not(.no_toolbar_annotation) {
-    top: calc(#{$phonetoolbarfontsize} + 7px)!important;
+    top: $toolbarheight!important;
   }
 
   .sidebyside .annotation:not(.no_toolbar_annotation) {
@@ -611,13 +611,8 @@ figcaption {
     top: $toolbarheight;
   }
 
-  .fullpage .collapse .annotation {
-    height: calc(100vh - #{$borderwidth}*6 - #{$marginbottomtoolbar} - #{$phonetoolbarfontsize});
-    max-height: calc(100vh - #{$borderwidth}*6 - #{$marginbottomtoolbar} - #{$phonetoolbarfontsize});
-  }
-
   .multifullpage .sidebyside .annotation {
-    height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidth}*4 - #{$marginbottomtoolbar});
+    height: calc(100% - #{$toolbarheight} - #{$borderwidth}*4 - #{$marginbottomtoolbar});
   }
 
   .defaultview .bottom_menu_annotation {
@@ -625,8 +620,8 @@ figcaption {
   }
 
   .collapse .bottom_menu_annotation:not(.no_toolbar_annotation) {
-    height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidth}*6);
-    max-height: calc(100% - #{$phonetoolbarfontsize} - #{$borderwidth}*6);
+    height: calc(100% - #{$toolbarheight} - 1px - #{$borderwidth}*5);
+    max-height: calc(100% - #{$toolbarheight} - 1px - #{$borderwidth}*5);
   }
 
   .annotation {
