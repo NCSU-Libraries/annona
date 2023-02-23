@@ -2,7 +2,7 @@ import Vue from 'vue'
 //import index from 'karma-chai'
 import { mount } from '@vue/test-utils';
 import { shallowMount } from '@vue/test-utils';
-import '@babel/polyfill'
+import "core-js/stable";
 import rangestoryboard from '../src/components/rangestoryboard.vue';
 import storyboard2 from '../src/components/storyboard2.vue';
 import shared from '../src/components/shared.js'

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import '@babel/polyfill'
+import "core-js/stable";
 //import index from 'karma-chai'
 import { mount } from '@vue/test-utils'
 

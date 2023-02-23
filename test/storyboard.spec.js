@@ -1,4 +1,4 @@
-import '@babel/polyfill'
+import "core-js/stable";
 
 import { mount } from '@vue/test-utils';
 import storyboard from '../src/components/storyboard.vue';

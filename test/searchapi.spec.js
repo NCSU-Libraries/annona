@@ -1,7 +1,7 @@
 import Vue from 'vue'
 //import index from 'karma-chai'
 import { mount } from '@vue/test-utils'
-import '@babel/polyfill'
+import "core-js/stable";
 import searchapi from '../src/components/searchapi.vue'
 
 import flushPromises from 'flush-promises'
