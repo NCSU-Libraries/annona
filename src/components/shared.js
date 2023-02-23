@@ -251,9 +251,10 @@ export default {
         res_data['items'].map(element => values.push(this.createItemsDict(purpose, element)));
         textual_body = textual_body.concat(values)
       } else if (type === 'dctypes:Image' || type === 'Image') {
-        textual_body.push(`<img src="${res_data['@id']}">
-          <div class="attribution">${res_data['attribution']}</div>
-          <div class="caption">${res_data['description']}</div>`);
+        var imgdata = `<img src="${this.getId(res_data)}">`
+        imgdata += res_data['attribution'] ? `<div class="attribution">${res_data['attribution']}</div>` : ''
+        imgdata += res_data['description'] ? `<div class="caption">${res_data['description']}</div>` : ''
+        textual_body.push(imgdata);
       }
     }
     authors = this.getAuthor(anno);
