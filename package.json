@@ -15,20 +15,20 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/core": "^7.21.0",
+    "@babel/core": "^7.21.3",
     "@ungap/custom-elements": "^1.2.0",
     "axios": "^0.21.4",
     "babel-loader": "^8.3.0",
     "babel-preset-env": "^1.7.0",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.4",
-    "sass": "^1.59.2",
+    "sass": "^1.59.3",
     "sass-loader": "^9.0.3",
     "socket.io-client": "^2.5.0",
     "truncate-html": "^1.0.4",
     "vue": "^2.7.14",
     "vue-fullscreen": "^2.6.1",
-    "webpack": "^5.76.1"
+    "webpack": "^5.76.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
