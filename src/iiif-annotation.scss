@@ -208,7 +208,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$toolbarheight} + #{$borderwidth}
   white-space: pre-wrap;
 }
 
-.rect:hover {
+.annonaview .rect:hover {
   background: grey;
   opacity: .4;
 }
@@ -252,7 +252,7 @@ $sidebysidephone: calc(#{$seadrgon_height} + #{$toolbarheight} + #{$borderwidth}
   stroke-width: 3px;
 }
 
-.rect {
+.annonaview .rect {
   border: 2px solid $overlay_color;
 }
 
