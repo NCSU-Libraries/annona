@@ -509,22 +509,22 @@ figcaption {
   z-index: 1000;
 }
 
-.active.rect {
+.annonaview .active.rect {
   outline: 2px dotted $active_color!important;
   outline-offset: -4px;
 }
 
-.active.pin {
+.annonaview .active.pin {
   -webkit-text-stroke: .1rem $active_color;
   stroke-dasharray: 1;
 }
 
-.pin.overlay.active circle, rect {
+.annonaview .pin.overlay.active circle, .annonaview rect {
   stroke: $active_color!important;
   stroke-dasharray: 1;
 }
 
-.top, .bottom, .right, .left {
+.annonaview .top, .annonaview .bottom, .annonaview .right, .annonaview .left {
   margin: 0px;
 }
 
