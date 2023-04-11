@@ -22,13 +22,13 @@
     "babel-preset-env": "^1.7.0",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.4",
-    "sass": "^1.60.0",
+    "sass": "^1.61.0",
     "sass-loader": "^9.0.3",
     "socket.io-client": "^2.5.0",
     "truncate-html": "^1.0.4",
     "vue": "^2.7.14",
     "vue-fullscreen": "^2.6.1",
-    "webpack": "^5.77.0"
+    "webpack": "^5.78.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
