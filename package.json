@@ -28,7 +28,7 @@
     "truncate-html": "^1.0.4",
     "vue": "^2.7.14",
     "vue-fullscreen": "^2.6.1",
-    "webpack": "^5.82.0"
+    "webpack": "^5.82.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
@@ -45,7 +45,7 @@
     "jest-canvas-mock": "^2.5.0",
     "vue-custom-element": "^3.3.0",
     "vue-jest": "^3.0.7",
-    "vue-loader": "^17.1.0",
+    "vue-loader": "^17.1.1",
     "vue-template-compiler": "^2.7.14"
   },
   "eslintConfig": {
