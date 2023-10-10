@@ -22,7 +22,7 @@
     "babel-preset-env": "^1.7.0",
     "openseadragon": "^2.4.2",
     "rtl-detect": "^1.0.4",
-    "sass": "^1.68.0",
+    "sass": "^1.69.1",
     "sass-loader": "^9.0.3",
     "socket.io-client": "^2.5.0",
     "truncate-html": "^1.0.4",
@@ -45,7 +45,7 @@
     "jest-canvas-mock": "^2.5.2",
     "vue-custom-element": "^3.3.0",
     "vue-jest": "^3.0.7",
-    "vue-loader": "^17.2.2",
+    "vue-loader": "^17.3.0",
     "vue-template-compiler": "^2.7.14"
   },
   "eslintConfig": {
