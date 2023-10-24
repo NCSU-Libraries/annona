@@ -78,12 +78,15 @@ export default {
   methods: {
     fullImageBackup: function(e) {
       var src = e.target.src;
+      const full_images = this.annotation_items.map(elem => elem['fullImage']);
       if (src.indexOf('full/full') > -1) {
         src = src.replace('full/full', 'full/max');
       } else {
         src = src.replace('full/max', 'full/full');
       }
-      e.target.src = src;
+      if (full_images.indexOf(e.target.src) == -1){
+        e.target.src = src;
+      }
     },
     getFullObject: function() {
       var manifest = this.compdata['manifest'];
