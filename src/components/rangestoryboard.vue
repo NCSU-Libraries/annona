@@ -17,11 +17,11 @@
   <span v-else style="width: 100vw">
     <storyboard v-bind:key="compkey" v-if="ready" v-bind:jsonannotation="annotationurl.jsonanno" v-bind:annotationurl="annotationurl.anno" v-bind:manifesturl="annotationurl.manifest" v-bind:styling="stylingstring" v-bind:ws="isws" v-bind:layers="customlayers"></storyboard>
   </span>
-  <button v-if="ready" id="previousPageButton" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection]">
+  <button v-if="ready" id="previousPageButton" aria-label="Go to previous page" v-on:click="nextItemRange('prev')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : prevPageInactive}, { 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection]">
     <span v-html="buttons.rangeprev"></span>
     <span class="toolbartext">Previous page</span>
   </button>
-  <button v-if="ready" id="nextPageButton" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection]">
+  <button v-if="ready" id="nextPageButton" aria-label="Go to next page" v-on:click="nextItemRange('next')" class="pageButton toolbarButton" v-bind:class="[{ 'pageinactive' : nextPageInactive},{ 'imageview' : rangelist[position] && rangelist[position]['tag'] == 'iiif-annotation'}, viewingDirection]">
     <span v-html="buttons.rangenext"></span>
     <span class="toolbartext">Next Page</span>
   </button>
