@@ -878,9 +878,9 @@ export default {
     }
 
     if(vueinfo.$parent.range && vueinfo.$parent.rangelist.length > 1){
-      shortcuts['prevanno'] = {'icon': vueinfo.$parent.buttons.rangeprev, 'label': 'Previous Annotation', 
+      shortcuts['prevanno'] = {'icon': vueinfo.$parent.buttons.rangeprev, 'label': 'Previous Page',
         'shortcut': ['alt+p', 'alt+,', 'alt+ArrowLeft'], 'function': {'function': 'nextItemRange', 'args': 'prev'}, 'run': true};
-      shortcuts['nextanno'] = {'icon': vueinfo.$parent.buttons.rangenext, 'label': 'Next Annotation', 
+      shortcuts['nextanno'] = {'icon': vueinfo.$parent.buttons.rangenext, 'label': 'Next Page',
         'shortcut': ['alt+n', 'alt+.', 'alt+ArrowRight'], 'function': {'function': 'nextItemRange', 'args': 'next'}, 'run': true};
     }
     var annotation = type == 'storyboard' ? vueinfo.annotations : this.flatten(vueinfo.$children.map(board => board.annotations));
