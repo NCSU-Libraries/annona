@@ -27,7 +27,7 @@
     "sass-loader": "^9.0.3",
     "socket.io-client": "^2.5.0",
     "truncate-html": "^1.0.4",
-    "vue": "^2.7.15",
+    "vue": "^2.7.16",
     "vue-fullscreen": "^2.6.1",
     "webpack": "^5.89.0"
   },
@@ -46,8 +46,8 @@
     "jest-canvas-mock": "^2.5.2",
     "vue-custom-element": "^3.3.0",
     "vue-jest": "^3.0.7",
-    "vue-loader": "^17.3.1",
-    "vue-template-compiler": "^2.7.15"
+    "vue-loader": "^17.4.0",
+    "vue-template-compiler": "^2.7.16"
   },
   "eslintConfig": {
     "root": true,
