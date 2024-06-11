@@ -15,7 +15,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/core": "^7.24.6",
+    "@babel/core": "^7.24.7",
     "@ungap/custom-elements": "^1.3.0",
     "axios": "^1.7.2",
     "babel-loader": "^8.3.0",
