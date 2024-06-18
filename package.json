@@ -23,13 +23,13 @@
     "openseadragon": "^2.4.2",
     "psl": "^1.9.0",
     "rtl-detect": "^1.0.4",
-    "sass": "^1.77.2",
+    "sass": "^1.77.6",
     "sass-loader": "^9.0.3",
     "socket.io-client": "^2.5.0",
     "truncate-html": "^1.1.1",
     "vue": "^2.7.16",
     "vue-fullscreen": "^2.6.1",
-    "webpack": "^5.91.0"
+    "webpack": "^5.92.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
