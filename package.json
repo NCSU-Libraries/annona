@@ -15,7 +15,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@babel/core": "^7.24.7",
+    "@babel/core": "^7.24.9",
     "@ungap/custom-elements": "^1.3.0",
     "axios": "^1.7.2",
     "babel-loader": "^8.3.0",
@@ -23,13 +23,13 @@
     "openseadragon": "^2.4.2",
     "psl": "^1.9.0",
     "rtl-detect": "^1.0.4",
-    "sass": "^1.77.6",
+    "sass": "^1.77.8",
     "sass-loader": "^9.0.3",
     "socket.io-client": "^2.5.0",
     "truncate-html": "^1.1.1",
     "vue": "^2.7.16",
     "vue-fullscreen": "^2.6.1",
-    "webpack": "^5.92.1"
+    "webpack": "^5.93.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
