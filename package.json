@@ -29,7 +29,7 @@
     "truncate-html": "^1.2.1",
     "vue": "^2.7.16",
     "vue-fullscreen": "^2.6.1",
-    "webpack": "^5.99.8"
+    "webpack": "^5.99.9"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
