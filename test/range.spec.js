@@ -546,7 +546,7 @@ describe('Component', () => {
       expect(sbd.shown).toBe(false);
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.settings).toEqual({"autorun_interval": 3, "title": "Cunard Line - to all parts of the world: Object image 0", "truncate_length": 2});
+      expect(sbd.settings).toEqual({"autorun_interval": 3, "fit": "vertical", "title": "Cunard Line - to all parts of the world: Object image 0", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
@@ -625,7 +625,7 @@ describe('Component', () => {
       expect(sbd.shown).toBe('settings');
       expect(sbd.mapmarker).toBe("<i class=\"fas fa-map-marker-alt map-marker\"></i>");
       expect(sbd.isautorunning).toBe("");
-      expect(sbd.settings).toEqual({"autorun_interval": 3,"continousboard": true,"index": 0,"perpage": 1, "title": "In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px)", "truncate_length": 2});
+      expect(sbd.settings).toEqual({"autorun_interval": 3,"fit": "vertical","continousboard": true,"index": 0,"perpage": 1, "title": "In Search of Verrocchio the Painter: The Cleaning and Examination of 'The Virgin and Child with Two Angels': Infrared reflectogram (OSIRIS) (4036x3100px)", "truncate_length": 2});
       expect(sbd.currentlang).toBe("");
       expect(sbd.languages).toEqual([]);
       expect(sbd.fullscreen).toBe(false);
