@@ -75,6 +75,11 @@ export default {
       boardnumber: 0,
       toolbardisabled: false,
       manifestinfo: '',
+      init_canvas: {
+      "@context": "http://iiif.io/api/image/2/context.json",
+      "@id": "https://ncsu-libraries.github.io/annona/canvas",
+      "profile": ["http://iiif.io/api/image/2/level1.json"],
+      "protocol": "http://iiif.io/api/image" },
       isurl: true,
       homezoom: false
     }
@@ -351,13 +356,12 @@ export default {
     //Create OpenSeadragon viewer and adds listeners for moving in seadragon viewer
     createViewer: function(){
       var fit = this.settings.fit == 'fill' ? true : false;
-      var tilesource = shared.getTileFormat(this.seadragontile);
       var osdsettings = {
             id: `${this.seadragonid}`,
             type: "image",
             nextButton: 'next',
             previousButton: 'previous',
-            tileSources: tilesource,
+            tileSources: this.init_canvas,
             toolbar: `${this.toolbar_id}`,
             showNavigator:  false,
             showNavigationControl: false,
@@ -369,14 +373,6 @@ export default {
       this.viewer = openseadragon(osdsettings);
       var viewer = this.viewer;
       var vue = this;
-      //If there is something wrong with the info.json, open the full image
-      viewer.addHandler('open-failed', function(event) {
-        if (vue.seadragontile.indexOf('info.json') > -1) {
-          vue.viewerFailure("/info.json", "/full/full/0/default.jpg")
-        } else if (vue.seadragontile.indexOf('full/full') > -1) {
-          vue.viewerFailure("/full/full/", "/full/max/")
-        }
-      });
       viewer.addHandler('zoom', function(){
         var bounds = vue.viewer.world.getItemAt(0).viewportToImageRectangle(vue.viewer.viewport.getConstrainedBounds());
         window.annonasettings['zoom'] = `${bounds['x']},${bounds['y']},${bounds['width']},${bounds['height']}`;
@@ -396,25 +392,8 @@ export default {
         vue.onSeadragonOpen();
       });
     },
-    viewerFailure: function(replace, replacewith) {
-      this.viewer.close()
-      this.seadragontile = this.seadragontile.replace(replace, replacewith);
-      var tilesource = shared.getTileFormat(this.seadragontile);
-      this.viewer.open(tilesource)
-    },
     onSeadragonOpen: function(updateImage=true) {
       var vue = this;
-      if (!this.settings.fit){
-        this.settings.fit = shared.getLongEdge(this.viewer);
-      }
-      if (this.settings.sortannos){
-        if (this.settings.sortannos == 'longedge') {
-          this.settings.sortannos = shared.getLongEdge(this.viewer);
-        }
-        const index = this.settings.sortannos == 'horizontal' ? 0 : 1;
-        this.annotations = this.annotations.sort((a, b) => (parseFloat(a['section'][0].split(",")[index]) > parseFloat(b['section'][0].split(",")[index])) ? 1 : -1);
-      }
-      var fit = this.settings.fit == 'fill' ? true : false;
       if (!vue.anno_elem.querySelector('#spinner')){
         var spinner = document.createElement('div');
         spinner.id = "spinner";
@@ -440,12 +419,7 @@ export default {
         if (!updateImage) {
           vue.tagslistShortcuts();
         }
-        // Set view fit
-        if (vue.settings.fit == 'horizontal') {
-          vue.viewer.viewport.fitHorizontally();
-        } else if(!fit) {
-          vue.viewer.viewport.fitVertically();
-        }
+
         if (vue.settings.zoom) {
           var zoom = vue.settings.zoom;
           const xywh = vue.settings.zoom.split(',').map(elem => parseFloat(elem));
@@ -483,6 +457,26 @@ export default {
           const shown = vue.shown;
           vue.next(vue.position);
           vue.clickButton(shown);
+        }
+
+        if (!vue.settings.fit){
+          vue.settings.fit = shared.getLongEdge(vue.viewer);
+        }
+
+        if (vue.settings.sortannos){
+          if (vue.settings.sortannos == 'longedge') {
+            vue.settings.sortannos = shared.getLongEdge(vue.viewer);
+          }
+          const index = vue.settings.sortannos == 'horizontal' ? 0 : 1;
+          vue.annotations = vue.annotations.sort((a, b) => (parseFloat(a['section'][0].split(",")[index]) > parseFloat(b['section'][0].split(",")[index])) ? 1 : -1);
+        }
+        var fit = this.settings.fit == 'fill' ? true : false;
+
+        // Set view fit
+        if (vue.settings.fit == 'horizontal') {
+          vue.viewer.viewport.fitHorizontally();
+        } else if(!fit) {
+          vue.viewer.viewport.fitVertically();
         }
         this.removeSpinner();
         this.focusOnButton();
@@ -822,6 +816,9 @@ export default {
       this.imagetitle = meta['title'] ? meta['title'] : this.imagetitle;
       (canvas_data.sequences && canvas_data.sequences[0].canvases.length > 1) || (canvas_data.items && canvas_data.items.length > 1) ? this.imageinfo.label = 'Manifest information' : '';
       var get_canvas = shared.matchCanvas(canvas_data, canvas, this.imagetitle, images, this.currentlang);
+      this.init_canvas['width'] = get_canvas['width']
+      this.init_canvas['height'] = get_canvas['height']
+
       this.imagetitle = get_canvas['title'];
       var canvsimgs = get_canvas['images'];
       this.getLayerData(canvsimgs);
@@ -888,7 +885,7 @@ export default {
     //add layers to viewer
     addLayers: function(){
       this.layerslist[0]['object'] = this.viewer.world.getItemAt(0);
-      for(var j=1; j<this.layerslist.length; j++) {
+      for(var j=0; j<this.layerslist.length; j++) {
         this.setLayers(this.layerslist[j], j);
       }
     },
@@ -909,6 +906,9 @@ export default {
           degrees: layer.rotation,
           success: function (obj) {
             vue.layerslist[position]['object'] = obj.item;
+          },
+          error: function(event) {
+            console.log('Failed to add image:', event)
           }
       });
     },

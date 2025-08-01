@@ -713,7 +713,7 @@ export default {
   getTileFormat: function(tilesource) {
     var extension = this.getExtension(tilesource)
     if (this.imageextensions.includes(extension)){
-        tilesource = { type: 'image', url:  `${tilesource}` }
+      tilesource = { type: 'image', url:  `${tilesource}` }
     }
     return tilesource;
   },
@@ -786,7 +786,7 @@ export default {
     }
     title = Array.isArray(title) ? title[0] : title;
     title = title && imagetitle.indexOf(title) == -1 && canvases.length !== 1  ? imagetitle += ': ' + title : imagetitle;
-    return {'images': allimages, 'title': title}
+    return {'images': allimages, 'title': title, width: canvas.width || allimages[0].resource.width, height: canvas.height || allimages[0].resource.height}
   },
   getAllCanvases: function(manifest) {
     return manifest['items'] ? this.flatten(manifest['items']) : this.flatten(manifest['sequences'].map(element => element['canvases']));
