@@ -29,7 +29,7 @@
     "truncate-html": "^1.2.2",
     "vue": "^2.7.16",
     "vue-fullscreen": "^2.6.1",
-    "webpack": "^5.102.0"
+    "webpack": "^5.102.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.9",
@@ -38,7 +38,7 @@
     "axios-mock-adapter": "^1.22.0",
     "babel-core": "^6.26.3",
     "babel-jest": "^26.0.0",
-    "core-js": "^3.45.1",
+    "core-js": "^3.46.0",
     "eslint": "5.16.0",
     "eslint-plugin-vue": "8.4.1",
     "flush-promises": "^1.0.2",
